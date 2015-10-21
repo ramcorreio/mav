@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+          
+    <ui:decorate template="/restrict/template/default.xhtml">
+        <ui:define name="menu">
+            <ui:include src="/restrict/template/menuMonitorar.xhtml"/>
+        </ui:define>
+        <ui:define name="content">
+                <iframe class="iframe" style="margin-left: 4%; width: 96%" src="http://10.216.76.51/zabbix/"/>
+        </ui:define>
+    </ui:decorate>
+</html>

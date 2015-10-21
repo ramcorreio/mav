@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <ui:decorate template="/restrict/template/default.xhtml">
+        <ui:define name="menu">
+            <ui:include src="/restrict/template/menuIcones.xhtml"/>
+        </ui:define>
+        <ui:define name="content">
+            <section id="demandas" class="page-section text-center">
+                <div class="heading-about">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2">
+                                <div class="section-heading">
+                                    <h4 class="font-capitalize margintop-20">Tramitações (BMC ARS ITSM)</h4>
+                                    <i class="fa fa-2x fa-angle-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="container content">
+                    <h:form id="frmTramitacao">
+                        <p:growl id="growl" life="6000" />
+                        <div class="row">
+                            <div class="wow fadeInLeft" data-wow-delay="0.2s">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-2">
+                                        <p:selectBooleanCheckbox value="#{tramitacaoController.dataAtual}" 
+                                                                 style="padding:5px 5px 0 0">
+                                            <p:ajax immediate="true" update="mes ano"/>
+                                        </p:selectBooleanCheckbox>
+                                        <h:outputText value="Período atual" />
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="col-lg-5">
+                                            <p:selectOneMenu id="mes" required="true" requiredMessage="Informe os campos obrigatórios" 
+                                                             value="#{tramitacaoController.mes}" style="width: 70px"
+                                                             disabled="#{tramitacaoController.dataAtual}">
+                                                <f:selectItem itemLabel="Mês " itemValue="" />
+                                                <f:selectItem itemLabel="Jan" itemValue="Janeiro" />
+                                                <f:selectItem itemLabel="Fev" itemValue="Fevereiro" />
+                                                <f:selectItem itemLabel="Mar" itemValue="Marco" />
+                                                <f:selectItem itemLabel="Abr" itemValue="Abril" />
+                                                <f:selectItem itemLabel="Mai" itemValue="Maio" />
+                                                <f:selectItem itemLabel="Jun" itemValue="Junho" />
+                                                <f:selectItem itemLabel="Jul" itemValue="Julho" />
+                                                <f:selectItem itemLabel="Ago" itemValue="Agosto" />
+                                                <f:selectItem itemLabel="Set" itemValue="Setembro" />
+                                                <f:selectItem itemLabel="Out" itemValue="Outubro" />
+                                                <f:selectItem itemLabel="Nov" itemValue="Novembro" />
+                                                <f:selectItem itemLabel="Dez" itemValue="Dezembro" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <p:selectOneMenu id="ano" value="#{tramitacaoController.ano}" style="width: 70px" 
+                                                             required="true" requiredMessage="Informe os campos obrigatórios"
+                                                             disabled="#{tramitacaoController.dataAtual}" >
+                                                <f:selectItem itemLabel="Ano" itemValue="" />
+                                                <f:selectItem itemLabel="2015" itemValue="2015" />
+                                                <f:selectItem itemLabel="2014" itemValue="2014" />
+                                                <f:selectItem itemLabel="2013" itemValue="2013" />
+                                                <f:selectItem itemLabel="2012" itemValue="2012" />
+                                                <f:selectItem itemLabel="2011" itemValue="2011" />
+                                                <f:selectItem itemLabel="2010" itemValue="2010" />
+                                                <f:selectItem itemLabel="2009" itemValue="2009" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4"> 
+                                        <p:inputSwitch value="#{tramitacaoController.onOff}"
+                                                       offLabel="Relatório Sintético" onLabel="Relatório Analítico">
+                                            <f:ajax render="opTable" immediate="true" />
+                                        </p:inputSwitch>
+                                    </div> 
+                                    <div class="col-lg-3" align="left">   
+                                        <p:commandButton id="cbSelect" value="Selecione a Empresa"
+                                                         style="width: 200px;" type="button" />
+                                        
+                                        <p:slideMenu id="sm" overlay="true" trigger="cbSelect" my="left top"
+                                                     backLabel="Voltar" at="left bottom" style="min-width:335px; min-height: 185px" >
+                                            <p:submenu label="CAIXA" icon="ui-icon-extlink">
+                                                <p:menuitem value="TODAS" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'todas')}" update="@form"  onclick="PF('bui').show()" />
+                                                <p:menuitem value="Armazenamento" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'armazenamento')}" update="@form" onclick="PF('bui').show()"/>
+                                                <p:menuitem value="Base de Dados" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'base de dados')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Controle da Producão" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'controle da produção')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Gestão de Incidentes e Servicos" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'gestão de incidentes e serviços')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Gestão de Mudanças" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'gestão de mudanças')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Gestão de Pessoas e Instalações" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'gestão de pessoas e instalações')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Gestão de Qualidade de Serviços de TI" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'gestão de qualidade de serviços de ti')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Homologação de sistemas" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'homologação de sistemas')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Planejamento e Controle da Producao" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'planejamento e controle da produção')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Planejamento e Controle da Producao - Batch" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'planejamento e controle da produção - batch')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Planejamento e Controle da Producao - On line" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'planejamento e controle da produção - on line')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Segurança e Continuidade de Serviços" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'segurança e continuidade de serviços')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Suporte à Rede" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'suporte à rede')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Suporte Plataforma Alta" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'suporte a plataforma alta')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Suporte Plataforma Baixa" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'suporte a plataforma baixa')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Suporte Plataforma Intermediária" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('caixa', 'suporte a paltaforma intermediária')}" update="@form" onclick="PF('bui').show()" />
+                                            </p:submenu>
+                                            <p:submenu label="CPM" icon="ui-icon-extlink">
+                                                <p:menuitem value="TODAS" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'todas')}" update="@form"  onclick="PF('bui').show()" />
+                                                <p:menuitem value="Armazenamento" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'armazenamento')}" update="@form" onclick="PF('bui').show()"/>
+                                                <p:menuitem value="Base de Dados" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'base de dados')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Controle da Producão" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'controle da produção')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Gestão de Incidentes e Servicos" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'gestão de incidentes e serviços')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Planejamento e Controle da Producao" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'planejamento e controle da produção')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Suporte à Rede" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'suporte à rede')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Suporte Plataforma Alta" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'suporte a plataforma alta')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Suporte Plataforma Baixa" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'suporte a plataforma baixa')}" update="@form" onclick="PF('bui').show()" />
+                                                <p:menuitem value="Suporte Plataforma Intermediária" 
+                                                            actionListener="#{tramitacaoController.setFiltroByEmpresaAndCoorporacao('CPM', 'suporte a paltaforma intermediária')}" update="@form" onclick="PF('bui').show()" />
+                                            </p:submenu>
+                                            <!--                                            <p:submenu label="GeP" icon="ui-icon-extlink">
+                                                                                            <p:menuitem value="Empresa 1" update="@form" />
+                                                                                            <p:menuitem value="Empresa 2" update="@form" />
+                                                                                        </p:submenu>-->
+                                        </p:slideMenu>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div id="divTable" class="col-lg-12">
+                                <hr style="border-color: #eee"/>
+                                <p:outputLabel id="opTable">
+                                    <div class="wow fadeInLeft" data-wow-delay="0.2s">
+                                        <div class="col-lg-12 padd-top10">
+                                            <p:dataTable id="tbS" value="#{tramitacaoController.tramitacoesList}" var="t" styleClass="capitalize" 
+                                                         paginator="true" paginatorPosition="top" rows="30" 
+                                                         rendered="#{!tramitacaoController.onOff}"
+                                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                                         emptyMessage="Não há resultados para pesquisa feita.">
+                                                <f:facet name="{Exporters}">
+                                                    <h:commandLink style="float: right; margin-right: 10px">
+                                                        <p:graphicImage value="/resources/img/icons/pdf.png"
+                                                                        width="24"></p:graphicImage>
+                                                        <p:dataExporter target="tbl" fileName="PDF" type="pdf"></p:dataExporter>
+                                                    </h:commandLink>
+                                                    <h:commandLink style="float: right; margin-right: 10px"> 
+                                                        <p:graphicImage value="/resources/img/icons/excell.png"
+                                                                        width="24"></p:graphicImage>
+                                                        <p:dataExporter target="tbl" fileName="Excel" type="xls"></p:dataExporter>
+                                                    </h:commandLink>
+                                                </f:facet>
+                                                
+                                                <p:column headerText="Empresa">
+                                                    <h:outputText value="#{t.empresa}" />
+                                                </p:column>
+                                                
+                                                <p:column headerText="Coordenação" width="35%">
+                                                    <h:outputText value="#{t.coordenacao}" />
+                                                </p:column>
+                                                
+                                                <p:column headerText="Total de Tramitações até 15 min">
+                                                    <h:outputText id="ate15" value="#{t.ate15min}" >
+                                                        <f:convertNumber integerOnly="true" />
+                                                    </h:outputText>
+                                                </p:column>
+                                                
+                                                <p:column headerText="Total de Tramitações de 15 min até 45 min">
+                                                    <h:outputText value="#{t.de15Ate45}" >
+                                                        <f:convertNumber integerOnly="true" />
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Total de Tramitações de 45 min até 3 horas">
+                                                    <h:outputText value="#{t.de45Ate3h}" >
+                                                        <f:convertNumber integerOnly="true" />
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Total de Tramitações após 3 horas">
+                                                    <h:outputText value="#{t.apos3h}" >
+                                                        <f:convertNumber integerOnly="true" />
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Total de Tramitações">
+                                                    <h:outputText value="#{t.total}" >
+                                                        <f:convertNumber integerOnly="true" />
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </div>
+                                    <div class="wow fadeInLeft" data-wow-delay="0.2s">
+                                        <div class="col-lg-12">
+                                            <p:dataTable id="tbA" var="var" paginator="true" paginatorPosition="top" 
+                                                         rows="30" rendered="#{tramitacaoController.onOff}"
+                                                         value="#{tramitacaoController.tramitacoesListAnal}"
+                                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {Exporters}"
+                                                         emptyMessage="Não há resultados para pesquisa feita.">
+                                                
+                                                <f:facet name="{Exporters}">
+                                                    <h:commandLink style="float: right; margin-right: 10px">
+                                                        <p:graphicImage value="/resources/img/icons/pdf.png"
+                                                                        width="24"></p:graphicImage>
+                                                        <p:dataExporter target="tbl" fileName="PDF" type="pdf"></p:dataExporter>
+                                                    </h:commandLink>
+                                                    <h:commandLink style="float: right; margin-right: 10px"> 
+                                                        <p:graphicImage value="/resources/img/icons/excel.png"
+                                                                        width="24"></p:graphicImage>
+                                                        <p:dataExporter target="tbl" fileName="Excel" type="xls"></p:dataExporter>
+                                                    </h:commandLink>
+                                                </f:facet>
+                                                
+                                                <p:column headerText="ID" width="5%">
+                                                    <h:outputText value="#{var.id}" />
+                                                </p:column>
+                                                
+                                                <p:column headerText="Sumário">
+                                                    <h:outputText value="#{var.sumario}" />
+                                                </p:column>
+                                                
+                                                <p:column headerText="Status do Incidente">
+                                                     <h:outputText value="#{var.status}" />
+                                                </p:column>
+                                                
+                                                <p:column headerText="Data Informada">
+                                                    <h:outputText value="#{var.dtInformada}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Empresa de Suporte">
+                                                    <h:outputText value="#{var.empresa}"/>
+                                                </p:column>
+                                                <p:column headerText="Grupo Designado">
+                                                    <h:outputText value="#{var.grupoDesignado}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Tempo de Incidente">
+                                                    <h:outputText value="#{var.tempoIncidente}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </div>
+                                </p:outputLabel>
+                            </div>
+                        </div>
+                        <p:blockUI block="frmTramitacao" trigger="frmTramitacao"
+                                   widgetVar="bui" id="bui">
+                            <img style="margin:2px 15px 0 0;"
+                                 src="/resources/img/gif/loadblack.gif" width="20px" />
+                            <p style="color: white; float: right; margin: 0; font-size: 14px">Aguarde ...</p>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+            </section>
+        </ui:define>
+    </ui:decorate>
+</html>

@@ -1,0 +1,14 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    			xmlns:f="http://java.sun.com/jsf/core" 
+    			xmlns:h="http://java.sun.com/jsf/html"
+    			xmlns:p="http://primefaces.org/ui"
+    			xmlns:ui="http://java.sun.com/jsf/facelets"
+        		template="/WEB-INF/layout/template-base.xhtml">
+	
+	<ui:define name="content">
+    	<p:button outcome="customers" value="Clientes" icon="dash-icon dash-icon-sac" styleClass="dash-button"/>
+    	<p:button outcome="contracts" value="Contratos" icon="dash-icon dash-icon-contract" styleClass="dash-button"/>
+    	<p:button outcome="offered-services" value="Serviços" icon="dash-icon dash-icon-services" styleClass="dash-button"/>
+    	<p:button outcome="loader" value="Carga Excel" icon="dash-icon dash-icon-load" styleClass="dash-button"/>
+    </ui:define>
+</ui:composition>

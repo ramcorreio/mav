@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+				xmlns:h="http://xmlns.jcp.org/jsf/html"
+    			xmlns:p="http://primefaces.org/ui"
+    			xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:decorate template="/restrict/template/default.xhtml">
+	
+
+	<ui:define name="menu">
+	</ui:define>
+	
+	<ui:define name="content">
+		<section id="portal" class="home-section text-center">
+			<div class="heading-about">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8 col-lg-offset-2">
+							<div class="section-heading">
+								<h2 class="font-normal">Conteúdo Principal</h2>
+								<i class="fa fa-2x fa-angle-down"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container mar-top30">
+				<div class="row">
+					<div class="col-lg-10 col-lg-offset-1">
+						<div class="col-sm-3 col-md-3">
+							<p:button outcome="customers" value="Clientes"
+								icon="dash-icon dash-icon-sac" styleClass="dash-button" />
+						</div>
+						<div class="col-sm-3 col-md-3 ">
+							<p:button outcome="contracts" value="Contratos"
+								icon="dash-icon dash-icon-contract" styleClass="dash-button" />
+						</div>
+						<div class="col-sm-3 col-md-3 ">
+							<p:button outcome="offered-services" value="Serviços"
+								icon="dash-icon dash-icon-services" styleClass="dash-button" />
+						</div>
+						<div class="col-sm-3 col-md-3 ">
+							<p:button outcome="loader" value="Carga Excel"
+								icon="dash-icon dash-icon-load" styleClass="dash-button" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</ui:define>
+</ui:decorate>
+</html>

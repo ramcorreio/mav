@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+        
+    <ui:decorate template="/restrict/template/default.xhtml">
+          <ui:define name="menu">
+            <ui:include src="/restrict/template/menuIcones.xhtml"/>
+        </ui:define>
+        <ui:define name="content">
+            <iframe class="iframe" src="http://des.servicos.corerj.caixa/incidentes/acompanhamento/Tb_GINC_Impact_list_itsm.php"/>
+        </ui:define>
+    </ui:decorate>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+          
+    <ui:decorate template="/restrict/template/default.xhtml">
+        <ui:define name="menu">
+            <ui:include src="/restrict/template/menuIcones.xhtml"/>
+        </ui:define>
+        <ui:define name="content">
+            <section id="demandas" class="page-section text-center">
+                <div class="heading-about">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2" style="margin-bottom: -50px">
+                                <div class="section-heading">
+                                    <h4 class="font-capitalize margintop-20">Ramais Colaboradores</h4>
+                                    <i class="fa fa-2x fa-angle-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="container content"> 
+                    <p:tabView effect="drop" effectDuration="fast">
+                        <p:tab title="Caixa" >
+                            <ui:include src="/public/includePages/ramalCaixa.xhtml" />
+                        </p:tab>
+                        <p:tab title="CPM" >
+                            <ui:include src="/public/includePages/ramalCpm.xhtml" />
+                        </p:tab>
+                    </p:tabView>
+                </div>
+            </section>
+        </ui:define>
+    </ui:decorate>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <ui:decorate template="/restrict/template/default.xhtml">
+        <ui:define name="menu">
+            <ui:include src="/restrict/template/menuIcones.xhtml"/>
+        </ui:define>
+        <ui:define name="content">
+            <section id="demandas" class="page-section text-center">
+                <div class="heading-about">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2">
+                                <div class="section-heading">
+                                    <h4 class="font-capitalize margintop-20">Ramais CEF</h4>
+                                    <i class="fa fa-2x fa-angle-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="container content">
+                    <h:form id="frmRamal">
+                        <p:growl life="6000" />
+                        <div class="wow fadeInLeft" data-wow-delay="0.2s">
+                            <div class="col-lg-12 text-left z-index-7">
+                                <h:commandButton styleClass="btn btn-sm btn-gray capitalize"  
+                                                 style="margin-bottom: -50px;"
+                                                 disabled="#{ramalController.ramais.size() != 0}"
+                                                 value="Recarregar tabela" 
+                                                 onclick="PF('bui').show()" 
+                                                 actionListener="#{ramalController.refreshRamais()}">
+                                    <f:ajax render="@form" />
+                                </h:commandButton>
+                            </div>
+                            <div class="col-lg-12">
+                                <p:dataTable id="tb" value="#{ramalController.ramais}" var="t" sortBy="#{t.nome}"
+                                             paginator="true" paginatorPosition="top" rows="20" styleClass="capitalize"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                             emptyMessage="Não há resultados válidos.">
+                                    <f:facet name="{Exporters}">
+                                        <h:commandLink style="float: right; margin-right: 10px">
+                                            <p:graphicImage value="/resources/img/icons/pdf.png"
+                                                            width="24"></p:graphicImage>
+                                            <p:dataExporter target="tb" fileName="PDF" type="pdf"></p:dataExporter>
+                                        </h:commandLink>
+                                        <h:commandLink style="float: right; margin-right: 10px"> 
+                                            <p:graphicImage value="/resources/img/icons/excel.png"
+                                                            width="24"></p:graphicImage>
+                                            <p:dataExporter target="tb" fileName="Excel" type="xls"></p:dataExporter>
+                                        </h:commandLink>
+                                    </f:facet>
+                                        
+                                    <p:column width="12%" headerText="Matrícula" filterBy="#{t.matricula}" filterMatchMode="contains">
+                                        <h:outputText value="#{t.matricula}" />
+                                    </p:column>
+                                    <p:column headerText="Nome" width="20%" sortBy="#{t.nome}" filterBy="#{t.nome}" filterMatchMode="contains">
+                                        <h:outputText value="#{t.nome}" />
+                                    </p:column>
+                                    <p:column width="13%" headerText="Função / Cargo" filterBy="#{t.cargo}" filterMatchMode="contains">
+                                        <h:outputText value="#{t.cargo}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column width="12%" headerText="Ramal" filterBy="#{t.ramal}" filterMatchMode="contains">
+                                        <h:outputText value="#{t.ramal}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column width="33%" headerText="Equipe" filterBy="#{t.equipe}" filterMatchMode="contains">
+                                        <h:outputText value="#{t.equipe}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column width="12%" headerText="Andar" filterBy="#{t.andar}" filterMatchMode="contains">
+                                        <h:outputText value="#{t.andar}" >
+                                        </h:outputText>
+                                    </p:column>
+                                </p:dataTable>
+                                
+                                <p:blockUI block="tb" trigger="tb"
+                                           widgetVar="bui" id="bui">
+                                    <img style="margin:2px 15px 0 0;"
+                                         src="/resources/img/gif/loadblack.gif" width="20px" />
+                                    <p style="color: white; float: right; margin: 0; font-size: 14px">Aguarde ...</p>
+                                </p:blockUI>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </section>
+        </ui:define>
+    </ui:decorate>
+</html>

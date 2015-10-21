@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:f="http://xmlns.jcp.org/jsf/core"
+				xmlns:h="http://xmlns.jcp.org/jsf/html"
+    			xmlns:p="http://primefaces.org/ui"
+    			xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        		template="/restrict/template/crudtemplate.xhtml">
+
+	<ui:param name="crudstates" value="#{cRUDViewCustomerStates}" />
+	<ui:param name="crudevents" value="#{cRUDViewCustomerEvents}" />
+   
+    <ui:define name="crudMainForm">
+	    	<p:dataTable
+					id="customerList"
+					var="customer"
+					value="#{crudevents.customerView.customers}"
+					selection="#{crudevents.customerView.selected}"
+					rowKey="#{customer.id}"
+					paginator="true"
+					rows="25"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					emptyMessage="Faça uma pesquisa para consultar resultados"
+					rowsPerPageTemplate="10,25,50,100"
+					currentPageReportTemplate="({currentPage} de {totalPages})">
+						
+						<p:column headerText="Id" sortBy="#{customer.id}" width="30">
+							<h:outputText value="#{customer.id}" />
+						</p:column>
+						<p:column headerText="CNPJ" sortBy="#{customer.cnpj}" width="200">
+							<h:outputText value="#{customer.cnpj}" />
+						</p:column>
+						<p:column headerText="Nome" sortBy="#{customer.name}">
+							<h:outputText value="#{customer.name}" />
+						</p:column>
+				</p:dataTable>
+    </ui:define>
+    
+	
+</ui:composition>

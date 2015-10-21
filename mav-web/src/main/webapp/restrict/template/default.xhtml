@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<h:head>
+
+	<h:outputScript library="javax.faces" name="jsf.js" target="head" />
+	
+	<title>DG - Biller</title>
+	<meta charset="utf-8" />
+	<link rel="shortcut icon" href="/resources/img/favicon/x.ico" />
+
+	<meta
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+		name="viewport" />
+
+	<link href="/biller-ui/resources/css/bootstrap.min.css"
+		rel="stylesheet" type="text/css" />
+
+	<link href="/biller-ui/resources/font-awesome/css/font-awesome.min.css"
+		rel="stylesheet" type="text/css" />
+	<link href="/biller-ui/resources/css/animate.css" rel="stylesheet" />
+	<!-- Squad theme CSS -->
+	<link href="/biller-ui/resources/css/style.css" rel="stylesheet" />
+	<link href="/biller-ui/resources/color/default.css" rel="stylesheet" />
+	<link href="/biller-ui/resources/css/biller.css" rel="stylesheet" />
+	<link href="/biller-ui/resources/css/crud.css" rel="stylesheet" />
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</h:head>
+
+<h:body id="body">
+	<ui:insert name="header">
+		<ui:include src="header.xhtml" />
+	</ui:insert>
+	
+	<ui:insert name="menu">
+		<ui:include src="menuIcones.xhtml" />
+	</ui:insert>
+
+	<div class="content">
+		<ui:insert name="content"/>
+	</div>
+	
+	<ui:insert name="footer">
+		<ui:include src="footer.xhtml" />
+	</ui:insert>
+
+	<script src="/biller-ui/resources/js/jquery.min.js"></script>
+	<script src="/biller-ui/resources/js/bootstrap.min.js"></script>
+	<script src="/biller-ui/resources/js/jquery.easing.min.js"></script>
+	<script src="/biller-ui/resources/js/jquery.scrollTo.js"></script>
+	<script src="/biller-ui/resources/js/wow.min.js"></script>
+	<script src="/biller-ui/resources/js/custom.js"></script>
+	<script src="/biller-ui/resources/js/calendar.js"></script>
+
+	<script>
+	  	jQuery.noConflict(); 
+	  	
+	  	var bootstrapButton = $.fn.button.noConflict()  
+  		$.fn.bootstrapBtn = bootstrapButton 
+	</script>
+
+</h:body>
+</html>
