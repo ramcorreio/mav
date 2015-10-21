@@ -40,6 +40,7 @@ public class Contract implements Serializable {
 	private static final long serialVersionUID = -1578361555645031205L;
 	
 	public static enum Frequency {
+		
         MENSAL,
         BIMESTRAL,
         TRIMESTRAL,
