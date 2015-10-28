@@ -10,36 +10,36 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd" default-autowire="byName">
 	
-	<context:property-placeholder location="classpath:hibernate.properties"/>
+	<context:property-placeholder location="classpath:mav.hibernate.properties"/>
 	
 	<!-- bean post-processor for JPA annotations -->
 	<context:annotation-config />
-	<context:component-scan base-package="br.com.datagrupo.biller.service.impl"/>
+	<context:component-scan base-package="com.stefanini.mav.service.impl"/>
 	
-	<tx:annotation-driven transaction-manager="billerTM"/>
+	<tx:annotation-driven transaction-manager="mavTM"/>
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 	
 	<!-- Creates an Database -->
-	<bean id="billerDS" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-	   	<property name="driverClassName" value="${biller.database.driver}"/>
-    	<property name="url" value="${biller.database.url}"/>
-    	<property name="username" value="${biller.database.user}"/>
-    	<property name="password" value="${biller.database.pass}"/>
+	<bean id="mavDS" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	   	<property name="driverClassName" value="${mav.database.driver}"/>
+    	<property name="url" value="${mav.database.url}"/>
+    	<property name="username" value="${mav.database.user}"/>
+    	<property name="password" value="${mav.database.pass}"/>
 	</bean>
 	
 	<!-- Drives transactions using local JPA APIs -->
-	<bean id="billerTM" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="billerEMF" />
+	<bean id="mavTM" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="mavEMF" />
 	</bean>
 	
-	<bean id="billerEMF" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceXmlLocation" value="classpath:META-INF/biller-persistence.xml"/>
+	<bean id="mavEMF" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceXmlLocation" value="classpath:META-INF/mav-persistence.xml"/>
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.dialect">${biller.hibernate.dialect}</prop>
-				<prop key="hibernate.hbm2ddl.auto">${biller.hibernate.hbm2ddl.auto}</prop>
-				<prop key="hibernate.show_sql">${biller.hibernate.show_sql}</prop>
-				<prop key="hibernate.default_schema">${biller.hibernate.default_schema}</prop>
+				<prop key="hibernate.dialect">${mav.hibernate.dialect}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${mav.hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.show_sql">${mav.hibernate.show_sql}</prop>
+				<prop key="hibernate.default_schema">${mav.hibernate.default_schema}</prop>
 				<prop key="hibernate.default_batch_fetch_size">4</prop>
 				
 				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
@@ -57,7 +57,7 @@
 				<prop key="c3p0.timeout">100</prop> <!-- seconds -->
 			</props>
 		</property>
-		<property name="dataSource" ref="billerDS" />
+		<property name="dataSource" ref="mavDS" />
 		<property name="loadTimeWeaver">
     		<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
   		</property>
