@@ -12,7 +12,7 @@
 
 	<modules>
 		<module>mav-core</module>
-		<!-- <module>mav-web</module> -->
+		<!-- <module>mav-service</module> -->
 	</modules>
 
 	<properties>
