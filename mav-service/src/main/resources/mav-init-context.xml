@@ -11,8 +11,7 @@
 
 	<bean id="textCodecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
 		<constructor-arg>
-			<bean
-				class="org.apache.mina.filter.codec.textline.TextLineCodecFactory.TextLineCodecFactory" />
+			<bean class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" />
 		</constructor-arg>
 	</bean>
 
@@ -28,19 +27,16 @@
 		</property>
 	</bean>
 
-	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
-		<property name="customEditors">
-			<map>
-				<entry key="java.net.SocketAddress">
-					<bean class="org.apache.mina.integration.beans.InetSocketAddressEditor" />
-				</entry>
-			</map>
-		</property>
+	
+	<bean name="dafaultPort" class=" java.net.InetSocketAddress">
+		<constructor-arg value="8889"/>
 	</bean>
+	
+	
 
 	<!-- The IoAcceptor which binds to port 161 -->
-	<bean id="ioAcceptor" class="com.stefanini.mav.startup.MessageServer" init-method="start" destroy-method="stop">
-		<property name="defaultLocalAddress" value="8889" />
+	<bean id="ioAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" init-method="bind" destroy-method="unbind">
+		<property name="defaultLocalAddress" ref="dafaultPort" />
 		<property name="handler" ref="trapHandler" />
 		<property name="filterChainBuilder" ref="filterChainBuilder" />
 	</bean>

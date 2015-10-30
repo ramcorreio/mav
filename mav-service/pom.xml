@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>mav-service</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>Módulo que irá controlar o start e stop do serviços de socket</name>
 
 	<properties>
@@ -66,6 +66,68 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.stefanini.mav.startup.MessageServerBootstrap</mainClass>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>libs/</classpathPrefix>
+
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/libs</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.stefanini.mav.startup.MessageServerBootstrap</mainClass>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>libs/</classpathPrefix>
+
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/libs</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
