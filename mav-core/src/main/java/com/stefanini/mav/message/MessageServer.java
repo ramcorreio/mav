@@ -2,12 +2,10 @@ package com.stefanini.mav.message;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.charset.Charset;
 
+import org.apache.mina.core.filterchain.IoFilterChainBuilder;
+import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
-import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,32 +14,42 @@ import org.slf4j.LoggerFactory;
 
 public class MessageServer {
 
-	private static int PORT = 8889;
+	private static int DEFAULT_PORT = 8889;
 	
 	private static Logger logger = LoggerFactory.getLogger(MessageServer.class);
 
 	private NioSocketAcceptor acceptor;
-
-	private void init() throws IOException {
-
+	
+	private int port = DEFAULT_PORT; 
+	
+	public MessageServer() {
+		
 		acceptor = new NioSocketAcceptor();
-		
-		acceptor.getFilterChain().addLast( "logger", new LoggingFilter() );
-		acceptor.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory( Charset.forName( "UTF-8" ))));
-		
-		acceptor.setHandler(new MessageIoHandler());
 		acceptor.getSessionConfig().setReadBufferSize(2048);
 		acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
-
-		acceptor.setDefaultLocalAddress(new InetSocketAddress(PORT));
-		logger.info("server configured");
+	}
+	
+	public void setPort(int port) {
+		
+		this.port = port;
+	}
+	
+	public void setFilterChainBuilder(IoFilterChainBuilder builder) {
+		
+		acceptor.setFilterChainBuilder(builder);
+	}
+	
+	public void setHandler(IoHandler handler) {
+		
+		acceptor.setHandler(handler);
 	}
 	
 	public void start() throws IOException {
 
-		init();
+		acceptor.setDefaultLocalAddress(new InetSocketAddress(port));
+		logger.info("server configured");
 		acceptor.bind();
-		logger.info("server is listenig at port " + PORT);
+		logger.info("server is listenig at port " + port);
 	}
 
 	public void stop() {
