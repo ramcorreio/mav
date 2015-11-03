@@ -1,4 +1,4 @@
-package com.stefanini.mav.message;
+package com.stefanini.mav.mensagem;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,17 +12,17 @@ import org.slf4j.LoggerFactory;
 
 
 
-public class MessageServer {
+public class MensagemListener {
 
 	private static int DEFAULT_PORT = 8889;
 	
-	private static Logger logger = LoggerFactory.getLogger(MessageServer.class);
+	private static Logger logger = LoggerFactory.getLogger(MensagemListener.class);
 
 	private NioSocketAcceptor acceptor;
 	
 	private int port = DEFAULT_PORT; 
 	
-	public MessageServer() {
+	public MensagemListener() {
 		
 		acceptor = new NioSocketAcceptor();
 		acceptor.getSessionConfig().setReadBufferSize(2048);

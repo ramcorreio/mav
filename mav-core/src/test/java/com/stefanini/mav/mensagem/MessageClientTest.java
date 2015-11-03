@@ -1,4 +1,4 @@
-package com.stefanini.mav.message;
+package com.stefanini.mav.mensagem;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -21,7 +21,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import com.stefanini.mav.util.MessageRead;
+import com.stefanini.mav.util.MensagemHelper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:mav-test-context.xml"})
@@ -63,19 +63,19 @@ public class MessageClientTest {
 	    future.awaitUninterruptibly();
 	    
 	    IoSession session = future.getSession();
-	    String message = MessageRead.readMessage(450, "sendMessage.1");
+	    String message = MensagemHelper.lerMensagem(450, "sendMessage.1");
 	    Assert.assertEquals(186, message.length());
 	    session.write(message).awaitUninterruptibly();
 	    waitForResponse(handler, 186);
 	    
         handler.readBuf.flip();
         Assert.assertEquals(186, handler.readBuf.remaining());
-	    Assert.assertEquals(message, MessageRead.readBuffer(handler.readBuf));
+	    Assert.assertEquals(message, MensagemHelper.readBuffer(handler.readBuf));
 	}
 	
 	private static class ClientEchoConnectorHandler extends IoHandlerAdapter {
 		
-        private final IoBuffer readBuf = IoBuffer.allocate(MessageRead.BUFFER_SIZE);
+        private final IoBuffer readBuf = IoBuffer.allocate(MensagemHelper.BUFFER_SIZE);
 
         private ClientEchoConnectorHandler() {
             readBuf.setAutoExpand(true);

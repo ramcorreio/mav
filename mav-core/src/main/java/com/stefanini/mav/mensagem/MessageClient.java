@@ -1,4 +1,4 @@
-package com.stefanini.mav.message;
+package com.stefanini.mav.mensagem;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
