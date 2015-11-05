@@ -1,28 +1,32 @@
 package com.stefanini.mav.mensagem;
 
+import java.util.HashMap;
+import java.util.Map;
 
 public class MensagemFactory {
 	
-	public static MensagemBasica parse(String messagem) throws MensagemNaoEncontradaException {
+	private static final Map<TipoMensagem, LeitorMensagem<?>> leitores = new HashMap<>();
+	
+	static {
 		
-		if(messagem == null || messagem.isEmpty()) {
+		leitores.put(TipoMensagem.C0450, new LeitorCapturaSimplificada());
+	}
+	
+	public static MensagemBasica parse(String mensagem) throws MensagemNaoEncontradaException {
+		
+		if(mensagem == null || mensagem.isEmpty()) {
 			throw new MensagemNaoEncontradaException();
 		}
 		
-		StringBuilder builder = new StringBuilder(messagem);
-		TipoMensagem codigo = TipoMensagem.parse(builder.substring(5, 9));
+		TipoMensagem codigo = TipoMensagem.parse(mensagem.substring(5, 9));
 		
-		LeitorMensagem<? extends MensagemBasica> leitor = null;
-		switch (codigo) {
-			case C0450:
-				leitor = new LeitorCapturaSimplificada(builder, codigo);
-			break;
-
-			default:
-				throw new MensagemNaoEncontradaException(codigo.toString());
+		if(!leitores.containsKey(codigo)) {
+			
+			throw new MensagemNaoEncontradaException(codigo.toString());
 		}
 		
-		return leitor.ler();
+		
+		return leitores.get(codigo).ler(mensagem, codigo);
 	}
 
 }

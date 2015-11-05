@@ -1,10 +1,14 @@
 package com.stefanini.mav.mensagem;
 
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 import com.stefanini.mav.util.MensagemHelper;
 
@@ -16,14 +20,6 @@ import com.stefanini.mav.util.MensagemHelper;
  *
  */
 public class MensagemFactoryTest {
-	
-	
-	
-	@Test
-	public void getNumTransacao() {
-		
-		Assert.assertEquals(6, MensagemHelper.getNumTransacao().length());
-	}
 	
 	@Test(expected = MensagemNaoEncontradaException.class)
 	public void criarMensagemVazia() throws MensagemNaoEncontradaException {
@@ -42,9 +38,37 @@ public class MensagemFactoryTest {
 		
 		String messagem = MensagemHelper.lerMensagem(186, 450, "criarCapturaSimplicada.1");
 		
-		MensagemBasica m = MensagemFactory.parse(messagem);
-		Assert.assertEquals(TipoMensagem.C0450, m.getCabecalho().getTipo());
-		Assert.assertEquals(Integer.valueOf(116), m.getCabecalho().getTamanho());
+		SolicitacaoCapturaSimplificada m = (SolicitacaoCapturaSimplificada) MensagemFactory.parse(messagem);
+		Cabecalho expected = new Cabecalho();
+		expected.setTamanho(116);
+		expected.setTipo(TipoMensagem.C0450);
+		expected.setNumeroTransacao(980008);
+		expected.setNumeroProposta("");
+		expected.setCodigoUsuario("UILSON");
+		expected.setCodigoRetorno("");
+		expected.setCodigoLojista(170894002);
+		expected.setVersao("9");
+		expected.setCampoLojista("");
+		
+		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
+		assertThat(m.getDadosPessoais(), notNullValue());
+		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("394830984093284902")));
+		/*CPF
+		Data de Nascimento
+		Filler
+		codigoOrg
+		codigoLogo
+		codigoCampanha
+		codigoModalidade
+		Filler
+		Flag Cliente Emancipado
+		Produto
+		Identificação do Canal
+		Versão do Canal
+		Política
+		Ambiente*/
+
+		
 		
 	}
 	
