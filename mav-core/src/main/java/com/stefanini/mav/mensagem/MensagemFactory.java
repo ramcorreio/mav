@@ -5,11 +5,11 @@ import java.util.Map;
 
 public class MensagemFactory {
 	
-	private static final Map<TipoMensagem, LeitorMensagem<?>> leitores = new HashMap<>();
+	private static final Map<TipoMensagem, ContextoMensagem<?>> leitores = new HashMap<>();
 	
 	static {
-		
-		leitores.put(TipoMensagem.C0450, new LeitorCapturaSimplificada());
+		leitores.put(TipoMensagem.C0450, new ContextoSolicitacaoCapturaSimplificada());
+		leitores.put(TipoMensagem.C0460, new ContextoRespostaCapturaSimplificada());
 	}
 	
 	public static MensagemBasica parse(String mensagem) throws MensagemNaoEncontradaException {

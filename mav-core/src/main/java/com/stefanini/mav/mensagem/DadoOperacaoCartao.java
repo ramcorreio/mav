@@ -2,7 +2,7 @@ package com.stefanini.mav.mensagem;
 
 import java.io.Serializable;
 
-public class DadosOperacaoCartao implements Serializable {
+public class DadoOperacaoCartao implements Serializable {
 	
 	private static final long serialVersionUID = 7678829367254641220L;
 
@@ -10,7 +10,7 @@ public class DadosOperacaoCartao implements Serializable {
 		return codigoOrg;
 	}
 
-	public void setCodigoOrg(String codigoOrg) {
+	protected void setCodigoOrg(String codigoOrg) {
 		this.codigoOrg = codigoOrg;
 	}
 
@@ -18,7 +18,7 @@ public class DadosOperacaoCartao implements Serializable {
 		return codigoLogo;
 	}
 
-	public void setCodigoLogo(String codigoLogo) {
+	protected void setCodigoLogo(String codigoLogo) {
 		this.codigoLogo = codigoLogo;
 	}
 
@@ -26,7 +26,7 @@ public class DadosOperacaoCartao implements Serializable {
 		return codigoCampanha;
 	}
 
-	public void setCodigoCampanha(String codigoCampanha) {
+	protected void setCodigoCampanha(String codigoCampanha) {
 		this.codigoCampanha = codigoCampanha;
 	}
 
@@ -34,7 +34,7 @@ public class DadosOperacaoCartao implements Serializable {
 		return codigoModalidade;
 	}
 
-	public void setCodigoModalidade(String codigoModalidade) {
+	protected void setCodigoModalidade(String codigoModalidade) {
 		this.codigoModalidade = codigoModalidade;
 	}
 
@@ -42,7 +42,7 @@ public class DadosOperacaoCartao implements Serializable {
 		return filler;
 	}
 
-	public void setFiller(String filler) {
+	protected void setFiller(String filler) {
 		this.filler = filler;
 	}
 

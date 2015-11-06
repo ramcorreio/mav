@@ -1,16 +1,23 @@
 package com.stefanini.mav.mensagem;
 
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.util.Calendar;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
 import com.stefanini.mav.util.MensagemHelper;
+import com.stefanini.mav.util.UtilDate;
+
+import javassist.bytecode.analysis.Util;
 
 /**
  * 
@@ -34,9 +41,9 @@ public class MensagemFactoryTest {
 	}
 	
 	@Test
-	public void criarCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException{
+	public void criarCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException{
 		
-		String messagem = MensagemHelper.lerMensagem(186, 450, "criarCapturaSimplicada.1");
+		String messagem = MensagemHelper.lerMensagem(199, 450, "criarCapturaSimplicada.1");
 		
 		SolicitacaoCapturaSimplificada m = (SolicitacaoCapturaSimplificada) MensagemFactory.parse(messagem);
 		Cabecalho expected = new Cabecalho();
@@ -51,31 +58,90 @@ public class MensagemFactoryTest {
 		expected.setCampoLojista("");
 		
 		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
+		
+		//validação de dados pessoais
 		assertThat(m.getDadosPessoais(), notNullValue());
-		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("394830984093284902")));
-		/*CPF
-		Data de Nascimento
-		Filler
-		codigoOrg
-		codigoLogo
-		codigoCampanha
-		codigoModalidade
-		Filler
-		Flag Cliente Emancipado
-		Produto
-		Identificação do Canal
-		Versão do Canal
-		Política
-		Ambiente*/
-
+		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
+		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilDate.parse("01011960"))));
+		assertThat(m.getDadosPessoais().getFiller(), is(""));
 		
+		//validação de dados operação cartão
+		assertThat(m.getDadosOperacaoCartao(), notNullValue());
+		assertThat(m.getDadosOperacaoCartao().getCodigoOrg(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getCodigoLogo(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getCodigoCampanha(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getCodigoModalidade(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getFiller(), is(""));
 		
+		//validação de Dados Complementares
+		assertThat(m.getComplemento(), notNullValue());
+		assertThat(m.getComplemento().isClienteEmancipado(), is(false));
+		assertThat(m.getComplemento().getCodigoProduto(), is("01"));
+		
+		//validação outros indicadores
+		assertThat(m.getIndicadores(), notNullValue());
+		assertThat(m.getIndicadores().getIdentificadorCanal(), is(equalTo("T")));
+		assertThat(m.getIndicadores().getVersaoCanal(), is(""));
+		assertThat(m.getIndicadores().getPolitica(), is(""));
+		assertThat(m.getIndicadores().getAmbiente(), is(""));
 	}
 	
 	@Test
-	public void criarRespostaCapturaSimplicada() {
+	public void criarRespostaCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
-		Assert.fail("Não implementado.");
+		String messagem = MensagemHelper.lerMensagem(946, 460, "criarRespostaCapturaSimplicada.1");
+		assertThat(messagem, notNullValue());
+		
+		RespostaCapturaSimplificada m = (RespostaCapturaSimplificada) MensagemFactory.parse(messagem);
+		assertThat(m, notNullValue());
+		
+		Cabecalho expected = new Cabecalho();
+		expected.setTamanho(863);
+		expected.setTipo(TipoMensagem.C0460);
+		expected.setNumeroTransacao(980008);
+		expected.setNumeroProposta("P4201170358");
+		expected.setCodigoUsuario("UILSON");
+		expected.setCodigoRetorno("A0062");
+		expected.setCodigoLojista(170894002);
+		expected.setVersao("9");
+		expected.setCampoLojista("");
+		
+		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
+		
+		//DADOS DA CONSULTA					
+		assertThat(m.getFiller(), is(""));
+		assertThat(m.getMensagemAutorizador(), is("Xx"));
+		assertThat(m.getData(), is(equalTo(UtilDate.parseDateHora("25082015180815"))));
+		assertThat(m.getCodigoStatusProposta(), is("02"));
+		assertThat(m.getParecer(), is(""));
+		assertThat(m.getProduto(), is("01"));
+		
+		//validação de dados pessoais
+		assertThat(m.getDadosPessoais(), notNullValue());
+		/*assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
+		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilDate.parse("01011960"))));
+		assertThat(m.getDadosPessoais().getFiller(), is(""));
+		*/
+		//validação de dados operação cartão
+		assertThat(m.getDadosOperacaoCartao(), notNullValue());
+		assertThat(m.getDadosOperacaoCartao().getCodigoOrg(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getCodigoLogo(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getCodigoCampanha(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getCodigoModalidade(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getFiller(), is(""));
+		
+		//validação de Dados Complementares
+		assertThat(m.getComplemento(), notNullValue());
+		assertThat(m.getComplemento().isClienteEmancipado(), is(false));
+		assertThat(m.getComplemento().getCodigoProduto(), is("01"));
+		
+		//validação outros indicadores
+		assertThat(m.getIndicadores(), notNullValue());
+		assertThat(m.getIndicadores().getIdentificadorCanal(), is(equalTo("T")));
+		assertThat(m.getIndicadores().getVersaoCanal(), is(""));
+		assertThat(m.getIndicadores().getPolitica(), is(""));
+		assertThat(m.getIndicadores().getAmbiente(), is(""));
+		
 	}
 	
 	@Test

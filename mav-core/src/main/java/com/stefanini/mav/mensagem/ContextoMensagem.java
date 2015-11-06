@@ -1,6 +1,6 @@
 package com.stefanini.mav.mensagem;
 
-public abstract class LeitorMensagem<T extends MensagemBasica> {
+public abstract class ContextoMensagem<M extends MensagemBasica> {
 	
 	private Cabecalho montarCabecalho(String input) {
 		
@@ -35,7 +35,7 @@ public abstract class LeitorMensagem<T extends MensagemBasica> {
 		return c;
 	}
 	
-	public T ler(String input, TipoMensagem tipo) throws MensagemNaoEncontradaException {
+	public M ler(String input, TipoMensagem tipo) throws MensagemNaoEncontradaException {
 		
 		Cabecalho cabecalho = montarCabecalho(input);
 		
@@ -43,9 +43,9 @@ public abstract class LeitorMensagem<T extends MensagemBasica> {
 			throw new MensagemNaoEncontradaException("Tipo " + tipo + " inválido");
 		}
 		
-		return montarMensagem(input, cabecalho);
+		return montar(input, cabecalho);
 	}
 	
-	public abstract T montarMensagem(String input, Cabecalho cabecalho);
+	public abstract M montar(String input, Cabecalho cabecalho) throws MensagemNaoEncontradaException;
 
 }

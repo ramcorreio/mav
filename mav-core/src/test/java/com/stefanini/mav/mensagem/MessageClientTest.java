@@ -64,9 +64,9 @@ public class MessageClientTest {
 	    
 	    IoSession session = future.getSession();
 	    String message = MensagemHelper.lerMensagem(450, "sendMessage.1");
-	    Assert.assertEquals(186, message.length());
+	    Assert.assertEquals(199, message.length());
 	    session.write(message).awaitUninterruptibly();
-	    waitForResponse(handler, 186);
+	    waitForResponse(handler, 199);
 	    
         handler.readBuf.flip();
         Assert.assertEquals(186, handler.readBuf.remaining());

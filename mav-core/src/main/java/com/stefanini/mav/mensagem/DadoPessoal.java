@@ -3,7 +3,7 @@ package com.stefanini.mav.mensagem;
 import java.io.Serializable;
 import java.util.Date;
 
-public class DadosPessoais implements Serializable {
+public class DadoPessoal implements Serializable {
 
 	private static final long serialVersionUID = -4387165935451019870L;
 
