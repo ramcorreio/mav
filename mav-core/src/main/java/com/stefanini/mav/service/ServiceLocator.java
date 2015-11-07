@@ -1,4 +1,4 @@
-package com.stefanini.mav.service.impl;
+package com.stefanini.mav.service;
 
 import java.io.Serializable;
 

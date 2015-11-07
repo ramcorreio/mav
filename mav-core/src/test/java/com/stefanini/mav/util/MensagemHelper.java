@@ -13,6 +13,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.junit.Assert;
 
 import com.stefanini.mav.mensagem.Cabecalho;
+import com.stefanini.mav.mensagem.CodigoMensagem;
 
 public class MensagemHelper {
 	
@@ -27,6 +28,11 @@ public class MensagemHelper {
 		Assert.assertEquals(tamanho, lido.length());
 		
 		return lido;
+	}
+	
+	public static String lerMensagem(CodigoMensagem tipo, String nome) throws IOException, URISyntaxException {
+		
+		return lerMensagem(Integer.valueOf(tipo.name().replaceAll("C", "")), nome);
 	}
 	
 	public static String lerMensagem(int codigo, String nome) throws IOException, URISyntaxException {
@@ -46,7 +52,7 @@ public class MensagemHelper {
 	
 	public static <T> void verificarCabecalho(Cabecalho expected, Cabecalho cabecalho) {
 		
-		assertThat(cabecalho.getTipo(), equalTo(expected.getTipo()));
+		assertThat(cabecalho.getCodigo(), equalTo(expected.getCodigo()));
 		assertThat(cabecalho.getTamanho(), equalTo(expected.getTamanho()));
 		assertThat(cabecalho.getNumeroTransacao(), is(greaterThan(0)));
 		assertThat(cabecalho.getNumeroTransacao(), equalTo(expected.getNumeroTransacao()));

@@ -1,4 +1,4 @@
-package com.stefanini.mav.service.impl;
+package com.stefanini.mav.service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

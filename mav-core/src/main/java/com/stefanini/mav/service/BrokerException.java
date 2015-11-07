@@ -1,4 +1,4 @@
-package com.stefanini.mav.service.impl;
+package com.stefanini.mav.service;
 
 public class BrokerException extends Exception {
 

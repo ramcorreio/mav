@@ -1,5 +1,6 @@
 package com.stefanini.mav.mensagem;
 
+import java.io.Serializable;
 
 /**
  * 
@@ -16,11 +17,13 @@ package com.stefanini.mav.mensagem;
  * @author Rodrigo
  *
  */
-public class Cabecalho {
+public class Cabecalho implements Serializable {
 	
+	private static final long serialVersionUID = 7347744883680813181L;
+
 	private Integer tamanho;
 	
-	private TipoMensagem tipo;
+	private CodigoMensagem codigo;
 	
 	private Integer numeroTransacao;
 	
@@ -47,12 +50,12 @@ public class Cabecalho {
 		this.tamanho = tamanho;
 	}
 
-	public TipoMensagem getTipo() {
-		return tipo;
+	public CodigoMensagem getCodigo() {
+		return codigo;
 	}
 
-	protected void setTipo(TipoMensagem tipo) {
-		this.tipo = tipo;
+	protected void setCodigo(CodigoMensagem codigo) {
+		this.codigo = codigo;
 	}
 
 	public Integer getNumeroTransacao() {

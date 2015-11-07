@@ -6,7 +6,7 @@
 		
 	<import resource="classpath:mav-common-context.xml" />
 	
-	<bean name="messageManager" class="com.stefanini.mav.service.impl.MessageManager" />	
-	<bean class="com.stefanini.mav.service.impl.ServiceLocator" factory-method="getInstance"/>	
+	<bean name="messageManager" class="com.stefanini.mav.service.MessageManager" />	
+	<bean class="com.stefanini.mav.service.ServiceLocator" factory-method="getInstance"/>	
 	
 </beans>

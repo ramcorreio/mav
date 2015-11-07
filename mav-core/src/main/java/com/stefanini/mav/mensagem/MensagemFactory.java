@@ -5,28 +5,38 @@ import java.util.Map;
 
 public class MensagemFactory {
 	
-	private static final Map<TipoMensagem, ContextoMensagem<?>> leitores = new HashMap<>();
+	private static final Map<CodigoMensagem, ContextoMensagem<? extends MensagemBasica>> leitores = new HashMap<>();
 	
 	static {
-		leitores.put(TipoMensagem.C0450, new ContextoSolicitacaoCapturaSimplificada());
-		leitores.put(TipoMensagem.C0460, new ContextoRespostaCapturaSimplificada());
+		leitores.put(CodigoMensagem.C0450, new ContextoSolicitacaoCapturaSimplificada());
+		leitores.put(CodigoMensagem.C0460, new ContextoRespostaCapturaSimplificada());
 	}
 	
-	public static MensagemBasica parse(String mensagem) throws MensagemNaoEncontradaException {
+	@SuppressWarnings("unchecked")
+	public static <T extends MensagemBasica> ContextoMensagem<T> loadContexto(CodigoMensagem codigo) {
+		
+		return (ContextoMensagem<T>) leitores.get(codigo);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends MensagemBasica> ContextoMensagem<T> parseContexto(String mensagem) throws MensagemNaoEncontradaException {
 		
 		if(mensagem == null || mensagem.isEmpty()) {
 			throw new MensagemNaoEncontradaException();
 		}
 		
-		TipoMensagem codigo = TipoMensagem.parse(mensagem.substring(5, 9));
-		
+		CodigoMensagem codigo = CodigoMensagem.parse(mensagem.substring(5, 9));
 		if(!leitores.containsKey(codigo)) {
 			
 			throw new MensagemNaoEncontradaException(codigo.toString());
 		}
 		
+		return (ContextoMensagem<T>) leitores.get(codigo);
+	}
+	
+	public static <T extends MensagemBasica> MensagemBasica parse(String mensagem) throws MensagemNaoEncontradaException {
 		
-		return leitores.get(codigo).ler(mensagem, codigo);
+		return parseContexto(mensagem).ler(mensagem);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.stefanini.mav.mensagem;
+package com.stefanini.mav.tcp;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -26,7 +26,7 @@ import com.stefanini.mav.util.MensagemHelper;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:mav-test-context.xml"})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
-public class MessageClientTest {
+public class MensagemListenerTest {
 	
 	private static final int TIMEOUT = 10000; // 10 seconds
 	

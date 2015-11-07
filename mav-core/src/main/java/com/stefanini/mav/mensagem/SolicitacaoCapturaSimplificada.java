@@ -12,8 +12,8 @@ public class SolicitacaoCapturaSimplificada extends MensagemBasica {
 
 	private Indicador indicadores;
 
-	public SolicitacaoCapturaSimplificada(Cabecalho cabecalho) {
-		super(cabecalho);
+	public SolicitacaoCapturaSimplificada(String id, Cabecalho cabecalho) {
+		super(id, cabecalho);
 	}
 
 	public DadoPessoal getDadosPessoais() {

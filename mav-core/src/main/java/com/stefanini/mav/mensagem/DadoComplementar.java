@@ -1,6 +1,10 @@
 package com.stefanini.mav.mensagem;
 
-public class DadoComplementar {
+import java.io.Serializable;
+
+public class DadoComplementar implements Serializable {
+
+	private static final long serialVersionUID = -3527343656488827048L;
 
 	private boolean clienteEmancipado;
 

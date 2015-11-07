@@ -45,7 +45,7 @@ public class MensagemFactoryTest {
 		SolicitacaoCapturaSimplificada m = (SolicitacaoCapturaSimplificada) MensagemFactory.parse(messagem);
 		Cabecalho expected = new Cabecalho();
 		expected.setTamanho(116);
-		expected.setTipo(TipoMensagem.C0450);
+		expected.setCodigo(CodigoMensagem.C0450);
 		expected.setNumeroTransacao(980008);
 		expected.setNumeroProposta("");
 		expected.setCodigoUsuario("UILSON");
@@ -94,7 +94,7 @@ public class MensagemFactoryTest {
 		
 		Cabecalho expected = new Cabecalho();
 		expected.setTamanho(863);
-		expected.setTipo(TipoMensagem.C0460);
+		expected.setCodigo(CodigoMensagem.C0460);
 		expected.setNumeroTransacao(980008);
 		expected.setNumeroProposta("P4201170358");
 		expected.setCodigoUsuario("UILSON");
@@ -113,15 +113,17 @@ public class MensagemFactoryTest {
 		assertThat(m.getParecer(), is(""));
 		assertThat(m.getProduto(), is("01"));
 		
-		//validação de dados pessoais
+		//validação de dados cliente
 		assertThat(m.getDadosPessoais(), notNullValue());
 		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
 		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilDate.parse("20101944"))));
-		
-		//validação de Dados Complementares
 		assertThat(m.getDadosPessoais().getComplemento(), notNullValue());
 		assertThat(m.getDadosPessoais().getComplemento().isClienteEmancipado(), is(false));
 		assertThat(m.getDadosPessoais().getComplemento().getCodigoProduto(), is("01"));
+		assertThat(m.getDadosPessoais().isCobraTac(), is(equalTo(false)));
+		assertThat(m.getDadosPessoais().isElegibilidadeSeguro(), is(equalTo(true)));
+		assertThat(m.getDadosPessoais().getCodigoProdutoLosango(), is(equalTo("HSSOR002")));
+		assertThat(m.getDadosPessoais().getQtdNumeroSorte(), is(equalTo(0)));
 		assertThat(m.getDadosPessoais().getFiller(), is(""));
 		
 		//validação de dados operação cartão
@@ -138,7 +140,6 @@ public class MensagemFactoryTest {
 		assertThat(m.getIndicadores().getVersaoCanal(), is("1"));
 		assertThat(m.getIndicadores().getPolitica(), is("2"));
 		assertThat(m.getIndicadores().getAmbiente(), is("HO"));
-		
 	}
 	
 	@Test

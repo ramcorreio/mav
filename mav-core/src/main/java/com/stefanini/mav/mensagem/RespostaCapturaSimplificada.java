@@ -24,8 +24,8 @@ public class RespostaCapturaSimplificada extends MensagemBasica {
 
 	private Indicador indicadores;
 
-	public RespostaCapturaSimplificada(Cabecalho cabecalho) {
-		super(cabecalho);
+	public RespostaCapturaSimplificada(String id, Cabecalho cabecalho) {
+		super(id, cabecalho);
 	}
 
 	public String getFiller() {

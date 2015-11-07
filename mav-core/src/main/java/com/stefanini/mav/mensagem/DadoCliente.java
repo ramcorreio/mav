@@ -8,7 +8,7 @@ public class DadoCliente extends DadoPessoal {
 	
 	private Boolean cobraTac;
 	
-	private Boolean elegibilidadeSSeguro;
+	private Boolean elegibilidadeSeguro;
 	
 	private String codigoProdutoLosango;
 	
@@ -30,12 +30,12 @@ public class DadoCliente extends DadoPessoal {
 		this.cobraTac = cobraTac;
 	}
 
-	public Boolean isElegibilidadeSSeguro() {
-		return elegibilidadeSSeguro;
+	public Boolean isElegibilidadeSeguro() {
+		return elegibilidadeSeguro;
 	}
 
-	protected void setElegibilidadeSSeguro(Boolean elegibilidadeSSeguro) {
-		this.elegibilidadeSSeguro = elegibilidadeSSeguro;
+	protected void setElegibilidadeSeguro(Boolean elegibilidadeSSeguro) {
+		this.elegibilidadeSeguro = elegibilidadeSSeguro;
 	}
 
 	public String getCodigoProdutoLosango() {

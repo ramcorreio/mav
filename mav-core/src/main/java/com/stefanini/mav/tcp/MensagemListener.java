@@ -1,4 +1,4 @@
-package com.stefanini.mav.mensagem;
+package com.stefanini.mav.tcp;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -9,8 +9,6 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 
 public class MensagemListener {
 

@@ -1,12 +1,10 @@
-package com.stefanini.mav.service.impl;
+package com.stefanini.mav.service;
 
 
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import org.springframework.stereotype.Service;
-
-import com.stefanini.mav.service.IMessageManager;
 
 @Service
 @Transactional(value = TxType.REQUIRED)
