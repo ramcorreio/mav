@@ -9,15 +9,12 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.util.Calendar;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.stefanini.mav.util.MensagemHelper;
 import com.stefanini.mav.util.UtilDate;
-
-import javassist.bytecode.analysis.Util;
 
 /**
  * 
@@ -118,29 +115,29 @@ public class MensagemFactoryTest {
 		
 		//validação de dados pessoais
 		assertThat(m.getDadosPessoais(), notNullValue());
-		/*assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
-		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilDate.parse("01011960"))));
+		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
+		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilDate.parse("20101944"))));
+		
+		//validação de Dados Complementares
+		assertThat(m.getDadosPessoais().getComplemento(), notNullValue());
+		assertThat(m.getDadosPessoais().getComplemento().isClienteEmancipado(), is(false));
+		assertThat(m.getDadosPessoais().getComplemento().getCodigoProduto(), is("01"));
 		assertThat(m.getDadosPessoais().getFiller(), is(""));
-		*/
+		
 		//validação de dados operação cartão
 		assertThat(m.getDadosOperacaoCartao(), notNullValue());
 		assertThat(m.getDadosOperacaoCartao().getCodigoOrg(), is(""));
 		assertThat(m.getDadosOperacaoCartao().getCodigoLogo(), is(""));
 		assertThat(m.getDadosOperacaoCartao().getCodigoCampanha(), is(""));
 		assertThat(m.getDadosOperacaoCartao().getCodigoModalidade(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getFiller(), is(""));
-		
-		//validação de Dados Complementares
-		assertThat(m.getComplemento(), notNullValue());
-		assertThat(m.getComplemento().isClienteEmancipado(), is(false));
-		assertThat(m.getComplemento().getCodigoProduto(), is("01"));
+		assertThat(m.getDadosOperacaoCartao().getFiller(), is(equalTo("0000 0000 0000 0000           000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000   ".trim())));
 		
 		//validação outros indicadores
 		assertThat(m.getIndicadores(), notNullValue());
 		assertThat(m.getIndicadores().getIdentificadorCanal(), is(equalTo("T")));
-		assertThat(m.getIndicadores().getVersaoCanal(), is(""));
-		assertThat(m.getIndicadores().getPolitica(), is(""));
-		assertThat(m.getIndicadores().getAmbiente(), is(""));
+		assertThat(m.getIndicadores().getVersaoCanal(), is("1"));
+		assertThat(m.getIndicadores().getPolitica(), is("2"));
+		assertThat(m.getIndicadores().getAmbiente(), is("HO"));
 		
 	}
 	

@@ -69,7 +69,7 @@ public class MessageClientTest {
 	    waitForResponse(handler, 199);
 	    
         handler.readBuf.flip();
-        Assert.assertEquals(186, handler.readBuf.remaining());
+        Assert.assertEquals(199, handler.readBuf.remaining());
 	    Assert.assertEquals(message, MensagemHelper.readBuffer(handler.readBuf));
 	}
 	

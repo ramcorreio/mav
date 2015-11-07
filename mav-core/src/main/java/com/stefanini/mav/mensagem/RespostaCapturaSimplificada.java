@@ -18,11 +18,9 @@ public class RespostaCapturaSimplificada extends MensagemBasica {
 
 	private String produto;
 	
-	private DadoPessoal dadosPessoais;
+	private DadoCliente dadosPessoais;
 
 	private DadoOperacaoCartao dadosOperacaoCartao;
-
-	private DadoComplementar complemento;
 
 	private Indicador indicadores;
 
@@ -78,11 +76,11 @@ public class RespostaCapturaSimplificada extends MensagemBasica {
 		this.produto = produto;
 	}
 	
-	public DadoPessoal getDadosPessoais() {
+	public DadoCliente getDadosPessoais() {
 		return dadosPessoais;
 	}
 	
-	protected void setDadosPessoais(DadoPessoal dadosPessoais) {
+	protected void setDadosPessoais(DadoCliente dadosPessoais) {
 		this.dadosPessoais = dadosPessoais;
 	}
 
@@ -92,14 +90,6 @@ public class RespostaCapturaSimplificada extends MensagemBasica {
 
 	protected void setDadosOperacaoCartao(DadoOperacaoCartao dadosOperacaoCartao) {
 		this.dadosOperacaoCartao = dadosOperacaoCartao;
-	}
-
-	public DadoComplementar getComplemento() {
-		return complemento;
-	}
-
-	protected void setComplemento(DadoComplementar complemento) {
-		this.complemento = complemento;
 	}
 
 	public Indicador getIndicadores() {
