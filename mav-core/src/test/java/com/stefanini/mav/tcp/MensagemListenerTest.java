@@ -5,13 +5,15 @@ import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 
-import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.future.ConnectFuture;
+import org.apache.mina.core.future.ReadFuture;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,30 +30,17 @@ import com.stefanini.mav.util.MensagemHelper;
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public class MensagemListenerTest {
 	
-	private static final int TIMEOUT = 10000; // 10 seconds
 	
 	// 30 seconds
 	private static final long CONNECT_TIMEOUT = 30*1000L;
 	
-	private ClientEchoConnectorHandler handler;
+	private LojistaEchoHandler handler;
 	
 	@Before
     public void setUp() throws Exception {
-        handler = new ClientEchoConnectorHandler();
+        handler = new LojistaEchoHandler();
 	}
 	
-	private void waitForResponse(ClientEchoConnectorHandler handler, int bytes) throws InterruptedException {
-        for (int j = 0; j < TIMEOUT / 10; j++) {
-            if (handler.readBuf.position() >= bytes) {
-                break;
-            }
-            Thread.sleep(10);
-        }
-
-        Assert.assertEquals(bytes, handler.readBuf.position());
-    }
-	
-	// Set this to false to use object serialization instead of custom codec.
 	@Test
 	public void sendMessage() throws IOException, URISyntaxException, InterruptedException {
 		
@@ -62,24 +51,23 @@ public class MensagemListenerTest {
 	    ConnectFuture future = connector.connect(new InetSocketAddress(8889));
 	    future.awaitUninterruptibly();
 	    
-	    IoSession session = future.getSession();
 	    String message = MensagemHelper.lerMensagem(450, "sendMessage.1");
 	    Assert.assertEquals(199, message.length());
-	    session.write(message).awaitUninterruptibly();
-	    waitForResponse(handler, 199);
+	    future.getSession().write(message).awaitUninterruptibly();
+	    future.getSession().getConfig().setUseReadOperation(true);
+	    ReadFuture toRead = future.getSession().read().awaitUninterruptibly();
+	    String recebida = (String) toRead.getMessage();
 	    
-        handler.readBuf.flip();
-        Assert.assertEquals(199, handler.readBuf.remaining());
-	    Assert.assertEquals(message, MensagemHelper.readBuffer(handler.readBuf));
+	    MatcherAssert.assertThat(message, Matchers.is(Matchers.equalTo(recebida)));
 	}
 	
-	private static class ClientEchoConnectorHandler extends IoHandlerAdapter {
+	private static class LojistaEchoHandler extends IoHandlerAdapter {
 		
-        private final IoBuffer readBuf = IoBuffer.allocate(MensagemHelper.BUFFER_SIZE);
+        //private final IoBuffer readBuf = IoBuffer.allocate(MensagemHelper.BUFFER_SIZE);
 
-        private ClientEchoConnectorHandler() {
-            readBuf.setAutoExpand(true);
-            readBuf.setAutoShrink(true);
+        private LojistaEchoHandler() {
+            //readBuf.setAutoExpand(true);
+            //readBuf.setAutoShrink(true);
         }
 
         @Override
@@ -87,7 +75,7 @@ public class MensagemListenerTest {
         	System.out.println("==============================================");
         	System.out.println(message);
         	System.out.println("==============================================");
-        	readBuf.put(message.toString().getBytes());
+        	//readBuf.put(message.toString().getBytes());
         }        
     }
 

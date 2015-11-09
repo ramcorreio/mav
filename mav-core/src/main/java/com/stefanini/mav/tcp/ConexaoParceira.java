@@ -64,7 +64,7 @@ public class ConexaoParceira {
 		connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
 
 		logger.info("conexão configurada");
-		connector.setConnectTimeoutMillis(15 * 1000);
+		connector.setConnectTimeoutMillis(TIMEOUT);
 		future = connector.connect(new InetSocketAddress(servidor, porta));
 	    future.awaitUninterruptibly();
 	}
