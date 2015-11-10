@@ -9,8 +9,6 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
-import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.slf4j.Logger;
@@ -58,13 +56,10 @@ public class ConexaoParceira {
 		connector  = new NioSocketConnector();
 		
 		connector.getFilterChain().addLast( "logger", new LoggingFilter() );
-		//connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new ObjectSerializationCodecFactory() ));
 		connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new MensagemCodecFactory() ));
-		//connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory() ));
 		
 		controlador = new ControladorParceira();
 		connector.setHandler(controlador);
-		//connector.getSessionConfig().setReadBufferSize(BUFFER);
 		connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
 
 		logger.info("conexão configurada");
