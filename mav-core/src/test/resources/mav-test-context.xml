@@ -28,7 +28,7 @@
 	</bean>
 
 	<!-- The IoAcceptor which binds to port 8889 -->
-	<bean id="ioAcceptor" class="com.stefanini.mav.tcp.MensagemListener" init-method="start" destroy-method="stop">
+	<bean id="ioAcceptor" class="com.stefanini.mav.tcp.MensagemDeamon" init-method="start" destroy-method="stop">
 		<property name="port" value="8889" />
 		<property name="handler" ref="trapHandler" />
 		<property name="filterChainBuilder" ref="filterChainBuilder" />
