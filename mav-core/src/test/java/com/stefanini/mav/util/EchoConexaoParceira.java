@@ -26,4 +26,10 @@ public class EchoConexaoParceira extends IoHandlerAdapter {
 		logger.info("mensagem recebida: " + m);
 		session.write(MensagemHelper.lerMensagem(CodigoMensagem.C0460, "EchoConexaoParceira.1"));
 	}
+	
+	@Override
+	public void messageSent(IoSession session, Object message) throws Exception {
+		
+		logger.info("enviando mensagem: " + message);
+	}
 }

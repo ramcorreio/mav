@@ -22,7 +22,13 @@ public abstract class MensagemBasica implements Serializable {
 			return false;
 		}
 		
-		return MensagemBasica.class.cast(obj).id.equals(this.id);
+		return this.id.equals(MensagemBasica.class.cast(obj).id);
+	}
+	
+	@Override
+	public int hashCode() {
+		
+		return id.hashCode();
 	}
 	
 	public String getId() {

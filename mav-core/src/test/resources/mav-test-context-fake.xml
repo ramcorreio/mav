@@ -9,9 +9,9 @@
 	<!-- The IoHandler implementation -->
 	<bean id="trapHandlerFake" class="com.stefanini.mav.util.EchoConexaoParceira" />
 
-	<bean id="textCodecFilterFake" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
+	<bean id="protocolCodecFilterFake" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
 		<constructor-arg>
-			<bean class="org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory" />
+			<bean class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" />
 		</constructor-arg>
 	</bean>
 	
@@ -22,7 +22,7 @@
 		<property name="filters">
 			<map>
 				<entry key="loggingFilter" value-ref="loggingFilter" />
-				<entry key="codecFilter" value-ref="textCodecFilterFake" />
+				<entry key="codecFilter" value-ref="protocolCodecFilterFake" />
 			</map>
 		</property>
 	</bean>

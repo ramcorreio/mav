@@ -9,6 +9,8 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
+import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.slf4j.Logger;
@@ -18,9 +20,9 @@ import com.stefanini.mav.mensagem.MensagemBasica;
 
 public class ConexaoParceira {
 	
-	private static final int BUFFER = 2048;
+	//private static final int BUFFER = 128;
 
-	private static final int FATOR_TIMEOUT = 15; // 15 seconds
+	private static final int FATOR_TIMEOUT = 10; // 15 seconds
 	
 	private static final int TIMEOUT = FATOR_TIMEOUT * 1000; // 15 seconds
 	
@@ -56,11 +58,13 @@ public class ConexaoParceira {
 		connector  = new NioSocketConnector();
 		
 		connector.getFilterChain().addLast( "logger", new LoggingFilter() );
+		//connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new ObjectSerializationCodecFactory() ));
 		connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new MensagemCodecFactory() ));
+		//connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory() ));
 		
 		controlador = new ControladorParceira();
 		connector.setHandler(controlador);
-		connector.getSessionConfig().setReadBufferSize(BUFFER);
+		//connector.getSessionConfig().setReadBufferSize(BUFFER);
 		connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
 
 		logger.info("conexão configurada");
@@ -85,7 +89,8 @@ public class ConexaoParceira {
 	public MensagemBasica receber() {
 		
 		future.getSession().getConfig().setUseReadOperation(true);
-		ReadFuture read = future.getSession().read().awaitUninterruptibly();
+		ReadFuture read = future.getSession().read();
+		read.awaitUninterruptibly(TIMEOUT);
 		return (MensagemBasica) read.getMessage();
 	}
 }
