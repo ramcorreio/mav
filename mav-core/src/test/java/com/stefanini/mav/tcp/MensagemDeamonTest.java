@@ -3,6 +3,11 @@ package com.stefanini.mav.tcp;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.future.ReadFuture;
@@ -31,7 +36,7 @@ public class MensagemDeamonTest {
 	
 	
 	// 30 seconds
-	private static final long CONNECT_TIMEOUT = 10*1000L;
+	private static final long CONNECT_TIMEOUT = 30*1000L;
 	
 	private LojistaEchoHandler handler;
 	
@@ -45,7 +50,7 @@ public class MensagemDeamonTest {
 		
 		NioSocketConnector connector = new NioSocketConnector();
 		connector.setHandler(handler);
-	    connector.setConnectTimeoutMillis(CONNECT_TIMEOUT);
+	    //connector.setConnectTimeoutMillis(CONNECT_TIMEOUT);
 	    connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory() ));
 	    ConnectFuture future = connector.connect(new InetSocketAddress(8889));
 	    future.awaitUninterruptibly();
@@ -59,6 +64,73 @@ public class MensagemDeamonTest {
 	    String recebida = (String) toRead.getMessage();
 	    
 	    MatcherAssert.assertThat(message, Matchers.is(Matchers.equalTo(recebida)));
+	}
+	
+	interface PoolCheck extends Runnable {
+		
+		String getRecebida();
+	}
+	
+	@Test
+	public void sendMessagePool() throws IOException, URISyntaxException, InterruptedException {
+		
+		
+		final String message = MensagemHelper.lerMensagem(450, "sendMessage.1");
+		Assert.assertEquals(199, message.length());
+		
+		int poolSize = 500;
+		final List<PoolCheck> connectors = new LinkedList<>();
+		ExecutorService executor = Executors.newScheduledThreadPool(poolSize);
+		final CountDownLatch doneSignal = new CountDownLatch(poolSize);
+		
+		for (int i = 0; i < poolSize; i++) {
+			
+			PoolCheck r = new PoolCheck() {
+				
+				private String recebida = "processando " + connectors.size();
+				
+				@Override
+				public String getRecebida() {
+					
+					return recebida;
+				}
+				
+				@Override
+				public void run() {
+					
+					NioSocketConnector connector = new NioSocketConnector();
+					connector.setHandler(handler);
+				    //connector.setConnectTimeoutMillis(CONNECT_TIMEOUT);
+				    connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory() ));
+				    ConnectFuture future = connector.connect(new InetSocketAddress(8889));
+				    future.awaitUninterruptibly();
+				    
+				    future.getSession().write(message).awaitUninterruptibly();
+				    future.getSession().getConfig().setUseReadOperation(true);
+				    ReadFuture toRead = future.getSession().read();
+				    toRead.awaitUninterruptibly(CONNECT_TIMEOUT);
+				    recebida = (String) toRead.getMessage();
+				    future.getSession().resumeRead();
+				    future.getSession().close(true);
+				    future.cancel();
+				    connector.dispose(true);
+			    
+				    //MatcherAssert.assertThat(message, Matchers.is(Matchers.equalTo(recebida)));
+				    doneSignal.countDown();
+				}
+			};
+			
+			connectors.add(r);
+			executor.execute(r);
+		}
+		
+		doneSignal.await();
+		
+		for (int i = 0; i < connectors.size(); i++) {
+			
+			PoolCheck pc = connectors.get(i);
+		    MatcherAssert.assertThat(message, Matchers.is(Matchers.equalTo(pc.getRecebida())));
+		}
 	}
 	
 	private static class LojistaEchoHandler extends IoHandlerAdapter {

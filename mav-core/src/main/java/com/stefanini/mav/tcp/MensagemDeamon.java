@@ -23,9 +23,9 @@ public class MensagemDeamon {
 	
 	public MensagemDeamon() {
 		
-		acceptor = new NioSocketAcceptor();
+		acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors());
 		acceptor.getSessionConfig().setReadBufferSize(2048);
-		acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
+		acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 2);
 	}
 	
 	public void setPort(int port) {
