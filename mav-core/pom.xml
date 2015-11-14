@@ -14,11 +14,6 @@
 	<name>Core Module do projeto mav</name>
 	<description>Projeto provedor da lógica de negócios do mav</description>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<build.id>LOCAL</build.id>
-	</properties>
-
 	<build>
 		<resources>
 			<resource>

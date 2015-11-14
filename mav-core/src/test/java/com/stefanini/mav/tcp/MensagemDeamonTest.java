@@ -77,7 +77,7 @@ public class MensagemDeamonTest {
 		final String message = MensagemHelper.lerMensagem(450, "sendMessage.1");
 		Assert.assertEquals(199, message.length());
 		
-		int poolSize = 2000;
+		int poolSize = 1000;
 		final List<PoolCheck> connectors = new LinkedList<>();
 		ExecutorService executor = Executors.newScheduledThreadPool(poolSize);
 		final CountDownLatch doneSignal = new CountDownLatch(poolSize);

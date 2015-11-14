@@ -11,7 +11,7 @@
 
 	<bean id="textCodecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
 		<constructor-arg>
-			<bean class="com.stefanini.mav.tcp.MensagemCodecFactory" />
+			<bean class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" />
 		</constructor-arg>
 	</bean>
 

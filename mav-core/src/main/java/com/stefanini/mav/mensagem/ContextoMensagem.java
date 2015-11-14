@@ -1,17 +1,19 @@
 package com.stefanini.mav.mensagem;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public abstract class ContextoMensagem<M extends MensagemBasica> {
 	
+	private Class<M> clazz;
+	
 	protected final CodigoMensagem tipo;
 	
-	public ContextoMensagem(CodigoMensagem tipo) {
+	public ContextoMensagem(CodigoMensagem tipo, Class<M> clazz) {
 		this.tipo = tipo;
+		this.clazz = clazz;
 	}
 	
 	private Cabecalho lerCabecalho(String input) {
@@ -117,7 +119,6 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
         return sen;  
     }  
 	
-	@SuppressWarnings("unchecked")
 	public M ler(String input) throws MensagemNaoEncontradaException {
 		
 		String hash = md5(input);
@@ -126,14 +127,13 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 			throw new MensagemNaoEncontradaException("Tipo " + tipo + " inválido");
 		}
 		
-		String className = ParameterizedType.class.cast(this.getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
+		
 		M instance;
 		try {
-			Class<?> clazz = Class.forName(className);
-			instance = (M) clazz.getDeclaredConstructor(String.class, Cabecalho.class).newInstance(hash, cabecalho);
+			instance = clazz.getDeclaredConstructor(String.class, Cabecalho.class).newInstance(hash, cabecalho);
 			
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			throw new MensagemNaoEncontradaException("Classe " + className + " inválida");
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			throw new MensagemNaoEncontradaException("Classe " + clazz.getName() + " inválida");
 		}
 		
 		ler(input, instance);

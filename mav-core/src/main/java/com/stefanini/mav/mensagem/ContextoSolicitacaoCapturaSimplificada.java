@@ -7,7 +7,7 @@ import com.stefanini.mav.util.UtilDate;
 public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<SolicitacaoCapturaSimplificada> {
 	
 	public ContextoSolicitacaoCapturaSimplificada() {
-		super(CodigoMensagem.C0450);
+		super(CodigoMensagem.C0450, SolicitacaoCapturaSimplificada.class);
 	}
 
 	/**

@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.stefanini.mav.util.MensagemHelper;
@@ -143,24 +144,28 @@ public class MensagemFactoryTest {
 	}
 	
 	@Test
+	@Ignore
 	public void criarGeracaoToken() {
 		
 		Assert.fail("Não implementado.");
 	}
 	
 	@Test
+	@Ignore
 	public void criarRespostaGeracaoToken() {
 		
 		Assert.fail("Não implementado.");
 	}
 	
 	@Test
+	@Ignore
 	public void criarPropostaFinanciamento() {
 		
 		Assert.fail("Não implementado.");
 	}
 	
 	@Test
+	@Ignore
 	public void criarRespostaPropostaFinanciamento() {
 		
 		Assert.fail("Não implementado.");

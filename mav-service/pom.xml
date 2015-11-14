@@ -10,18 +10,12 @@
 
 	<artifactId>mav-service</artifactId>
 	<packaging>jar</packaging>
-	<name>Módulo que irá controlar o start e stop do serviços de socket</name>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<build.id>LOCAL</build.id>
-
-	</properties>
+	<name>Módulo controlador o start e stop dos serviços de socket</name>
 
 	<dependencies>
 
 		<dependency>
-			<groupId>com.stefanini.mav</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>mav-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
