@@ -52,12 +52,11 @@ public class MensagemDeamonTest {
 		connector.setHandler(handler);
 	    //connector.setConnectTimeoutMillis(CONNECT_TIMEOUT);
 	    connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory() ));
-	    ConnectFuture future = connector.connect(new InetSocketAddress(8889));
-	    future.awaitUninterruptibly();
+	    ConnectFuture future = connector.connect(new InetSocketAddress(8889)).awaitUninterruptibly();
 	    
 	    String message = MensagemHelper.lerMensagem(450, "sendMessage.1");
 	    Assert.assertEquals(199, message.length());
-	    future.getSession().write(message).awaitUninterruptibly();
+	    future.getSession().write(message);
 	    future.getSession().getConfig().setUseReadOperation(true);
 	    ReadFuture toRead = future.getSession().read();
 	    toRead.awaitUninterruptibly(CONNECT_TIMEOUT);
@@ -78,7 +77,7 @@ public class MensagemDeamonTest {
 		final String message = MensagemHelper.lerMensagem(450, "sendMessage.1");
 		Assert.assertEquals(199, message.length());
 		
-		int poolSize = 500;
+		int poolSize = 2000;
 		final List<PoolCheck> connectors = new LinkedList<>();
 		ExecutorService executor = Executors.newScheduledThreadPool(poolSize);
 		final CountDownLatch doneSignal = new CountDownLatch(poolSize);
@@ -102,10 +101,9 @@ public class MensagemDeamonTest {
 					connector.setHandler(handler);
 				    //connector.setConnectTimeoutMillis(CONNECT_TIMEOUT);
 				    connector.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory() ));
-				    ConnectFuture future = connector.connect(new InetSocketAddress(8889));
-				    future.awaitUninterruptibly();
+				    ConnectFuture future = connector.connect(new InetSocketAddress(8889)).awaitUninterruptibly();
 				    
-				    future.getSession().write(message).awaitUninterruptibly();
+				    future.getSession().write(message);
 				    future.getSession().getConfig().setUseReadOperation(true);
 				    ReadFuture toRead = future.getSession().read();
 				    toRead.awaitUninterruptibly(CONNECT_TIMEOUT);

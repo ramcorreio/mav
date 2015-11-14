@@ -12,13 +12,16 @@ public class MensagemIoHandler extends IoHandlerAdapter {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	
-	@Override
-    public void exceptionCaught( IoSession session, Throwable cause ) throws Exception
-    {
-        logger.error("session: " + session.getId(), cause);
+	/**
+     * {@inheritDoc}
+     */
+    @Override
+    public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
+    	
+    	logger.error("session: " + session.getId(), cause);
+        session.close(true);
     }
-	
+		
 	@Override
     public void sessionIdle( IoSession session, IdleStatus status ) throws Exception
     {

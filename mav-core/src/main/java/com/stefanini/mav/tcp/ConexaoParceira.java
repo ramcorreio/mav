@@ -38,8 +38,6 @@ public class ConexaoParceira {
 	
 	private class ControladorParceira extends IoHandlerAdapter {
 		
-		//private IoBuffer buffer = IoBuffer.allocate(BUFFER);
-		
 		@Override
 		public void messageReceived(IoSession session, Object message) throws Exception {
 			super.messageReceived(session, message);
@@ -64,8 +62,7 @@ public class ConexaoParceira {
 
 		logger.info("conexão configurada");
 		connector.setConnectTimeoutMillis(TIMEOUT);
-		future = connector.connect(new InetSocketAddress(servidor, porta));
-	    future.awaitUninterruptibly();
+		future = connector.connect(new InetSocketAddress(servidor, porta)).awaitUninterruptibly();
 	}
 
 	public void fechar() {
