@@ -4,6 +4,10 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+/**
+ * Classe utilizada para tetar o componente que faz o parse do código da mensagem
+ * 
+ */
 public class CodigoMensagemParseTest {
 	
 	@Test
