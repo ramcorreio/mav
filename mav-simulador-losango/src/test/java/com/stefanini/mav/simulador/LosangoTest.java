@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.nio.CharBuffer;
 import java.util.Properties;
 
+import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.future.ReadFuture;
 import org.apache.mina.core.future.WriteFuture;
@@ -71,14 +72,16 @@ public class LosangoTest
 		Properties p = losango.carregarPropriedades();
 		
 		IoSession session = EasyMock.mock(IoSession.class);
-		WriteFuture future = EasyMock.mock(WriteFuture.class);
+		WriteFuture wFuture = EasyMock.mock(WriteFuture.class);
+		CloseFuture cFuture = EasyMock.mock(CloseFuture.class);
 		
 		String expected = p.getProperty("losango.980008.out");
-		EasyMock.expect(session.write(expected)).andReturn(future);
+		EasyMock.expect(session.write(expected)).andReturn(wFuture);
+		EasyMock.expect(session.close(true)).andReturn(cFuture);
 		
-		EasyMock.replay(session, future);
+		EasyMock.replay(session, wFuture, cFuture);
 		losango.messageReceived(session, p.getProperty("losango.980008.in"));
-		EasyMock.verify(session, future);
+		EasyMock.verify(session, wFuture, cFuture);
 	}
 	
 	@Test

@@ -78,6 +78,7 @@ public class Losango extends IoHandlerAdapter {
 		_LOGGER.info("mensagem recebida: " + mb);
 		_LOGGER.info("mensagem recebida id: " + mb.getId());
 		session.write(p.getProperty("losango.".concat(mb.getCabecalho().getNumeroTransacao().toString()).concat(".out")));
+		session.close(true);
 	}
 	
 	@Override
