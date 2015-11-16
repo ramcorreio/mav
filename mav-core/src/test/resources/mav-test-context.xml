@@ -6,32 +6,4 @@
 
 	<import resource="classpath:mav-service-context.xml" />
 
-	<!-- The IoHandler implementation -->
-	<bean id="trapHandler" class="com.stefanini.mav.util.EchoMensagemDeamonHandler" />
-
-	<bean id="textCodecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
-		<constructor-arg>
-			<bean class="com.stefanini.mav.tcp.MensagemCodecFactory" />
-		</constructor-arg>
-	</bean>
-
-	<bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter" />
-
-	<!-- The filter chain. -->
-	<bean id="filterChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
-		<property name="filters">
-			<map>
-				<entry key="loggingFilter" value-ref="loggingFilter" />
-				<entry key="codecFilter" value-ref="textCodecFilter" />
-			</map>
-		</property>
-	</bean>
-
-	<!-- The IoAcceptor which binds to port 8889 -->
-	<bean id="ioAcceptor" class="com.stefanini.mav.tcp.MensagemDeamon" init-method="start" destroy-method="stop">
-		<property name="port" value="8889" />
-		<property name="handler" ref="trapHandler" />
-		<property name="filterChainBuilder" ref="filterChainBuilder" />
-	</bean>
-
 </beans>

@@ -4,8 +4,6 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<import resource="classpath:mav-service-context.xml" />
-
 	<!-- The IoHandler implementation -->
 	<bean id="trapHandlerFake" class="com.stefanini.mav.util.EchoConexaoParceira" />
 

@@ -4,6 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
@@ -11,10 +14,15 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 public class BaseManager {
 
-	@PersistenceContext(unitName = "biller-pu")
+	@PersistenceContext
 	private EntityManager entityManager;
 	
+	private Validator validator;
+	
 	protected BaseManager() {
+		
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
 	}
 	
 	protected <T> T get(Class<T> clazz, Number id) {
@@ -41,15 +49,23 @@ public class BaseManager {
 	}
 
 	private void throwsExcepiton(PersistenceException e) throws BrokerException {
+		
 		if (ConstraintViolationException.class.isInstance(e.getCause())) {
+			
 			throw new BrokerException(e.getCause());
-		} else if (DataIntegrityViolationException.class.isInstance(e .getCause())) {
+		} 
+		else if (DataIntegrityViolationException.class.isInstance(e .getCause())) {
+			
 			throw new BrokerException(e.getCause());
+		} else {
+			
+			throw new BrokerException(e);
 		}
 	}
 
-	protected <T> void create(T entity) throws BrokerException {
+	protected <T> void persist(T entity) throws BrokerException {
 		try {
+			validator.validate(entity);
 			entityManager.persist(entity);
 		} catch (PersistenceException e) {
 			throwsExcepiton(e);
@@ -62,6 +78,7 @@ public class BaseManager {
 
 	protected <T> T update(T entity) throws BrokerException {
 		try {
+			validator.validate(entity);
 			entity = entityManager.merge(entity);
 		} catch (PersistenceException e) {
 			throwsExcepiton(e);

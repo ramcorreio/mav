@@ -30,7 +30,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import com.stefanini.mav.util.MensagemHelper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:mav-test-context.xml"})
+@ContextConfiguration(locations={"classpath:mav-test-context.xml","classpath:mav-deamon-test.xml"})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public class MensagemDeamonTest {
 	
