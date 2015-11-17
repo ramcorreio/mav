@@ -19,7 +19,14 @@ import java.io.Serializable;
  */
 public class Cabecalho implements Serializable {
 	
+	public enum Fluxo {
+		
+		ENTRADA, SAIDA;
+	}
+	
 	private static final long serialVersionUID = 7347744883680813181L;
+	
+	private Fluxo sentidoFluxo;
 
 	private Integer tamanho;
 	
@@ -40,6 +47,14 @@ public class Cabecalho implements Serializable {
 	private String campoLojista;
 	
 	protected Cabecalho() {
+	}
+	
+	public Fluxo getSentidoFluxo() {
+		return sentidoFluxo;
+	}
+	
+	protected void setSentidoFluxo(Fluxo sentidoFluxo) {
+		this.sentidoFluxo = sentidoFluxo;
 	}
 	
 	public Integer getTamanho() {
@@ -112,6 +127,11 @@ public class Cabecalho implements Serializable {
 
 	protected void setCampoLojista(String campoLojista) {
 		this.campoLojista = campoLojista;
+	}
+
+	public boolean isOk() {
+		
+		return codigo.isOk();
 	}
 	
 	

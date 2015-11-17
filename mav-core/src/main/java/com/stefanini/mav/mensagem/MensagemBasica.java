@@ -31,6 +31,11 @@ public abstract class MensagemBasica implements Serializable {
 		return id.hashCode();
 	}
 	
+	public boolean isOk() {
+		
+		return cabecalho.isOk();
+	}
+	
 	public String getId() {
 		return id;
 	}

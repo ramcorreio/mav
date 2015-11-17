@@ -24,7 +24,7 @@ import com.stefanini.mav.util.MensagemHelper;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:mav-test-context.xml"})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
-public class MessageManagerTest {
+public class GerenciaMensagemTest {
 	
 	@Autowired
 	private IGerenciaMensagem manager;	

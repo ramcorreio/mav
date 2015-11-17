@@ -1,12 +1,8 @@
 package com.stefanini.mav.simulador;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.CharBuffer;
 import java.util.Properties;
 
@@ -18,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
+import com.stefanini.mav.mensagem.Util;
 
 /**
  * Criada para simular o comportamento do ambiente losando para validação das mensagens
@@ -31,41 +28,12 @@ public class Losango extends IoHandlerAdapter {
 	
 	protected CharBuffer carregarArquivoMensagens() throws IOException {
 		
-		_LOGGER.info("Lendo: " + mensagens.getAbsolutePath());
-		FileReader fr;
-		try {
-			fr = new FileReader(mensagens);
-		} catch (FileNotFoundException e) {
-			URL file = getClass().getClassLoader().getResource(mensagens.getName());
-			_LOGGER.info("Lendo: " + file.getPath());
-			fr = new FileReader(file.getPath());
-		}
-		
-		StringBuilder sb = new StringBuilder();
-		CharBuffer cb = CharBuffer.allocate(1024);
-		while (fr.read(cb) > 0) {
-			cb.flip();
-			sb.append(cb);
-			cb.clear();
-		}
-		fr.close();
-		
-		CharBuffer b = CharBuffer.allocate(sb.length());
-		b.append(sb);
-		b.flip();
-		
-		return b;
+		return Util.carrgarArquivo(mensagens.getName());
 	}
 	
 	protected Properties carregarPropriedades() throws IOException {
 		
-		CharBuffer b = carregarArquivoMensagens();
-		StringBuffer sb = new StringBuffer();
-		sb.append(b);
-		
-		Properties p = new Properties();
-		p.load(new ByteArrayInputStream(sb.toString().getBytes()));
-		return p;
+		return Util.carregarPropriedades(carregarArquivoMensagens());
 	}
 	
 	@Override

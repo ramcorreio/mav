@@ -117,7 +117,23 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
         BigInteger hash = new BigInteger(1, md.digest(input.getBytes()));  
         sen = hash.toString(16);              
         return sen;  
-    }  
+    }
+    
+    /**
+     * Verificar se o fluxo foi definido corretamente
+     * 
+     * @param mensagem
+     * 
+     * @throws MensagemNaoEncontradaException 
+     */
+    private void verificarFluxo(M mensagem) throws MensagemNaoEncontradaException {
+    	
+    	if(mensagem.getCabecalho().getSentidoFluxo() == null) {
+    		
+    		throw new MensagemNaoEncontradaException("fluxo vazio");
+    	}
+    	
+    }
 	
 	public M ler(String input) throws MensagemNaoEncontradaException {
 		
@@ -138,6 +154,8 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		
 		ler(input, instance);
 		
+		verificarFluxo(instance);
+		
 		return instance;
 	}
 	
@@ -151,11 +169,5 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 	
 	public abstract void ler(String input, M mensagem) throws MensagemNaoEncontradaException;
 	
-	public abstract void escrever(StringBuilder b, M mensagem) throws MensagemNaoEncontradaException;
-
-	public void escrever(StringBuilder b, RespostaCapturaSimplificada mensagem) throws MensagemNaoEncontradaException {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public abstract void escrever(StringBuilder b, M mensagem) throws MensagemNaoEncontradaException;	
 }

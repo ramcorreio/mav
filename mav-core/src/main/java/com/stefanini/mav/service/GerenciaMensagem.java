@@ -26,6 +26,8 @@ public class GerenciaMensagem extends BaseManager implements IGerenciaMensagem {
 		dump.setCodigo(m.getCabecalho().getCodigo());
 		dump.setData(Calendar.getInstance().getTime());
 		dump.setNumeroTransacao(m.getCabecalho().getNumeroTransacao());
+		dump.setNumeroProposta(m.getCabecalho().getNumeroProposta());
+		dump.setFluxo(m.getCabecalho().getSentidoFluxo());
 		dump.setDump(MensagemFactory.loadContexto(m.getCabecalho().getCodigo()).escrever(m));
 		
 		persist(dump);

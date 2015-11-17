@@ -11,9 +11,9 @@ public final class ServiceLocator implements Serializable {
 
 	private static ServiceLocator INSTANCE = new ServiceLocator();
 	
-	private enum Service {
+	public enum Service {
 		
-		MESSAGE_MANAGER("messageManager");
+		GERENTE_MENSAGEM("gerenteMensagem");
 		
 		private String name;
 		
@@ -38,6 +38,6 @@ public final class ServiceLocator implements Serializable {
 	
 	public <T> T getService(final Service service, final Class<T> type) {
 		
-		return applicationContext.getBean(Service.MESSAGE_MANAGER.getName(), type);
+		return applicationContext.getBean(Service.GERENTE_MENSAGEM.getName(), type);
 	}
 }

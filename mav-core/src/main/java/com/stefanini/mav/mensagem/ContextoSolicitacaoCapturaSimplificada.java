@@ -2,6 +2,7 @@ package com.stefanini.mav.mensagem;
 
 import java.text.ParseException;
 
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 import com.stefanini.mav.util.UtilDate;
 
 public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<SolicitacaoCapturaSimplificada> {
@@ -68,6 +69,9 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 	
 	@Override
 	public void ler(String input, SolicitacaoCapturaSimplificada mensagem) throws MensagemNaoEncontradaException {
+		
+		//configuração mensagem de entrada
+		mensagem.getCabecalho().setSentidoFluxo(Fluxo.ENTRADA);
 		
 		//dados pessoais
 		try {

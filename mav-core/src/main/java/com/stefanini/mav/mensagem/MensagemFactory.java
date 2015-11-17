@@ -10,6 +10,12 @@ public class MensagemFactory {
 	static {
 		leitores.put(CodigoMensagem.C0450, new ContextoSolicitacaoCapturaSimplificada());
 		leitores.put(CodigoMensagem.C0460, new ContextoRespostaCapturaSimplificada());
+		leitores.put(CodigoMensagem.C9100, new ContextoRespostaErro(CodigoMensagem.C9100));
+		leitores.put(CodigoMensagem.C9200, new ContextoRespostaErro(CodigoMensagem.C9200));
+		leitores.put(CodigoMensagem.C9300, new ContextoRespostaErro(CodigoMensagem.C9300));
+		leitores.put(CodigoMensagem.C9400, new ContextoRespostaErro(CodigoMensagem.C9400));
+		leitores.put(CodigoMensagem.C9450, new ContextoRespostaErro(CodigoMensagem.C9450));
+		leitores.put(CodigoMensagem.C9670, new ContextoRespostaErro(CodigoMensagem.C9670));
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -2,6 +2,7 @@ package com.stefanini.mav.mensagem;
 
 import java.text.ParseException;
 
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 import com.stefanini.mav.util.UtilDate;
 
 public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<RespostaCapturaSimplificada> {
@@ -98,6 +99,8 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 	@Override
 	public void ler(String input, RespostaCapturaSimplificada mensagem) throws MensagemNaoEncontradaException {
 
+		mensagem.getCabecalho().setSentidoFluxo(Fluxo.SAIDA);
+		
 		// DADOS DA CONSULTA
 		// 0084 a 0166 Filler 83 A Filler
 		mensagem.setFiller(input.substring(83, 166).trim());

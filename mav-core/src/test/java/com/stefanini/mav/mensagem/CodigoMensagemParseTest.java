@@ -36,5 +36,17 @@ public class CodigoMensagemParseTest {
 		
 		MatcherAssert.assertThat("0110", Matchers.is(Matchers.equalTo(CodigoMensagem.C0110.toNumberString())));
 	}
+	
+	@Test
+	public void isOK(){
+		
+		MatcherAssert.assertThat(true, Matchers.is(Matchers.equalTo(CodigoMensagem.C0100.isOk())));
+	}
+	
+	@Test
+	public void isNotOK(){
+		
+		MatcherAssert.assertThat(false, Matchers.is(Matchers.equalTo(CodigoMensagem.C9100.isOk())));
+	}
 
 }

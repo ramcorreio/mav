@@ -20,6 +20,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.stefanini.mav.mensagem.CodigoMensagem;
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 
 @Entity
 @Table(name = "mensagem")
@@ -33,11 +34,21 @@ public class Mensagem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private Integer numeroTransacao;
+	
+	@Column(nullable = false)
+	private String numeroProposta;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Fluxo fluxo;
 
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private CodigoMensagem codigo;
 
+	@Column(nullable = false)
 	private String dump;
 
 	@Temporal(TemporalType.DATE)
@@ -58,6 +69,22 @@ public class Mensagem implements Serializable {
 
 	public void setNumeroTransacao(Integer numeroTransacao) {
 		this.numeroTransacao = numeroTransacao;
+	}
+	
+	public String getNumeroProposta() {
+		return numeroProposta;
+	}
+	
+	public void setNumeroProposta(String numeroProposta) {
+		this.numeroProposta = numeroProposta;
+	}
+	
+	public Fluxo getFluxo() {
+		return fluxo;
+	}
+	
+	public void setFluxo(Fluxo fluxo) {
+		this.fluxo = fluxo;
 	}
 
 	public CodigoMensagem getCodigo() {
