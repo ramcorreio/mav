@@ -1,4 +1,4 @@
-package com.stefanini.mav.mensagem;
+package com.stefanini.mav.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -16,11 +16,11 @@ import org.apache.mina.filter.codec.textline.LineDelimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Util {
+public class Utils {
 
-	private static Logger _LOGGER = LoggerFactory.getLogger(Util.class);
+	private static Logger _LOGGER = LoggerFactory.getLogger(Utils.class);
 
-	public Util() {
+	public Utils() {
 	}
 
 	public static IoBuffer writeBuffer(String input) throws CharacterCodingException {
@@ -51,13 +51,13 @@ public class Util {
 
 	public static CharBuffer carrgarArquivo(String caminho) throws IOException {
 
-		_LOGGER.info("Lendo: " + caminho);
+		_LOGGER.debug("Lendo: " + caminho);
 		FileReader fr;
 		try {
 			fr = new FileReader(caminho);
 		} catch (FileNotFoundException e) {
-			URL file = Util.class.getClassLoader().getResource(caminho);
-			_LOGGER.info("Lendo: " + file.getPath());
+			URL file = Utils.class.getClassLoader().getResource(caminho);
+			_LOGGER.debug("Lendo: " + file.getPath());
 			fr = new FileReader(file.getPath());
 		}
 

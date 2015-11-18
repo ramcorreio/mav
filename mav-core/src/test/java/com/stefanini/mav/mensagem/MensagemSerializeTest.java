@@ -9,7 +9,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import com.stefanini.mav.util.MensagemHelper;
-import com.stefanini.mav.util.UtilDate;
+import com.stefanini.mav.util.UtilsDate;
 
 public class MensagemSerializeTest {
 	
@@ -31,7 +31,7 @@ public class MensagemSerializeTest {
 		
 		scs.setDadosPessoais(new DadoPessoal());
 		scs.getDadosPessoais().setCpf("00000000191");
-		scs.getDadosPessoais().setDataNascimento(UtilDate.parse("01011960"));
+		scs.getDadosPessoais().setDataNascimento(UtilsDate.parse("01011960"));
 		scs.getDadosPessoais().setFiller("");
 		
 		//validação de dados operação cartão
@@ -80,7 +80,7 @@ public class MensagemSerializeTest {
 		
 		rcs.setFiller("");
 		rcs.setMensagemAutorizador("Xx");
-		rcs.setData(UtilDate.parseDateHora("25082015180815"));
+		rcs.setData(UtilsDate.parseDateHora("25082015180815"));
 		rcs.setCodigoStatusProposta("02");
 		rcs.setParecer("");
 		rcs.setProduto("01");
@@ -89,7 +89,7 @@ public class MensagemSerializeTest {
 		//Dados de cliente
 		rcs.setDadosPessoais(new DadoCliente());
 		rcs.getDadosPessoais().setCpf("00000000191");
-		rcs.getDadosPessoais().setDataNascimento(UtilDate.parse("20101944"));
+		rcs.getDadosPessoais().setDataNascimento(UtilsDate.parse("20101944"));
 		rcs.getDadosPessoais().setComplemento(new DadoComplementar());
 		rcs.getDadosPessoais().getComplemento().setClienteEmancipado(false);
 		rcs.getDadosPessoais().getComplemento().setCodigoProduto("01");

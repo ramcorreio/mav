@@ -16,7 +16,7 @@ public class UtilDateTest {
 		cal.set(Calendar.DATE, dia);
 		cal.set(Calendar.MONTH, mes);
 		cal.set(Calendar.YEAR, ano);
-		return UtilDate.zerarHora(cal).getTime();
+		return UtilsDate.zerarHora(cal).getTime();
 	}
 	
 	private Date criarDataHora(int dia, int mes, int ano, int hora, int minuto, int segundo) {
@@ -25,14 +25,14 @@ public class UtilDateTest {
 		cal.set(Calendar.DATE, dia);
 		cal.set(Calendar.MONTH, mes);
 		cal.set(Calendar.YEAR, ano);
-		return UtilDate.iniciarHora(cal, hora, minuto, segundo).getTime();
+		return UtilsDate.iniciarHora(cal, hora, minuto, segundo).getTime();
 	}
 
 	@Test
 	public void parse() throws ParseException {
 
 		Date esperado = criarData(2, Calendar.FEBRUARY, 1969);
-		Date valor = UtilDate.parse("02021969");
+		Date valor = UtilsDate.parse("02021969");
 		MatcherAssert.assertThat(valor, Matchers.is(Matchers.equalTo(esperado)));
 	}
 
@@ -40,7 +40,7 @@ public class UtilDateTest {
 	public void format() throws ParseException {
 
 		String esperado = "02011969";
-		String valor = UtilDate.format(criarData(2, Calendar.JANUARY, 1969));
+		String valor = UtilsDate.format(criarData(2, Calendar.JANUARY, 1969));
 		MatcherAssert.assertThat(valor, Matchers.is(Matchers.equalTo(esperado)));
 	}
 	
@@ -48,7 +48,7 @@ public class UtilDateTest {
 	public void parseDateTime() throws ParseException {
 
 		Date esperado = criarDataHora(2, Calendar.FEBRUARY, 1969, 18, 39, 40);
-		Date valor = UtilDate.parseDateHora("02021969183940");
+		Date valor = UtilsDate.parseDateHora("02021969183940");
 		MatcherAssert.assertThat(valor, Matchers.samePropertyValuesAs(esperado));
 	}
 }

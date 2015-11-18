@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class UtilDate {
+public class UtilsDate {
 
 	private static final String MASK_DATE = "ddMMyyyy";
 	
@@ -16,7 +16,7 @@ public class UtilDate {
 	
 	private static SimpleDateFormat dateTimeFormat = new SimpleDateFormat(MASK_DATE.concat(MASK_TIME));
 
-	private UtilDate() {
+	private UtilsDate() {
 	}
 	
 	public static String format(Date date, DateFormat format) {

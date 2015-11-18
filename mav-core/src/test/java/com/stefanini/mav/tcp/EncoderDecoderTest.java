@@ -14,8 +14,8 @@ import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
-import com.stefanini.mav.mensagem.Util;
 import com.stefanini.mav.util.MensagemHelper;
+import com.stefanini.mav.util.Utils;
 
 public class EncoderDecoderTest {
 	
@@ -29,7 +29,7 @@ public class EncoderDecoderTest {
 		MensagemBasica m = MensagemFactory.parse(input);
 		
 		MensagemEncoder encoder = new MensagemEncoder();
-		out.write(Util.writeBuffer(input));
+		out.write(Utils.writeBuffer(input));
 		
 		EasyMock.replay(session, out);
 		encoder.encode(session, m, out);
@@ -47,7 +47,7 @@ public class EncoderDecoderTest {
 		MensagemDecoder decoder = new MensagemDecoder();
 		out.write(m);
 		
-		IoBuffer buf = Util.writeBuffer(input);
+		IoBuffer buf = Utils.writeBuffer(input);
 		
 		EasyMock.replay(session, out);
 		decoder.decode(session, buf, out);

@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
-import com.stefanini.mav.mensagem.Util;
+import com.stefanini.mav.util.Utils;
 
 /**
  * Criada para simular o comportamento do ambiente losando para validação das mensagens
@@ -28,12 +28,12 @@ public class Losango extends IoHandlerAdapter {
 	
 	protected CharBuffer carregarArquivoMensagens() throws IOException {
 		
-		return Util.carrgarArquivo(mensagens.getName());
+		return Utils.carrgarArquivo(mensagens.getName());
 	}
 	
 	protected Properties carregarPropriedades() throws IOException {
 		
-		return Util.carregarPropriedades(carregarArquivoMensagens());
+		return Utils.carregarPropriedades(carregarArquivoMensagens());
 	}
 	
 	@Override

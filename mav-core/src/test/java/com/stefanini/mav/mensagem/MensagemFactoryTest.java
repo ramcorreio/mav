@@ -15,7 +15,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.stefanini.mav.util.MensagemHelper;
-import com.stefanini.mav.util.UtilDate;
+import com.stefanini.mav.util.UtilsDate;
 
 /**
  * 
@@ -60,7 +60,7 @@ public class MensagemFactoryTest {
 		//validação de dados pessoais
 		assertThat(m.getDadosPessoais(), notNullValue());
 		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
-		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilDate.parse("01011960"))));
+		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilsDate.parse("01011960"))));
 		assertThat(m.getDadosPessoais().getFiller(), is(""));
 		
 		//validação de dados operação cartão
@@ -109,7 +109,7 @@ public class MensagemFactoryTest {
 		//DADOS DA CONSULTA					
 		assertThat(m.getFiller(), is(""));
 		assertThat(m.getMensagemAutorizador(), is("Xx"));
-		assertThat(m.getData(), is(equalTo(UtilDate.parseDateHora("25082015180815"))));
+		assertThat(m.getData(), is(equalTo(UtilsDate.parseDateHora("25082015180815"))));
 		assertThat(m.getCodigoStatusProposta(), is("02"));
 		assertThat(m.getParecer(), is(""));
 		assertThat(m.getProduto(), is("01"));
@@ -117,7 +117,7 @@ public class MensagemFactoryTest {
 		//validação de dados cliente
 		assertThat(m.getDadosPessoais(), notNullValue());
 		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
-		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilDate.parse("20101944"))));
+		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilsDate.parse("20101944"))));
 		assertThat(m.getDadosPessoais().getComplemento(), notNullValue());
 		assertThat(m.getDadosPessoais().getComplemento().isClienteEmancipado(), is(false));
 		assertThat(m.getDadosPessoais().getComplemento().getCodigoProduto(), is("01"));

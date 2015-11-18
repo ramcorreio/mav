@@ -3,7 +3,7 @@ package com.stefanini.mav.mensagem;
 import java.text.ParseException;
 
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
-import com.stefanini.mav.util.UtilDate;
+import com.stefanini.mav.util.UtilsDate;
 
 public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<SolicitacaoCapturaSimplificada> {
 	
@@ -25,14 +25,14 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 		
 		m.setDadosPessoais(new DadoPessoal());
 		m.getDadosPessoais().setCpf(input.substring(83, 94));
-		m.getDadosPessoais().setDataNascimento(UtilDate.parse(input.substring(94, 102)));
+		m.getDadosPessoais().setDataNascimento(UtilsDate.parse(input.substring(94, 102)));
 		m.getDadosPessoais().setFiller(input.substring(102, 142).trim());
 	}
 	
 	private void escreverDadoPessoais(StringBuilder b, SolicitacaoCapturaSimplificada m) {
 		
 		escreverString(b, 11, m.getDadosPessoais().getCpf());
-		escreverString(b, 8, UtilDate.format(m.getDadosPessoais().getDataNascimento()));
+		escreverString(b, 8, UtilsDate.format(m.getDadosPessoais().getDataNascimento()));
 		escreverString(b, 40, m.getDadosPessoais().getFiller());
 	}
 	

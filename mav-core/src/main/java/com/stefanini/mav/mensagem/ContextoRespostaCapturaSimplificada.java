@@ -3,7 +3,7 @@ package com.stefanini.mav.mensagem;
 import java.text.ParseException;
 
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
-import com.stefanini.mav.util.UtilDate;
+import com.stefanini.mav.util.UtilsDate;
 
 public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<RespostaCapturaSimplificada> {
 
@@ -46,7 +46,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 
 		m.setDadosPessoais(new DadoCliente());
 		m.getDadosPessoais().setCpf(input.substring(269, 280));
-		m.getDadosPessoais().setDataNascimento(UtilDate.parse(input.substring(280, 288)));
+		m.getDadosPessoais().setDataNascimento(UtilsDate.parse(input.substring(280, 288)));
 		m.getDadosPessoais().setComplemento(new DadoComplementar());
 		// 0289 a 0289 ClienteEmancipado 1 A
 		m.getDadosPessoais().getComplemento().setClienteEmancipado(lerBoolean(input.substring(288, 289)));
@@ -73,7 +73,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 	private void escreverDadoCliente(StringBuilder b, RespostaCapturaSimplificada m) {
 
 		escreverString(b, 11, m.getDadosPessoais().getCpf());
-		escreverString(b, 8, UtilDate.format(m.getDadosPessoais().getDataNascimento()));
+		escreverString(b, 8, UtilsDate.format(m.getDadosPessoais().getDataNascimento()));
 		// 0289 a 0289 ClienteEmancipado 1 A
 		escreverBoolean(b, 1, m.getDadosPessoais().getComplemento().isClienteEmancipado());
 		
@@ -112,7 +112,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		// 0172 a 0179 data 8 N Data do Sistema
 		// 0180 a 0185 hora 6 N Hora do Sistema
 		try {
-			mensagem.setData(UtilDate.parseDateHora(input.substring(171, 185)));
+			mensagem.setData(UtilsDate.parseDateHora(input.substring(171, 185)));
 		} catch (ParseException e) {
 			throw new MensagemNaoEncontradaException(e);
 		}
@@ -162,7 +162,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 
 		// 0172 a 0179 data 8 N Data do Sistema
 		// 0180 a 0185 hora 6 N Hora do Sistema
-		escreverString(b, 14, UtilDate.formatDateTime(mensagem.getData()));
+		escreverString(b, 14, UtilsDate.formatDateTime(mensagem.getData()));
 
 		// 0186 a 0187 codigoStatusProposta 2 A Código do Status da Proposta
 		// (02, 03 ou 04)

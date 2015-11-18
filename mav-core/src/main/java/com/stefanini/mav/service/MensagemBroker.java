@@ -8,9 +8,9 @@ import java.util.Properties;
 
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
-import com.stefanini.mav.mensagem.Util;
 import com.stefanini.mav.service.ServiceLocator.Service;
 import com.stefanini.mav.tcp.ConexaoParceira;
+import com.stefanini.mav.util.Utils;
 
 public class MensagemBroker {
 
@@ -28,10 +28,10 @@ public class MensagemBroker {
 	private void carregarParceiras() throws IOException {
 		
 		//cada parceira terá 3 pro
-		Properties props = Util.carregarPropriedades("parceira.properties");
+		Properties props = Utils.carregarPropriedades("parceira.properties");
 		for (int i = 0; i < props.size(); i++) {
 			String nomeArquivo = props.getProperty("parceira." + (i + 1) + ".arquivo");
-			Properties parceiraProps = Util.carregarPropriedades(nomeArquivo);
+			Properties parceiraProps = Utils.carregarPropriedades(nomeArquivo);
 			Parceira p = new Parceira(
 				parceiraProps.getProperty("nome"),
 				parceiraProps.getProperty("servidor"),
