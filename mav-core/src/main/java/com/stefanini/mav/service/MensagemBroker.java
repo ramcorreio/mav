@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
+import com.stefanini.mav.mensagem.RespostaErro;
 import com.stefanini.mav.service.ServiceLocator.Service;
 
 public class MensagemBroker {
@@ -33,18 +34,20 @@ public class MensagemBroker {
 		
 		public MensagemBasica wrap(MensagemBasica m) throws MensagemNaoEncontradaException {
 			
-			return wrap(m, new Object[0]);
+			return wrap(m, null, new Object[0]);
 		}
 		
-		public MensagemBasica wrap(MensagemBasica m, Parceira p) throws MensagemNaoEncontradaException {
+		public MensagemBasica wrap(MensagemBasica m, Throwable t, Parceira p) throws MensagemNaoEncontradaException {
 			
-			return wrap(m, p.getServidor(), p.getPorta());
+			return wrap(m, t, p.getServidor(), p.getPorta());
 		}
 		
-		private MensagemBasica wrap(MensagemBasica m, Object... args) throws MensagemNaoEncontradaException {
+		private MensagemBasica wrap(MensagemBasica m, Throwable t, Object... args) throws MensagemNaoEncontradaException {
 			
 			String mensagemErro = String.format(texto, args);
-			_LOGGER.error(mensagemErro, mensagemErro);
+			if(t != null) {
+				_LOGGER.error(mensagemErro, t);	
+			}
 			return MensagemFactory.gerarErro(m, mensagemErro);
 		}
 	}
@@ -111,11 +114,12 @@ public class MensagemBroker {
 			
 			MensagemBasica retorno = null;
 			try {
+				_LOGGER.info("Processando conexão com " + parceira.getNome());
 				retorno = parceira.processar(mensagemBasica);
 				
 			} catch (Throwable t) {
 				
-				return MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(mensagemBasica, parceira);
+				return MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(mensagemBasica, t, parceira);
 			}
 			
 			try {
@@ -131,7 +135,8 @@ public class MensagemBroker {
 				
 			} catch (Throwable t) {
 				
-				return MensagemErroBroker.MSG_ERRO_RETORNO.wrap(mensagemBasica, parceira);
+				RespostaErro erro =  (RespostaErro) MensagemErroBroker.MSG_ERRO_RETORNO.wrap(mensagemBasica, t, parceira);
+				return erro;
 			}
 		}
 		
