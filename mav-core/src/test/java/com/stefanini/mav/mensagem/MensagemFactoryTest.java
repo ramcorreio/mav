@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -38,8 +40,7 @@ public class MensagemFactoryTest {
 		MensagemFactory.parse(null);
 	}
 	
-	@Test
-	public void criarCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException{
+	private SolicitacaoCapturaSimplificada montarSolicitacaoCapturaSimplificada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
 		String messagem = MensagemHelper.lerMensagem(199, 450, "criarCapturaSimplicada.1");
 		
@@ -82,6 +83,26 @@ public class MensagemFactoryTest {
 		assertThat(m.getIndicadores().getVersaoCanal(), is(""));
 		assertThat(m.getIndicadores().getPolitica(), is(""));
 		assertThat(m.getIndicadores().getAmbiente(), is(""));
+		return m;
+	}
+	
+	
+	@Test
+	public void gerarErroCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException{
+	
+		SolicitacaoCapturaSimplificada m = montarSolicitacaoCapturaSimplificada();
+		assertThat(m, notNullValue());
+		
+		String descricao = "Erro de solicitação";
+		RespostaErro erro = (RespostaErro) MensagemFactory.gerarErro(m, descricao);
+		MatcherAssert.assertThat(CodigoMensagem.C9450, Matchers.is(Matchers.equalTo(erro.getCabecalho().getCodigo())));
+		MatcherAssert.assertThat(descricao, Matchers.is(Matchers.equalTo(erro.getDescricao())));
+	}
+	
+	@Test
+	public void criarCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException{
+		
+		montarSolicitacaoCapturaSimplificada();
 	}
 	
 	@Test

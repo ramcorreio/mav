@@ -44,5 +44,33 @@ public class MensagemFactory {
 		
 		return parseContexto(mensagem).ler(mensagem);
 	}
+	
+	public static <T extends MensagemBasica> MensagemBasica gerarErro(MensagemBasica mensagem, String descricao) throws MensagemNaoEncontradaException {
+		
+		//recuperando mensagem
+		String in = loadContexto(mensagem.getCabecalho().getCodigo()).escrever(mensagem);
+		
+		//recuperando cabeçalho
+		String cabecalho = in.substring(0, 83);
+		
+		//montando cabeçalho de erro
+		cabecalho = cabecalho.substring(0, 5).concat("9").concat(cabecalho.substring(6, 9)).concat(cabecalho.substring(9, 83));
+
+		//recuperando indicadores
+		String indicadores = in.substring(in.length() - 14, in.length());
+
+		//motando mensagem de erro
+		if(descricao.length() > 81) {
+			descricao = descricao.substring(0, 81);
+		}
+		else {
+			descricao = String.format("%-" + 81 + "s" , descricao);
+		}
+		
+		String erro = cabecalho.concat(descricao).concat(indicadores);
+		
+		//criando objeto
+		return parseContexto(erro).ler(erro);
+	}
 
 }

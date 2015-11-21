@@ -14,7 +14,7 @@ public class ContextoRespostaErro extends ContextoMensagem<RespostaErro> {
 		//configuração mensagem de entrada
 		mensagem.getCabecalho().setSentidoFluxo(Fluxo.SAIDA);
 		
-		mensagem.setDescricao(input.substring(83, 164));
+		mensagem.setDescricao(input.substring(83, 164).trim());
 		
 		//indicadores
 		//0165 a 0165	Identificação do Canal	1	A	Dados Losango

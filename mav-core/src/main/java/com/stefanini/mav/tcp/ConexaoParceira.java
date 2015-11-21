@@ -1,6 +1,5 @@
 package com.stefanini.mav.tcp;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import org.apache.mina.core.future.ConnectFuture;
@@ -49,7 +48,7 @@ public class ConexaoParceira {
 		this.porta = porta;
 	}	
 
-	public void conectar() throws IOException {
+	public void conectar() {
 
 		connector  = new NioSocketConnector();
 		

@@ -167,7 +167,9 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		return b.toString();
 	}
 	
-	public abstract void ler(String input, M mensagem) throws MensagemNaoEncontradaException;
+	abstract void ler(String input, M mensagem) throws MensagemNaoEncontradaException;
 	
-	public abstract void escrever(StringBuilder b, M mensagem) throws MensagemNaoEncontradaException;	
+	abstract void escrever(StringBuilder b, M mensagem) throws MensagemNaoEncontradaException;	
+	
+	//abstract void gerarErro(StringBuilder b, M mensagem) throws MensagemNaoEncontradaException;
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="broker" class="com.stefanini.mav.service.MensagemBroker" factory-method="getInstance">
+		<property name="parceiras">
+			<bean class="org.springframework.beans.factory.config.ListFactoryBean">
+				<property name="targetListClass">
+					<value>java.util.LinkedList</value>
+                </property>
+                <property name="sourceList">
+                	<!-- <list value-type="com.stefanini.mav.service.Parceira">
+						<bean class="com.stefanini.mav.service.Parceira">
+							<constructor-arg value="Losango Fake"/>
+							<constructor-arg value="localhost"/>
+							<constructor-arg value="9089"/>
+						</bean>
+					</list> -->
+				</property>
+			</bean>
+		</property>
+	</bean>
+</beans>
