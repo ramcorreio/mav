@@ -1,5 +1,6 @@
 package com.stefanini.mav.tcp;
 
+import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.session.IoSession;
 import org.easymock.EasyMock;
@@ -40,6 +41,7 @@ public class MensagemIoHandlerTest {
 		
 		IoSession session = mocker.createMock(IoSession.class);
 		WriteFuture writeFuture = mocker.createMock(WriteFuture.class);
+		CloseFuture closeFuture = mocker.createMock(CloseFuture.class);
 		
 		ContextoMensagem<MensagemBasica> ctxEntrada = MensagemFactory.loadContexto(CodigoMensagem.C0450);
 		MensagemBasica entrada = ctxEntrada.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1"));
@@ -47,6 +49,7 @@ public class MensagemIoHandlerTest {
 		MensagemBasica expected = MensagemErroBroker.MSG_ERRO_AUSENCIA_PARCEIRA.wrap(entrada);
 		
 		EasyMock.expect(session.write(expected)).andReturn(writeFuture);
+		EasyMock.expect(session.close(true)).andReturn(closeFuture);
 		
 		mocker.replay();
 		handler.messageReceived(session, entrada);

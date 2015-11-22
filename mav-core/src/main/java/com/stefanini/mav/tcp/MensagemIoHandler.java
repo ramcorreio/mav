@@ -32,6 +32,7 @@ public class MensagemIoHandler extends IoHandlerAdapter {
 	public void messageReceived(IoSession session, Object mensagem) throws Exception {
 
 		session.write(MensagemBroker.getInstance().enviarParceira(MensagemBasica.class.cast(mensagem)));
+		session.close(true);
 
 	}
 

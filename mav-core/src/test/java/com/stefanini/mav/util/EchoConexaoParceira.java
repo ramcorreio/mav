@@ -24,6 +24,7 @@ public class EchoConexaoParceira extends IoHandlerAdapter {
 		MensagemBasica m = MensagemFactory.parse(String.class.cast(mensagem));
 		logger.info("mensagem recebida: " + m);
 		session.write(MensagemHelper.lerMensagem(CodigoMensagem.C0460, "EchoConexaoParceira.1"));
+		session.close(true);
 	}
 	
 	@Override

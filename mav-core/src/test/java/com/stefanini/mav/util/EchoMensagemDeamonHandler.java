@@ -56,6 +56,7 @@ public class EchoMensagemDeamonHandler extends IoHandlerAdapter {
 		logger.info("recebendo mensagem: " + message);
 		MensagemBasica m = MensagemBasica.class.cast(message);
 		session.write(m);
+		session.close(true);
 	}
 	
 	@Override
