@@ -21,7 +21,7 @@ import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
 import com.stefanini.mav.util.MensagemHelper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:mav-deamon-parceira-fake.xml","classpath:mav-test-context.xml"})
+@ContextConfiguration(locations={"classpath:mav-test-context.xml", "classpath:mav-deamon-fake-parceira.xml"})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public class ConexaoParceiraTest {
 	
@@ -45,7 +45,7 @@ public class ConexaoParceiraTest {
 	public void enviarMensagem() throws MensagemNaoEncontradaException, IOException, URISyntaxException {
 		
 		MensagemBasica paraEnviar = MensagemFactory.parse(MensagemHelper.lerMensagem(CodigoMensagem.C0450, "EchoConexaoParceira.1"));
-		conexao.envar(paraEnviar);
+		conexao.enviar(paraEnviar);
 		MensagemBasica recebida = conexao.receber();
 		MatcherAssert.assertThat(recebida, Matchers.notNullValue());
 		MatcherAssert.assertThat(recebida.getCabecalho().getCodigo(), Matchers.is(Matchers.equalTo(CodigoMensagem.C0460)));

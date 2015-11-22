@@ -132,6 +132,7 @@ public class MensagemBroker {
 				}
 				
 				//TODO: verificar regra de negócio
+				return retorno;
 				
 			} catch (Throwable t) {
 				

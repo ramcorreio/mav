@@ -44,10 +44,7 @@ public class MensagemIoHandlerTest {
 		ContextoMensagem<MensagemBasica> ctxEntrada = MensagemFactory.loadContexto(CodigoMensagem.C0450);
 		MensagemBasica entrada = ctxEntrada.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1"));
 		
-		MensagemBasica expected = MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(entrada);
-		
-		//ContextoMensagem<MensagemBasica> ctxSaida = MensagemFactory.loadContexto(CodigoMensagem.C0460);
-		//MensagemBasica saida = ctxSaida.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0460, "criarRespostaCapturaSimplicada.1"));
+		MensagemBasica expected = MensagemErroBroker.MSG_ERRO_AUSENCIA_PARCEIRA.wrap(entrada);
 		
 		EasyMock.expect(session.write(expected)).andReturn(writeFuture);
 		

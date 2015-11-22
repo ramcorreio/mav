@@ -7,15 +7,17 @@ public class Parceira {
 	
 	private String nome;
 	
-	private String servidor;
+	private ConexaoParceira conexao;
 	
-	private int porta;
+	public Parceira(String nome, ConexaoParceira conexao) {
+		
+		this.nome = nome;
+		this.conexao = conexao;	
+	}
 	
 	public Parceira(String nome, String servidor, int porta) {
 		
-		this.nome = nome;
-		this.servidor = servidor;
-		this.porta = porta;	
+		this(nome, new ConexaoParceira(servidor, porta));	
 	}
 	
 	public String getNome() {
@@ -23,11 +25,11 @@ public class Parceira {
 	}
 	
 	public int getPorta() {
-		return porta;
+		return conexao.getPorta();
 	}
 	
 	public String getServidor() {
-		return servidor;
+		return conexao.getServidor();
 	}
 	
 	@Override
@@ -39,14 +41,15 @@ public class Parceira {
 		}
 		
 		Parceira outro = Parceira.class.cast(obj);
-		return servidor.equals(outro.servidor) && porta == outro.porta;
+		return conexao.getServidor().equals(outro.conexao.getServidor()) && conexao.getPorta() == outro.getPorta();
 	}
 	
 	public MensagemBasica processar(MensagemBasica entrada) {
 		
-		ConexaoParceira conexao = new ConexaoParceira(servidor, porta);
 		conexao.conectar();
-		conexao.envar(entrada);
-		return conexao.receber();
+		conexao.enviar(entrada);
+		MensagemBasica retorno = conexao.receber();
+		conexao.fechar();
+		return retorno;
 	}
 }

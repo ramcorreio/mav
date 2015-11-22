@@ -21,7 +21,6 @@ public class EchoConexaoParceira extends IoHandlerAdapter {
 	public void messageReceived(IoSession session, Object mensagem) throws MensagemNaoEncontradaException, IOException, URISyntaxException {
 
 		logger.info("recebendo mensagem: " + mensagem);
-		//String m = String.class.cast(mensagem);
 		MensagemBasica m = MensagemFactory.parse(String.class.cast(mensagem));
 		logger.info("mensagem recebida: " + m);
 		session.write(MensagemHelper.lerMensagem(CodigoMensagem.C0460, "EchoConexaoParceira.1"));

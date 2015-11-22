@@ -21,6 +21,7 @@ import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
 import com.stefanini.mav.service.MensagemBroker.MensagemErroBroker;
+import com.stefanini.mav.tcp.ConexaoParceira;
 import com.stefanini.mav.util.MensagemHelper;
 
 /**
@@ -30,7 +31,7 @@ import com.stefanini.mav.util.MensagemHelper;
  * @author Rodrigo
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:mav-test-context.xml"/*, "classpath:mav-parceira-loader-context.xml"*/})
+@ContextConfiguration(locations={"classpath:mav-test-context.xml", "classpath:mav-deamon-fake-broker.xml"})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public class MensagemBrokerTest {
 	
@@ -87,17 +88,48 @@ public class MensagemBrokerTest {
 		MensagemBasica expected = ctxExpected.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0460, "criarRespostaCapturaSimplicada.1"));
 		
 		//mocking parceira
-		Parceira pMock = mocker.createMock(Parceira.class);
-		EasyMock.expect(pMock.getServidor()).andStubReturn("localhost");
-		EasyMock.expect(pMock.getPorta()).andStubReturn(9090);
-		EasyMock.expect(pMock.getNome()).andStubReturn("Teste Mock");
+		//SocketConnector nsc = mocker.createMock(SocketConnector.class);
+		//DefaultIoFilterChainBuilder chain = new DefaultIoFilterChainBuilder(); //mocker.createMock(DefaultIoFilterChainBuilder.class);
+		//nsc.setHandler(new ControladorParceira());
+		//chain.addLast("logger", new LoggingFilter());
+		//chain.addLast("codec", new ProtocolCodecFilter(new MensagemCodecFactory()));
+		//ConnectFuture connectFuture = mocker.createMock(ConnectFuture.class);
+		//IoSession session = mocker.createMock(IoSession.class);
+		//CloseFuture closeFuture = mocker.createMock(CloseFuture.class);
 		
-		//mocking session
-		//Parceira pMock = mocker.createMock(Parceira.class);
+		
+		//EasyMock.expect(nsc.getFilterChain()).andReturn(chain).times(2);
+		//chain.addLast("logger", new LoggingFilter());
+		//EasyMock.expect(nsc.getFilterChain()).andReturn(chain);
+		//chain.addLast("codec", new ProtocolCodecFilter(new MensagemCodecFactory()));
+		
+		//EasyMock.expect(nsc.connect()).andStubReturn(connectFuture);
+		//EasyMock.expect(connectFuture.getSession()).andStubReturn(session);
+		//EasyMock.expect(session.close(true)).andStubReturn(closeFuture);
+		//EasyMock.expect(nsc.getFilterChain()).andReturn(difc);
+		//difc.addaddLast( "logger", new LoggingFilter() )).;
+		//EasyMock.expect(difc.addLast( "codec", new ProtocolCodecFilter( new MensagemCodecFactory() )));
 		
 		
 		
-		MensagemBroker.getInstance().getParceiras().add(pMock);
+		
+		//EasyMock.expect(c.getPorta()).andStubReturn(9090);
+		
+		//ConnectFuture cf = mocker.createMock(ConnectFuture.class);
+		//EasyMock.expect(nsc.connect()).andReturn(cf);
+		
+		
+		ConexaoParceira c = new ConexaoParceira("localhost", 8891);
+		/*ConexaoParceira c = mocker.createMock(ConexaoParceira.class);
+		EasyMock.expect(c.getServidor()).andStubReturn("localhost");
+		EasyMock.expect(c.getPorta()).andStubReturn(9090);
+		c.conectar();
+		c.enviar(entrada);
+		EasyMock.expect(c.receber()).andStubReturn(expected);
+		c.fechar();*/
+		
+		Parceira p = new Parceira("Teste Mocked", c);
+		MensagemBroker.getInstance().getParceiras().add(p);
 		
 		mocker.replay();
 		MensagemBasica retorno = MensagemBroker.getInstance().enviarParceira(entrada);
