@@ -87,47 +87,7 @@ public class MensagemBrokerTest {
 		ContextoMensagem<MensagemBasica> ctxExpected = MensagemFactory.loadContexto(CodigoMensagem.C0460);
 		MensagemBasica expected = ctxExpected.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0460, "criarRespostaCapturaSimplicada.1"));
 		
-		//mocking parceira
-		//SocketConnector nsc = mocker.createMock(SocketConnector.class);
-		//DefaultIoFilterChainBuilder chain = new DefaultIoFilterChainBuilder(); //mocker.createMock(DefaultIoFilterChainBuilder.class);
-		//nsc.setHandler(new ControladorParceira());
-		//chain.addLast("logger", new LoggingFilter());
-		//chain.addLast("codec", new ProtocolCodecFilter(new MensagemCodecFactory()));
-		//ConnectFuture connectFuture = mocker.createMock(ConnectFuture.class);
-		//IoSession session = mocker.createMock(IoSession.class);
-		//CloseFuture closeFuture = mocker.createMock(CloseFuture.class);
-		
-		
-		//EasyMock.expect(nsc.getFilterChain()).andReturn(chain).times(2);
-		//chain.addLast("logger", new LoggingFilter());
-		//EasyMock.expect(nsc.getFilterChain()).andReturn(chain);
-		//chain.addLast("codec", new ProtocolCodecFilter(new MensagemCodecFactory()));
-		
-		//EasyMock.expect(nsc.connect()).andStubReturn(connectFuture);
-		//EasyMock.expect(connectFuture.getSession()).andStubReturn(session);
-		//EasyMock.expect(session.close(true)).andStubReturn(closeFuture);
-		//EasyMock.expect(nsc.getFilterChain()).andReturn(difc);
-		//difc.addaddLast( "logger", new LoggingFilter() )).;
-		//EasyMock.expect(difc.addLast( "codec", new ProtocolCodecFilter( new MensagemCodecFactory() )));
-		
-		
-		
-		
-		//EasyMock.expect(c.getPorta()).andStubReturn(9090);
-		
-		//ConnectFuture cf = mocker.createMock(ConnectFuture.class);
-		//EasyMock.expect(nsc.connect()).andReturn(cf);
-		
-		
 		ConexaoParceira c = new ConexaoParceira("localhost", 8891);
-		/*ConexaoParceira c = mocker.createMock(ConexaoParceira.class);
-		EasyMock.expect(c.getServidor()).andStubReturn("localhost");
-		EasyMock.expect(c.getPorta()).andStubReturn(9090);
-		c.conectar();
-		c.enviar(entrada);
-		EasyMock.expect(c.receber()).andStubReturn(expected);
-		c.fechar();*/
-		
 		Parceira p = new Parceira("Teste Mocked", c);
 		MensagemBroker.getInstance().getParceiras().add(p);
 		
