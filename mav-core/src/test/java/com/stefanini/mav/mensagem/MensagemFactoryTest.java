@@ -40,11 +40,75 @@ public class MensagemFactoryTest {
 		MensagemFactory.parse(null);
 	}
 	
+	@Test
+	public void lerStringCheia() {
+		
+		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
+		String saida = ContextoMensagem.lerStringCheia(entrada, 30, 8);
+		MatcherAssert.assertThat("UILSON  ", Matchers.equalTo(saida));
+	}
+	
+	@Test
+	public void lerString() {
+		
+		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
+		String saida = ContextoMensagem.lerString(entrada, 30, 8);
+		MatcherAssert.assertThat("UILSON", Matchers.equalTo(saida));
+	}
+	
+	@Test
+	public void lerInt() {
+		
+		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
+		Integer saida = ContextoMensagem.lerInt(entrada, 5, 7);
+		MatcherAssert.assertThat(460980, Matchers.equalTo(saida));
+	}
+	
+	@Test
+	public void lerBooleanTrue() {
+		
+		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
+		Boolean saida = ContextoMensagem.lerBoolean(entrada, 19);
+		MatcherAssert.assertThat(true, Matchers.equalTo(saida));
+	}
+	
+	@Test
+	public void lerBooleanFalse() {
+		
+		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
+		Boolean saida = ContextoMensagem.lerBoolean(entrada, 1);
+		MatcherAssert.assertThat(false, Matchers.equalTo(saida));
+	}
+	
+	@Test
+	public void escreverString() {
+		
+		String entrada = "MAV";
+		String expected = entrada.concat("  ");
+		String saida = ContextoMensagem.escreverString(5, entrada);
+		
+		MatcherAssert.assertThat(expected, Matchers.equalTo(saida));
+	}
+	
+	/*protected String lerStringCheia(String input, int inicio, int tamanho) {
+		return input.substring(inicio, inicio + tamanho);
+	}
+	
+	protected String lerString(String input, int inicio, int tamanho) {
+		return lerStringCheia(input, 0, tamanho).trim();
+	}
+	
+	protected Integer lerInt(String input, int inicio, int tamanho) {
+		return Integer.valueOf(lerString(input, 0, tamanho));
+	}*/
+	
 	private SolicitacaoCapturaSimplificada montarSolicitacaoCapturaSimplificada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
-		String messagem = MensagemHelper.lerMensagem(199, 450, "criarCapturaSimplicada.1");
+		String mensagem = MensagemHelper.lerMensagem(199, 450, "criarCapturaSimplicada.1");
 		
-		SolicitacaoCapturaSimplificada m = (SolicitacaoCapturaSimplificada) MensagemFactory.parse(messagem);
+		SolicitacaoCapturaSimplificada m = (SolicitacaoCapturaSimplificada) MensagemFactory.parse(mensagem);
+		MensagemHelper.verificarTamanho(mensagem, m);
+		
 		Cabecalho expected = new Cabecalho();
 		expected.setTamanho(116);
 		expected.setCodigo(CodigoMensagem.C0450);
@@ -54,7 +118,7 @@ public class MensagemFactoryTest {
 		expected.setCodigoRetorno("");
 		expected.setCodigoLojista(170894002);
 		expected.setVersao("9");
-		expected.setCampoLojista("");
+		expected.setCampoLojista(ContextoMensagem.escreverString(30, " "));
 		
 		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
 		
@@ -108,12 +172,13 @@ public class MensagemFactoryTest {
 	@Test
 	public void criarRespostaCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
-		String messagem = MensagemHelper.lerMensagem(946, 460, "criarRespostaCapturaSimplicada.1");
-		assertThat(messagem, notNullValue());
+		String mensagem = MensagemHelper.lerMensagem(946, 460, "criarRespostaCapturaSimplicada.1");
+		assertThat(mensagem, notNullValue());
 		
-		RespostaCapturaSimplificada m = (RespostaCapturaSimplificada) MensagemFactory.parse(messagem);
+		RespostaCapturaSimplificada m = (RespostaCapturaSimplificada) MensagemFactory.parse(mensagem);
 		assertThat(m, notNullValue());
 		
+		MensagemHelper.verificarTamanho(mensagem, m);
 		Cabecalho expected = new Cabecalho();
 		expected.setTamanho(863);
 		expected.setCodigo(CodigoMensagem.C0460);
@@ -123,7 +188,7 @@ public class MensagemFactoryTest {
 		expected.setCodigoRetorno("A0062");
 		expected.setCodigoLojista(170894002);
 		expected.setVersao("9");
-		expected.setCampoLojista("");
+		expected.setCampoLojista(ContextoMensagem.escreverString(30, " "));
 		
 		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
 		
@@ -179,10 +244,63 @@ public class MensagemFactoryTest {
 	}
 	
 	@Test
-	@Ignore
-	public void criarPropostaFinanciamento() {
+	public void criarPropostaFinanciamento() throws IOException, URISyntaxException, MensagemNaoEncontradaException {
 		
-		Assert.fail("Não implementado.");
+		String mensagem = MensagemHelper.lerMensagem(2725, 100, "criarPropostaFinanciamento.1");
+		assertThat(mensagem, notNullValue());
+		
+		PropostaFinanciamento m = (PropostaFinanciamento) MensagemFactory.parse(mensagem);
+		assertThat(m, notNullValue());
+		
+		MensagemHelper.verificarTamanho(mensagem, m);
+		Cabecalho expected = new Cabecalho();
+		expected.setTamanho(2642);
+		expected.setCodigo(CodigoMensagem.C0100);
+		expected.setNumeroTransacao(980009);
+		expected.setNumeroProposta("P4201170358");
+		expected.setCodigoUsuario("UILSON");
+		expected.setCodigoRetorno("");
+		expected.setCodigoLojista(170894002);
+		expected.setVersao("9");
+		expected.setCampoLojista("     TOP 01       6  06       ");
+		
+		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
+		
+		//DADOS DA CONSULTA					
+		/*assertThat(m.getFiller(), is(""));
+		assertThat(m.getMensagemAutorizador(), is("Xx"));
+		assertThat(m.getData(), is(equalTo(UtilsDate.parseDateHora("25082015180815"))));
+		assertThat(m.getCodigoStatusProposta(), is("02"));
+		assertThat(m.getParecer(), is(""));
+		assertThat(m.getProduto(), is("01"));
+		
+		//validação de dados cliente
+		assertThat(m.getDadosPessoais(), notNullValue());
+		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
+		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilsDate.parse("20101944"))));
+		assertThat(m.getDadosPessoais().getComplemento(), notNullValue());
+		assertThat(m.getDadosPessoais().getComplemento().isClienteEmancipado(), is(false));
+		assertThat(m.getDadosPessoais().getComplemento().getCodigoProduto(), is("01"));
+		assertThat(m.getDadosPessoais().isCobraTac(), is(equalTo(false)));
+		assertThat(m.getDadosPessoais().isElegibilidadeSeguro(), is(equalTo(true)));
+		assertThat(m.getDadosPessoais().getCodigoProdutoLosango(), is(equalTo("HSSOR002")));
+		assertThat(m.getDadosPessoais().getQtdNumeroSorte(), is(equalTo(0)));
+		assertThat(m.getDadosPessoais().getFiller(), is(""));
+		
+		//validação de dados operação cartão
+		assertThat(m.getDadosOperacaoCartao(), notNullValue());
+		assertThat(m.getDadosOperacaoCartao().getCodigoOrg(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getCodigoLogo(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getCodigoCampanha(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getCodigoModalidade(), is(""));
+		assertThat(m.getDadosOperacaoCartao().getFiller(), is(equalTo("0000 0000 0000 0000           000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000   ".trim())));*/
+		
+		//validação outros indicadores
+		assertThat(m.getIndicadores(), notNullValue());
+		assertThat(m.getIndicadores().getIdentificadorCanal(), is(equalTo("T")));
+		assertThat(m.getIndicadores().getVersaoCanal(), is("1"));
+		assertThat(m.getIndicadores().getPolitica(), is("2"));
+		assertThat(m.getIndicadores().getAmbiente(), is("HO"));
 	}
 	
 	@Test

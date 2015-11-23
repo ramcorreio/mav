@@ -88,7 +88,7 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 		//0183 a 0183	Flag Cliente Emancipado	1	A	Cliente Emancipado	"0"	X
 		//0184 a 0185	Produto	2	A	Código do Produto	Ver tabela de dominio TOPxProduto	X
 		mensagem.setComplemento(new DadoComplementar());
-		mensagem.getComplemento().setClienteEmancipado(lerBoolean(input.substring(182, 183)));
+		mensagem.getComplemento().setClienteEmancipado(lerBoolean(input, 182));
 		mensagem.getComplemento().setCodigoProduto(input.substring(183, 185).trim());
 		
 		//indicadores

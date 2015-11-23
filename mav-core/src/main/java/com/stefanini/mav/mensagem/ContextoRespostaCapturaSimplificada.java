@@ -49,16 +49,16 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		m.getDadosPessoais().setDataNascimento(UtilsDate.parse(input.substring(280, 288)));
 		m.getDadosPessoais().setComplemento(new DadoComplementar());
 		// 0289 a 0289 ClienteEmancipado 1 A
-		m.getDadosPessoais().getComplemento().setClienteEmancipado(lerBoolean(input.substring(288, 289)));
+		m.getDadosPessoais().getComplemento().setClienteEmancipado(lerBoolean(input, 288));
 
 		// 0290 a 0291 CodProduto 2 A
 		m.getDadosPessoais().getComplemento().setCodigoProduto(input.substring(289, 291));
 
 		// 0292 a 0292 CobraTac 1 A
-		m.getDadosPessoais().setCobraTac(lerBoolean(input.substring(291, 292)));
+		m.getDadosPessoais().setCobraTac(lerBoolean(input, 291));
 
 		// 0293 a 0293 Elegibilidade Seguro 1 A
-		m.getDadosPessoais().setElegibilidadeSeguro(lerBoolean(input.substring(292, 293)));
+		m.getDadosPessoais().setElegibilidadeSeguro(lerBoolean(input, 292));
 
 		// 0294 a 0301 Codigo Produto Losango 8 A
 		m.getDadosPessoais().setCodigoProdutoLosango(input.substring(293, 301));

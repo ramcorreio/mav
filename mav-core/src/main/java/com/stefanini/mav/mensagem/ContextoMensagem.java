@@ -21,49 +21,89 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		Cabecalho c = new Cabecalho();
 		
 		//0001 a 0005	Tam-Mensagem	5	N	Tamanho da Mensagem
-		c.setTamanho(Integer.valueOf(input.substring(0, 5)));
+		c.setTamanho(lerInt(input, 0, 5));
 		
 		//0006 a 0009	Cod-Mensagem	4	N	Código da Mensagem
-		c.setCodigo(CodigoMensagem.parse(input.substring(5, 9)));
+		c.setCodigo(CodigoMensagem.parse(lerStringCheia(input, 5, 4)));
 		
 		//0010 a 0015	Num-Transacao	6	N	Numero da Transação		X
-		c.setNumeroTransacao(Integer.valueOf(input.substring(9, 15)));
+		c.setNumeroTransacao(lerInt(input, 9, 6));
 		
 		//0016 a 0030	Num-Proposta	15	A	Numero da Proposta
-		c.setNumeroProposta(input.substring(15, 30).trim());
+		c.setNumeroProposta(lerString(input, 15, 15));
 		
 		//0031 a 0038	Cod-Usuario	8	A	Usuário responsável pela Mensagem ou Código do Funcionário do Lojista
-		c.setCodigoUsuario(input.substring(30, 38).trim());
+		c.setCodigoUsuario(lerString(input, 30, 8));
 		
 		//0039 a 0043	Cod-Retorno	5	A	Código de Retorno
-		c.setCodigoRetorno(input.substring(38, 43).trim());
+		c.setCodigoRetorno(lerString(input, 38, 5));
 		
 		//0044 a 0052	Cod-Lojista	9	N	Código do Lojista + Código da Filial
-		c.setCodigoLojista(Integer.valueOf(input.substring(43, 52)));
+		c.setCodigoLojista(lerInt(input, 43, 9));
 		
 		//0053 a 0053	Num-Versao	1	A	Número da Versão do Layout
-		c.setVersao(input.substring(52, 53));
+		c.setVersao(lerString(input, 52, 1));
 		
 		//0054 a 0083	Campo-Lojista	30	A	Uso exclusivo do lojista
-		c.setCampoLojista(input.substring(53, 83).trim());
+		c.setCampoLojista(lerStringCheia(input, 53, 30));
 		
 		return c;
 	}
 	
-	protected Boolean lerBoolean(String input) {
-		return Boolean.valueOf(Integer.valueOf(input) != 0);
-	}
-	
-	protected void escreverBoolean(StringBuilder b, int tamanho, Boolean input) {
+	protected static void escreverBoolean(StringBuilder b, int tamanho, Boolean input) {
 		escreverInt(b, tamanho, input ? 1 : 0);
 	}
 	
-	protected void escreverInt(StringBuilder b, int tamanho, Integer input) {
+	protected static void escreverInt(StringBuilder b, int tamanho, Integer input) {
 		b.append(String.format("%0" + tamanho + "d", input));
 	}
 	
-	protected void escreverString(StringBuilder b, int tamanho, String input) {
-		b.append(String.format("%-" + tamanho + "s" , input));
+	protected static void escreverString(StringBuilder b, int tamanho, String input) {
+		b.append(escreverString(tamanho, input));
+	}
+	
+	protected static String escreverString(int tamanho, String input) {
+		return String.format("%-" + tamanho + "s" , input);
+	}
+	
+	/**
+	 * Função que fará a leitura do trecho definido da string sem remoção dos espaços em branco no início e fim
+	 * 
+	 * @param input String para leitura
+	 * @param inicio posição onde inicia a leitura
+	 * @param tamanho tamanho a ser lido
+	 * @return Intervalo lido da string de entrada 
+	 */
+	protected static String lerStringCheia(String input, int inicio, int tamanho) {
+		return input.substring(inicio, inicio + tamanho);
+	}
+	
+	/**
+	 * Função que fará a leitura do trecho definido da string removendo os espaços em branco no início e fim
+	 * 
+	 * @param input String para leitura
+	 * @param inicio posição onde inicia a leitura
+	 * @param tamanho tamanho a ser lido
+	 * @return Intervalo lido da string de entrada 
+	 */
+	protected static String lerString(String input, int inicio, int tamanho) {
+		return lerStringCheia(input, inicio, tamanho).trim();
+	}
+	
+	/**
+	 * Função que fará a leitura do trecho definido da string e converte para inteiro
+	 * 
+	 * @param input String para leitura
+	 * @param inicio posição onde inicia a leitura
+	 * @param tamanho tamanho a ser lido
+	 * @return Intervalo lido da string de entrada 
+	 */
+	protected static Integer lerInt(String input, int inicio, int tamanho) {
+		return Integer.valueOf(lerString(input, inicio, tamanho));
+	}
+	
+	protected static Boolean lerBoolean(String input, int inicio) {
+		return Boolean.valueOf(lerInt(input, inicio, 1) != 0);
 	}
 	
 	private String escreverCabecalho(Cabecalho cabecalho) {

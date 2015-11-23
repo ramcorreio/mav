@@ -14,6 +14,7 @@ import org.junit.Assert;
 
 import com.stefanini.mav.mensagem.Cabecalho;
 import com.stefanini.mav.mensagem.CodigoMensagem;
+import com.stefanini.mav.mensagem.MensagemBasica;
 
 public class MensagemHelper {
 	
@@ -28,6 +29,11 @@ public class MensagemHelper {
 		Assert.assertEquals(tamanho, lido.length());
 		
 		return lido;
+	}
+	
+	public static void verificarTamanho(String input, MensagemBasica mensagem) throws IOException, URISyntaxException {
+		
+		Assert.assertEquals(mensagem.getCabecalho().getTamanho().intValue(), input.substring(83).length());
 	}
 	
 	public static String lerMensagem(CodigoMensagem tipo, String nome) throws IOException, URISyntaxException {
