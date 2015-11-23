@@ -23,8 +23,8 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 	 */
 	private void lerDadoPessoais(String input, SolicitacaoCapturaSimplificada m) throws ParseException {
 		
-		m.setDadosPessoais(new DadoPessoal());
-		m.getDadosPessoais().setCpf(input.substring(83, 94));
+		m.setDadosPessoais(new DadoClienteBasico());
+		m.getDadosPessoais().setCpf(lerString(input, 83, 11));
 		m.getDadosPessoais().setDataNascimento(UtilsDate.parse(input.substring(94, 102)));
 		m.getDadosPessoais().setFiller(input.substring(102, 142).trim());
 	}
@@ -88,7 +88,7 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 		//0183 a 0183	Flag Cliente Emancipado	1	A	Cliente Emancipado	"0"	X
 		//0184 a 0185	Produto	2	A	Código do Produto	Ver tabela de dominio TOPxProduto	X
 		mensagem.setComplemento(new DadoComplementar());
-		mensagem.getComplemento().setClienteEmancipado(lerBoolean(input, 182));
+		mensagem.getComplemento().setEmancipado(lerBoolean(input, 182));
 		mensagem.getComplemento().setCodigoProduto(input.substring(183, 185).trim());
 		
 		//indicadores
@@ -115,7 +115,7 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 		//dados complementares
 		//0183 a 0183	Flag Cliente Emancipado	1	A	Cliente Emancipado	"0"	X
 		//0184 a 0185	Produto	2	A	Código do Produto	Ver tabela de dominio TOPxProduto	X
-		escreverBoolean(b, 1, mensagem.getComplemento().isClienteEmancipado());
+		escreverBoolean(b, 1, mensagem.getComplemento().isEmancipado());
 		escreverString(b, 2, mensagem.getComplemento().getCodigoProduto());
 		
 		//indicadores

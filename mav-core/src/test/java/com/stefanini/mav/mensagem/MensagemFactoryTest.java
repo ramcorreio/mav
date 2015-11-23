@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.util.Date;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -81,6 +82,18 @@ public class MensagemFactoryTest {
 	}
 	
 	@Test
+	public void lerData() throws ParseException {
+		
+		Date expected = UtilsDate.parse("20151808");
+		
+		String entrada = "Xx   2508201518081502                    ";
+		Date saida = ContextoMensagem.lerData(entrada, 9);
+		MatcherAssert.assertThat(expected, Matchers.equalTo(saida));
+	}
+	
+	//m.getDadosPessoais().setDataNascimento(UtilsDate.parse(input.substring(94, 102)));
+	
+	@Test
 	public void escreverString() {
 		
 		String entrada = "MAV";
@@ -90,17 +103,9 @@ public class MensagemFactoryTest {
 		MatcherAssert.assertThat(expected, Matchers.equalTo(saida));
 	}
 	
-	/*protected String lerStringCheia(String input, int inicio, int tamanho) {
-		return input.substring(inicio, inicio + tamanho);
-	}
 	
-	protected String lerString(String input, int inicio, int tamanho) {
-		return lerStringCheia(input, 0, tamanho).trim();
-	}
 	
-	protected Integer lerInt(String input, int inicio, int tamanho) {
-		return Integer.valueOf(lerString(input, 0, tamanho));
-	}*/
+	
 	
 	private SolicitacaoCapturaSimplificada montarSolicitacaoCapturaSimplificada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
@@ -138,7 +143,7 @@ public class MensagemFactoryTest {
 		
 		//validação de Dados Complementares
 		assertThat(m.getComplemento(), notNullValue());
-		assertThat(m.getComplemento().isClienteEmancipado(), is(false));
+		assertThat(m.getComplemento().isEmancipado(), is(false));
 		assertThat(m.getComplemento().getCodigoProduto(), is("01"));
 		
 		//validação outros indicadores
@@ -205,7 +210,7 @@ public class MensagemFactoryTest {
 		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
 		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilsDate.parse("20101944"))));
 		assertThat(m.getDadosPessoais().getComplemento(), notNullValue());
-		assertThat(m.getDadosPessoais().getComplemento().isClienteEmancipado(), is(false));
+		assertThat(m.getDadosPessoais().getComplemento().isEmancipado(), is(false));
 		assertThat(m.getDadosPessoais().getComplemento().getCodigoProduto(), is("01"));
 		assertThat(m.getDadosPessoais().isCobraTac(), is(equalTo(false)));
 		assertThat(m.getDadosPessoais().isElegibilidadeSeguro(), is(equalTo(true)));
@@ -224,7 +229,7 @@ public class MensagemFactoryTest {
 		//validação outros indicadores
 		assertThat(m.getIndicadores(), notNullValue());
 		assertThat(m.getIndicadores().getIdentificadorCanal(), is(equalTo("T")));
-		assertThat(m.getIndicadores().getVersaoCanal(), is("1"));
+		assertThat(m.getIndicadores().getVersaoCanal(), is(ContextoMensagem.escreverString(10, "1")));
 		assertThat(m.getIndicadores().getPolitica(), is("2"));
 		assertThat(m.getIndicadores().getAmbiente(), is("HO"));
 	}
@@ -244,7 +249,7 @@ public class MensagemFactoryTest {
 	}
 	
 	@Test
-	public void criarPropostaFinanciamento() throws IOException, URISyntaxException, MensagemNaoEncontradaException {
+	public void criarPropostaFinanciamento() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
 		String mensagem = MensagemHelper.lerMensagem(2725, 100, "criarPropostaFinanciamento.1");
 		assertThat(mensagem, notNullValue());
@@ -266,29 +271,28 @@ public class MensagemFactoryTest {
 		
 		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
 		
-		//DADOS DA CONSULTA					
-		/*assertThat(m.getFiller(), is(""));
-		assertThat(m.getMensagemAutorizador(), is("Xx"));
-		assertThat(m.getData(), is(equalTo(UtilsDate.parseDateHora("25082015180815"))));
-		assertThat(m.getCodigoStatusProposta(), is("02"));
-		assertThat(m.getParecer(), is(""));
-		assertThat(m.getProduto(), is("01"));
-		
-		//validação de dados cliente
+		//validação de dados pessoais
 		assertThat(m.getDadosPessoais(), notNullValue());
-		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
+		assertThat(m.getDadosPessoais().getTipoPersonalidade(), is(equalTo("F")));
+		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000000")));
 		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilsDate.parse("20101944"))));
-		assertThat(m.getDadosPessoais().getComplemento(), notNullValue());
-		assertThat(m.getDadosPessoais().getComplemento().isClienteEmancipado(), is(false));
-		assertThat(m.getDadosPessoais().getComplemento().getCodigoProduto(), is("01"));
-		assertThat(m.getDadosPessoais().isCobraTac(), is(equalTo(false)));
-		assertThat(m.getDadosPessoais().isElegibilidadeSeguro(), is(equalTo(true)));
-		assertThat(m.getDadosPessoais().getCodigoProdutoLosango(), is(equalTo("HSSOR002")));
-		assertThat(m.getDadosPessoais().getQtdNumeroSorte(), is(equalTo(0)));
-		assertThat(m.getDadosPessoais().getFiller(), is(""));
+		assertThat(m.getDadosPessoais().getUsuarioCpf(), is(equalTo("T")));
+		assertThat(m.getDadosPessoais().getNuDocIdentificacao(), is(equalTo("-1")));
+		assertThat(m.getDadosPessoais().getTpDocIdentificacao(), is(equalTo("-1")));
+		assertThat(m.getDadosPessoais().getOrgaoEmissor(), is(equalTo("-1")));
+		assertThat(m.getDadosPessoais().getUfOrgaoEmissor(), is(equalTo("-1")));
+		
+		//assertThat(m.getDadosPessoais().getComplemento(), notNullValue());
+		//assertThat(m.getDadosPessoais().getComplemento().isClienteEmancipado(), is(false));
+		//assertThat(m.getDadosPessoais().getComplemento().getCodigoProduto(), is("01"));
+		//assertThat(m.getDadosPessoais().isCobraTac(), is(equalTo(false)));
+		//assertThat(m.getDadosPessoais().isElegibilidadeSeguro(), is(equalTo(true)));
+		//assertThat(m.getDadosPessoais().getCodigoProdutoLosango(), is(equalTo("HSSOR002")));
+		//assertThat(m.getDadosPessoais().getQtdNumeroSorte(), is(equalTo(0)));
+		//assertThat(m.getDadosPessoais().getFiller(), is(""));
 		
 		//validação de dados operação cartão
-		assertThat(m.getDadosOperacaoCartao(), notNullValue());
+		/*assertThat(m.getDadosOperacaoCartao(), notNullValue());
 		assertThat(m.getDadosOperacaoCartao().getCodigoOrg(), is(""));
 		assertThat(m.getDadosOperacaoCartao().getCodigoLogo(), is(""));
 		assertThat(m.getDadosOperacaoCartao().getCodigoCampanha(), is(""));
@@ -298,9 +302,9 @@ public class MensagemFactoryTest {
 		//validação outros indicadores
 		assertThat(m.getIndicadores(), notNullValue());
 		assertThat(m.getIndicadores().getIdentificadorCanal(), is(equalTo("T")));
-		assertThat(m.getIndicadores().getVersaoCanal(), is("1"));
-		assertThat(m.getIndicadores().getPolitica(), is("2"));
-		assertThat(m.getIndicadores().getAmbiente(), is("HO"));
+		assertThat(m.getIndicadores().getVersaoCanal(), is(""));
+		assertThat(m.getIndicadores().getPolitica(), is(""));
+		assertThat(m.getIndicadores().getAmbiente(), is(""));
 	}
 	
 	@Test

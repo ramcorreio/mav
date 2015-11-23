@@ -49,7 +49,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		m.getDadosPessoais().setDataNascimento(UtilsDate.parse(input.substring(280, 288)));
 		m.getDadosPessoais().setComplemento(new DadoComplementar());
 		// 0289 a 0289 ClienteEmancipado 1 A
-		m.getDadosPessoais().getComplemento().setClienteEmancipado(lerBoolean(input, 288));
+		m.getDadosPessoais().getComplemento().setEmancipado(lerBoolean(input, 288));
 
 		// 0290 a 0291 CodProduto 2 A
 		m.getDadosPessoais().getComplemento().setCodigoProduto(input.substring(289, 291));
@@ -75,7 +75,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		escreverString(b, 11, m.getDadosPessoais().getCpf());
 		escreverString(b, 8, UtilsDate.format(m.getDadosPessoais().getDataNascimento()));
 		// 0289 a 0289 ClienteEmancipado 1 A
-		escreverBoolean(b, 1, m.getDadosPessoais().getComplemento().isClienteEmancipado());
+		escreverBoolean(b, 1, m.getDadosPessoais().getComplemento().isEmancipado());
 		
 		// 0290 a 0291 CodProduto 2 A
 		escreverString(b, 2, m.getDadosPessoais().getComplemento().getCodigoProduto());
@@ -103,16 +103,16 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		
 		// DADOS DA CONSULTA
 		// 0084 a 0166 Filler 83 A Filler
-		mensagem.setFiller(input.substring(83, 166).trim());
+		mensagem.setFiller(lerString(input, 83, 83).trim());
 
 		// 0167 a 0171 mensagemAutorizador 5 A Parecer do autorizador de crédito
 		// (Política): Parecer / Msg Score / Motivo Aprov/Neg
-		mensagem.setMensagemAutorizador(input.substring(166, 171).trim());
+		mensagem.setMensagemAutorizador(lerString(input, 166, 5));
 
 		// 0172 a 0179 data 8 N Data do Sistema
 		// 0180 a 0185 hora 6 N Hora do Sistema
 		try {
-			mensagem.setData(UtilsDate.parseDateHora(input.substring(171, 185)));
+			mensagem.setData(lerDataHota(input, 171));
 		} catch (ParseException e) {
 			throw new MensagemNaoEncontradaException(e);
 		}
@@ -122,13 +122,13 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		// 02 = A0062 = Elegível (bola verde)
 		// 03 = A0063 = Segue Fluxo, com Pendencia (bola amarela)
 		// 04 = A0064 = Não Elegível (bola vermelha)
-		mensagem.setCodigoStatusProposta(input.substring(185, 187).trim());
+		mensagem.setCodigoStatusProposta(lerString(input, 185, 2));
 
 		// 0188 a 0267 parecer 80 A
-		mensagem.setParecer(input.substring(187, 267).trim());
+		mensagem.setParecer(lerString(input, 187, 80));
 
 		// 0268 a 0269 produto 2 A
-		mensagem.setProduto(input.substring(267, 269).trim());
+		mensagem.setProduto(lerString(input, 267, 2));
 
 		// dados pessoais
 		try {
@@ -143,10 +143,10 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 
 		// indicadores
 		mensagem.setIndicadores(new Indicador());
-		mensagem.getIndicadores().setIdentificadorCanal(input.substring(932, 933).trim());
-		mensagem.getIndicadores().setVersaoCanal(input.substring(933, 943).trim());
-		mensagem.getIndicadores().setPolitica(input.substring(934, 944).trim());
-		mensagem.getIndicadores().setAmbiente(input.substring(944, 946).trim());
+		mensagem.getIndicadores().setIdentificadorCanal(lerString(input, 932, 1));
+		mensagem.getIndicadores().setVersaoCanal(lerStringCheia(input, 933, 10));
+		mensagem.getIndicadores().setPolitica(lerString(input, 943, 1));
+		mensagem.getIndicadores().setAmbiente(lerString(input, 944, 2));
 	}
 
 	@Override

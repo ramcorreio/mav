@@ -29,7 +29,7 @@ public class MensagemSerializeTest {
 		
 		SolicitacaoCapturaSimplificada scs = new SolicitacaoCapturaSimplificada(Long.toString(System.currentTimeMillis()), c);
 		
-		scs.setDadosPessoais(new DadoPessoal());
+		scs.setDadosPessoais(new DadoClienteBasico());
 		scs.getDadosPessoais().setCpf("00000000191");
 		scs.getDadosPessoais().setDataNascimento(UtilsDate.parse("01011960"));
 		scs.getDadosPessoais().setFiller("");
@@ -44,7 +44,7 @@ public class MensagemSerializeTest {
 		
 		//validação de Dados Complementares
 		scs.setComplemento(new DadoComplementar());
-		scs.getComplemento().setClienteEmancipado(false);
+		scs.getComplemento().setEmancipado(false);
 		scs.getComplemento().setCodigoProduto("01");
 		
 		//validação outros indicadores
@@ -91,7 +91,7 @@ public class MensagemSerializeTest {
 		rcs.getDadosPessoais().setCpf("00000000191");
 		rcs.getDadosPessoais().setDataNascimento(UtilsDate.parse("20101944"));
 		rcs.getDadosPessoais().setComplemento(new DadoComplementar());
-		rcs.getDadosPessoais().getComplemento().setClienteEmancipado(false);
+		rcs.getDadosPessoais().getComplemento().setEmancipado(false);
 		rcs.getDadosPessoais().getComplemento().setCodigoProduto("01");
 		rcs.getDadosPessoais().setCobraTac(false);
 		rcs.getDadosPessoais().setElegibilidadeSeguro(true);

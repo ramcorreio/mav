@@ -4,6 +4,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.util.Date;
+
+import com.stefanini.mav.util.UtilsDate;
 
 public abstract class ContextoMensagem<M extends MensagemBasica> {
 	
@@ -104,6 +108,14 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 	
 	protected static Boolean lerBoolean(String input, int inicio) {
 		return Boolean.valueOf(lerInt(input, inicio, 1) != 0);
+	}
+	
+	protected static Date lerData(String input, int inicio) throws ParseException {
+		return UtilsDate.parse(lerString(input, inicio, 8));
+	}
+	
+	protected static Date lerDataHota(String input, int inicio) throws ParseException {
+		return UtilsDate.parseDateHora(lerString(input, inicio, 14));
 	}
 	
 	private String escreverCabecalho(Cabecalho cabecalho) {

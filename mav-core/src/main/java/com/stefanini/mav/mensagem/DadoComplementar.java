@@ -6,16 +6,16 @@ public class DadoComplementar implements Serializable {
 
 	private static final long serialVersionUID = -3527343656488827048L;
 
-	private boolean clienteEmancipado;
+	private boolean emancipado;
 
 	private String codigoProduto;
 
-	public boolean isClienteEmancipado() {
-		return clienteEmancipado;
+	public boolean isEmancipado() {
+		return emancipado;
 	}
 
-	protected void setClienteEmancipado(boolean clienteEmancipado) {
-		this.clienteEmancipado = clienteEmancipado;
+	protected void setEmancipado(boolean emancipado) {
+		this.emancipado = emancipado;
 	}
 
 	public String getCodigoProduto() {
