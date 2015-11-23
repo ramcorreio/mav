@@ -18,11 +18,9 @@ import com.stefanini.mav.mensagem.MensagemBasica;
 
 public class ConexaoParceira {
 
-	// private static final int BUFFER = 128;
+	private static final int FATOR_TIMEOUT = 10;
 
-	private static final int FATOR_TIMEOUT = 10; // 15 seconds
-
-	private static final int TIMEOUT = FATOR_TIMEOUT * 1000; // 15 seconds
+	private static final int TIMEOUT = FATOR_TIMEOUT * 1000; // 10 seconds
 
 	private static Logger logger = LoggerFactory.getLogger(ConexaoParceira.class);
 

@@ -4,8 +4,6 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<import resource="classpath:mav-service-context.xml" />
-	
 	<bean id="trapHandler" class="com.stefanini.mav.simulador.Losango" />
 	<bean id="inputCodec" class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" />
 	<bean id="inputPort" class="java.lang.Integer">

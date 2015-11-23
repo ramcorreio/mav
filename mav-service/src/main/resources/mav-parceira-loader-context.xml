@@ -11,13 +11,17 @@
 					<value>java.util.LinkedList</value>
                 </property>
                 <property name="sourceList">
-                	<!-- <list value-type="com.stefanini.mav.service.Parceira">
+                	<list value-type="com.stefanini.mav.service.Parceira">
 						<bean class="com.stefanini.mav.service.Parceira">
 							<constructor-arg value="Losango Fake"/>
-							<constructor-arg value="localhost"/>
-							<constructor-arg value="9089"/>
+							<constructor-arg>
+								<bean class="com.stefanini.mav.tcp.ConexaoParceira">
+									<constructor-arg value="localhost"/>
+									<constructor-arg value="9089"/>	
+								</bean>
+							</constructor-arg>
 						</bean>
-					</list> -->
+					</list>
 				</property>
 			</bean>
 		</property>

@@ -11,6 +11,6 @@
 	<bean id="inputPort" class="java.lang.Integer">
 		<constructor-arg value="8889" />
 	</bean>
-	<import resource="classpath:mav-deamon-template.xml" />	
-
+	<import resource="classpath:mav-deamon-template.xml" />
+	<import resource="classpath:mav-parceira-loader-context.xml" />
 </beans>
