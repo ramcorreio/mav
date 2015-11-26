@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.LinkedList;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -17,6 +18,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 import com.stefanini.mav.util.MensagemHelper;
 import com.stefanini.mav.util.UtilsDate;
 
@@ -257,30 +259,122 @@ public class MensagemFactoryTest {
 		PropostaFinanciamento m = (PropostaFinanciamento) MensagemFactory.parse(mensagem);
 		assertThat(m, notNullValue());
 		
-		MensagemHelper.verificarTamanho(mensagem, m);
-		Cabecalho expected = new Cabecalho();
-		expected.setTamanho(2642);
-		expected.setCodigo(CodigoMensagem.C0100);
-		expected.setNumeroTransacao(980009);
-		expected.setNumeroProposta("P4201170358");
-		expected.setCodigoUsuario("UILSON");
-		expected.setCodigoRetorno("");
-		expected.setCodigoLojista(170894002);
-		expected.setVersao("9");
-		expected.setCampoLojista("     TOP 01       6  06       ");
+		Cabecalho cabecalhoEsperado = new Cabecalho();
+		cabecalhoEsperado.setSentidoFluxo(Fluxo.ENTRADA);
+		cabecalhoEsperado.setTamanho(2642);
+		cabecalhoEsperado.setCodigo(CodigoMensagem.C0100);
+		cabecalhoEsperado.setNumeroTransacao(980009);
+		cabecalhoEsperado.setNumeroProposta("P4201170358");
+		cabecalhoEsperado.setCodigoUsuario("UILSON");
+		cabecalhoEsperado.setCodigoRetorno("");
+		cabecalhoEsperado.setCodigoLojista(170894002);
+		cabecalhoEsperado.setVersao("9");
+		cabecalhoEsperado.setCampoLojista("     TOP 01       6  06       ");
 		
-		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
+		PropostaFinanciamento esperado = new PropostaFinanciamento(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
 		
 		//validação de dados pessoais
-		assertThat(m.getDadosPessoais(), notNullValue());
-		assertThat(m.getDadosPessoais().getTipoPersonalidade(), is(equalTo("F")));
-		assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000000")));
-		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilsDate.parse("20101944"))));
-		assertThat(m.getDadosPessoais().getUsuarioCpf(), is(equalTo("T")));
-		assertThat(m.getDadosPessoais().getNuDocIdentificacao(), is(equalTo("-1")));
-		assertThat(m.getDadosPessoais().getTpDocIdentificacao(), is(equalTo("-1")));
-		assertThat(m.getDadosPessoais().getOrgaoEmissor(), is(equalTo("-1")));
-		assertThat(m.getDadosPessoais().getUfOrgaoEmissor(), is(equalTo("-1")));
+		esperado.setDadosPessoais(new DadoClienteDetalhado());
+		esperado.getDadosPessoais().setTipoPersonalidade("F");
+		esperado.getDadosPessoais().setCpf("00000000000");
+		esperado.getDadosPessoais().setUsuarioCpf("T");
+		esperado.getDadosPessoais().setDocumentoIdentificacao(new Documento());
+		esperado.getDadosPessoais().getDocumentoIdentificacao().setNuDocIdentificacao("201570496  0");
+		esperado.getDadosPessoais().getDocumentoIdentificacao().setTpDocIdentificacao("01");
+		esperado.getDadosPessoais().getDocumentoIdentificacao().setOrgaoEmissor("SSP");
+		esperado.getDadosPessoais().getDocumentoIdentificacao().setUfOrgaoEmissor("MS");
+		esperado.getDadosPessoais().getDocumentoIdentificacao().setDataEmissao(UtilsDate.parse("06072001"));
+		
+		esperado.getDadosPessoais().setConjugeCompoeRenda(false);
+		esperado.getDadosPessoais().setNome("PROPOSTA TESTE");
+		esperado.getDadosPessoais().setLocalNascimento("CAMPO GRANDE");
+		esperado.getDadosPessoais().setDataNascimento(UtilsDate.parse("20101944"));
+		esperado.getDadosPessoais().setSexo("F");
+		esperado.getDadosPessoais().setNacionalidade("0");
+		esperado.getDadosPessoais().setNaturalidade("CAMPO GRANDE");
+		esperado.getDadosPessoais().setNomeMae("MARIA DO CARMO PINHEIRO NE");
+		esperado.getDadosPessoais().setNomePai("LEANDRO NE");
+		esperado.getDadosPessoais().setCarteiraProfissional(ContextoMensagem.lerInt("00000", 0, 5));
+		esperado.getDadosPessoais().setSerieCarteiraProfissional("00000");
+		esperado.getDadosPessoais().setEstadoCivil(1);
+		esperado.getDadosPessoais().setEndereco(new Endereco());
+		esperado.getDadosPessoais().setTipoTelefone(1);
+		esperado.getDadosPessoais().setTipoResidencia(1);
+		esperado.getDadosPessoais().setResideDesde(UtilsDate.parse("092015"));
+		esperado.getDadosPessoais().setCelular(new Telefone());
+		esperado.getDadosPessoais().setEmail("slkdjsalk@skjdaskjd.com");
+		esperado.getDadosPessoais().setPossuiPatrimonio(true);
+		esperado.getDadosPessoais().setPatrimonio(new LinkedList<Patrimonio>());
+		esperado.getDadosPessoais().getPatrimonio().add(new Patrimonio());
+		esperado.getDadosPessoais().getPatrimonio().get(0).setNome("Meu");
+		esperado.getDadosPessoais().getPatrimonio().get(0).setTipo("Opa");
+		esperado.getDadosPessoais().getPatrimonio().get(0).setValor(100.00);
+		esperado.getDadosPessoais().getPatrimonio().get(0).setOrigem("1");
+		
+		esperado.getDadosPessoais().setFiller("");
+		esperado.getDadosPessoais().setCodigoPais("");
+		esperado.getDadosPessoais().setUFNaturalidade("");
+		esperado.getDadosPessoais().getDocumentoIdentificacao().setDataVancimento(UtilsDate.parse("10102015"));
+		esperado.getDadosPessoais().setEmancipado(true);
+		esperado.getDadosPessoais().setFiller2("");
+		
+
+
+		
+		//0300 a 0339	Logradouro	40	A	Logradouro da residência do cliente		X
+		//0340 a 0344	Numero	5	A	Numero do logradouro		X
+		//0345 a 0359	Complemento	15	A	Complemento do logradouro		
+		//0360 a 0379	Bairro	20	A	Bairro endereço residencial		X
+		//0380 a 0399	Cidade	20	A	Cidade endereço residencial		X
+		//0400 a 0401	UF	2	A	Abreviação do Estado onde o cliente reside		X
+		//0402 a 0409	CEP	8	N	CEP endereço residencial		X
+		//0410 a 0412	DDD	3	N	DDD telefone residencial		X
+		//0413 a 0421	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+		//Exemplos:
+		//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+		//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+		//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+		//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+		//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		X
+		//0422 a 0425	Ramal	4	N	Ramal do telefone residencial do cliente		
+		//0426 a 0426	Tipo Telefone	1	N	Informar o Tipo de telefone	Ver tabela de dominio Tipo de Telefone	X
+		//0427 a 0427	Tipo Residencia	1	N	Informar o Tipo de Residencia	Ver tabela de dominio Tip de Residencia	X
+		//0428 a 0433	Reside desde	6	N	MMAAAA		
+		//0434 a 0436	DDD Celular	3	N			X.
+		//0437 a 0445	Telefone Celular	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+		//Exemplos:
+		//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+		//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+		//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+		//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+		//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		X.
+		//0446 a 0505	Email	60	A			
+		//0506 a 0506	Cliente Possui Patrimonio?	1	N	Campo que o Clinte indica se possui Patrimonios, caso a opção escolhida seja “Sim”, deverão ser informados pelo menos um Patrimonio, composto por : “Tipo de Patrimônio”, “Patrimônio” e “Valor do Patrimônio”.	 0 - Não     1 - Sim 	
+		//0507 a 0507	Tipo de Patrimonio 1	1	A	Deverá ser informado o Tipo de Patrimônio	"“1” - “Bens Móveis” e/ou
+		//“2” - “Bens Imóveis”"	Enviar em branco se o "cliente possue patrimonio = 0"
+		//0508 a 0512	Patrimonio 1	5	A	Dever ser informado a característica do patrimônio. 	Tabela de Dominio Patrimonio	Enviar em branco se o "cliente possue patrimonio = 0"
+		//0513 a 0523	Valor do Patrimonio 1	11	N	Dever informado o valor do Bem	9 inteiros e 2 decimais	Enviar em zerado se o "cliente possue patrimonio = 0"
+		//0524 a 0524	Tipo de Patrimonio 2	1	A	Deverá ser informado o Tipo de Patrimônio	"“1” - “Bens Móveis” e/ou
+		//“2” - “Bens Imóveis”"	Enviar em branco se o "cliente possue patrimonio = 0"
+		//0525 a 0529	Patrimonio 2	5	A	Dever ser informado a característica do patrimônio. 	Tabela de Dominio Patrimonio	Enviar em branco se o "cliente possue patrimonio = 0"
+		//0530 a 0540	Valor do Patrimonio 2	11	N	Dever informado o valor do Bem	9 inteiros e 2 decimais	Enviar em zerado se o "cliente possue patrimonio = 0"
+		//0541 a 0541	Tipo de Patrimonio 3	1	A	Deverá ser informado o Tipo de Patrimônio	"“1” - “Bens Móveis” e/ou
+		//“2” - “Bens Imóveis”"	Enviar em branco se o "cliente possue patrimonio = 0"
+		//0542 a 0546	Patrimonio 3	5	A	Dever ser informado a característica do patrimônio. 	Tabela de Dominio Patrimonio	Enviar em branco se o "cliente possue patrimonio = 0"
+		//0547 a 0557	Valor do Patrimonio 3	11	N	Dever informado o valor do Bem	9 inteiros e 2 decimais	Enviar em zerado se o "cliente possue patrimonio = 0"
+		//0558 a 0558	Tipo de Patrimonio 4	1	A	Deverá ser informado o Tipo de Patrimônio	"“1” - “Bens Móveis” e/ou
+		//“2” - “Bens Imóveis”"	Enviar em branco se o "cliente possue patrimonio = 0"
+		//0559 a 0563	Patrimonio 4	5	A	Dever ser informado a característica do patrimônio. 	Tabela de Dominio Patrimonio	Enviar em branco se o "cliente possue patrimonio = 0"
+		//0564 a 0574	Valor do Patrimonio 4	11	N	Dever informado o valor do Bem	9 inteiros e 2 decimais	Enviar em zerado se o "cliente possue patrimonio = 0"
+		//0575 a 0575	Filler	1	A			
+		//0576 a 0577	Código do País (informar se nacionalidade = estrangeiro)	2	A	Tabela de Paises	Ver tabela de Dominio Paises	X. Se Nacionalidade = Estrangeiro
+		//0578 a 0579	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF	Ver tabela de dominio UF	X. Se Nacionalidade = Brasileiro
+		//0580 a 0587	Data de Vencimento do Documento de identificação	8	A			X, se o tipo do documento for: 02, 03 e 09
+		//0588 a 0588	Flag Emancipado	1	A		0 - Nao 1 - Sim	X
+		//0589 a 0589	Origem do patrimonio 1	1	A			
+		//0590 a 0590	Origem do patrimonio 2	1	A			
+		//0591 a 0591	Origem do patrimonio 3	1	A			
+		//0592 a 0592	Origem do patrimonio 4	1	A
 		
 		//assertThat(m.getDadosPessoais().getComplemento(), notNullValue());
 		//assertThat(m.getDadosPessoais().getComplemento().isClienteEmancipado(), is(false));
@@ -300,11 +394,13 @@ public class MensagemFactoryTest {
 		assertThat(m.getDadosOperacaoCartao().getFiller(), is(equalTo("0000 0000 0000 0000           000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000   ".trim())));*/
 		
 		//validação outros indicadores
-		assertThat(m.getIndicadores(), notNullValue());
-		assertThat(m.getIndicadores().getIdentificadorCanal(), is(equalTo("T")));
-		assertThat(m.getIndicadores().getVersaoCanal(), is(""));
-		assertThat(m.getIndicadores().getPolitica(), is(""));
-		assertThat(m.getIndicadores().getAmbiente(), is(""));
+		esperado.setIndicadores(new Indicador());
+		esperado.getIndicadores().setIdentificadorCanal("T");
+		esperado.getIndicadores().setVersaoCanal("");
+		esperado.getIndicadores().setPolitica("");
+		esperado.getIndicadores().setAmbiente("");
+		
+		assertThat(esperado, Matchers.samePropertyValuesAs(m));
 	}
 	
 	@Test

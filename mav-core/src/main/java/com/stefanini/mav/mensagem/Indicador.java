@@ -13,6 +13,21 @@ public class Indicador implements Serializable {
 	private String politica;
 	
 	private String ambiente;
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(!Indicador.class.isInstance(obj)) {
+			return false;
+		}
+		
+		Indicador outro = Indicador.class.cast(obj);
+		
+		return identificadorCanal.equals(outro.identificadorCanal)
+				&& versaoCanal.equals(outro.versaoCanal)
+				&& politica.equals(outro.politica)
+				&& ambiente.equals(outro.ambiente);
+	}
 
 	public String getIdentificadorCanal() {
 		return identificadorCanal;

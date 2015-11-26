@@ -49,6 +49,28 @@ public class Cabecalho implements Serializable {
 	protected Cabecalho() {
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(!Cabecalho.class.isInstance(obj)) {
+			
+			return false;
+		}
+		
+		Cabecalho outro = Cabecalho.class.cast(obj);
+		
+		return sentidoFluxo.equals(outro.sentidoFluxo)
+				&& tamanho.equals(outro.tamanho)
+				&& codigo.equals(outro.codigo)
+				&& numeroTransacao.equals(outro.numeroTransacao)
+				&& numeroProposta.equals(outro.numeroProposta)
+				&& codigoUsuario.equals(outro.codigoUsuario)
+				&& codigoRetorno.equals(outro.codigoRetorno)
+				&& codigoLojista.equals(outro.codigoLojista)
+				&& versao.equals(outro.versao)
+				&& campoLojista.equals(outro.campoLojista);
+	}
+	
 	public Fluxo getSentidoFluxo() {
 		return sentidoFluxo;
 	}

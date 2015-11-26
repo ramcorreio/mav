@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -106,12 +108,30 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		return Integer.valueOf(lerString(input, inicio, tamanho));
 	}
 	
+	protected static Double lerDouble(String input, int inicio, int tamanho) throws ParseException {
+		
+		NumberFormat formmatter = DecimalFormat.getInstance();
+		formmatter.setGroupingUsed(false);
+		formmatter.setMaximumIntegerDigits(9);
+		formmatter.setMaximumFractionDigits(2);
+		return new Double(formmatter.parse(lerString(input, inicio, tamanho)).doubleValue());
+	}
+	
 	protected static Boolean lerBoolean(String input, int inicio) {
-		return Boolean.valueOf(lerInt(input, inicio, 1) != 0);
+		try {
+			return Boolean.valueOf(lerInt(input, inicio, 1) != 0);	
+		}
+		catch(NumberFormatException e) {
+			return false;
+		}
 	}
 	
 	protected static Date lerData(String input, int inicio) throws ParseException {
-		return UtilsDate.parse(lerString(input, inicio, 8));
+		return lerData(input, inicio, 8);
+	}
+	
+	protected static Date lerData(String input, int inicio, int tamanho) throws ParseException {
+		return UtilsDate.parse(lerString(input, inicio, tamanho));
 	}
 	
 	protected static Date lerDataHota(String input, int inicio) throws ParseException {
