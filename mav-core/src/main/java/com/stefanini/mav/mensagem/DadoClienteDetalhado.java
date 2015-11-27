@@ -71,15 +71,21 @@ public class DadoClienteDetalhado extends DadoClienteBasico {
 
 		DadoClienteDetalhado outro = DadoClienteDetalhado.class.cast(obj);
 
-		return emancipado == outro.emancipado && tipoPersonalidade.equals(outro.tipoPersonalidade)
-				&& usuarioCpf.equals(outro.usuarioCpf) && documentoIdentificacao.equals(outro.documentoIdentificacao)
-				&& conjugeCompoeRenda.equals(outro.conjugeCompoeRenda) && nome.equals(outro.nome)
-				&& localNascimento.equals(outro.localNascimento) && sexo.equals(outro.sexo)
-				&& nacionalidade.equals(outro.nacionalidade) && naturalidade.equals(outro.naturalidade)
-				&& nomeMae.equals(outro.nomeMae) && nomePai.equals(outro.nomePai)
+		return emancipado == outro.emancipado 
+				&& tipoPersonalidade.equals(outro.tipoPersonalidade)
+				&& usuarioCpf.equals(outro.usuarioCpf) 
+				&& documentoIdentificacao.equals(outro.documentoIdentificacao)/*
+				&& conjugeCompoeRenda.equals(outro.conjugeCompoeRenda) 
+				&& nome.equals(outro.nome)
+				&& localNascimento.equals(outro.localNascimento) 
+				&& sexo.equals(outro.sexo)
+				&& nacionalidade.equals(outro.nacionalidade) 
+				&& naturalidade.equals(outro.naturalidade)
+				&& nomeMae.equals(outro.nomeMae) 
+				&& nomePai.equals(outro.nomePai)
 				&& carteiraProfissional.equals(outro.carteiraProfissional)
 				&& serieCarteiraProfissional.equals(outro.serieCarteiraProfissional)
-				&& estadoCivil.equals(outro.estadoCivil);
+				&& estadoCivil.equals(outro.estadoCivil)*/;
 	}
 
 	public boolean isEmancipado() {

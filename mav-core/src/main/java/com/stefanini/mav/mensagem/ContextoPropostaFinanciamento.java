@@ -100,13 +100,13 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		m.getDadosPessoais().getEndereco().setNumero(lerString(input, 339, 5));
 		
 		//0345 a 0359	Complemento	15	A	Complemento do logradouro
-		m.getDadosPessoais().getEndereco().setComplemento(lerString(input, 344, 359));
+		m.getDadosPessoais().getEndereco().setComplemento(lerString(input, 344, 15));
 		
 		//0360 a 0379	Bairro	20	A	Bairro endereço residencial		X
-		m.getDadosPessoais().getEndereco().setBairro(lerString(input, 359, 379));
+		m.getDadosPessoais().getEndereco().setBairro(lerString(input, 359, 20));
 		
 		//0380 a 0399	Cidade	20	A	Cidade endereço residencial		X
-		m.getDadosPessoais().getEndereco().setCidade(lerString(input, 379, 399));
+		m.getDadosPessoais().getEndereco().setCidade(lerString(input, 379, 20));
 		
 		//0400 a 0401	UF	2	A	Abreviação do Estado onde o cliente reside		X
 		m.getDadosPessoais().getEndereco().setUf(lerString(input, 399, 2));
@@ -119,10 +119,10 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		m.getDadosPessoais().getTelefone().setDdd(lerInt(input, 409, 3));
 		
 		//0413 a 0421	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
-		m.getDadosPessoais().getTelefone().setDdd(lerInt(input, 412, 9));
+		m.getDadosPessoais().getTelefone().setNumero(lerInt(input, 412, 9));
 		
 		//0422 a 0425	Ramal	4	N	Ramal do telefone residencial do cliente
-		m.getDadosPessoais().getTelefone().setRamal(lerInt(input, 422, 4));
+		m.getDadosPessoais().getTelefone().setRamal(lerInt(input, 421, 4));
 		
 		//0426 a 0426	Tipo Telefone	1	N	Informar o Tipo de telefone	Ver tabela de dominio Tipo de Telefone	X
 		m.getDadosPessoais().setTipoTelefone(lerInt(input, 425, 1));
@@ -131,7 +131,7 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		m.getDadosPessoais().setTipoResidencia(lerInt(input, 426, 1));
 		
 		//0428 a 0433	Reside desde	6	N	MMAAAA
-		m.getDadosPessoais().setResideDesde(lerData(input, 427));
+		m.getDadosPessoais().setResideDesde(lerDataCurta(input, 427));
 		
 		m.getDadosPessoais().setCelular(new Telefone());
 		//0434 a 0436	DDD Celular	3	N			X.
@@ -219,7 +219,7 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		}
 		
 		//0593 a 0625	Filler	33	A
-		m.getDadosPessoais().setFiller(lerString(input, 592, 33));
+		m.getDadosPessoais().setFiller2(lerString(input, 592, 33));
 
 	}
 

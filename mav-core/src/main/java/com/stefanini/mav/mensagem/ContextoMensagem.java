@@ -126,6 +126,10 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		}
 	}
 	
+	protected static Date lerDataCurta(String input, int inicio) throws ParseException {
+		return UtilsDate.parse("01" + lerString(input, inicio, 6));
+	}
+	
 	protected static Date lerData(String input, int inicio) throws ParseException {
 		return lerData(input, inicio, 8);
 	}

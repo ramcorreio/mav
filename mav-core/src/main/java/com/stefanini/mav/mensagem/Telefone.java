@@ -17,7 +17,7 @@ public class Telefone {
 		}
 		
 		Telefone outro = Telefone.class.cast(obj);		
-		return ddd == outro.ddd && numero == outro.numero && ramal == outro.ramal;
+		return ddd.equals(outro.ddd) && numero.equals(outro.numero) && (ramal == null ? ramal == outro.ramal : ramal.equals(outro.ramal));
 	}
 	
 	public Integer getDdd() {

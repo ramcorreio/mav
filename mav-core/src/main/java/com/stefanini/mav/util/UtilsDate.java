@@ -7,14 +7,18 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class UtilsDate {
+	
+	private static final String MASK_SHORT = "MMyyyy";
 
-	private static final String MASK_DATE = "ddMMyyyy";
+	private static final String MASK_DATE = "dd".concat(MASK_SHORT);
 	
-	private static final String MASK_TIME = "HHmmss";
+	private static final String MASK_TIME = MASK_DATE.concat("HHmmss");
 	
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat(MASK_DATE);
+	public static final SimpleDateFormat DATE_FORMAT_SHORT = new SimpleDateFormat(MASK_SHORT);
 	
-	private static SimpleDateFormat dateTimeFormat = new SimpleDateFormat(MASK_DATE.concat(MASK_TIME));
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(MASK_DATE);
+	
+	public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(MASK_TIME);
 
 	private UtilsDate() {
 	}
@@ -26,27 +30,32 @@ public class UtilsDate {
 
 	public static String format(Date date) {
 
-		return format(date, dateFormat);
+		return format(date, DATE_FORMAT);
 	}
 	
 	public static String formatDateTime(Date date) {
 
-		return format(date, dateTimeFormat);
+		return format(date, DATE_TIME_FORMAT);
 	}
 	
 	public static Date parse(String input) throws ParseException {
 		
-		Calendar cal = parse(input, dateFormat);
+		return parse(input, DATE_FORMAT);
+	}
+	
+	public static Date parse(String input, DateFormat format) throws ParseException {
+		
+		Calendar cal = parseToCalendar(input, format);
 		zerarHora(cal);
 		return cal.getTime();
 	}
 	
 	public static Date parseDateHora(String input) throws ParseException {
 		
-		return parse(input, dateTimeFormat).getTime();
+		return parseToCalendar(input, DATE_TIME_FORMAT).getTime();
 	}
 
-	private static Calendar parse(String input, DateFormat format) throws ParseException {
+	private static Calendar parseToCalendar(String input, DateFormat format) throws ParseException {
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(format.parse(input));

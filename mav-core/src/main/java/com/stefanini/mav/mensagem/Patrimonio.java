@@ -13,6 +13,21 @@ public class Patrimonio implements Serializable {
 	private Double valor;
 	
 	private String origem;
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(!Patrimonio.class.isInstance(obj)) {
+			
+			return false;
+		}
+		
+		Patrimonio outro = Patrimonio.class.cast(obj);
+		return tipo.equals(outro.tipo)
+				&& nome.equals(outro.nome)
+				&& valor.equals(outro.nome)
+				&& origem.equals(outro.origem);
+	}
 
 	public String getTipo() {
 		return tipo;

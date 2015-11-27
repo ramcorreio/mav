@@ -297,25 +297,43 @@ public class MensagemFactoryTest {
 		esperado.getDadosPessoais().setCarteiraProfissional(ContextoMensagem.lerInt("00000", 0, 5));
 		esperado.getDadosPessoais().setSerieCarteiraProfissional("00000");
 		esperado.getDadosPessoais().setEstadoCivil(1);
+		
 		esperado.getDadosPessoais().setEndereco(new Endereco());
+		esperado.getDadosPessoais().getEndereco().setLogradouro("RUA ITAQUERA");
+		esperado.getDadosPessoais().getEndereco().setNumero("68");
+		esperado.getDadosPessoais().getEndereco().setComplemento("");
+		esperado.getDadosPessoais().getEndereco().setBairro("FLAMBOYANT");
+		esperado.getDadosPessoais().getEndereco().setCidade("CAMPO GRANDE");
+		esperado.getDadosPessoais().getEndereco().setUf("MS");
+		esperado.getDadosPessoais().getEndereco().setCep(23585361);
+		
+		esperado.getDadosPessoais().setTelefone(new Telefone());
+		esperado.getDadosPessoais().getTelefone().setDdd(6);
+		esperado.getDadosPessoais().getTelefone().setNumero(730264981);
+		esperado.getDadosPessoais().getTelefone().setRamal(0);
+		
 		esperado.getDadosPessoais().setTipoTelefone(1);
 		esperado.getDadosPessoais().setTipoResidencia(1);
-		esperado.getDadosPessoais().setResideDesde(UtilsDate.parse("092015"));
+		esperado.getDadosPessoais().setResideDesde(UtilsDate.parse("01052008"));
+		
 		esperado.getDadosPessoais().setCelular(new Telefone());
-		esperado.getDadosPessoais().setEmail("slkdjsalk@skjdaskjd.com");
-		esperado.getDadosPessoais().setPossuiPatrimonio(true);
+		esperado.getDadosPessoais().getCelular().setDdd(6);
+		esperado.getDadosPessoais().getCelular().setNumero(792169260);
+		
+		esperado.getDadosPessoais().setEmail("tpne@hotmail.com");
+		esperado.getDadosPessoais().setPossuiPatrimonio(false);
 		esperado.getDadosPessoais().setPatrimonio(new LinkedList<Patrimonio>());
-		esperado.getDadosPessoais().getPatrimonio().add(new Patrimonio());
+		/*esperado.getDadosPessoais().getPatrimonio().add(new Patrimonio());
 		esperado.getDadosPessoais().getPatrimonio().get(0).setNome("Meu");
 		esperado.getDadosPessoais().getPatrimonio().get(0).setTipo("Opa");
 		esperado.getDadosPessoais().getPatrimonio().get(0).setValor(100.00);
-		esperado.getDadosPessoais().getPatrimonio().get(0).setOrigem("1");
+		esperado.getDadosPessoais().getPatrimonio().get(0).setOrigem("1");*/
 		
 		esperado.getDadosPessoais().setFiller("");
 		esperado.getDadosPessoais().setCodigoPais("");
-		esperado.getDadosPessoais().setUFNaturalidade("");
-		esperado.getDadosPessoais().getDocumentoIdentificacao().setDataVancimento(UtilsDate.parse("10102015"));
-		esperado.getDadosPessoais().setEmancipado(true);
+		esperado.getDadosPessoais().setUFNaturalidade("MS");
+		esperado.getDadosPessoais().getDocumentoIdentificacao().setDataVancimento(null);
+		esperado.getDadosPessoais().setEmancipado(false);
 		esperado.getDadosPessoais().setFiller2("");
 		
 
@@ -400,6 +418,12 @@ public class MensagemFactoryTest {
 		esperado.getIndicadores().setPolitica("");
 		esperado.getIndicadores().setAmbiente("");
 		
+		assertThat(esperado.getCabecalho(), Matchers.samePropertyValuesAs(m.getCabecalho()));
+		assertThat(esperado.getDadosPessoais().getDocumentoIdentificacao(), Matchers.samePropertyValuesAs(m.getDadosPessoais().getDocumentoIdentificacao()));
+		assertThat(esperado.getDadosPessoais().getEndereco(), Matchers.samePropertyValuesAs(m.getDadosPessoais().getEndereco()));
+		assertThat(esperado.getDadosPessoais().getTelefone(), Matchers.samePropertyValuesAs(m.getDadosPessoais().getTelefone()));
+		assertThat(esperado.getDadosPessoais().getCelular(), Matchers.samePropertyValuesAs(m.getDadosPessoais().getCelular()));
+		assertThat(esperado.getDadosPessoais(), Matchers.samePropertyValuesAs(m.getDadosPessoais()));
 		assertThat(esperado, Matchers.samePropertyValuesAs(m));
 	}
 	

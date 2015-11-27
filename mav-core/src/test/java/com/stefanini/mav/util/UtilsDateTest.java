@@ -8,7 +8,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-public class UtilDateTest {
+public class UtilsDateTest {
 
 	private Date criarData(int dia, int mes, int ano) {
 
@@ -33,7 +33,7 @@ public class UtilDateTest {
 
 		Date esperado = criarData(2, Calendar.FEBRUARY, 1969);
 		Date valor = UtilsDate.parse("02021969");
-		MatcherAssert.assertThat(valor, Matchers.is(Matchers.equalTo(esperado)));
+		MatcherAssert.assertThat(esperado, Matchers.samePropertyValuesAs(valor));
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class UtilDateTest {
 
 		String esperado = "02011969";
 		String valor = UtilsDate.format(criarData(2, Calendar.JANUARY, 1969));
-		MatcherAssert.assertThat(valor, Matchers.is(Matchers.equalTo(esperado)));
+		MatcherAssert.assertThat(esperado, Matchers.samePropertyValuesAs(valor));
 	}
 	
 	@Test
@@ -49,6 +49,14 @@ public class UtilDateTest {
 
 		Date esperado = criarDataHora(2, Calendar.FEBRUARY, 1969, 18, 39, 40);
 		Date valor = UtilsDate.parseDateHora("02021969183940");
-		MatcherAssert.assertThat(valor, Matchers.samePropertyValuesAs(esperado));
+		MatcherAssert.assertThat(esperado, Matchers.samePropertyValuesAs(valor));
 	}
+	
+	@Test
+	public void parseShortDate() throws ParseException {
+
+		Date esperado = criarData(1, Calendar.MAY, 2008);
+		Date valor = UtilsDate.parse("052008", UtilsDate.DATE_FORMAT_SHORT);
+		MatcherAssert.assertThat(esperado, Matchers.samePropertyValuesAs(valor));
+	}	
 }
