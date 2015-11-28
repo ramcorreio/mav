@@ -8,7 +8,7 @@ public class Telefone {
 	
 	private Integer ramal;
 	
-	@Override
+	/*@Override
 	public boolean equals(Object obj) {
 		
 		if(!Telefone.class.isInstance(obj)) {
@@ -18,7 +18,7 @@ public class Telefone {
 		
 		Telefone outro = Telefone.class.cast(obj);		
 		return ddd.equals(outro.ddd) && numero.equals(outro.numero) && (ramal == null ? ramal == outro.ramal : ramal.equals(outro.ramal));
-	}
+	}*/
 	
 	public Integer getDdd() {
 		return ddd;

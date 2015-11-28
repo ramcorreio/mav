@@ -56,7 +56,7 @@ public class UtilsDateTest {
 	public void parseShortDate() throws ParseException {
 
 		Date esperado = criarData(1, Calendar.MAY, 2008);
-		Date valor = UtilsDate.parse("052008", UtilsDate.DATE_FORMAT_SHORT);
+		Date valor = UtilsDate.parse("052008", UtilsDate.FORMATADOR_DATA_CURTA);
 		MatcherAssert.assertThat(esperado, Matchers.samePropertyValuesAs(valor));
 	}	
 }

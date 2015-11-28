@@ -117,6 +117,21 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		return new Double(formmatter.parse(lerString(input, inicio, tamanho)).doubleValue());
 	}
 	
+	protected static Boolean lerBooleanString(String input, int inicio, String comparador) {
+		try {
+			String bool = lerString(input, inicio, 1);
+			return bool.isEmpty() ? false : (bool.equals(comparador) ? true : false);	
+		}
+		catch(NullPointerException e) {
+			return false;
+		}
+	}
+	
+	protected static Boolean lerBooleanString(String input, int inicio) {
+		
+		return lerBooleanString(input, inicio, "S");
+	}
+	
 	protected static Boolean lerBoolean(String input, int inicio) {
 		try {
 			return Boolean.valueOf(lerInt(input, inicio, 1) != 0);	

@@ -228,13 +228,19 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 
 		mensagem.getCabecalho().setSentidoFluxo(Fluxo.ENTRADA);
 		
-		//dados pessoais
 		try {
+			//dados pessoais
 			lerDadosClientes(input, mensagem);
+			
+			//dados profissionais
+			lerDadosProfissionais(input, mensagem);
+			
 		} catch (ParseException e) {
 			
 			throw new MensagemNaoEncontradaException(e);
 		}
+		
+		
 		
 		//indicadores
 		//2712 a 2712	Identificador do canal	1	A	Identifica que a proposta é de procedência do TRS
@@ -247,6 +253,93 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		mensagem.getIndicadores().setPolitica(lerString(input, 2722, 1));
 		mensagem.getIndicadores().setAmbiente(lerString(input, 2723, 2));
 		
+	}
+
+	private void lerDadosProfissionais(String input, PropostaFinanciamento m) throws ParseException {
+		
+		m.setDadosProfissionais(new DadoProfissional());
+		//0626 a 0633	Data de Admissão 	8	N	Data de Admissão na Empresa.                  		X
+		try {
+			m.getDadosProfissionais().setDataAdmissao(lerData(input, 625));	
+		}
+		catch(ParseException e) {
+			m.getDadosProfissionais().setDataAdmissao(null);
+		}
+		
+		
+		//0634 a 0663	Empresa	30	A	Empresa Em Que Trabalha o Cliente                              		X
+		m.getDadosProfissionais().setEmpresa(lerString(input, 633, 30));
+		
+		m.getDadosProfissionais().setEndereco(new Endereco());
+		//0664 a 0703	Logradouro	40	A	Logradouro onde Trabalha o Cliente		X
+		m.getDadosProfissionais().getEndereco().setLogradouro(lerString(input, 663, 40));
+		
+		//0704 a 0708	Numero	5	A	Numero do Logradouro		X
+		m.getDadosProfissionais().getEndereco().setNumero(lerString(input, 703, 5));
+		
+		//0709 a 0723	Complemento	15	A	Complemento do logradouro
+		m.getDadosProfissionais().getEndereco().setComplemento(lerString(input, 708, 15));
+		
+		//0724 a 0743	Bairro	20	A	Bairro onde Trabalha o Cliente		X
+		m.getDadosProfissionais().getEndereco().setBairro(lerString(input, 723, 20));
+		
+		//0744 a 0763	Cidade	20	A	Cidade onde Trabalha o Cliente		X
+		m.getDadosProfissionais().getEndereco().setCidade(lerString(input, 743, 20));
+		
+		//0764 a 0765	UF	2	A	Unidade Federativa onde Trabalha o Cliente		X
+		m.getDadosProfissionais().getEndereco().setUf(lerString(input, 763, 2));
+		
+		//0766 a 0773	CEP	8	N	CEP onde trabalha o cliente		X
+		m.getDadosProfissionais().getEndereco().setCep(lerInt(input, 765, 8));
+		
+		m.getDadosProfissionais().setTelefone(new Telefone());
+		//0774 a 0776	DDD	3	N	DDD da Cidade Onde Trabalha o Cliente		X
+		//0777 a 0785	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+		//0786 a 0789	Ramal	4	N	Ramal do Trabalho do Cliente
+		m.getDadosProfissionais().getTelefone().setDdd(lerInt(input, 773, 3));
+		m.getDadosProfissionais().getTelefone().setNumero(lerInt(input, 776, 9));
+		m.getDadosProfissionais().getTelefone().setRamal(lerInt(input, 785, 4));
+		
+		//0790 a 0800	Valor Renda Líquida 	11	N	Renda Líquida do Cliente (em R$)                                              		X
+		m.getDadosProfissionais().setRendaLiquida(lerInt(input, 789, 11));
+		
+		//0801 a 0820	Cargo	20	A	Cargo do Cliente	Ver tabela de Dominio Cargo	X
+		m.getDadosProfissionais().setCargoCliente(lerString(input, 800, 20));
+		
+		//0821 a 0840	Profissão	20	A	Profissão do Cliente	Ver tabela de dominio Profissão	X
+		m.getDadosProfissionais().setProfissaoCliente(lerString(input, 820, 20));
+		
+		//0841 a 0841	Aposentado	1	A	"Aponta se o cliente é aposentado:
+		//S - Sim; N - Não"	"S"  "N"	X
+		m.getDadosProfissionais().setAposentado(lerBooleanString(input, 840));
+		
+		//0842 a 0842	Pensionista	1	A	"Aponta se o cliente é Pensionista:
+		//S - Sim; N - Não"	"S"  "N"	X
+		m.getDadosProfissionais().setPensionista(lerBooleanString(input, 841));
+		
+		//0843 a 0843	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango
+		m.getDadosProfissionais().setLosango(lerString(input, 842, 1));
+		
+		//0844 a 0845	Orgão Beneficio	2	A		Ver tabela de dominio Orgao Beneficio	X. Se Aposentado ou Pensionista = SIM
+		m.getDadosProfissionais().setOpcaoBeneficio(lerString(input, 843, 2));
+		
+		//0846 a 0865	Número do benefício	20	A			X. Se Aposentado ou Pensionista = SIM
+		m.getDadosProfissionais().setNumeroBeneficio(lerString(input, 845, 20));
+		
+		//0866 a 0871	Data do Comprovante de Renda	6	A	Mes/Ano do comprovante de Renda apresentado pelo Cliente	MMAAAA	X, salvo se o Tipo de Comprovante de Renda = "N"
+		m.getDadosProfissionais().setDataComprovanteRenda(lerDataCurta(input, 865));
+		
+		//0872 a 0873	Tipo Comprovante de Renda	2	A		Ver tabela Dominio tipo C Renda	X
+		m.getDadosProfissionais().setTipoComprovanteRenda(lerString(input, 871, 2));
+		
+		//0874 a 0875	Ocupação nova	2	A	Código da Profissão	Ver tabela Dominio Código da Profissão	X
+		m.getDadosProfissionais().setOcupacaoNova(lerString(input, 873, 2));
+		
+		//0876 a 0889	Cnpj Cliente	14	A			X, se Empresario ou Proprietario
+		m.getDadosProfissionais().setCnpjCliente(lerString(input, 875, 14));
+		
+		//0890 a 0915	Filler	26	A
+		m.getDadosProfissionais().setFiller(lerStringCheia(input, 889, 26));
 	}
 
 	@Override

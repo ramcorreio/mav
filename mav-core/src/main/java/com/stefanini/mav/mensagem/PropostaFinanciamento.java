@@ -8,6 +8,8 @@ public class PropostaFinanciamento extends MensagemBasica {
 	
 	private Indicador indicadores;
 
+	private DadoProfissional dadosProfissionais;
+
 	protected PropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
 	}
@@ -26,5 +28,13 @@ public class PropostaFinanciamento extends MensagemBasica {
 	
 	protected void setIndicadores(Indicador indicadores) {
 		this.indicadores = indicadores;
+	}
+	
+	public DadoProfissional getDadosProfissionais() {
+		return dadosProfissionais;
+	}
+	
+	protected void setDadosProfissionais(DadoProfissional dadosProfissionais) {
+		this.dadosProfissionais = dadosProfissionais;
 	}
 }
