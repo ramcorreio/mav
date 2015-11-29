@@ -4,7 +4,7 @@ public class SolicitacaoCapturaSimplificada extends MensagemBasica {
 
 	private static final long serialVersionUID = -7402704207923363603L;
 
-	private DadoClienteBasico dadosPessoais;
+	private DadoPessoalBasico dadosPessoais;
 
 	private DadoOperacaoCartao dadosOperacaoCartao;
 
@@ -16,11 +16,11 @@ public class SolicitacaoCapturaSimplificada extends MensagemBasica {
 		super(id, cabecalho);
 	}
 
-	public DadoClienteBasico getDadosPessoais() {
+	public DadoPessoalBasico getDadosPessoais() {
 		return dadosPessoais;
 	}
 
-	protected void setDadosPessoais(DadoClienteBasico dadosPessoais) {
+	protected void setDadosPessoais(DadoPessoalBasico dadosPessoais) {
 		this.dadosPessoais = dadosPessoais;
 	}
 

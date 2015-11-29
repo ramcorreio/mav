@@ -23,7 +23,7 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 	 */
 	private void lerDadoPessoais(String input, SolicitacaoCapturaSimplificada m) throws ParseException {
 		
-		m.setDadosPessoais(new DadoClienteBasico());
+		m.setDadosPessoais(new DadoPessoalBasico());
 		m.getDadosPessoais().setCpf(lerString(input, 83, 11));
 		m.getDadosPessoais().setDataNascimento(UtilsDate.parse(input.substring(94, 102)));
 		m.getDadosPessoais().setFiller(input.substring(102, 142).trim());

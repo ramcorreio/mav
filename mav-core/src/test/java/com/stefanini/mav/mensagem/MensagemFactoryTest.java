@@ -275,7 +275,7 @@ public class MensagemFactoryTest {
 		PropostaFinanciamento esperado = new PropostaFinanciamento(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
 		
 		//validação de dados pessoais
-		esperado.setDadosPessoais(new DadoClienteDetalhado());
+		esperado.setDadosPessoais(new DadoPessoalDetalhado());
 		esperado.getDadosPessoais().setTipoPersonalidade("F");
 		esperado.getDadosPessoais().setCpf("00000000000");
 		esperado.getDadosPessoais().setUsuarioCpf("T");
@@ -382,10 +382,10 @@ public class MensagemFactoryTest {
 		esperado.getDadosProfissionais().setRendaLiquida(130000);
 		
 		//0801 a 0820	Cargo	20	A	Cargo do Cliente	Ver tabela de Dominio Cargo	X
-		esperado.getDadosProfissionais().setCargoCliente("ADVOGADA");
+		esperado.getDadosProfissionais().setCargo("ADVOGADA");
 		
 		//0821 a 0840	Profissão	20	A	Profissão do Cliente	Ver tabela de dominio Profissão	X
-		esperado.getDadosProfissionais().setProfissaoCliente("ASSALARIADO COM CART");
+		esperado.getDadosProfissionais().setProfissao("ASSALARIADO COM CART");
 		
 		//0841 a 0841	Aposentado	1	A	"Aponta se o cliente é aposentado:
 		//S - Sim; N - Não"	"S"  "N"	X
@@ -414,28 +414,140 @@ public class MensagemFactoryTest {
 		esperado.getDadosProfissionais().setOcupacaoNova("03");
 		
 		//0876 a 0889	Cnpj Cliente	14	A			X, se Empresario ou Proprietario
-		esperado.getDadosProfissionais().setCnpjCliente("");
+		esperado.getDadosProfissionais().setCnpj("");
 		
 		//0890 a 0915	Filler	26	A
 		esperado.getDadosProfissionais().setFiller(ContextoMensagem.escreverString(26, " "));
+		
+		
+		esperado.setDadosConjuge(new DadoConjuge());
+		esperado.getDadosConjuge().setDadoProfissional(new DadoProfissionalBasico());
+		//0916 a 0945	Nome Do Cônjuge	30	A	Nome do Cônjuge do Cliente		X. Se conjuge compoe renda = 1 ou Estado Civil = 2
+		esperado.getDadosConjuge().setNome("");
+		
+		//0946 a 0985	Local de Nascimento	40	A
+		esperado.getDadosConjuge().setLocalNascimento("");
+		
+		//0986 a 0993	Data de Nascimento	8	N	Data nascimento do cônjuge.		X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().setDataNascimento(null);
+		
+		//0994 a 1004	CPF	11	N	CPF do Cônjuge		X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().setCpf("00000000000");
+		
+		esperado.getDadosConjuge().setDocumentoIdentificacao(new Documento());
+		//1005 a 1014	Identidade / RG	10	A	Número da Identidade do Cônjuge		X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDocumentoIdentificacao().setNuDocIdentificacao("");
+		
+		//1015 a 1016	Tipo de Documento	2	A		Ver tabela de dominio TP  DOCUMENTO IDENTIDADE	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDocumentoIdentificacao().setTpDocIdentificacao("");
+		
+		//1017 a 1021	Órgão Emissor	5	A	Órgão Emissor do Documento de Identidade do Cônjuge	Ver tabela de dominio Orgão Emissor	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDocumentoIdentificacao().setOrgaoEmissor("");
+		
+		//1022 a 1023	UF Órgão Emissor	2	A		Ver tabela de dominio UF	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDocumentoIdentificacao().setUfOrgaoEmissor("");
+		
+		//1024 a 1031	Data Emissão	8	N	Data de emissão do documento do Cônjuge		X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDocumentoIdentificacao().setDataEmissao(null);
+		
+		//1032 a 1056	Empresa 	25	A	Empresa Em Que o Cônjuge Trabalha		X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setEmpresa("");
+		
+		//1057 a 1064	Data  Admissão	8	N	Data da Admissão na Empresa		X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setDataAdmissao(null);
+		
+		esperado.getDadosConjuge().getDadoProfissional().setEndereco(new Endereco());
+		//1065 a 1104	Logradouro	40	A	Logradouro do trabalho do conjuge		X. Se conjuge compoe renda = 1
+		//1105 a 1109	Numero	5	A	Numero do Logradouro		X. Se conjuge compoe renda = 1
+		//1110 a 1124	Complemento	15	A	Complemento do Logradouro
+		//1125 a 1144	Bairro	20	A	Bairro onde trabalha o cônjuge		X. Se conjuge compoe renda = 1 
+		//1145 a 1164	Cidade	20	A	Cidade Onde Trabalha o cônjuge		X. Se conjuge compoe renda = 1 
+		//1165 a 1166	UF	2	A	Abreviatura da Unidade Federativa 		X. Se conjuge compoe renda = 1 
+		//1167 a 1174	CEP	8	N	CEP do endereço comercial do cônjuge		X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setLogradouro("");
+		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setNumero("");
+		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setComplemento("");
+		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setBairro("");
+		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setCidade("");
+		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setUf("");
+		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setCep(null);
+		
+		 
+		esperado.getDadosConjuge().getDadoProfissional().setTelefone(new Telefone());
+		//1175 a 1177	DDD	3	N	DDD da Cidade Onde Trabalha o cônjuge		X. Se conjuge compoe renda = 1 
+		//1178 a 1186	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+		//1187 a 1190	Ramal	4	N	Ramal do Trabalho do cônjuge
+		esperado.getDadosConjuge().getDadoProfissional().getTelefone().setDdd(0);
+		esperado.getDadosConjuge().getDadoProfissional().getTelefone().setNumero(0);
+		esperado.getDadosConjuge().getDadoProfissional().getTelefone().setRamal(0);
+				
+		//1191 a 1210	Cargo	20	A	Cargo do Cônjuge	Ver tabela de Dominio Cargo	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setCargo("");
+		
+		//1211 a 1230	Profissão	20	A	Profissão do Conjuge	Ver tabela de dominio Profissão	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setProfissao("");
+		
+		//1231 a 1231	Aposentado	1	A	"Aponta se o cliente é aposentado:
+		//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setAposentado(false);
+		
+		//1232 a 1232	Pensionista	1	A	"Aponta se o cliente é Pensionista:
+		//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setPensionista(false);
+		
+		//1233 a 1233	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango
+		esperado.getDadosConjuge().getDadoProfissional().setLosango("");
+		
+		//1234 a 1244	Valor Renda Líquida 	11	N	Renda Líquida do Cônjuge (em R$)                                                  		X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setRendaLiquida(0);
 
+		//1245 a 1314	Patrimônio	70	A			
+		esperado.getDadosConjuge().setPatrimonio(new LinkedList<Patrimonio>());
+
+		//1315 a 1315	Nacionalidade	1	N	Nacionalidade do Conjuge	"0-Brasileiro
+		//1-Estrangeiro        "	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().setNacionalidade("");
 		
-		//assertThat(m.getDadosPessoais().getComplemento(), notNullValue());
-		//assertThat(m.getDadosPessoais().getComplemento().isClienteEmancipado(), is(false));
-		//assertThat(m.getDadosPessoais().getComplemento().getCodigoProduto(), is("01"));
-		//assertThat(m.getDadosPessoais().isCobraTac(), is(equalTo(false)));
-		//assertThat(m.getDadosPessoais().isElegibilidadeSeguro(), is(equalTo(true)));
-		//assertThat(m.getDadosPessoais().getCodigoProdutoLosango(), is(equalTo("HSSOR002")));
-		//assertThat(m.getDadosPessoais().getQtdNumeroSorte(), is(equalTo(0)));
-		//assertThat(m.getDadosPessoais().getFiller(), is(""));
+		//1316 a 1317	Código do País (informar se nacionalidade = estrangeiro)	2	A	Tabela de Paises	Ver tabela de Dominio Paises	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().setCodigoPais("");
 		
-		//validação de dados operação cartão
-		/*assertThat(m.getDadosOperacaoCartao(), notNullValue());
-		assertThat(m.getDadosOperacaoCartao().getCodigoOrg(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getCodigoLogo(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getCodigoCampanha(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getCodigoModalidade(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getFiller(), is(equalTo("0000 0000 0000 0000           000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000   ".trim())));*/
+		//1318 a 1319	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF	Ver tabela de dominio UF	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().setUFNaturalidade("");
+		
+		//1320 a 1325	Data do Comprovante de Renda	6	A	Mes/Ano do comprovante de Renda apresentado pelo Conjuge	MMAAAA	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setDataComprovanteRenda(null);
+		
+		//1326 a 1327	Tipo Comprovante de Renda	2	A		Ver tabela Dominio tipo C Renda	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setTipoComprovanteRenda("");
+		
+		//1328 a 1329	Ocupação nova	2	A	Código da Profissão	Ver tabela Dominio Código da Profissão	X. Se conjuge compoe renda = 1
+		esperado.getDadosConjuge().getDadoProfissional().setOcupacaoNova("");
+		
+		//1330 a 1330	Sexo do Conjuge	1	A	M – Masculino     F – Feminino         	“M”   ”F”	X. Se conjuge compoe renda = 1 ou Estado Civil = 2
+		esperado.getDadosConjuge().setSexo("");
+		
+		//1331 a 1344	CNPJ Conjuge	14	A
+		esperado.getDadosConjuge().getDadoProfissional().setCnpj("");
+		
+		//1331 a 1364	Filler	20	A			X, se Empresario ou Proprietario
+		esperado.getDadosConjuge().setFiller("");
+		
+		//DADOS COMPLEMENTARES
+		//REFERÊNCIAS PESSOAIS
+		//REFERÊNCIAS COMERCIAIS
+		//REFERÊNCIAS BANCARIAS
+		//DADOS DA OPERAÇÃO						
+		//Dados do Pre Screening
+		//Atendimento ao Cliente						
+		//Dados de Operações para Emprestimo Pessoal (EP) e averbação em folha.
+		//Dados referente ao Seguro
+		//Dados referente ao Seguro Prestamista
+		//Dados referente ao Seguro da Sorte
+		//DEBITO EM CONTA
+		//Dados de Cheques
+		//Circular 3641 Banco Central
+		//Observação						
+
 		
 		//validação outros indicadores
 		esperado.setIndicadores(new Indicador());
@@ -445,19 +557,19 @@ public class MensagemFactoryTest {
 		esperado.getIndicadores().setAmbiente("");
 		
 		
-		assertThat(esperado.getCabecalho(), Matchers.samePropertyValuesAs(m.getCabecalho()));
-		assertThat(esperado.getDadosPessoais().getDocumentoIdentificacao(), Matchers.samePropertyValuesAs(m.getDadosPessoais().getDocumentoIdentificacao()));
-		assertThat(esperado.getDadosPessoais().getEndereco(), Matchers.samePropertyValuesAs(m.getDadosPessoais().getEndereco()));
-		assertThat(esperado.getDadosPessoais().getTelefone(), Matchers.samePropertyValuesAs(m.getDadosPessoais().getTelefone()));
-		assertThat(esperado.getDadosPessoais().getCelular(), Matchers.samePropertyValuesAs(m.getDadosPessoais().getCelular()));
-		assertThat(esperado.getDadosPessoais(), BeanMatchers.theSameAs(m.getDadosPessoais()).excludeProperty("telefone"));
+		assertThat(m.getCabecalho(), Matchers.samePropertyValuesAs(esperado.getCabecalho()));
+		assertThat(m.getDadosPessoais().getDocumentoIdentificacao(), Matchers.samePropertyValuesAs(esperado.getDadosPessoais().getDocumentoIdentificacao()));
+		assertThat(m.getDadosPessoais().getEndereco(), Matchers.samePropertyValuesAs(esperado.getDadosPessoais().getEndereco()));
+		assertThat(m.getDadosPessoais().getTelefone(), Matchers.samePropertyValuesAs(esperado.getDadosPessoais().getTelefone()));
+		assertThat(m.getDadosPessoais().getCelular(), Matchers.samePropertyValuesAs(esperado.getDadosPessoais().getCelular()));
+		assertThat(m.getDadosPessoais(), BeanMatchers.theSameAs(esperado.getDadosPessoais()));
 		
+		assertThat(m.getDadosProfissionais().getEndereco(), Matchers.samePropertyValuesAs(esperado.getDadosProfissionais().getEndereco()));
+		assertThat(m.getDadosProfissionais().getTelefone(), Matchers.samePropertyValuesAs(esperado.getDadosProfissionais().getTelefone()));
+		assertThat(m.getDadosProfissionais(), BeanMatchers.theSameAs(esperado.getDadosProfissionais()));
+		assertThat(m.getDadosConjuge(), BeanMatchers.theSameAs(esperado.getDadosConjuge()));
 		
-		assertThat(esperado.getDadosProfissionais().getEndereco(), Matchers.samePropertyValuesAs(m.getDadosProfissionais().getEndereco()));
-		assertThat(esperado.getDadosProfissionais().getTelefone(), Matchers.samePropertyValuesAs(m.getDadosProfissionais().getTelefone()));
-		assertThat(esperado.getDadosProfissionais(), BeanMatchers.theSameAs(m.getDadosProfissionais()));
-		
-		assertThat(esperado, BeanMatchers.theSameAs(m));
+		assertThat(m, BeanMatchers.theSameAs(esperado));
 	}
 	
 	@Test

@@ -4,21 +4,23 @@ public class PropostaFinanciamento extends MensagemBasica {
 
 	private static final long serialVersionUID = 2703729128402664733L;
 	
-	private DadoClienteDetalhado dadosPessoais;
+	private DadoPessoalDetalhado dadosPessoais;
 	
 	private Indicador indicadores;
 
 	private DadoProfissional dadosProfissionais;
+	
+	private DadoConjuge dadosConjuge;
 
 	protected PropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
 	}
 	
-	public DadoClienteDetalhado getDadosPessoais() {
+	public DadoPessoalDetalhado getDadosPessoais() {
 		return dadosPessoais;
 	}
 	
-	protected void setDadosPessoais(DadoClienteDetalhado dadosPessoais) {
+	protected void setDadosPessoais(DadoPessoalDetalhado dadosPessoais) {
 		this.dadosPessoais = dadosPessoais;
 	}
 	
@@ -36,5 +38,13 @@ public class PropostaFinanciamento extends MensagemBasica {
 	
 	protected void setDadosProfissionais(DadoProfissional dadosProfissionais) {
 		this.dadosProfissionais = dadosProfissionais;
+	}
+	
+	public DadoConjuge getDadosConjuge() {
+		return dadosConjuge;
+	}
+	
+	public void setDadosConjuge(DadoConjuge dadosConjuge) {
+		this.dadosConjuge = dadosConjuge;
 	}
 }

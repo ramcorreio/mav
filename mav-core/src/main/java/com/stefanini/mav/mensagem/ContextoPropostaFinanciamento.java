@@ -24,7 +24,7 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		private Integer qtdNumeroSorte;*/
 		
 		
-		m.setDadosPessoais(new DadoClienteDetalhado());
+		m.setDadosPessoais(new DadoPessoalDetalhado());
 		//0084 a 0084	Tipo de personalidade do CPF	1	A	T = Tipo de Pessoa (F – Fisica).	“F”	X
 		m.getDadosPessoais().setTipoPersonalidade(lerString(input, 83, 1));
 		
@@ -235,6 +235,9 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 			//dados profissionais
 			lerDadosProfissionais(input, mensagem);
 			
+			//dados do cônjuge
+			lerDadosConjuge(input, mensagem);
+			
 		} catch (ParseException e) {
 			
 			throw new MensagemNaoEncontradaException(e);
@@ -253,6 +256,183 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		mensagem.getIndicadores().setPolitica(lerString(input, 2722, 1));
 		mensagem.getIndicadores().setAmbiente(lerString(input, 2723, 2));
 		
+	}
+
+	private void lerDadosConjuge(String input, PropostaFinanciamento m) throws ParseException {
+		
+		m.setDadosConjuge(new DadoConjuge());
+		m.getDadosConjuge().setDadoProfissional(new DadoProfissionalBasico());
+		//0916 a 0945	Nome Do Cônjuge	30	A	Nome do Cônjuge do Cliente		X. Se conjuge compoe renda = 1 ou Estado Civil = 2
+		m.getDadosConjuge().setNome(lerString(input, 915, 30));
+		
+		//0946 a 0985	Local de Nascimento	40	A
+		m.getDadosConjuge().setLocalNascimento(lerString(input, 945, 40));
+		
+		//0986 a 0993	Data de Nascimento	8	N	Data nascimento do cônjuge.		X. Se conjuge compoe renda = 1
+		try {
+			m.getDadosConjuge().setDataNascimento(lerData(input, 985));
+		} catch (ParseException e) {
+			m.getDadosConjuge().setDataNascimento(null);
+		}
+		
+		//0994 a 1004	CPF	11	N	CPF do Cônjuge		X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().setCpf(lerString(input, 993, 11));
+		
+		m.getDadosConjuge().setDocumentoIdentificacao(new Documento());
+		//1005 a 1014	Identidade / RG	10	A	Número da Identidade do Cônjuge		X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDocumentoIdentificacao().setNuDocIdentificacao(lerString(input, 1004, 10));
+		
+		//1015 a 1016	Tipo de Documento	2	A		Ver tabela de dominio TP  DOCUMENTO IDENTIDADE	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDocumentoIdentificacao().setTpDocIdentificacao(lerString(input, 1014, 2));
+		
+		//1017 a 1021	Órgão Emissor	5	A	Órgão Emissor do Documento de Identidade do Cônjuge	Ver tabela de dominio Orgão Emissor	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDocumentoIdentificacao().setOrgaoEmissor(lerString(input, 1016, 5));
+		
+		//1022 a 1023	UF Órgão Emissor	2	A		Ver tabela de dominio UF	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDocumentoIdentificacao().setUfOrgaoEmissor(lerString(input, 1021, 2));
+		
+		//1024 a 1031	Data Emissão	8	N	Data de emissão do documento do Cônjuge		X. Se conjuge compoe renda = 1
+		try {
+			m.getDadosConjuge().getDocumentoIdentificacao().setDataEmissao(lerData(input, 1023));
+		} catch (ParseException e) {
+			m.getDadosConjuge().getDocumentoIdentificacao().setDataEmissao(null);
+		}
+		
+		//1032 a 1056	Empresa 	25	A	Empresa Em Que o Cônjuge Trabalha		X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDadoProfissional().setEmpresa(lerString(input, 1031, 25));
+		
+		//1057 a 1064	Data  Admissão	8	N	Data da Admissão na Empresa		X. Se conjuge compoe renda = 1
+		try {
+			m.getDadosConjuge().getDadoProfissional().setDataAdmissao(lerData(input, 1056));
+		} catch (ParseException e) {
+			m.getDadosConjuge().getDadoProfissional().setDataAdmissao(null);
+		}
+		
+		m.getDadosConjuge().getDadoProfissional().setEndereco(new Endereco());
+		//1065 a 1104	Logradouro	40	A	Logradouro do trabalho do conjuge		X. Se conjuge compoe renda = 1
+		//1105 a 1109	Numero	5	A	Numero do Logradouro		X. Se conjuge compoe renda = 1 
+		//1110 a 1124	Complemento	15	A	Complemento do Logradouro		
+		//1125 a 1144	Bairro	20	A	Bairro onde trabalha o cônjuge		X. Se conjuge compoe renda = 1 
+		//1145 a 1164	Cidade	20	A	Cidade Onde Trabalha o cônjuge		X. Se conjuge compoe renda = 1 
+		//1165 a 1166	UF	2	A	Abreviatura da Unidade Federativa 		X. Se conjuge compoe renda = 1 
+		//1167 a 1174	CEP	8	N	CEP do endereço comercial do cônjuge		X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDadoProfissional().getEndereco().setLogradouro(lerString(input, 1064, 40));
+		m.getDadosConjuge().getDadoProfissional().getEndereco().setNumero(lerString(input, 1104, 5));
+		m.getDadosConjuge().getDadoProfissional().getEndereco().setComplemento(lerString(input, 1109, 15));
+		m.getDadosConjuge().getDadoProfissional().getEndereco().setBairro(lerString(input, 1124, 20));
+		m.getDadosConjuge().getDadoProfissional().getEndereco().setCidade(lerString(input, 1144, 20));
+		m.getDadosConjuge().getDadoProfissional().getEndereco().setUf(lerString(input, 1164, 2));
+		try {
+			m.getDadosConjuge().getDadoProfissional().getEndereco().setCep(lerInt(input, 1166, 8));	
+		}
+		catch(NumberFormatException e) {
+			m.getDadosConjuge().getDadoProfissional().getEndereco().setCep(null);
+		}
+		
+		m.getDadosConjuge().getDadoProfissional().setTelefone(new Telefone());
+		//1175 a 1177	DDD	3	N	DDD da Cidade Onde Trabalha o cônjuge		X. Se conjuge compoe renda = 1
+		//1178 a 1186	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+		//1187 a 1190	Ramal	4	N	Ramal do Trabalho do cônjuge
+		try {
+			m.getDadosConjuge().getDadoProfissional().getTelefone().setDdd(lerInt(input, 1174, 3));	
+		}
+		catch(NumberFormatException e) {
+			m.getDadosConjuge().getDadoProfissional().getTelefone().setDdd(0);
+		}
+		
+		try {
+			m.getDadosConjuge().getDadoProfissional().getTelefone().setNumero(lerInt(input, 1177, 9));	
+		}
+		catch(NumberFormatException e) {
+			m.getDadosConjuge().getDadoProfissional().getTelefone().setNumero(0);
+		}
+		
+		m.getDadosConjuge().getDadoProfissional().getTelefone().setRamal(lerInt(input, 1186, 4));
+		
+		
+		//1191 a 1210	Cargo	20	A	Cargo do Cônjuge	Ver tabela de Dominio Cargo	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDadoProfissional().setCargo(lerString(input, 1190, 20));
+		
+		//1211 a 1230	Profissão	20	A	Profissão do Conjuge	Ver tabela de dominio Profissão	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDadoProfissional().setProfissao(lerString(input, 1210, 20));
+		
+		//1231 a 1231	Aposentado	1	A	"Aponta se o cliente é aposentado:
+		//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1 
+		m.getDadosConjuge().getDadoProfissional().setAposentado(lerBoolean(input, 1230));
+		
+		//1232 a 1232	Pensionista	1	A	"Aponta se o cliente é Pensionista:
+		//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDadoProfissional().setPensionista(lerBoolean(input, 1231));
+		
+		//1233 a 1233	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango
+		m.getDadosConjuge().getDadoProfissional().setLosango(lerString(input, 1232, 1));
+		
+		//1234 a 1244	Valor Renda Líquida 	11	N	Renda Líquida do Cônjuge (em R$)                                                  		X. Se conjuge compoe renda = 1
+		try {
+			m.getDadosConjuge().getDadoProfissional().setRendaLiquida(lerInt(input, 1233, 11));	
+		}
+		catch(NumberFormatException e) {
+			m.getDadosConjuge().getDadoProfissional().setRendaLiquida(0);
+		}
+		
+		//1245 a 1314	Patrimônio	70	A
+		m.getDadosConjuge().setPatrimonio(new LinkedList<Patrimonio>());
+		if(m.getDadosPessoais().isPossuiPatrimonio()) {
+			
+			m.getDadosConjuge().getPatrimonio().add(new Patrimonio());
+			m.getDadosConjuge().getPatrimonio().get(0).setTipo(lerString(input, 1244, 1));
+			m.getDadosConjuge().getPatrimonio().get(0).setNome(lerString(input, 1245, 5));
+			m.getDadosConjuge().getPatrimonio().get(0).setValor(lerDouble(input, 1250, 11));
+			
+			m.getDadosConjuge().getPatrimonio().add(new Patrimonio());
+			m.getDadosConjuge().getPatrimonio().get(1).setTipo(lerString(input, 1261, 1));
+			m.getDadosConjuge().getPatrimonio().get(1).setNome(lerString(input, 1262, 5));
+			m.getDadosConjuge().getPatrimonio().get(1).setValor(lerDouble(input, 1267, 11));
+			
+			m.getDadosConjuge().getPatrimonio().add(new Patrimonio());
+			m.getDadosConjuge().getPatrimonio().get(2).setTipo(lerString(input, 1278, 1));
+			m.getDadosConjuge().getPatrimonio().get(2).setNome(lerString(input, 1279, 5));
+			m.getDadosConjuge().getPatrimonio().get(2).setValor(lerDouble(input, 1284, 11));
+			
+			m.getDadosConjuge().getPatrimonio().add(new Patrimonio());
+			m.getDadosConjuge().getPatrimonio().get(3).setTipo(lerString(input, 1295, 1));
+			m.getDadosConjuge().getPatrimonio().get(3).setNome(lerString(input, 1296, 5));
+			m.getDadosConjuge().getPatrimonio().get(3).setValor(lerDouble(input, 1301, 11));
+		}
+		
+		
+		//1315 a 1315	Nacionalidade	1	N	Nacionalidade do Conjuge	"0-Brasileiro
+		//1-Estrangeiro        "	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().setNacionalidade(lerString(input, 1314, 1));
+		
+		//1316 a 1317	Código do País (informar se nacionalidade = estrangeiro)	2	A	Tabela de Paises	Ver tabela de Dominio Paises	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().setCodigoPais(lerString(input, 1315, 2));
+		
+		//1318 a 1319	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF	Ver tabela de dominio UF	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().setUFNaturalidade(lerString(input, 1317, 2));
+		
+		//1320 a 1325	Data do Comprovante de Renda	6	A	Mes/Ano do comprovante de Renda apresentado pelo Conjuge	MMAAAA	X. Se conjuge compoe renda = 1
+		try {
+			m.getDadosConjuge().getDadoProfissional().setDataComprovanteRenda(lerDataCurta(input, 1320));	
+		}
+		catch(ParseException e) {
+			m.getDadosConjuge().getDadoProfissional().setDataComprovanteRenda(null);
+		}
+		
+		//1326 a 1327	Tipo Comprovante de Renda	2	A		Ver tabela Dominio tipo C Renda	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDadoProfissional().setTipoComprovanteRenda(lerString(input, 1325, 2));
+		
+		//1328 a 1329	Ocupação nova	2	A	Código da Profissão	Ver tabela Dominio Código da Profissão	X. Se conjuge compoe renda = 1
+		m.getDadosConjuge().getDadoProfissional().setOcupacaoNova(lerString(input, 1327, 2));
+		
+		//1330 a 1330	Sexo do Conjuge	1	A	M – Masculino     F – Feminino         	“M”   ”F”	X. Se conjuge compoe renda = 1 ou Estado Civil = 2
+		m.getDadosConjuge().setSexo(lerString(input, 1329, 1));
+		
+		//1331 a 1344	CNPJ Conjuge	14	A			
+		m.getDadosConjuge().getDadoProfissional().setCnpj(lerString(input, 1330, 14));
+		
+		//1331 a 1364	Filler	20	A			X, se Empresario ou Proprietario
+		m.getDadosConjuge().setFiller(lerString(input, 1330, 20));
 	}
 
 	private void lerDadosProfissionais(String input, PropostaFinanciamento m) throws ParseException {
@@ -304,10 +484,10 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		m.getDadosProfissionais().setRendaLiquida(lerInt(input, 789, 11));
 		
 		//0801 a 0820	Cargo	20	A	Cargo do Cliente	Ver tabela de Dominio Cargo	X
-		m.getDadosProfissionais().setCargoCliente(lerString(input, 800, 20));
+		m.getDadosProfissionais().setCargo(lerString(input, 800, 20));
 		
 		//0821 a 0840	Profissão	20	A	Profissão do Cliente	Ver tabela de dominio Profissão	X
-		m.getDadosProfissionais().setProfissaoCliente(lerString(input, 820, 20));
+		m.getDadosProfissionais().setProfissao(lerString(input, 820, 20));
 		
 		//0841 a 0841	Aposentado	1	A	"Aponta se o cliente é aposentado:
 		//S - Sim; N - Não"	"S"  "N"	X
@@ -336,10 +516,13 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		m.getDadosProfissionais().setOcupacaoNova(lerString(input, 873, 2));
 		
 		//0876 a 0889	Cnpj Cliente	14	A			X, se Empresario ou Proprietario
-		m.getDadosProfissionais().setCnpjCliente(lerString(input, 875, 14));
+		m.getDadosProfissionais().setCnpj(lerString(input, 875, 14));
 		
 		//0890 a 0915	Filler	26	A
 		m.getDadosProfissionais().setFiller(lerStringCheia(input, 889, 26));
+		
+		
+		
 	}
 
 	@Override

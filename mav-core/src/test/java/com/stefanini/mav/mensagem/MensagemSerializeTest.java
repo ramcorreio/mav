@@ -29,7 +29,7 @@ public class MensagemSerializeTest {
 		
 		SolicitacaoCapturaSimplificada scs = new SolicitacaoCapturaSimplificada(Long.toString(System.currentTimeMillis()), c);
 		
-		scs.setDadosPessoais(new DadoClienteBasico());
+		scs.setDadosPessoais(new DadoPessoalBasico());
 		scs.getDadosPessoais().setCpf("00000000191");
 		scs.getDadosPessoais().setDataNascimento(UtilsDate.parse("01011960"));
 		scs.getDadosPessoais().setFiller("");

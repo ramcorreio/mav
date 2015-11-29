@@ -3,7 +3,7 @@ package com.stefanini.mav.mensagem;
 import java.util.Date;
 import java.util.LinkedList;
 
-public class DadoClienteDetalhado extends DadoClienteBasico {
+public class DadoPessoal extends DadoPessoalBasico {
 
 	private static final long serialVersionUID = 4901056768962549954L;
 
@@ -37,8 +37,6 @@ public class DadoClienteDetalhado extends DadoClienteBasico {
 
 	private Integer carteiraProfissional;
 
-	private Endereco endereco;
-
 	private Integer tipoTelefone;
 
 	private Integer tipoResidencia;
@@ -64,12 +62,12 @@ public class DadoClienteDetalhado extends DadoClienteBasico {
 	@Override
 	public boolean equals(Object obj) {
 
-		if (!DadoClienteDetalhado.class.isInstance(obj)) {
+		if (!DadoPessoal.class.isInstance(obj)) {
 
 			return false;
 		}
 
-		DadoClienteDetalhado outro = DadoClienteDetalhado.class.cast(obj);
+		DadoPessoal outro = DadoPessoal.class.cast(obj);
 
 		return emancipado == outro.emancipado 
 				&& tipoPersonalidade.equals(outro.tipoPersonalidade)
@@ -210,15 +208,6 @@ public class DadoClienteDetalhado extends DadoClienteBasico {
 
 	protected void setEstadoCivil(Integer estadoCivil) {
 		this.estadoCivil = estadoCivil;
-
-	}
-	
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	protected void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
 	}
 	
 	public Telefone getTelefone() {
@@ -272,16 +261,16 @@ public class DadoClienteDetalhado extends DadoClienteBasico {
 		this.email = email;
 	}
 	
-	public LinkedList<Patrimonio> getPatrimonio() {
-		return patrimonio;
-	}
-	
 	public Boolean isPossuiPatrimonio() {
 		return possuiPatrimonio;
 	}
 	
 	protected void setPossuiPatrimonio(Boolean possuiPatrimonio) {
 		this.possuiPatrimonio = possuiPatrimonio;
+	}
+	
+	public LinkedList<Patrimonio> getPatrimonio() {
+		return patrimonio;
 	}
 
 	protected void setPatrimonio(LinkedList<Patrimonio> patrimonio) {

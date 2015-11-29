@@ -1,6 +1,6 @@
 package com.stefanini.mav.mensagem;
 
-public class DadoCliente extends DadoClienteBasico {
+public class DadoCliente extends DadoPessoalBasico {
 
 	private static final long serialVersionUID = 4901056768962549954L;
 
