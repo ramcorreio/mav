@@ -533,21 +533,133 @@ public class MensagemFactoryTest {
 		esperado.getDadosConjuge().setFiller("");
 		
 		//DADOS COMPLEMENTARES
+		//1365 a 1366	Escolaridade	2	A	Codigo da Escolaridade	Ver tabela de dominio Escolaridade
+		esperado.setEscolaridade("");
+		
+		//1367 a 1386	Formação	20	A	Formação		
+		//1387 a 1387	Indicador Possui cartão	1	N	Indicador se possui cartão	0 - Não 1 - Sim	X
+		//1388 a 1388	Indicador Possui veículo próprio	1	N	Indicador Possui veículo próprio	0 - Não 1 - Sim	X
+		//1389 a 1398	Placa	10	A			
+		//1399 a 1458	Renavam	60	A			
+		//1459 a 1459	Indicador Possui veículo quitado	1	N	Indicador Possui veículo quitado	0 - Não 1 - Sim	X
+		//1460 a 1460	Possui experiencia de crédito	1	N	Indicador Possui experiência	0 - Não 1 - Sim	X
+		esperado.setPossuiExperienciaCredito(false);
+		
+		//1461 a 1480	Local da Experiência	20	A			X. Se Possui experiencia de crédito = 1
+		//1481 a 1482	Plano da Experiência	2	N			X. Se Possui experiencia de crédito = 1
+		//1483 a 1497	Valor da Prestação da Experiência	15	N			X. Se Possui experiencia de crédito = 1
+		//1498 a 1503	Inicio da Experiência de Crédito	6	N	Inicio da Experiência MMAAAA		X. Se Possui experiencia de crédito = 1
+		//1504 a 1543	Classificação do Cliente	40	A			
+		//1544 a 1544	Indicador Possui Cartão Financeira	1	N	Indicador Possui Cartão Financeira	0 - Não 1 - Sim	X
+		//1545 a 1545	Indicador Possui Conta Corrente	1	N	Indicador Possui Conta Corrente	0 - Não 1 - Sim	X
+		//1546 a 1546	Indicador Possui dependente	1	N		0 - Não 1 - Sim	X
+		//1547 a 1548	Quantidade de dependentes	2	N			X. Se Indicador Possui dependente = 1
+		//1549 a 1563	Nome do cartão	15	A			
+		//1564 a 1564	indicadorCapturarFoto	1	A	Indicador da captura da Foto do Cliente.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
+		//1 - Problemas Técnicos
+		//2 - Cliente não autoriza
+		//3 - Outros"	X
+		//1565 a 1565	indicadorCapturarDocumento	1	A	Indicador da captura do Documento.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
+		//1 - Problemas Técnicos
+		//2 - Cliente não autoriza
+		//3 - Outros"	X
+		//1566 a 1566	indicadorCapturarBiometria	1	A	Indicador da captura da Biometria	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
+		//1 - Problemas Técnicos
+		//2 - Cliente não autoriza
+		//3 - Outros"	X
+		//1567 a 1613	Filler	47	A
+		esperado.setFillerDadosComplementares(ContextoMensagem.escreverString(47, " "));
+		
 		//REFERÊNCIAS PESSOAIS
+		esperado.setReferenciasPessoais(new LinkedList<Referencia>());
+		//1614 a 1643	Nome	30	A	Nome da Pessoa de Referência		X
+		//1644 a 1646	DDD	3	N	DDD da Pessoa de Referência		X
+		//1647 a 1655	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+		//Exemplos:
+		//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+		//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+		//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+		//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+		//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		X
+		//1656 a 1659	Ramal	4	N	Ramal da Pessoa de Referência
+		esperado.getReferenciasPessoais().add(new Referencia());
+		esperado.getReferenciasPessoais().get(0).setTelefone(new Telefone());
+		esperado.getReferenciasPessoais().get(0).setNome("");
+		//esperado.getReferenciasPessoais().get(0).getTelefone().setDdd();
+		//esperado.getReferenciasPessoais().get(0).getTelefone().setNumero(lerInt(input, 1646, 9));
+		//esperado.getReferenciasPessoais().get(0).getTelefone().setRamal(lerInt(input, 1655, 4));
+		
+				
+		//1660 a 1689	Nome	30	A	Nome da Pessoa de Referência		X
+		//1690 a 1692	DDD	3	N	DDD da Pessoa de Referência		X
+		//1693 a 1701	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+		//Exemplos:
+		//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+		//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+		//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+		//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+		//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		X
+		//1702 a 1705	Ramal	4	N	Ramal da Pessoa de Referência		
+		//	As referencias tem que ter nome duplo, ou seja, nome e sobre nome. Porém para facilitar a analise da proposta aconcelhamos que seja colocado o primeiro nome e grau de parentesco. Por exemplo: Maria Amiga. Rafael Tio.
+		esperado.getReferenciasPessoais().add(new Referencia());
+		esperado.getReferenciasPessoais().get(1).setTelefone(new Telefone());
+		esperado.getReferenciasPessoais().get(1).setNome("");
+		//mensagem.getReferenciasPessoais().get(1).getTelefone().setDdd(lerInt(input, 1689, 3));
+		//mensagem.getReferenciasPessoais().get(1).getTelefone().setNumero(lerInt(input, 1692, 9));
+		//mensagem.getReferenciasPessoais().get(1).getTelefone().setRamal(lerInt(input, 1701, 4));
+		
 		//REFERÊNCIAS COMERCIAIS
-		//REFERÊNCIAS BANCARIAS
-		//DADOS DA OPERAÇÃO						
-		//Dados do Pre Screening
-		//Atendimento ao Cliente						
-		//Dados de Operações para Emprestimo Pessoal (EP) e averbação em folha.
-		//Dados referente ao Seguro
-		//Dados referente ao Seguro Prestamista
-		//Dados referente ao Seguro da Sorte
-		//DEBITO EM CONTA
-		//Dados de Cheques
-		//Circular 3641 Banco Central
-		//Observação						
+		esperado.setReferenciasComerciais(new LinkedList<Referencia>());
+		
+		//1706 a 1735	Nome 1	30	A	Nome da Pessoa de Referência  (PC)		
+		//1736 a 1738	DDD 1	3	N	DDD da referencia comercial		
+		//1739 a 1747	Telefone 1	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+		//Exemplos:
+		//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+		//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+		//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+		//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+		//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		
+		//1748 a 1751	Ramal 1	4	N	Ramal da referencia Comercial
+		esperado.getReferenciasPessoais().get(0).setTelefone(new Telefone());
+		esperado.getReferenciasPessoais().get(0).setNome("");
+		esperado.getReferenciasPessoais().get(0).getTelefone().setDdd(null);
+		esperado.getReferenciasPessoais().get(0).getTelefone().setNumero(null);
+		esperado.getReferenciasPessoais().get(0).getTelefone().setRamal(null);
+		
+		//1752 a 1781	Nome 2	30	A	Nome da Pessoa de Referência  (PC)		
+		//1782 a 1784	DDD 2	3	N	DDD da referencia comercial		
+		//1785 a 1793	Telefone 2	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+		//Exemplos:
+		//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+		//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+		//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+		//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+		//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		
+		//1794 a 1797	Ramal 2	4	N	Ramal da referencia Comercial
+		esperado.getReferenciasPessoais().get(1).setTelefone(new Telefone());
+		esperado.getReferenciasPessoais().get(1).setNome("");
+		esperado.getReferenciasPessoais().get(1).getTelefone().setDdd(null);
+		esperado.getReferenciasPessoais().get(1).getTelefone().setNumero(null);
+		esperado.getReferenciasPessoais().get(1).getTelefone().setRamal(null);
 
+		
+		//REFERÊNCIAS BANCARIAS						
+		//1798 a 1801	Banco	4	N		Ver tabela de dominio Banco	X. Se algum campo da referencia bancaria for preenchuda 
+		//1802 a 1805	Agência	4	N			X. Se algum campo da referencia bancaria for preenchuda 
+		//1806 a 1806	DV Agência	1	A			
+		//1807 a 1819	Conta Corrente	13	N			X. Se algum campo da referencia bancaria for preenchuda 
+		//1820 a 1821	DV Conta Corrente	2	A			X. Se algum campo da referencia bancaria for preenchuda 
+		//1822 a 1823	Tipo da Conta	2	A		Ver tabela de dominio Tipo de Conta Corrente	X. Se algum campo da referencia bancaria for preenchuda 
+		//1824 a 1831	Data Abertura	8	N	DDMMAAAA		X. Se algum campo da referencia bancaria for preenchuda
+		esperado.setReferenciaBancaria(new Banco());
+		esperado.getReferenciaBancaria().setBanco("0341");
+		esperado.getReferenciaBancaria().setAgencia("1585");
+		esperado.getReferenciaBancaria().setDvAgencia("0");
+		esperado.getReferenciaBancaria().setDvContaCorrente("0000000006446");
+		esperado.getReferenciaBancaria().setDvContaCorrente("0");
+		esperado.getReferenciaBancaria().setTipoConta("01");
+		esperado.getReferenciaBancaria().setDataAbertura(UtilsDate.parse("13082001"));
 		
 		//validação outros indicadores
 		esperado.setIndicadores(new Indicador());

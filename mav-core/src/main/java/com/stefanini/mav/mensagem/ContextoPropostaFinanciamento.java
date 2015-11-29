@@ -238,6 +238,331 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 			//dados do cônjuge
 			lerDadosConjuge(input, mensagem);
 			
+			//DADOS COMPLEMENTARES
+			//1365 a 1366	Escolaridade	2	A	Codigo da Escolaridade	Ver tabela de dominio Escolaridade
+			mensagem.setEscolaridade(lerString(input, 1364, 2));
+			
+			//1367 a 1386	Formação	20	A	Formação
+			mensagem.setFormacao(lerString(input, 1366, 20));
+			
+			//1387 a 1387	Indicador Possui cartão	1	N	Indicador se possui cartão	0 - Não 1 - Sim	X
+			mensagem.setPossuiCartao(lerBoolean(input, 1386));
+			
+			//1388 a 1388	Indicador Possui veículo próprio	1	N	Indicador Possui veículo próprio	0 - Não 1 - Sim	X
+			mensagem.setPossuiVeiculoProprio(lerBoolean(input, 1387));
+			
+			//1389 a 1398	Placa	10	A
+			mensagem.setPlaca(lerString(input, 1388, 10));
+			
+			//1399 a 1458	Renavam	60	A
+			mensagem.setRenavam(lerString(input, 1398, 60));
+			
+			//1459 a 1459	Indicador Possui veículo quitado	1	N	Indicador Possui veículo quitado	0 - Não 1 - Sim	X
+			mensagem.setVeiculoQuitado(lerBoolean(input, 1458));
+			
+
+			//1460 a 1460	Possui experiencia de crédito	1	N	Indicador Possui experiência	0 - Não 1 - Sim	X
+			mensagem.setPossuiExperienciaCredito(lerBoolean(input, 1459));
+
+			if(mensagem.isPossuiExperienciaCredito()) {
+				
+				//1461 a 1480	Local da Experiência	20	A			X. Se Possui experiencia de crédito = 1
+				mensagem.setLocalExperienciaCredito(lerString(input, 1460, 20));
+				
+				//1481 a 1482	Plano da Experiência	2	N			X. Se Possui experiencia de crédito = 1
+				mensagem.setPlanoExperienciaCredito(lerInt(input, 1480, 2));
+				
+				//1483 a 1497	Valor da Prestação da Experiência	15	N			X. Se Possui experiencia de crédito = 1
+				mensagem.setValorPrestacaoExperienciaCredito(lerInt(input, 1482, 15));
+				
+				//1498 a 1503	Inicio da Experiência de Crédito	6	N	Inicio da Experiência MMAAAA		X. Se Possui experiencia de crédito = 1
+				mensagem.setInicioExperienciaCredito(lerDataCurta(input, 1497));
+				
+				//1504 a 1543	Classificação do Cliente	40	A
+				mensagem.setClassificacaoCliente(lerString(input, 1504, 40));
+				
+				//1544 a 1544	Indicador Possui Cartão Financeira	1	N	Indicador Possui Cartão Financeira	0 - Não 1 - Sim	X
+				mensagem.setPossuiCartaoFinanceira(lerBoolean(input, 1543));
+				
+				//1545 a 1545	Indicador Possui Conta Corrente	1	N	Indicador Possui Conta Corrente	0 - Não 1 - Sim	X
+				mensagem.setPossuiContaCorrente(lerBoolean(input, 1544));
+			}
+			
+			//1546 a 1546	Indicador Possui dependente	1	N		0 - Não 1 - Sim	X
+			mensagem.setPossuiDependente(lerBoolean(input, 1545));
+			
+			//1547 a 1548	Quantidade de dependentes	2	N			X. Se Indicador Possui dependente = 1
+			mensagem.setQuantidadeDependente(lerInt(input, 1546, 2));
+			
+			//1549 a 1563	Nome do cartão	15	A
+			mensagem.setNomeCartao(lerString(input, 1548, 15));
+			
+			//1564 a 1564	indicadorCapturarFoto	1	A	Indicador da captura da Foto do Cliente.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
+			//1 - Problemas Técnicos
+			//2 - Cliente não autoriza
+			//3 - Outros"	X
+			mensagem.setIndicadorCapturarFoto(lerString(input, 1563, 1));
+			
+			//1565 a 1565	indicadorCapturarDocumento	1	A	Indicador da captura do Documento.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
+			//1 - Problemas Técnicos
+			//2 - Cliente não autoriza
+			//3 - Outros"	X
+			mensagem.setIndicadorCapturarDocumento(lerString(input, 1564, 1));
+			
+			//1566 a 1566	indicadorCapturarBiometria	1	A	Indicador da captura da Biometria	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
+			//1 - Problemas Técnicos
+			//2 - Cliente não autoriza
+			//3 - Outros"	X
+			mensagem.setIndicadorCapturarBiometria(lerString(input, 1565, 1));
+			
+			//1567 a 1613	Filler	47	A
+			mensagem.setFillerDadosComplementares(lerStringCheia(input, 1566, 47));
+			
+			//REFERÊNCIAS PESSOAIS
+			mensagem.setReferenciasPessoais(new LinkedList<Referencia>());
+			//1614 a 1643	Nome	30	A	Nome da Pessoa de Referência		X
+			//1644 a 1646	DDD	3	N	DDD da Pessoa de Referência		X
+			//1647 a 1655	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+			//Exemplos:
+			//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+			//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+			//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+			//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+			//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		X
+			//1656 a 1659	Ramal	4	N	Ramal da Pessoa de Referência
+			mensagem.getReferenciasPessoais().add(new Referencia());
+			mensagem.getReferenciasPessoais().get(0).setTelefone(new Telefone());
+			mensagem.getReferenciasPessoais().get(0).setNome(lerString(input, 1613, 30));
+			mensagem.getReferenciasPessoais().get(0).getTelefone().setDdd(lerInt(input, 1643, 3));
+			mensagem.getReferenciasPessoais().get(0).getTelefone().setNumero(lerInt(input, 1646, 9));
+			mensagem.getReferenciasPessoais().get(0).getTelefone().setRamal(lerInt(input, 1655, 4));
+			
+					
+			//1660 a 1689	Nome	30	A	Nome da Pessoa de Referência		X
+			//1690 a 1692	DDD	3	N	DDD da Pessoa de Referência		X
+			//1693 a 1701	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+			//Exemplos:
+			//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+			//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+			//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+			//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+			//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		X
+			//1702 a 1705	Ramal	4	N	Ramal da Pessoa de Referência		
+			//	As referencias tem que ter nome duplo, ou seja, nome e sobre nome. Porém para facilitar a analise da proposta aconcelhamos que seja colocado o primeiro nome e grau de parentesco. Por exemplo: Maria Amiga. Rafael Tio.
+			mensagem.getReferenciasPessoais().add(new Referencia());
+			mensagem.getReferenciasPessoais().get(1).setTelefone(new Telefone());
+			mensagem.getReferenciasPessoais().get(1).setNome(lerString(input, 1659, 30));
+			mensagem.getReferenciasPessoais().get(1).getTelefone().setDdd(lerInt(input, 1689, 3));
+			mensagem.getReferenciasPessoais().get(1).getTelefone().setNumero(lerInt(input, 1692, 9));
+			mensagem.getReferenciasPessoais().get(1).getTelefone().setRamal(lerInt(input, 1701, 4));
+			
+			//REFERÊNCIAS COMERCIAIS
+			mensagem.setReferenciasComerciais(new LinkedList<Referencia>());
+			
+			//1706 a 1735	Nome 1	30	A	Nome da Pessoa de Referência  (PC)		
+			//1736 a 1738	DDD 1	3	N	DDD da referencia comercial		
+			//1739 a 1747	Telefone 1	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+			//Exemplos:
+			//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+			//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+			//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+			//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+			//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		
+			//1748 a 1751	Ramal 1	4	N	Ramal da referencia Comercial
+			mensagem.getReferenciasPessoais().get(0).setTelefone(new Telefone());
+			mensagem.getReferenciasPessoais().get(0).setNome(lerString(input, 1705, 30));
+			try {
+				mensagem.getReferenciasPessoais().get(0).getTelefone().setDdd(lerInt(input, 1735, 3));	
+			}
+			catch(NumberFormatException e) {
+				mensagem.getReferenciasPessoais().get(0).getTelefone().setDdd(null);
+			}
+			try {
+				mensagem.getReferenciasPessoais().get(0).getTelefone().setNumero(lerInt(input, 1738, 9));	
+			}
+			catch(NumberFormatException e) {
+				mensagem.getReferenciasPessoais().get(0).getTelefone().setNumero(null);
+			}
+			try {
+				mensagem.getReferenciasPessoais().get(0).getTelefone().setRamal(lerInt(input, 1747, 4));	
+			}
+			catch(NumberFormatException e) {
+				mensagem.getReferenciasPessoais().get(0).getTelefone().setRamal(null);
+			}
+			
+			
+			//1752 a 1781	Nome 2	30	A	Nome da Pessoa de Referência  (PC)		
+			//1782 a 1784	DDD 2	3	N	DDD da referencia comercial		
+			//1785 a 1793	Telefone 2	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+			//Exemplos:
+			//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+			//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+			//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+			//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+			//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		
+			//1794 a 1797	Ramal 2	4	N	Ramal da referencia Comercial
+			mensagem.getReferenciasPessoais().get(1).setTelefone(new Telefone());
+			mensagem.getReferenciasPessoais().get(1).setNome(lerString(input, 1751, 30));
+			try {
+				mensagem.getReferenciasPessoais().get(1).getTelefone().setDdd(lerInt(input, 1781, 3));	
+			}
+			catch(NumberFormatException e) {
+				mensagem.getReferenciasPessoais().get(1).getTelefone().setDdd(null);
+			}
+			
+			try {
+				mensagem.getReferenciasPessoais().get(1).getTelefone().setNumero(lerInt(input, 1784, 9));	
+			}
+			catch(NumberFormatException e) {
+				mensagem.getReferenciasPessoais().get(1).getTelefone().setNumero(null);
+			}
+			
+			try {
+				mensagem.getReferenciasPessoais().get(1).getTelefone().setRamal(lerInt(input, 1793, 4));	
+			}
+			catch(NumberFormatException e) {
+				mensagem.getReferenciasPessoais().get(1).getTelefone().setRamal(null);
+			}
+			
+			//REFERÊNCIAS BANCARIAS						
+			//1798 a 1801	Banco	4	N		Ver tabela de dominio Banco	X. Se algum campo da referencia bancaria for preenchuda 
+			//1802 a 1805	Agência	4	N			X. Se algum campo da referencia bancaria for preenchuda 
+			//1806 a 1806	DV Agência	1	A			
+			//1807 a 1819	Conta Corrente	13	N			X. Se algum campo da referencia bancaria for preenchuda 
+			//1820 a 1821	DV Conta Corrente	2	A			X. Se algum campo da referencia bancaria for preenchuda 
+			//1822 a 1823	Tipo da Conta	2	A		Ver tabela de dominio Tipo de Conta Corrente	X. Se algum campo da referencia bancaria for preenchuda 
+			//1824 a 1831	Data Abertura	8	N	DDMMAAAA		X. Se algum campo da referencia bancaria for preenchuda
+			mensagem.setReferenciaBancaria(new Banco());
+			mensagem.getReferenciaBancaria().setBanco(lerString(input, 1797, 4));
+			mensagem.getReferenciaBancaria().setAgencia(lerString(input, 1801, 4));
+			mensagem.getReferenciaBancaria().setDvAgencia(lerString(input, 1805, 1));
+			mensagem.getReferenciaBancaria().setDvContaCorrente(lerString(input, 1806, 13));
+			mensagem.getReferenciaBancaria().setDvContaCorrente(lerString(input, 1820, 2));
+			mensagem.getReferenciaBancaria().setTipoConta(lerString(input, 1821, 2));
+			try {
+				mensagem.getReferenciaBancaria().setDataAbertura(lerData(input, 1823));
+			}
+			catch(ParseException e) {
+				mensagem.getReferenciaBancaria().setDataAbertura(null);
+			}
+			
+			//DADOS DA OPERAÇÃO						
+			//1832 a 1839	Tabela de Financiamento	8	N	Identificação da tabela de financiamento  (COP’s) referente ao crédito solicitado, específica para o lojista ou Crédito Pessoal 		X
+			mensagem.setTabelaFinanciamento(lerString(input, 1831, 8));
+			
+			//1840 a 1840	Sinal da Carência 	1	A	Sinal da carência  (+) - Positiva  (-) - Negativa	"+"  -  "-" 	X
+			mensagem.setSinalCarencia(lerString(input, 1839, 1));
+			
+			//1841 a 1842	Carência 	2	N	Quantidade de Dias Para Ajuste do Vencimento da Prestação		X
+			//1843 a 1843	Forma de pagamento	1	N	"Indicação da Forma de Cobrança
+			//0) Carnë
+			//1) averbação em folha
+			//2) Cheque Pré
+			//3) Extrato Rotativo
+			//4) Extrato Parcelado
+			//5) Debito em Conta"	“0”  “1”  “2”   “3”  ”4”, "5"	X
+			//1844 a 1851	Data da  Operação	8	N	Data da Realização da Operação		X
+			//1852 a 1853	Produto (Tabela de Produto)	2	N	Informar o Produto		X
+			//1854 a 1855	Prestações	2	N	Indicar O Nº de Parcelas do contrato		X
+			//1856 a 1862	Taxa Mensal	7	N	Taxa de Juros Aplicada Ao Mês (2 inteiras e 5 decimais)		X
+			//1863 a 1869	Taxa Anual	7	N	Taxa de Juros Aplicada Ao Ano (3 inteiras 4 decimais)		
+			//1870 a 1884	Valor da Entrada (não é mais utilizado)	15	N	Valor da Entrada (não é mais utilizado)		
+			//1885 a 1885	Tipo de Pagamento	1	N	0-Pré 1-Pós (Flag que indica se a negociação será efetuada com Pré fixado ou Pos fixado)	“0”  “1”	X
+			//1886 a 1887	Top	2	N	Tipo de Operação		X
+			//1888 a 1902	Valor Tac	15	N	Valor da TAC (em R$)		X
+			//1903 a 1903	Pag_Tac	1	N	Flag que indica a forma de pagamento da TAC ( 0 -Financiada   1- A vista 2 - Descontada em (RO))	“0”   “1”    “2”	X
+			//1904 a 1918	Valor  da Operação/Solicitado	15	N	Valor solicitado pelo cliente (em R$)		X
+			//1919 a 1933	Valor Total do Financiamento	15	N	Valor Total do Financiamento (em R$).		X
+			//1934 a 1948	Valor da Prestação 	15	N	Valor A Ser Pago Mensalmente Já Com Taxa de Juros (em R$).		X
+			//1949 a 1956	Vencimento 1ª prestação	8	N	Data do primeiro  vencimento		X
+			//1957 a 1981	Descrição do bem	25	A	Identificação da mercadoria financiada (obrigatório para TOP 31 e 34)		
+			//1982 a 1982	Imp_Carne	1	A	Flag que indica que o lojista vai imprimir carnê na loja (0-Não   e     1-Sim)	“0”     “1”	X
+			//1983 a 1997	Nº Pedido	15	A	Campo para o lojista associar o número de pedido, nota fiscal, etc.		
+			//1998 a 2008	Nº do CD	11	A	Numeração gráfica pré impressa do comprovante de débito ( não é obrigatorio)		
+			//2009 a 2019	CPF do Vendedor	11	A	Identificação do vendedor/atendente  responsável pela operação		X
+			//2020 a 2033	Telefone	14	A	Telefone do Vendedor		X
+			//2034 a 2034	Pre-Pago	1	A	"Indica a compra de telefone celular Pre-Pago
+			//  0 - Default - Não
+			//  1 - Pre     - Sim"	 '0' '1'	X
+			//2035 a 2035	Leva na Hora	1	A	"Indica se o cliente levara a mercadoria na hora
+			//  0 - Default - Não
+			//  1 - leva    - Sim"	 '0' '1'	X
+			//2036 a 2036	Beta-Gama	1	A	"Indicadore de Fraude
+			//  0 - Default - Sem fraude
+			//  2 - Beta    - Susp fraude
+			//  1 - Gama    - Confirm fraude"	 '0' '1' '2'	X
+			//2037 a 2046	Promotor	10	N	Código do Promotor		
+			//2047 a 2047	Indicador aceita consulta ao sysbacen	1	A	Indica se o cliente permitiu a consulta ao sysbacen 0- Não(Default), 1 - Sim	 '0' '1'	X
+			//2048 a 2054	CET Mensal (%)	7	N	Taxa Mensal do Custo efetivo Total (2 decimais)	"Preencher com o valor 
+			//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+			//2055 a 2061	CET Anual  (%)	7	N	Taxa Anual   do Custo efetivo Total (2 decimais)	"Preencher com o valor 
+			//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+			//2062 a 2068	IOF	7	N	Valor do IOF (2 casas decimais)	"Preencher com o valor 
+			//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+			//2069 a 2076	Data do Evento	8	N	Data da Entrega do Bem/Serviço		X. Se o produto for cessão
+			//2077 a 2091	Valor da Entrada ao Lojista	15	N	Valor dado de entrada ao Lojista		
+			//2092 a 2141	Filler	50	A			
+			//Dados do Pre Screening						
+			//2142 a 2143	Código da Oferta Aderida de Conta Corrente	2	A	Código da Oferta recuperada na mensagem 0460.		
+			//2144 a 2145	Código da Oferta Aderida de CDC/EP.	2	A	Código da Oferta recuperada na mensagem 0460.		
+			//2146 a 2147	Código do Perfil da Oferta Aderida de CDC/EP.	2	A	Código do Perfil recuperado na mensagem 0460.		
+			//2148 a 2160	Filler	13	A			
+			//Atendimento ao Cliente						
+			//2161 a 2195	Nome do Vendedor	35	A			X
+			//2196 a 2230	Nome do Agente Correspondente	35	A			
+			//2231 a 2241	CPF do Agente Correspondente	11	A			X
+			//Dados de Operações para Emprestimo Pessoal (EP) e averbação em folha.						
+			//2242 a 2242	Ind. Pagto DOC - EP	1	A	Indicador de pagamento em DOC	"S = Sim com Doc
+			// N =Não opera com EP"	X
+			//2243 a 2244	Tipo de Conta (spb) - EP	2	A	Ver tabela de dominio		X. Se Ind. Pagto DOC - EP = "S"
+			//2245 a 2248	Banco - EP	4	N	Número do Banco para Depósito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+			//2249 a 2252	Agencia - EP	4	N	Número da Agencia para Depósito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+			//2253 a 2253	DV Agencia  - EP	1	A	DV da Agencia para Depósito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+			//2254 a 2266	Nº da conta - EP	13	N	Número da Conta para Depósito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+			//2267 a 2268	Dv da conta  - EP	2	A	DV da Conta para deposito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+			//2269 a 2269	C2 - EP	1	N			X. Se Ind. Pagto DOC - EP = "S"
+			//2270 a 2270	C3 - EP	1	N			X. Se Ind. Pagto DOC - EP = "S"
+			//Dados referente ao Seguro						
+			//2271 a 2271	Adesao_Seguro	1	N	Flag que indica se o cliente optou por fazer seguro (0 - NÃO  ;  1 - SIM)	“0”   “1”	X
+			//2272 a 2272	Forma pagamento acessório	1	A	Forma de pagamento do produto acessório (V – a vista ; F – Financiado)	“V”  “F”	X.  Se o Campo Adesao_Seguro estiver como 1.
+			//2273 a 2273	Quantidade de Seguro	1	N	Indica se o Cliente vai aderir a um Seguro ou aos dois Seguros.	"0 - Não vai aderir;
+			//1- Vai aderi a um Seguro;
+			//2 - Vai aderir a dois Seguros;"	X.  Se o Campo Adesao_Seguro estiver como 1.
+			//Dados referente ao Seguro Prestamista						
+			//2274 a 2275	tipo do seguro	2	A	Tipo de produto acessório	"02"	X. Se algum campo do seguro prestamista for preenchido
+			//2276 a 2279	código do seguro	4	A	Codigo do produto acessório	De acordo com a Matriz de Seguros	X. Se algum campo do seguro prestamista for preenchido
+			//2280 a 2294	valor do seguro	15	N	Valor do produto acessório (em R$)	De acordo com a Matriz de Seguros	X. Se algum campo do seguro prestamista for preenchido
+			//Dados referente ao Seguro da Sorte						
+			//2295 a 2296	tipo do seguro	2	A	Tipo de produto acessório	"02"	X. Se algum campo do seguro da sorte for preenchido
+			//2297 a 2300	código do seguro	4	A	Codigo do produto acessório	De acordo com a Matriz de Seguros	X. Se algum campo do seguro da sorte for preenchido
+			//2301 a 2315	valor do seguro	15	N	Valor do produto acessório (em R$)	De acordo com a Matriz de Seguros	X. Se algum campo do seguro da sorte for preenchido
+			//2316 a 2317	Quantidade Numero da Sorte	2	N	Usar o valor da matriz de Seguros	De acordo com a Matriz de Seguros	X. Se algum campo do seguro da sorte for preenchido
+			//DEBITO EM CONTA						
+			//2318 a 2321	Banco	4	N		Ver tabela de dominio Banco	X. Se Forma de pagamento = "5" 
+			//2322 a 2325	Agencia	4	N			X. Se Forma de pagamento = "5" 
+			//2326 a 2326	DV Agência	1	A			
+			//2327 a 2339	Conta Corrente	13	N			X. Se Forma de pagamento = "5" 
+			//2340 a 2341	DV Conta Corrente	2	A			X. Se Forma de pagamento = "5" 
+			//2342 a 2343	Tipo da Conta	2	A		Ver tabela de dominio Tipo de Conta Corrente	X. Se Forma de pagamento = "5" 
+			//2344 a 2351	Data de Abertura	8	N	DDMMAAAA		X. Se Forma de pagamento = "5" 
+			//Dados de Cheques						
+			//2352 a 2354	CÓDIGO DO BANCO dos cheques	3	N	Código do Banco da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+			//2355 a 2358	AGÊNCIA  DE DESTINO dos cheques	4	N	Código da Agência Bancária da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+			//2359 a 2359	DV Agencia dos cheques	1	A			
+			//2360 a 2372	Codigo da Conta	13	N			X
+			//2373 a 2374	DV da Conta	2	A			X
+			//2375 a 2380	NÚMERO DO CHEQUE do Primeiro Cheque da 1a. Faixa de Cheques	6	N	Número do primeiro cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+			//2381 a 2386	NÚMERO DO CHEQUE do Último Cheque da 1a. Faixa de Cheques	6	N	Número do último cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+			//2387 a 2392	NÚMERO DO CHEQUE do Primeiro Cheque da 2a. Faixa de Cheques	6	N	Número do primeiro cheque da segunda faixa de cheques para as operações de cheque-pré		
+			//2393 a 2398	NÚMERO DO CHEQUE do Último Cheque da 2a. Faixa de Cheques	6	N	Número do último cheque da segunda faixa de cheques para as operações de cheque-pré		
+			//2399 a 2406	Data da abertura da conta corrente	8	N	Data da abertura da conta corrente	Se produto igual a "2"	X
+			//2407 a 2454	Filler	48	A			
+			//Circular 3641 Banco Central						
+			//2455 a 2456	Flag Circular 3461 Banco Central	2	A	informar sempre o valor X2 nesse campo	X2	X
+			//Observação						
+			//2457 a 2711	Observação	255	A	Campo observação 	 	
+
+			
 		} catch (ParseException e) {
 			
 			throw new MensagemNaoEncontradaException(e);
