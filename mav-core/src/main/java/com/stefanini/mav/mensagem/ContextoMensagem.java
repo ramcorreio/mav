@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -108,13 +107,32 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		return Integer.valueOf(lerString(input, inicio, tamanho));
 	}
 	
+	protected static Long lerLong(String input, int inicio, int tamanho) {
+		return Long.valueOf(lerString(input, inicio, tamanho));
+	}
+	
 	protected static Double lerDouble(String input, int inicio, int tamanho) throws ParseException {
 		
-		NumberFormat formmatter = DecimalFormat.getInstance();
+		return lerDouble(input, inicio, tamanho, 2);
+	}
+	
+	protected static Double lerDouble(String input, int inicio, int tamanho, int decimal) throws ParseException {
+		
+		int intval = tamanho - decimal;
+		
+		DecimalFormat formmatter = (DecimalFormat) DecimalFormat.getInstance();
 		formmatter.setGroupingUsed(false);
-		formmatter.setMaximumIntegerDigits(9);
-		formmatter.setMaximumFractionDigits(2);
-		return new Double(formmatter.parse(lerString(input, inicio, tamanho)).doubleValue());
+		formmatter.setMaximumIntegerDigits(tamanho - decimal);
+		formmatter.setMinimumFractionDigits(decimal);
+		formmatter.setMaximumFractionDigits(decimal);
+		String valor = lerString(input, inicio, tamanho);
+		
+		//montagem de valor com ponto
+		String valorComPonto = valor.substring(0, intval);
+		valorComPonto += Character.toString(formmatter.getDecimalFormatSymbols().getDecimalSeparator());
+		valorComPonto += valor.substring(intval);
+		
+		return Double.valueOf(formmatter.parse(valorComPonto).doubleValue());
 	}
 	
 	protected static Boolean lerBooleanString(String input, int inicio, String comparador) {

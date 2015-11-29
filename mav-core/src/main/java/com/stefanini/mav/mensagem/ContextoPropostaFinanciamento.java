@@ -240,7 +240,7 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 			
 			//DADOS COMPLEMENTARES
 			//1365 a 1366	Escolaridade	2	A	Codigo da Escolaridade	Ver tabela de dominio Escolaridade
-			mensagem.setEscolaridade(lerString(input, 1364, 2));
+			mensagem.setEscolaridade(lerInt(input, 1364, 2));
 			
 			//1367 a 1386	Formação	20	A	Formação
 			mensagem.setFormacao(lerString(input, 1366, 20));
@@ -277,16 +277,16 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 				
 				//1498 a 1503	Inicio da Experiência de Crédito	6	N	Inicio da Experiência MMAAAA		X. Se Possui experiencia de crédito = 1
 				mensagem.setInicioExperienciaCredito(lerDataCurta(input, 1497));
-				
-				//1504 a 1543	Classificação do Cliente	40	A
-				mensagem.setClassificacaoCliente(lerString(input, 1504, 40));
-				
-				//1544 a 1544	Indicador Possui Cartão Financeira	1	N	Indicador Possui Cartão Financeira	0 - Não 1 - Sim	X
-				mensagem.setPossuiCartaoFinanceira(lerBoolean(input, 1543));
-				
-				//1545 a 1545	Indicador Possui Conta Corrente	1	N	Indicador Possui Conta Corrente	0 - Não 1 - Sim	X
-				mensagem.setPossuiContaCorrente(lerBoolean(input, 1544));
 			}
+			
+			//1504 a 1543	Classificação do Cliente	40	A
+			mensagem.setClassificacaoCliente(lerString(input, 1503, 40));
+			
+			//1544 a 1544	Indicador Possui Cartão Financeira	1	N	Indicador Possui Cartão Financeira	0 - Não 1 - Sim	X
+			mensagem.setPossuiCartaoFinanceira(lerBoolean(input, 1543));
+			
+			//1545 a 1545	Indicador Possui Conta Corrente	1	N	Indicador Possui Conta Corrente	0 - Não 1 - Sim	X
+			mensagem.setPossuiContaCorrente(lerBoolean(input, 1544));
 			
 			//1546 a 1546	Indicador Possui dependente	1	N		0 - Não 1 - Sim	X
 			mensagem.setPossuiDependente(lerBoolean(input, 1545));
@@ -448,12 +448,14 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 			
 			//DADOS DA OPERAÇÃO						
 			//1832 a 1839	Tabela de Financiamento	8	N	Identificação da tabela de financiamento  (COP’s) referente ao crédito solicitado, específica para o lojista ou Crédito Pessoal 		X
-			mensagem.setTabelaFinanciamento(lerString(input, 1831, 8));
+			mensagem.setTabelaFinanciamento(lerInt(input, 1831, 8));
 			
 			//1840 a 1840	Sinal da Carência 	1	A	Sinal da carência  (+) - Positiva  (-) - Negativa	"+"  -  "-" 	X
 			mensagem.setSinalCarencia(lerString(input, 1839, 1));
 			
 			//1841 a 1842	Carência 	2	N	Quantidade de Dias Para Ajuste do Vencimento da Prestação		X
+			mensagem.setCarencia(lerInt(input, 1840, 2));
+			
 			//1843 a 1843	Forma de pagamento	1	N	"Indicação da Forma de Cobrança
 			//0) Carnë
 			//1) averbação em folha
@@ -461,52 +463,131 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 			//3) Extrato Rotativo
 			//4) Extrato Parcelado
 			//5) Debito em Conta"	“0”  “1”  “2”   “3”  ”4”, "5"	X
+			mensagem.setFormaPagamento(lerInt(input, 1842, 1));
+			
+			
 			//1844 a 1851	Data da  Operação	8	N	Data da Realização da Operação		X
+			mensagem.setDataOperacao(lerData(input, 1843));
+			
 			//1852 a 1853	Produto (Tabela de Produto)	2	N	Informar o Produto		X
+			mensagem.setProduto(lerInt(input, 1851, 2));
+			
 			//1854 a 1855	Prestações	2	N	Indicar O Nº de Parcelas do contrato		X
+			mensagem.setPrestacoes(lerInt(input, 1853, 2));
+			
 			//1856 a 1862	Taxa Mensal	7	N	Taxa de Juros Aplicada Ao Mês (2 inteiras e 5 decimais)		X
+			mensagem.setTaxaMensal(lerDouble(input, 1855, 7, 5));
+			
 			//1863 a 1869	Taxa Anual	7	N	Taxa de Juros Aplicada Ao Ano (3 inteiras 4 decimais)		
+			mensagem.setTaxaAnual(lerDouble(input, 1862, 7, 4));
+			
 			//1870 a 1884	Valor da Entrada (não é mais utilizado)	15	N	Valor da Entrada (não é mais utilizado)		
+			mensagem.setValorEntrada(lerInt(input, 1869, 15));
+			
 			//1885 a 1885	Tipo de Pagamento	1	N	0-Pré 1-Pós (Flag que indica se a negociação será efetuada com Pré fixado ou Pos fixado)	“0”  “1”	X
+			mensagem.setTipoPagamento(lerInt(input, 1884, 1));
+			
 			//1886 a 1887	Top	2	N	Tipo de Operação		X
+			mensagem.setTop(lerInt(input, 1885, 2));
+			
 			//1888 a 1902	Valor Tac	15	N	Valor da TAC (em R$)		X
+			mensagem.setValorTac(lerInt(input, 1887, 15));
+			
 			//1903 a 1903	Pag_Tac	1	N	Flag que indica a forma de pagamento da TAC ( 0 -Financiada   1- A vista 2 - Descontada em (RO))	“0”   “1”    “2”	X
+			mensagem.setPagTac(lerInt(input, 1902, 1));
+			
 			//1904 a 1918	Valor  da Operação/Solicitado	15	N	Valor solicitado pelo cliente (em R$)		X
+			mensagem.setValorOperacaoSolicitado(lerInt(input, 1903, 15));
+			
 			//1919 a 1933	Valor Total do Financiamento	15	N	Valor Total do Financiamento (em R$).		X
+			mensagem.setValorTotalFinanciado(lerInt(input, 1918, 15));
+			
 			//1934 a 1948	Valor da Prestação 	15	N	Valor A Ser Pago Mensalmente Já Com Taxa de Juros (em R$).		X
+			mensagem.setValorPrestacao(lerInt(input, 1933, 15));
+			
 			//1949 a 1956	Vencimento 1ª prestação	8	N	Data do primeiro  vencimento		X
-			//1957 a 1981	Descrição do bem	25	A	Identificação da mercadoria financiada (obrigatório para TOP 31 e 34)		
+			mensagem.setVencimentoPrestacao(lerData(input, 1948));
+			
+			//1957 a 1981	Descrição do bem	25	A	Identificação da mercadoria financiada (obrigatório para TOP 31 e 34)
+			mensagem.setDescricaoDoBem(lerString(input, 1956, 25));
+			
 			//1982 a 1982	Imp_Carne	1	A	Flag que indica que o lojista vai imprimir carnê na loja (0-Não   e     1-Sim)	“0”     “1”	X
-			//1983 a 1997	Nº Pedido	15	A	Campo para o lojista associar o número de pedido, nota fiscal, etc.		
-			//1998 a 2008	Nº do CD	11	A	Numeração gráfica pré impressa do comprovante de débito ( não é obrigatorio)		
+			mensagem.setImpressaoCarne(lerBoolean(input, 1981));
+			
+			//1983 a 1997	Nº Pedido	15	A	Campo para o lojista associar o número de pedido, nota fiscal, etc.
+			mensagem.setNuPedido(lerString(input, 1982, 15));
+			
+			//1998 a 2008	Nº do CD	11	A	Numeração gráfica pré impressa do comprovante de débito ( não é obrigatorio)
+			mensagem.setNuCd(lerString(input, 1997, 11));
+			
 			//2009 a 2019	CPF do Vendedor	11	A	Identificação do vendedor/atendente  responsável pela operação		X
+			mensagem.setCpfVendedor(lerString(input, 2008, 11));
+			
 			//2020 a 2033	Telefone	14	A	Telefone do Vendedor		X
+			mensagem.setTelefoneVendedor(lerString(input, 2019, 14));
+			
 			//2034 a 2034	Pre-Pago	1	A	"Indica a compra de telefone celular Pre-Pago
 			//  0 - Default - Não
 			//  1 - Pre     - Sim"	 '0' '1'	X
+			mensagem.setPrePago(lerBoolean(input, 2033));
+			
 			//2035 a 2035	Leva na Hora	1	A	"Indica se o cliente levara a mercadoria na hora
 			//  0 - Default - Não
 			//  1 - leva    - Sim"	 '0' '1'	X
+			mensagem.setLevaNaHora(lerBoolean(input, 2034));
+			
 			//2036 a 2036	Beta-Gama	1	A	"Indicadore de Fraude
 			//  0 - Default - Sem fraude
 			//  2 - Beta    - Susp fraude
 			//  1 - Gama    - Confirm fraude"	 '0' '1' '2'	X
-			//2037 a 2046	Promotor	10	N	Código do Promotor		
+			mensagem.setBetaGama(lerInt(input, 2035, 1));
+			
+			//2037 a 2046	Promotor	10	N	Código do Promotor
+			try {
+				mensagem.setPromotor(lerInt(input, 2036, 10));	
+			}
+			catch(NumberFormatException e) {
+				mensagem.setPromotor(null);
+			}
+			
 			//2047 a 2047	Indicador aceita consulta ao sysbacen	1	A	Indica se o cliente permitiu a consulta ao sysbacen 0- Não(Default), 1 - Sim	 '0' '1'	X
+			mensagem.setAceitaConsulta(lerBoolean(input, 2046));
+			
 			//2048 a 2054	CET Mensal (%)	7	N	Taxa Mensal do Custo efetivo Total (2 decimais)	"Preencher com o valor 
 			//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+			mensagem.setCetMensal(lerDouble(input, 2047, 7, 2));
+			
 			//2055 a 2061	CET Anual  (%)	7	N	Taxa Anual   do Custo efetivo Total (2 decimais)	"Preencher com o valor 
-			//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+			//informado pelo Simulador ou zero caso o simulador não foi utilizado"
+			mensagem.setCetAnual(lerDouble(input, 2054, 7, 2));
+			
 			//2062 a 2068	IOF	7	N	Valor do IOF (2 casas decimais)	"Preencher com o valor 
-			//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+			//informado pelo Simulador ou zero caso o simulador não foi utilizado"
+			mensagem.setIof(lerDouble(input, 2061, 7, 2));
+			
 			//2069 a 2076	Data do Evento	8	N	Data da Entrega do Bem/Serviço		X. Se o produto for cessão
-			//2077 a 2091	Valor da Entrada ao Lojista	15	N	Valor dado de entrada ao Lojista		
-			//2092 a 2141	Filler	50	A			
+			mensagem.setDataEvento(lerData(input, 2068));
+			
+			//2077 a 2091	Valor da Entrada ao Lojista	15	N	Valor dado de entrada ao Lojista
+			mensagem.setValorEntradaLojista(lerInt(input, 2076, 15));
+			
+			//2092 a 2141	Filler	50	A
+			mensagem.setFillerDadosOperacao(lerStringCheia(input, 2091, 50));
+			
 			//Dados do Pre Screening						
-			//2142 a 2143	Código da Oferta Aderida de Conta Corrente	2	A	Código da Oferta recuperada na mensagem 0460.		
+			//2142 a 2143	Código da Oferta Aderida de Conta Corrente	2	A	Código da Oferta recuperada na mensagem 0460.
+			mensagem.setCodigoOfertaAderidaContaCorrente(lerString(input, 2141, 2));
+			
 			//2144 a 2145	Código da Oferta Aderida de CDC/EP.	2	A	Código da Oferta recuperada na mensagem 0460.		
+			mensagem.setCodigoOfertaAderidaContaCorrente(lerString(input, 2143, 2));
+			
 			//2146 a 2147	Código do Perfil da Oferta Aderida de CDC/EP.	2	A	Código do Perfil recuperado na mensagem 0460.		
-			//2148 a 2160	Filler	13	A			
+			mensagem.setCodigoPerfilOfertaAderidaCdc(lerString(input, 2145, 2));
+			
+			//2148 a 2160	Filler	13	A
+			mensagem.setFillerPreScreening(lerStringCheia(input, 2147, 13));
+			
+			//TODO: falta o parse do itens abaixo
 			//Atendimento ao Cliente						
 			//2161 a 2195	Nome do Vendedor	35	A			X
 			//2196 a 2230	Nome do Agente Correspondente	35	A			
@@ -845,9 +926,6 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		
 		//0890 a 0915	Filler	26	A
 		m.getDadosProfissionais().setFiller(lerStringCheia(input, 889, 26));
-		
-		
-		
 	}
 
 	@Override

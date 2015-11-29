@@ -94,7 +94,17 @@ public class MensagemFactoryTest {
 		MatcherAssert.assertThat(expected, Matchers.equalTo(saida));
 	}
 	
-	//m.getDadosPessoais().setDataNascimento(UtilsDate.parse(input.substring(94, 102)));
+
+	@Test
+	public void lerDouble() throws ParseException {
+		
+		String input = "0649000";
+		Double expected = 6.49;
+		Double value = ContextoMensagem.lerDouble(input, 0,	7, 5);
+		
+		MatcherAssert.assertThat(value, Matchers.equalTo(expected));
+	}
+	
 	
 	@Test
 	public void escreverString() {
@@ -534,39 +544,77 @@ public class MensagemFactoryTest {
 		
 		//DADOS COMPLEMENTARES
 		//1365 a 1366	Escolaridade	2	A	Codigo da Escolaridade	Ver tabela de dominio Escolaridade
-		esperado.setEscolaridade("");
+		esperado.setEscolaridade(11);
 		
-		//1367 a 1386	Formação	20	A	Formação		
+		//1367 a 1386	Formação	20	A	Formação
+		esperado.setFormacao("OK");
+		
 		//1387 a 1387	Indicador Possui cartão	1	N	Indicador se possui cartão	0 - Não 1 - Sim	X
+		esperado.setPossuiCartao(false);
+		
 		//1388 a 1388	Indicador Possui veículo próprio	1	N	Indicador Possui veículo próprio	0 - Não 1 - Sim	X
-		//1389 a 1398	Placa	10	A			
-		//1399 a 1458	Renavam	60	A			
+		esperado.setPossuiVeiculoProprio(false);
+		
+		//1389 a 1398	Placa	10	A
+		esperado.setPlaca("");
+		
+		//1399 a 1458	Renavam	60	A
+		esperado.setRenavam("");
+		
 		//1459 a 1459	Indicador Possui veículo quitado	1	N	Indicador Possui veículo quitado	0 - Não 1 - Sim	X
+		esperado.setVeiculoQuitado(false);
+		
 		//1460 a 1460	Possui experiencia de crédito	1	N	Indicador Possui experiência	0 - Não 1 - Sim	X
 		esperado.setPossuiExperienciaCredito(false);
 		
 		//1461 a 1480	Local da Experiência	20	A			X. Se Possui experiencia de crédito = 1
+		esperado.setLocalExperienciaCredito(null);
+		
 		//1481 a 1482	Plano da Experiência	2	N			X. Se Possui experiencia de crédito = 1
+		esperado.setPlanoExperienciaCredito(null);
+		
 		//1483 a 1497	Valor da Prestação da Experiência	15	N			X. Se Possui experiencia de crédito = 1
+		esperado.setValorPrestacao(null);
+		
 		//1498 a 1503	Inicio da Experiência de Crédito	6	N	Inicio da Experiência MMAAAA		X. Se Possui experiencia de crédito = 1
-		//1504 a 1543	Classificação do Cliente	40	A			
+		esperado.setInicioExperienciaCredito(null);
+		
+		//1504 a 1543	Classificação do Cliente	40	A
+		esperado.setClassificacaoCliente("");
+		
 		//1544 a 1544	Indicador Possui Cartão Financeira	1	N	Indicador Possui Cartão Financeira	0 - Não 1 - Sim	X
+		esperado.setPossuiCartaoFinanceira(false);
+		
 		//1545 a 1545	Indicador Possui Conta Corrente	1	N	Indicador Possui Conta Corrente	0 - Não 1 - Sim	X
+		esperado.setPossuiContaCorrente(false);
+		
 		//1546 a 1546	Indicador Possui dependente	1	N		0 - Não 1 - Sim	X
+		esperado.setPossuiDependente(false);
+		
 		//1547 a 1548	Quantidade de dependentes	2	N			X. Se Indicador Possui dependente = 1
-		//1549 a 1563	Nome do cartão	15	A			
+		esperado.setQuantidadeDependente(0);
+		
+		//1549 a 1563	Nome do cartão	15	A
+		esperado.setNomeCartao("");
+		
 		//1564 a 1564	indicadorCapturarFoto	1	A	Indicador da captura da Foto do Cliente.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
 		//1 - Problemas Técnicos
 		//2 - Cliente não autoriza
 		//3 - Outros"	X
+		esperado.setIndicadorCapturarFoto("");
+		
 		//1565 a 1565	indicadorCapturarDocumento	1	A	Indicador da captura do Documento.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
 		//1 - Problemas Técnicos
 		//2 - Cliente não autoriza
 		//3 - Outros"	X
+		esperado.setIndicadorCapturarDocumento("");
+		
 		//1566 a 1566	indicadorCapturarBiometria	1	A	Indicador da captura da Biometria	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
 		//1 - Problemas Técnicos
 		//2 - Cliente não autoriza
 		//3 - Outros"	X
+		esperado.setIndicadorCapturarBiometria("");
+		
 		//1567 a 1613	Filler	47	A
 		esperado.setFillerDadosComplementares(ContextoMensagem.escreverString(47, " "));
 		
@@ -660,6 +708,144 @@ public class MensagemFactoryTest {
 		esperado.getReferenciaBancaria().setDvContaCorrente("0");
 		esperado.getReferenciaBancaria().setTipoConta("01");
 		esperado.getReferenciaBancaria().setDataAbertura(UtilsDate.parse("13082001"));
+		
+
+		//DADOS DA OPERAÇÃO						
+		//1832 a 1839	Tabela de Financiamento	8	N	Identificação da tabela de financiamento  (COP’s) referente ao crédito solicitado, específica para o lojista ou Crédito Pessoal 		X
+		esperado.setTabelaFinanciamento(288799);
+		
+		//1840 a 1840	Sinal da Carência 	1	A	Sinal da carência  (+) - Positiva  (-) - Negativa	"+"  -  "-" 	X
+		esperado.setSinalCarencia("+");
+		
+		//1841 a 1842	Carência 	2	N	Quantidade de Dias Para Ajuste do Vencimento da Prestação		X
+		esperado.setCarencia(0);
+		
+		//1843 a 1843	Forma de pagamento	1	N	"Indicação da Forma de Cobrança
+		//0) Carnë
+		//1) averbação em folha
+		//2) Cheque Pré
+		//3) Extrato Rotativo
+		//4) Extrato Parcelado
+		//5) Debito em Conta"	“0”  “1”  “2”   “3”  ”4”, "5"	X
+		esperado.setFormaPagamento(0);
+		
+		
+		//1844 a 1851	Data da  Operação	8	N	Data da Realização da Operação		X
+		esperado.setDataOperacao(UtilsDate.parse("25082015"));
+		
+		//1852 a 1853	Produto (Tabela de Produto)	2	N	Informar o Produto		X
+		esperado.setProduto(1);
+		
+		//1854 a 1855	Prestações	2	N	Indicar O Nº de Parcelas do contrato		X
+		esperado.setPrestacoes(10);
+		
+		//1856 a 1862	Taxa Mensal	7	N	Taxa de Juros Aplicada Ao Mês (2 inteiras e 5 decimais)		X
+		esperado.setTaxaMensal(6.49000);
+		
+		//1863 a 1869	Taxa Anual	7	N	Taxa de Juros Aplicada Ao Ano (3 inteiras 4 decimais)		
+		esperado.setTaxaAnual(0.0);
+		
+		//1870 a 1884	Valor da Entrada (não é mais utilizado)	15	N	Valor da Entrada (não é mais utilizado)		
+		esperado.setValorEntrada(0);
+		
+		//1885 a 1885	Tipo de Pagamento	1	N	0-Pré 1-Pós (Flag que indica se a negociação será efetuada com Pré fixado ou Pos fixado)	“0”  “1”	X
+		esperado.setTipoPagamento(0);
+		
+		//1886 a 1887	Top	2	N	Tipo de Operação		X
+		esperado.setTop(1);
+		
+		//1888 a 1902	Valor Tac	15	N	Valor da TAC (em R$)		X
+		esperado.setValorTac(0);
+		
+		//1903 a 1903	Pag_Tac	1	N	Flag que indica a forma de pagamento da TAC ( 0 -Financiada   1- A vista 2 - Descontada em (RO))	“0”   “1”    “2”	X
+		esperado.setPagTac(0);
+		
+		//1904 a 1918	Valor  da Operação/Solicitado	15	N	Valor solicitado pelo cliente (em R$)		X
+		esperado.setValorOperacaoSolicitado(70000);
+		
+		//1919 a 1933	Valor Total do Financiamento	15	N	Valor Total do Financiamento (em R$).		X
+		esperado.setValorTotalFinanciado(70000);
+		
+		//1934 a 1948	Valor da Prestação 	15	N	Valor A Ser Pago Mensalmente Já Com Taxa de Juros (em R$).		X
+		esperado.setValorPrestacao(9920);
+		
+		//1949 a 1956	Vencimento 1ª prestação	8	N	Data do primeiro  vencimento		X
+		esperado.setVencimentoPrestacao(UtilsDate.parse("25092015"));
+		
+		//1957 a 1981	Descrição do bem	25	A	Identificação da mercadoria financiada (obrigatório para TOP 31 e 34)
+		esperado.setDescricaoDoBem("");
+		
+		//1982 a 1982	Imp_Carne	1	A	Flag que indica que o lojista vai imprimir carnê na loja (0-Não   e     1-Sim)	“0”     “1”	X
+		esperado.setImpressaoCarne(true);
+		
+		//1983 a 1997	Nº Pedido	15	A	Campo para o lojista associar o número de pedido, nota fiscal, etc.
+		esperado.setNuPedido("");
+		
+		//1998 a 2008	Nº do CD	11	A	Numeração gráfica pré impressa do comprovante de débito ( não é obrigatorio)
+		esperado.setNuCd("");
+		
+		//2009 a 2019	CPF do Vendedor	11	A	Identificação do vendedor/atendente  responsável pela operação		X
+		esperado.setCpfVendedor("01234567890");
+		
+		//2020 a 2033	Telefone	14	A	Telefone do Vendedor		X
+		esperado.setTelefoneVendedor("");
+		
+		//2034 a 2034	Pre-Pago	1	A	"Indica a compra de telefone celular Pre-Pago
+		//  0 - Default - Não
+		//  1 - Pre     - Sim"	 '0' '1'	X
+		esperado.setPrePago(false);
+		
+		//2035 a 2035	Leva na Hora	1	A	"Indica se o cliente levara a mercadoria na hora
+		//  0 - Default - Não
+		//  1 - leva    - Sim"	 '0' '1'	X
+		esperado.setLevaNaHora(true);
+		
+		//2036 a 2036	Beta-Gama	1	A	"Indicadore de Fraude
+		//  0 - Default - Sem fraude
+		//  2 - Beta    - Susp fraude
+		//  1 - Gama    - Confirm fraude"	 '0' '1' '2'	X
+		esperado.setBetaGama(0);
+		
+		//2037 a 2046	Promotor	10	N	Código do Promotor
+		esperado.setPromotor(null);
+		
+		//2047 a 2047	Indicador aceita consulta ao sysbacen	1	A	Indica se o cliente permitiu a consulta ao sysbacen 0- Não(Default), 1 - Sim	 '0' '1'	X
+		esperado.setAceitaConsulta(false);
+		
+		//2048 a 2054	CET Mensal (%)	7	N	Taxa Mensal do Custo efetivo Total (2 decimais)	"Preencher com o valor 
+		//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+		esperado.setCetMensal(0.00);
+		
+		//2055 a 2061	CET Anual  (%)	7	N	Taxa Anual   do Custo efetivo Total (2 decimais)	"Preencher com o valor 
+		//informado pelo Simulador ou zero caso o simulador não foi utilizado"
+		esperado.setCetAnual(0.00);
+		
+		//2062 a 2068	IOF	7	N	Valor do IOF (2 casas decimais)	"Preencher com o valor 
+		//informado pelo Simulador ou zero caso o simulador não foi utilizado"
+		esperado.setIof(0.00);
+		
+		//2069 a 2076	Data do Evento	8	N	Data da Entrega do Bem/Serviço		X. Se o produto for cessão
+		esperado.setDataEvento(UtilsDate.parse("00000000"));
+		
+		//2077 a 2091	Valor da Entrada ao Lojista	15	N	Valor dado de entrada ao Lojista
+		esperado.setValorEntradaLojista(0);
+		
+		//2092 a 2141	Filler	50	A
+		esperado.setFillerDadosOperacao(ContextoMensagem.escreverString(50, " "));
+		
+		//Dados do Pre Screening						
+		//2142 a 2143	Código da Oferta Aderida de Conta Corrente	2	A	Código da Oferta recuperada na mensagem 0460.
+		esperado.setCodigoOfertaAderidaContaCorrente("");
+		
+		//2144 a 2145	Código da Oferta Aderida de CDC/EP.	2	A	Código da Oferta recuperada na mensagem 0460.		
+		esperado.setCodigoOfertaAderidaContaCorrente("");
+		
+		//2146 a 2147	Código do Perfil da Oferta Aderida de CDC/EP.	2	A	Código do Perfil recuperado na mensagem 0460.		
+		esperado.setCodigoPerfilOfertaAderidaCdc("");
+		
+		//2148 a 2160	Filler	13	A
+		esperado.setFillerPreScreening(ContextoMensagem.escreverString(13, " "));
+		
 		
 		//validação outros indicadores
 		esperado.setIndicadores(new Indicador());
