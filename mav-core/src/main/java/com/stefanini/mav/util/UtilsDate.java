@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UtilsDate {
 	
@@ -12,13 +14,21 @@ public class UtilsDate {
 
 	private static final String MASCARA_DATA = "dd".concat(MASCARA_CURTA);
 	
-	private static final String MASCATA_TEMPO = MASCARA_DATA.concat("HHmmss");
+	private static final String MASCARA_TEMPO = MASCARA_DATA.concat("HHmmss");
 	
 	public static final SimpleDateFormat FORMATADOR_DATA_CURTA = new SimpleDateFormat(MASCARA_CURTA);
 	
 	public static final SimpleDateFormat FORMATADOR_DATA = new SimpleDateFormat(MASCARA_DATA);
 	
-	public static final SimpleDateFormat FORMATADOR_TEMPO = new SimpleDateFormat(MASCATA_TEMPO);
+	public static final SimpleDateFormat FORMATADOR_TEMPO = new SimpleDateFormat(MASCARA_TEMPO);
+	
+	public static final Map<String, DateFormat> formatadores = new HashMap<>(); 
+	
+	static {
+		formatadores.put(MASCARA_CURTA, FORMATADOR_DATA_CURTA);
+		formatadores.put(MASCARA_DATA, FORMATADOR_DATA);
+		formatadores.put(MASCARA_TEMPO, FORMATADOR_TEMPO);
+	}
 
 	private UtilsDate() {
 	}
