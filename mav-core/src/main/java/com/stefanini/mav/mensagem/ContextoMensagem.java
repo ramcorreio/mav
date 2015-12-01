@@ -1,6 +1,5 @@
 package com.stefanini.mav.mensagem;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -8,6 +7,8 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import com.stefanini.mav.es.ContextoEntradaSaida;
+import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.util.UtilsDate;
 
 public abstract class ContextoMensagem<M extends MensagemBasica> {
@@ -21,7 +22,7 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		this.clazz = clazz;
 	}
 	
-	private Cabecalho lerCabecalho(String input) {
+	/*private Cabecalho lerCabecalho(String input) {
 		
 		Cabecalho c = new Cabecalho();
 		
@@ -53,7 +54,7 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		c.setCampoLojista(lerStringCheia(input, 53, 30));
 		
 		return c;
-	}
+	}*/
 	
 	protected static void escreverBoolean(StringBuilder b, int tamanho, Boolean input) {
 		escreverInt(b, tamanho, input ? 1 : 0);
@@ -247,7 +248,17 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 	public M ler(String input) throws MensagemNaoEncontradaException {
 		
 		String hash = md5(input);
-		Cabecalho cabecalho = lerCabecalho(input);
+		Cabecalho cabecalho;
+		try {
+			cabecalho = ContextoEntradaSaida.ler(input, Cabecalho.class);
+		} 
+		catch (MapeamentoNaoEncontrado e) {
+			
+			throw new MensagemNaoEncontradaException(e);
+		}
+		
+		
+		//Cabecalho cabecalho = lerCabecalho(input);
 		if(!tipo.equals(cabecalho.getCodigo())) {
 			throw new MensagemNaoEncontradaException("Tipo " + tipo + " inválido");
 		}
@@ -255,10 +266,10 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		
 		M instance;
 		try {
-			instance = clazz.getDeclaredConstructor(String.class, Cabecalho.class).newInstance(hash, cabecalho);
+			instance = ContextoEntradaSaida.ler(input, clazz, new Object[]{hash, cabecalho});
 			
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			throw new MensagemNaoEncontradaException("Classe " + clazz.getName() + " inválida");
+		} catch (IllegalArgumentException | SecurityException | MapeamentoNaoEncontrado e) {
+			throw new MensagemNaoEncontradaException("Classe " + clazz.getName() + " inválida", e);
 		}
 		
 		ler(input, instance);

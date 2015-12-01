@@ -17,7 +17,7 @@ public class DadoPessoalBasico implements Serializable {
 		return cpf;
 	}
 
-	protected void setCpf(String cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
@@ -25,7 +25,7 @@ public class DadoPessoalBasico implements Serializable {
 		return dataNascimento;
 	}
 
-	protected void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -33,7 +33,7 @@ public class DadoPessoalBasico implements Serializable {
 		return filler;
 	}
 
-	protected void setFiller(String filler) {
+	public void setFiller(String filler) {
 		this.filler = filler;
 	}
 }

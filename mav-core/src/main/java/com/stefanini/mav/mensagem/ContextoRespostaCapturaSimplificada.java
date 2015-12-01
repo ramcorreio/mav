@@ -101,7 +101,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 
 		mensagem.getCabecalho().setSentidoFluxo(Fluxo.SAIDA);
 		
-		// DADOS DA CONSULTA
+		/*// DADOS DA CONSULTA
 		// 0084 a 0166 Filler 83 A Filler
 		mensagem.setFiller(lerString(input, 83, 83).trim());
 
@@ -146,7 +146,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		mensagem.getIndicadores().setIdentificadorCanal(lerString(input, 932, 1));
 		mensagem.getIndicadores().setVersaoCanal(lerStringCheia(input, 933, 10));
 		mensagem.getIndicadores().setPolitica(lerString(input, 943, 1));
-		mensagem.getIndicadores().setAmbiente(lerString(input, 944, 2));
+		mensagem.getIndicadores().setAmbiente(lerString(input, 944, 2));*/
 	}
 
 	@Override

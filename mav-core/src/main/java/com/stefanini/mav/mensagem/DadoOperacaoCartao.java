@@ -3,14 +3,24 @@ package com.stefanini.mav.mensagem;
 import java.io.Serializable;
 
 public class DadoOperacaoCartao implements Serializable {
-	
+
 	private static final long serialVersionUID = 7678829367254641220L;
+
+	private String codigoOrg;
+
+	private String codigoLogo;
+
+	private String codigoCampanha;
+
+	private String codigoModalidade;
+
+	private String filler;
 
 	public String getCodigoOrg() {
 		return codigoOrg;
 	}
 
-	protected void setCodigoOrg(String codigoOrg) {
+	public void setCodigoOrg(String codigoOrg) {
 		this.codigoOrg = codigoOrg;
 	}
 
@@ -18,7 +28,7 @@ public class DadoOperacaoCartao implements Serializable {
 		return codigoLogo;
 	}
 
-	protected void setCodigoLogo(String codigoLogo) {
+	public void setCodigoLogo(String codigoLogo) {
 		this.codigoLogo = codigoLogo;
 	}
 
@@ -26,7 +36,7 @@ public class DadoOperacaoCartao implements Serializable {
 		return codigoCampanha;
 	}
 
-	protected void setCodigoCampanha(String codigoCampanha) {
+	public void setCodigoCampanha(String codigoCampanha) {
 		this.codigoCampanha = codigoCampanha;
 	}
 
@@ -34,7 +44,7 @@ public class DadoOperacaoCartao implements Serializable {
 		return codigoModalidade;
 	}
 
-	protected void setCodigoModalidade(String codigoModalidade) {
+	public void setCodigoModalidade(String codigoModalidade) {
 		this.codigoModalidade = codigoModalidade;
 	}
 
@@ -42,19 +52,7 @@ public class DadoOperacaoCartao implements Serializable {
 		return filler;
 	}
 
-	protected void setFiller(String filler) {
+	public void setFiller(String filler) {
 		this.filler = filler;
 	}
-
-	private String codigoOrg;
-	
-	private String codigoLogo;
-	
-	private String codigoCampanha;
-	
-	private String codigoModalidade;
-	
-	private String filler;
-
-
 }

@@ -18,7 +18,7 @@ public class DadoCliente extends DadoPessoalBasico {
 		return complemento;
 	}
 
-	protected void setComplemento(DadoComplementar complemento) {
+	public void setComplemento(DadoComplementar complemento) {
 		this.complemento = complemento;
 	}
 
@@ -26,7 +26,7 @@ public class DadoCliente extends DadoPessoalBasico {
 		return cobraTac;
 	}
 
-	protected void setCobraTac(Boolean cobraTac) {
+	public void setCobraTac(Boolean cobraTac) {
 		this.cobraTac = cobraTac;
 	}
 
@@ -34,7 +34,7 @@ public class DadoCliente extends DadoPessoalBasico {
 		return elegibilidadeSeguro;
 	}
 
-	protected void setElegibilidadeSeguro(Boolean elegibilidadeSSeguro) {
+	public void setElegibilidadeSeguro(Boolean elegibilidadeSSeguro) {
 		this.elegibilidadeSeguro = elegibilidadeSSeguro;
 	}
 
@@ -42,7 +42,7 @@ public class DadoCliente extends DadoPessoalBasico {
 		return codigoProdutoLosango;
 	}
 
-	protected void setCodigoProdutoLosango(String codigoProdutoLosango) {
+	public void setCodigoProdutoLosango(String codigoProdutoLosango) {
 		this.codigoProdutoLosango = codigoProdutoLosango;
 	}
 
@@ -50,7 +50,7 @@ public class DadoCliente extends DadoPessoalBasico {
 		return qtdNumeroSorte;
 	}
 
-	protected void setQtdNumeroSorte(Integer qtdNumeroSorte) {
+	public void setQtdNumeroSorte(Integer qtdNumeroSorte) {
 		this.qtdNumeroSorte = qtdNumeroSorte;
 	}	
 }

@@ -2,6 +2,8 @@ package com.stefanini.mav.mensagem;
 
 import java.io.Serializable;
 
+import com.stefanini.mav.es.MapAtributo;
+
 /**
  * 
  * 0001 a 0005	Tam-Mensagem	5	N	Tamanho da Mensagem
@@ -28,26 +30,32 @@ public class Cabecalho implements Serializable {
 	
 	private Fluxo sentidoFluxo;
 
+	//@MapAtributo(tamanho = 5)
 	private Integer tamanho;
 	
+	//@MapAtributo(tamanho = 4)
 	private CodigoMensagem codigo;
 	
+	//@MapAtributo(tamanho = 6)
 	private Integer numeroTransacao;
 	
+	//@MapAtributo(tamanho = 15)
 	private String numeroProposta;
 	
+	//@MapAtributo(tamanho = 8)
 	private String codigoUsuario;
 	
+	//@MapAtributo(tamanho = 5)
 	private String codigoRetorno;
 	
+	//@MapAtributo(tamanho = 9)
 	private Integer codigoLojista;
 	
+	//@MapAtributo(tamanho = 1)
 	private String versao;
 	
+	//@MapAtributo(tamanho = 30, trim = false)
 	private String campoLojista;
-	
-	protected Cabecalho() {
-	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -75,7 +83,7 @@ public class Cabecalho implements Serializable {
 		return sentidoFluxo;
 	}
 	
-	protected void setSentidoFluxo(Fluxo sentidoFluxo) {
+	public void setSentidoFluxo(Fluxo sentidoFluxo) {
 		this.sentidoFluxo = sentidoFluxo;
 	}
 	
@@ -83,7 +91,7 @@ public class Cabecalho implements Serializable {
 		return tamanho;
 	}
 
-	protected void setTamanho(Integer tamanho) {
+	public void setTamanho(Integer tamanho) {
 		this.tamanho = tamanho;
 	}
 
@@ -91,7 +99,7 @@ public class Cabecalho implements Serializable {
 		return codigo;
 	}
 
-	protected void setCodigo(CodigoMensagem codigo) {
+	public void setCodigo(CodigoMensagem codigo) {
 		this.codigo = codigo;
 	}
 
@@ -99,7 +107,7 @@ public class Cabecalho implements Serializable {
 		return numeroTransacao;
 	}
 
-	protected void setNumeroTransacao(Integer numeroTransacao) {
+	public void setNumeroTransacao(Integer numeroTransacao) {
 		this.numeroTransacao = numeroTransacao;
 	}
 
@@ -107,7 +115,7 @@ public class Cabecalho implements Serializable {
 		return numeroProposta;
 	}
 
-	protected void setNumeroProposta(String numeroProposta) {
+	public void setNumeroProposta(String numeroProposta) {
 		this.numeroProposta = numeroProposta;
 	}
 
@@ -115,7 +123,7 @@ public class Cabecalho implements Serializable {
 		return codigoUsuario;
 	}
 
-	protected void setCodigoUsuario(String codigoUsuario) {
+	public void setCodigoUsuario(String codigoUsuario) {
 		this.codigoUsuario = codigoUsuario;
 	}
 
@@ -123,7 +131,7 @@ public class Cabecalho implements Serializable {
 		return codigoRetorno;
 	}
 
-	protected void setCodigoRetorno(String codigoRetorno) {
+	public void setCodigoRetorno(String codigoRetorno) {
 		this.codigoRetorno = codigoRetorno;
 	}
 
@@ -131,7 +139,7 @@ public class Cabecalho implements Serializable {
 		return codigoLojista;
 	}
 
-	protected void setCodigoLojista(Integer codigoLojista) {
+	public void setCodigoLojista(Integer codigoLojista) {
 		this.codigoLojista = codigoLojista;
 	}
 
@@ -139,7 +147,7 @@ public class Cabecalho implements Serializable {
 		return versao;
 	}
 
-	protected void setVersao(String versao) {
+	public void setVersao(String versao) {
 		this.versao = versao;
 	}
 
@@ -147,7 +155,7 @@ public class Cabecalho implements Serializable {
 		return campoLojista;
 	}
 
-	protected void setCampoLojista(String campoLojista) {
+	public void setCampoLojista(String campoLojista) {
 		this.campoLojista = campoLojista;
 	}
 

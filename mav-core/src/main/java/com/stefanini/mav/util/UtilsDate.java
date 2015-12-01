@@ -5,20 +5,40 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UtilsDate {
 	
-	private static final String MASCARA_CURTA = "MMyyyy";
-
-	private static final String MASCARA_DATA = "dd".concat(MASCARA_CURTA);
+	public enum FormatadorData {
+		
+		DATA_CURTA("MMyyyy"), DATA("ddMMyyyy"), DATA_TEMPO("ddMMyyyyHHmmss");
+		
+		private String mascara;
+		
+		private DateFormat formatador;
+		
+		private FormatadorData(String mascara) {
+			this.mascara = mascara;
+			this.formatador = new SimpleDateFormat(mascara);
+		}
+		
+		public String getMascara() {
+			return mascara;
+		}
+		
+		public DateFormat getFormatador() {
+			return formatador;
+		}
+	}
 	
-	private static final String MASCATA_TEMPO = MASCARA_DATA.concat("HHmmss");
+	public static final Map<String, FormatadorData> FORMATADORES = new HashMap<>(); 
 	
-	public static final SimpleDateFormat FORMATADOR_DATA_CURTA = new SimpleDateFormat(MASCARA_CURTA);
-	
-	public static final SimpleDateFormat FORMATADOR_DATA = new SimpleDateFormat(MASCARA_DATA);
-	
-	public static final SimpleDateFormat FORMATADOR_TEMPO = new SimpleDateFormat(MASCATA_TEMPO);
+	static {
+		FORMATADORES.put(FormatadorData.DATA_CURTA.getMascara(), FormatadorData.DATA_CURTA);
+		FORMATADORES.put(FormatadorData.DATA.getMascara(), FormatadorData.DATA);
+		FORMATADORES.put(FormatadorData.DATA_TEMPO.getMascara(), FormatadorData.DATA_TEMPO);
+	}
 
 	private UtilsDate() {
 	}
@@ -30,17 +50,22 @@ public class UtilsDate {
 
 	public static String format(Date date) {
 
-		return format(date, FORMATADOR_DATA);
+		return format(date, FormatadorData.DATA.getFormatador());
 	}
 	
 	public static String formatDateTime(Date date) {
 
-		return format(date, FORMATADOR_TEMPO);
+		return format(date, FormatadorData.DATA_TEMPO.getFormatador());
 	}
 	
 	public static Date parse(String input) throws ParseException {
 		
-		return parse(input, FORMATADOR_DATA);
+		return parse(input, FormatadorData.DATA.getFormatador());
+	}
+	
+	public static Date parse(String input, FormatadorData format) throws ParseException {
+		
+		return parse(input, format.getFormatador());
 	}
 	
 	public static Date parse(String input, DateFormat format) throws ParseException {
@@ -52,7 +77,7 @@ public class UtilsDate {
 	
 	public static Date parseDateHora(String input) throws ParseException {
 		
-		return parseToCalendar(input, FORMATADOR_TEMPO).getTime();
+		return parseToCalendar(input, FormatadorData.DATA_TEMPO.getFormatador()).getTime();
 	}
 
 	private static Calendar parseToCalendar(String input, DateFormat format) throws ParseException {
