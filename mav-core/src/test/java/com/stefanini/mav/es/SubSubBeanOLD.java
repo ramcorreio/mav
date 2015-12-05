@@ -2,18 +2,18 @@ package com.stefanini.mav.es;
 
 import java.util.Date;
 
-public class SubSubBean {
+public class SubSubBeanOLD {
 
-	private SubBean bean;
+	private SuperBean subBean;
 
 	private Date hoje;
-
-	public SubBean getBean() {
-		return bean;
+	
+	public SuperBean getSubBean() {
+		return subBean;
 	}
-
-	public void setBean(SubBean bean) {
-		this.bean = bean;
+	
+	public void setSubBean(SuperBean subBean) {
+		this.subBean = subBean;
 	}
 
 	public Date getHoje() {

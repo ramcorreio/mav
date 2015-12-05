@@ -10,6 +10,7 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
+import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
@@ -20,7 +21,7 @@ import com.stefanini.mav.util.Utils;
 public class EncoderDecoderTest {
 	
 	@Test
-	public void encode() throws IOException, URISyntaxException, MensagemNaoEncontradaException {
+	public void encode() throws IOException, URISyntaxException, MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
 		
 		IoSession session = EasyMock.mock(IoSession.class);
 		ProtocolEncoderOutput out = EasyMock.mock(ProtocolEncoderOutput.class);

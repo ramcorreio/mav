@@ -4,27 +4,23 @@ import java.util.Date;
 
 public class MapSubSubBean {
 
-	@MapAtributo(@Mapper(tamanho = 25)) 
+	@MapAtributo(tamanho = 25)
 	private String nome;
 
-	@MapAtributo(@Mapper(tamanho = 3))
+	@MapAtributo(tamanho = 3)
 	private Integer idade;
 
-	@MapAtributo(@Mapper(tamanho = 8))
+	@MapAtributo(tamanho = 8)
 	private Date data;
-	
+
 	@MapAtributo
 	private Boolean temFilhos;
 
-	@MapAtributo(@Mapper(tamanho = 9))
+	@MapAtributo(tamanho = 9)
 	private Double salario;
 
-	@MapBean({ 
-		@Mapper(path = "bean.conta", tamanho = 3), 
-		@Mapper(path = "bean.texto", tamanho = 10),
-		@Mapper(path = "hoje", tamanho = 8) 
-	})
-	private SubSubBean bean;
+	@MapBean
+	private SubSubBean subSubBean;
 
 	public String getNome() {
 		return nome;
@@ -66,11 +62,62 @@ public class MapSubSubBean {
 		this.salario = salario;
 	}
 
-	public SubSubBean getBean() {
-		return bean;
+	public SubSubBean getSubSubBean() {
+		return subSubBean;
 	}
 
-	public void setBean(SubSubBean bean) {
-		this.bean = bean;
+	public void setSubSubBean(SubSubBean subSubBean) {
+		this.subSubBean = subSubBean;
+	}
+
+	public static class SubBean {
+
+		@MapAtributo(tamanho = 3)
+		private Integer conta;
+
+		@MapAtributo(tamanho = 10)
+		private String texto;
+
+		public Integer getConta() {
+			return conta;
+		}
+
+		public void setConta(Integer conta) {
+			this.conta = conta;
+		}
+
+		public String getTexto() {
+			return texto;
+		}
+
+		public void setTexto(String texto) {
+			this.texto = texto;
+		}
+	}
+
+	public static class SubSubBean {
+
+		@MapBean
+		private SubBean subBean;
+
+		@MapAtributo(tamanho = 8)
+		private Date hoje;
+
+		public SubBean getSubBean() {
+			return subBean;
+		}
+
+		public void setSubBean(SubBean subBean) {
+			this.subBean = subBean;
+		}
+
+		public Date getHoje() {
+			return hoje;
+		}
+
+		public void setHoje(Date hoje) {
+			this.hoje = hoje;
+		}
+
 	}
 }

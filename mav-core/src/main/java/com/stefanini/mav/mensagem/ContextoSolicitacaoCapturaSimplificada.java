@@ -3,7 +3,6 @@ package com.stefanini.mav.mensagem;
 import java.text.ParseException;
 
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
-import com.stefanini.mav.util.UtilsDate;
 
 public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<SolicitacaoCapturaSimplificada> {
 	
@@ -31,9 +30,10 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 	
 	private void escreverDadoPessoais(StringBuilder b, SolicitacaoCapturaSimplificada m) {
 		
-		escreverString(b, 11, m.getDadosPessoais().getCpf());
-		escreverString(b, 8, UtilsDate.format(m.getDadosPessoais().getDataNascimento()));
-		escreverString(b, 40, m.getDadosPessoais().getFiller());
+		//TODO: rever
+		//escreverString(b, 11, m.getDadosPessoais().getCpf());
+		/*escreverString(b, 8, UtilsDate.format(m.getDadosPessoais().getDataNascimento()));
+		escreverString(b, 40, m.getDadosPessoais().getFiller());*/
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 	@Override
 	public void escrever(StringBuilder b, SolicitacaoCapturaSimplificada mensagem) throws MensagemNaoEncontradaException {
 
-		//dados pessoais
+		/*//dados pessoais
 		escreverDadoPessoais(b, mensagem);
 
 		//dados oepração cartão
@@ -127,6 +127,6 @@ public class ContextoSolicitacaoCapturaSimplificada extends ContextoMensagem<Sol
 		escreverString(b, 1, mensagem.getIndicadores().getIdentificadorCanal());
 		escreverString(b, 10, mensagem.getIndicadores().getVersaoCanal());
 		escreverString(b, 1, mensagem.getIndicadores().getPolitica());
-		escreverString(b, 2, mensagem.getIndicadores().getAmbiente());		
+		escreverString(b, 2, mensagem.getIndicadores().getAmbiente());*/		
 	}
 }

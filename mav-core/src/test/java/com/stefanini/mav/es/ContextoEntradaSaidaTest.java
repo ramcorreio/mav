@@ -1,16 +1,19 @@
 package com.stefanini.mav.es;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.exparity.hamcrest.BeanMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import com.stefanini.mav.es.SimpleAttr.AttrImpl;
+import com.stefanini.mav.es.MapSubSubBean.SubBean;
+import com.stefanini.mav.es.MapSubSubBean.SubSubBean;
 import com.stefanini.mav.util.UtilsDate;
 
 public class ContextoEntradaSaidaTest {
@@ -30,7 +33,7 @@ public class ContextoEntradaSaidaTest {
 		MapAtributoBean expected = new MapAtributoBean();
 		expected.setNome("rodrigo afonso macedo");
 		expected.setIdade(37);
-		expected.setData(UtilsDate.parse("28111978"));
+		expected.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
 		expected.setTemFilhos(true);
 		expected.setSalario(345.23);
 		
@@ -46,10 +49,10 @@ public class ContextoEntradaSaidaTest {
 		MapSubBean expected = new MapSubBean();
 		expected.setNome("rodrigo afonso macedo");
 		expected.setIdade(37);
-		expected.setData(UtilsDate.parse("28111978"));
+		expected.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
 		expected.setTemFilhos(true);
 		expected.setSalario(345.23);
-		expected.setBean(new SubBean());
+		expected.setBean(new SuperBean());
 		expected.getBean().setConta(45);
 		expected.getBean().setTexto("Opa!!!");
 		
@@ -64,13 +67,13 @@ public class ContextoEntradaSaidaTest {
 		MapSubBeanHerdado expected = new MapSubBeanHerdado();
 		expected.setNome("rodrigo afonso macedo");
 		expected.setIdade(37);
-		expected.setData(UtilsDate.parse("28111978"));
+		expected.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
 		expected.setTemFilhos(true);
 		expected.setSalario(345.23);
 		expected.setBean(new SubBeanHerdado());
 		expected.getBean().setConta(45);
 		expected.getBean().setTexto("Opa!!!");
-		expected.getBean().setHoje(UtilsDate.parse("04122015"));
+		expected.getBean().setHoje(UtilsDate.parse("04122015", UtilsDate.FormatadorData.DATA));
 		
 		MapSubBeanHerdado b = ContextoEntradaSaida.ler(entrada, MapSubBeanHerdado.class);
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
@@ -84,14 +87,14 @@ public class ContextoEntradaSaidaTest {
 		MapSubSubBean expected = new MapSubSubBean();
 		expected.setNome("rodrigo afonso macedo");
 		expected.setIdade(37);
-		expected.setData(UtilsDate.parse("28111978"));
+		expected.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
 		expected.setTemFilhos(true);
 		expected.setSalario(345.23);
-		expected.setBean(new SubSubBean());
-		expected.getBean().setBean(new SubBean());
-		expected.getBean().getBean().setConta(45);
-		expected.getBean().getBean().setTexto("Opa!!!");
-		expected.getBean().setHoje(UtilsDate.parse("04122015"));
+		expected.setSubSubBean(new SubSubBean());
+		expected.getSubSubBean().setSubBean(new SubBean());
+		expected.getSubSubBean().getSubBean().setConta(45);
+		expected.getSubSubBean().getSubBean().setTexto("Opa!!!");
+		expected.getSubSubBean().setHoje(UtilsDate.parse("04122015", UtilsDate.FormatadorData.DATA));
 		
 		MapSubSubBean b = ContextoEntradaSaida.ler(entrada, MapSubSubBean.class);
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
@@ -105,7 +108,7 @@ public class ContextoEntradaSaidaTest {
 		MapPosicaoInicio expected = new MapPosicaoInicio();
 		//expected.setNome("rodrigo afonso macedo");
 		expected.setIdade(37);
-		expected.setData(UtilsDate.parse("28111978"));
+		expected.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
 		expected.setTemFilhos(true);
 		expected.setSalario(345.23);
 		
@@ -117,122 +120,158 @@ public class ContextoEntradaSaidaTest {
 	public void listarCampos() {
 		
 		SubBeanHerdado b = new SubBeanHerdado();
-		List<Field> campos = ContextoEntradaSaida.getAllFields(b.getClass());
-		MatcherAssert.assertThat(campos.size(), Matchers.equalTo(3));
-		MatcherAssert.assertThat(campos.get(0).getName(), Matchers.equalTo("conta"));
-		MatcherAssert.assertThat(campos.get(1).getName(), Matchers.equalTo("texto"));
-		MatcherAssert.assertThat(campos.get(2).getName(), Matchers.equalTo("hoje"));
+		Map<String, Field> campos = ContextoEntradaSaida.getAllFields(b.getClass());
+		MatcherAssert.assertThat(campos.keySet(), Matchers.hasSize(7));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("conta"));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("texto"));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("hoje"));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("subBean"));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("subBean.nome"));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("subBean.subSubBean"));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("subBean.subSubBean.nome"));
 	}
 	
 	@Test
-	public void localizarCampo() {
+	public void listarCamposNaoRecursivo() {
 		
 		SubBeanHerdado b = new SubBeanHerdado();
-		List<Field> campos = ContextoEntradaSaida.getAllFields(b.getClass());
-		Field f = ContextoEntradaSaida.findField("texto", campos);
+		Map<String, Field> campos = ContextoEntradaSaida.getAllFields(b.getClass(), false);
+		MatcherAssert.assertThat(campos.keySet(), Matchers.hasSize(4));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("conta"));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("texto"));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("hoje"));
+		MatcherAssert.assertThat(campos, Matchers.hasKey("subBean"));
+	}
+	
+	@Test
+	public void localizarCampo() throws MapeamentoNaoEncontrado {
+		
+		MapSubSubBean b = new MapSubSubBean();
+		Field f = ContextoEntradaSaida.findField("subSubBean.subBean.texto", b.getClass());
+		MatcherAssert.assertThat(f, Matchers.notNullValue());
 		MatcherAssert.assertThat(f.getName(), Matchers.equalTo("texto"));
 	}
 	
-	private SimpleAttr criarMapper(Object instance, final String path, final int tamanho, final boolean obrigatorio, final int scale, final boolean trim, final String formato) {
+	private BeanMapper criarBeanMapper(Class<?> tipo, String nome, String path) {
+		return ContextoEntradaSaida.criarBeanMapper(tipo, nome, path);
+	}
+	
+	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path) {
+		return criarSimpleMapper(tipo, nome, path, 1);
+	}
+	
+	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho) {
+		return criarSimpleMapper(tipo, nome, path, tamanho, false, 2, true, "ddMMyyyy");
+	}
+	
+	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato) {
 		
-		SimpleAttr impl = new SimpleAttr();
-		impl.setCampo(path);
-		impl.setInstance(instance);
-		impl.setAttr(new AttrImpl());
-		impl.getAttr().setTamanho(tamanho);
-		impl.getAttr().setObrigatorio(obrigatorio);
-		impl.getAttr().setScale(scale);
-		impl.getAttr().setTrim(trim);
-		impl.getAttr().setFormato(formato);
+		return ContextoEntradaSaida.criarSimpleMapper(tipo, nome, path, tamanho, obrigatorio, scale, trim, formato);
+	}
+	
+	private <T> void assertMapper(BaseMapper actual, BaseMapper expected) {
 		
-		return impl;
+		if(BeanMapper.class.isInstance(actual)) {
+			BeanMapper actualBean = BeanMapper.class.cast(actual);
+			BeanMapper expectedBean = BeanMapper.class.cast(expected);
+			assertThat(actualBean.getPath(), actualBean.getMappers(), expectedBean.getMappers());
+		}
+		else {
+			MatcherAssert.assertThat(actual.getPath(), actual, BeanMatchers.theSameAs(expected));	
+		}
+		
 	}
 	
-	private SimpleAttr criarMapper(Object instance, int tamanho) {
-		return criarMapper(instance, "", tamanho, false, 2, true, "ddMMyyyy");
+	private <T> void assertThat(List<BaseMapper> actual, List<BaseMapper> expected) {
+		assertThat("", actual, expected);
 	}
 	
-	private SimpleAttr criarMapper(Object instance, String path, int tamanho) {
-		return criarMapper(instance, "", tamanho, false, 2, true, "ddMMyyyy");
+	private <T> void assertThat(String reason, List<BaseMapper> actual, List<BaseMapper> expected) {
+		
+		MatcherAssert.assertThat(reason, actual.size(), Matchers.equalTo(expected.size()));
+		
+		for (int i = 0; i < expected.size(); i++) {
+			assertMapper(actual.get(i), expected.get(i));
+		}
 	}
 	
-	private SimpleAttr criarMapper(Object instance, String path) {
-		return criarMapper(instance, path, 1);
-	}
+	
 	
 	@Test
 	public void listarMappers() throws MapeamentoNaoEncontrado {
 		
-		MapSubSubBean b = new MapSubSubBean();
+		List<BaseMapper> expected = new LinkedList<>();
+		expected.add(criarSimpleMapper(String.class, "nome", "nome", 25));
+		expected.add(criarSimpleMapper(Integer.class, "idade", "idade", 3));
+		expected.add(criarSimpleMapper(Date.class, "data", "data", 8));
+		expected.add(criarSimpleMapper(Boolean.class, "temFilhos", "temFilhos"));
+		expected.add(criarSimpleMapper(Double.class, "salario", "salario", 9));
 		
-		List<SimpleAttr> expected = new LinkedList<>();
-		expected.add(criarMapper(b, "nome", 25));
-		expected.add(criarMapper(b, "idade", 3));
-		expected.add(criarMapper(b, "data", 8));
-		expected.add(criarMapper(b, "temFilhos"));
-		expected.add(criarMapper(b, "salario", 9));
-		//expected.add(criarMapper("bean.bean.conta", 3));
-		//expected.add(criarMapper("bean.bean.texto", 10));
-		//expected.add(criarMapper("bean.hoje", 8));
+		BeanMapper subSubBean = criarBeanMapper(SubSubBean.class, "subSubBean", "subSubBean");
+		expected.add(subSubBean);
 		
-		List<SimpleAttr> mapper = ContextoEntradaSaida.getListaMapper(b);
-		MatcherAssert.assertThat(mapper, BeanMatchers.theSameAs(expected));
+		BeanMapper subBean = criarBeanMapper(SubBean.class, "subBean", "subSubBean.subBean");
+		subSubBean.getMappers().add(subBean);
+		subBean.getMappers().add(criarSimpleMapper(Integer.class, "conta", "subSubBean.subBean.conta", 3));
+		subBean.getMappers().add(criarSimpleMapper(String.class, "texto", "subSubBean.subBean.texto", 10));
+		
+		subSubBean.getMappers().add(criarSimpleMapper(Date.class, "hoje", "subSubBean.hoje", 8));
+		
+		List<BaseMapper> mappers = ContextoEntradaSaida.getListaMapper(MapSubSubBean.class);
+		assertThat(mappers, expected);
 	}
 	
 	@Test
-	public void carregarCamposParaLer() {
+	public void listarMappersHeranca() throws MapeamentoNaoEncontrado {
 		
-		/*BaseMatcher<Field> field = new BaseMatcher<Field>() {
-			
-		    private final Object expectedValue;
-
-		    public IsEqual(T equalArg) {
-		        expectedValue = equalArg;
-		    }
-
-			@Override
-			public boolean matches(Object item) {
-				if (actual == null) {
-		            return expected == null;
-		        }
-		        
-		        if (expected != null && isArray(actual)) {
-		            return isArray(expected) && areArraysEqual(actual, expected);
-		        }
-				return false;
-			}
-
-			@Override
-			public void describeTo(Description description) {
-				
-			}
-			
-		};*/
+		List<BaseMapper> expected = new LinkedList<>();
+		expected.add(criarSimpleMapper(String.class, "nome", "nome", 25));
+		expected.add(criarSimpleMapper(Integer.class, "idade", "idade", 3));
+		expected.add(criarSimpleMapper(Date.class, "data", "data", 8));
+		expected.add(criarSimpleMapper(Boolean.class, "temFilhos", "temFilhos"));
+		expected.add(criarSimpleMapper(Double.class, "salario", "salario", 9));
 		
-		MapSubSubBean b = new MapSubSubBean();
+		BeanMapper bean = criarBeanMapper(SubBeanHerdado.class, "bean", "bean");
+		expected.add(bean);
+		bean.getMappers().add(criarSimpleMapper(Integer.class, "conta", "bean.conta", 3));
+		bean.getMappers().add(criarSimpleMapper(String.class, "texto", "bean.texto", 10));
 		
-		List<TargetRead> expected = new LinkedList<>();
-		expected.add(new TargetRead());
+		bean.getMappers().add(criarSimpleMapper(Date.class, "hoje", "bean.hoje", 8));
 		
-		int pos = expected.size() - 1;
-		expected.get(pos).setInstance(b);
-		expected.get(pos).setCampos(new LinkedList<String>());
-		expected.get(pos).getCampos().add("nome");
-		expected.get(pos).getCampos().add("idade");
-		expected.get(pos).getCampos().add("data");
-		expected.get(pos).getCampos().add("temFilhos");
-		expected.get(pos).getCampos().add("salario");
+		List<BaseMapper> mappers = ContextoEntradaSaida.getListaMapper(MapSubBeanHerdado.class);
+		assertThat(mappers, expected);
 		
+	}	
+	
+	
+	@Test
+	public void contarTamanhoBean() throws MapeamentoNaoEncontrado {
 		
-		expected.add(new TargetRead());
-		pos = expected.size() - 1;
-		expected.get(pos).setInstance(new SubSubBean());
-		expected.get(pos).setCampos(new LinkedList<String>());
-		expected.get(pos).getCampos().add("conta");
-		expected.get(pos).getCampos().add("texto");
-		expected.get(pos).getCampos().add("hoje");
+		BeanMapper subSubBean = criarBeanMapper(SubSubBean.class, "subSubBean", "subSubBean");
 		
-		List<TargetRead> paraLer = ContextoEntradaSaida.getSequenciaLeitura(b);
-		MatcherAssert.assertThat(expected, BeanMatchers.theSameAs(paraLer));
+		List<BaseMapper> mappers = ContextoEntradaSaida.getListaMapper(MapSubSubBean.class);
+		BaseMapper paraContar = mappers.get(mappers.indexOf(subSubBean));
+		
+		MatcherAssert.assertThat(ContextoEntradaSaida.getTamanho(paraContar), Matchers.is(Matchers.equalTo(21)));
 	}
+	
+	@Test
+	public void escreverAtributoSubBean() throws MapeamentoNaoEncontrado, ParseException {
+		
+		MapSubBean entrada = new MapSubBean();
+		entrada.setNome("rodrigo afonso macedo");
+		entrada.setIdade(37);
+		entrada.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
+		entrada.setTemFilhos(true);
+		entrada.setSalario(345.23);
+		entrada.setBean(new SuperBean());
+		entrada.getBean().setConta(45);
+		entrada.getBean().setTexto("Opa!!!");
+		
+		String expected = "rodrigo afonso macedo    037281119781000034523045Opa!!!    ";
+		MatcherAssert.assertThat(expected, Matchers.is(Matchers.equalTo(ContextoEntradaSaida.escrever(entrada))));
+		
+	}
+	
+
 }

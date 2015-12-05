@@ -9,6 +9,7 @@ import javax.transaction.Transactional.TxType;
 import org.springframework.stereotype.Service;
 
 import com.stefanini.mav.core.Mensagem;
+import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
@@ -20,7 +21,7 @@ public class GerenciaMensagem extends BaseManager implements IGerenciaMensagem {
 	private static final long serialVersionUID = -1643744403836008193L;
 
 	@Override
-	public Mensagem salvar(MensagemBasica m) throws MensagemNaoEncontradaException, BrokerException {
+	public Mensagem salvar(MensagemBasica m) throws MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 	
 		Mensagem dump = new Mensagem();
 		dump.setCodigo(m.getCabecalho().getCodigo());

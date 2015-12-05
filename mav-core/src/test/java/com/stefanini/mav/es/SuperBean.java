@@ -1,9 +1,11 @@
 package com.stefanini.mav.es;
 
-public class SubBean {
+public class SuperBean {
 
+	@MapAtributo(tamanho = 3)
 	private Integer conta;
 	
+	@MapAtributo(tamanho = 10)
 	private String texto;
 
 	public void setTexto(String texto) {

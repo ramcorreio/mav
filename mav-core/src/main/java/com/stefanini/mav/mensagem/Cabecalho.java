@@ -30,31 +30,31 @@ public class Cabecalho implements Serializable {
 	
 	private Fluxo sentidoFluxo;
 
-	//@MapAtributo(tamanho = 5)
+	@MapAtributo(tamanho = 5)
 	private Integer tamanho;
 	
-	//@MapAtributo(tamanho = 4)
+	@MapAtributo(tamanho = 4)
 	private CodigoMensagem codigo;
 	
-	//@MapAtributo(tamanho = 6)
+	@MapAtributo(tamanho = 6)
 	private Integer numeroTransacao;
 	
-	//@MapAtributo(tamanho = 15)
+	@MapAtributo(tamanho = 15)
 	private String numeroProposta;
 	
-	//@MapAtributo(tamanho = 8)
+	@MapAtributo(tamanho = 8)
 	private String codigoUsuario;
 	
-	//@MapAtributo(tamanho = 5)
+	@MapAtributo(tamanho = 5)
 	private String codigoRetorno;
 	
-	//@MapAtributo(tamanho = 9)
+	@MapAtributo(tamanho = 9)
 	private Integer codigoLojista;
 	
-	//@MapAtributo(tamanho = 1)
+	@MapAtributo(tamanho = 1)
 	private String versao;
 	
-	//@MapAtributo(tamanho = 30, trim = false)
+	@MapAtributo(tamanho = 30, trim = false)
 	private String campoLojista;
 	
 	@Override

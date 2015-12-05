@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
@@ -32,17 +33,17 @@ public class MensagemBroker {
 			return texto;
 		}
 		
-		public MensagemBasica wrap(MensagemBasica m) throws MensagemNaoEncontradaException {
+		public MensagemBasica wrap(MensagemBasica m) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
 			
 			return wrap(m, null, new Object[0]);
 		}
 		
-		public MensagemBasica wrap(MensagemBasica m, Throwable t, Parceira p) throws MensagemNaoEncontradaException {
+		public MensagemBasica wrap(MensagemBasica m, Throwable t, Parceira p) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
 			
 			return wrap(m, t, p.getServidor(), p.getPorta());
 		}
 		
-		private MensagemBasica wrap(MensagemBasica m, Throwable t, Object... args) throws MensagemNaoEncontradaException {
+		private MensagemBasica wrap(MensagemBasica m, Throwable t, Object... args) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
 			
 			String mensagemErro = String.format(texto, args);
 			if(t != null) {
@@ -105,7 +106,7 @@ public class MensagemBroker {
 		
 	}*/
 	
-	public MensagemBasica enviarParceira(MensagemBasica mensagemBasica) throws MensagemNaoEncontradaException, BrokerException {
+	public MensagemBasica enviarParceira(MensagemBasica mensagemBasica) throws MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 
 		IGerenciaMensagem gerente = ServiceLocator.getInstance().getService(Service.GERENTE_MENSAGEM, IGerenciaMensagem.class);
 		gerente.salvar(mensagemBasica);

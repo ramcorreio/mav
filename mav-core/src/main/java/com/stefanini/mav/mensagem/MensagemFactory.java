@@ -3,6 +3,8 @@ package com.stefanini.mav.mensagem;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.stefanini.mav.es.MapeamentoNaoEncontrado;
+
 public class MensagemFactory {
 	
 	private static final Map<CodigoMensagem, ContextoMensagem<? extends MensagemBasica>> leitores = new HashMap<>();
@@ -46,7 +48,7 @@ public class MensagemFactory {
 		return parseContexto(mensagem).ler(mensagem);
 	}
 	
-	public static <T extends MensagemBasica> MensagemBasica gerarErro(MensagemBasica mensagem, String descricao) throws MensagemNaoEncontradaException {
+	public static <T extends MensagemBasica> MensagemBasica gerarErro(MensagemBasica mensagem, String descricao) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
 		
 		//recuperando mensagem
 		String in = loadContexto(mensagem.getCabecalho().getCodigo()).escrever(mensagem);

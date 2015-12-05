@@ -43,7 +43,7 @@ public class DadoPessoal extends DadoPessoalBasico {
 
 	private Date resideDesde;
 
-	private Telefone telefone;
+	private TelefoneRamal telefone;
 
 	private String email;
 
@@ -57,7 +57,7 @@ public class DadoPessoal extends DadoPessoalBasico {
 
 	private String filler2;
 
-	private Telefone celular;
+	private TelefoneRamal celular;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -210,11 +210,11 @@ public class DadoPessoal extends DadoPessoalBasico {
 		this.estadoCivil = estadoCivil;
 	}
 	
-	public Telefone getTelefone() {
+	public TelefoneRamal getTelefone() {
 		return telefone;
 	}
 	
-	protected void setTelefone(Telefone telefone) {
+	protected void setTelefone(TelefoneRamal telefone) {
 		this.telefone = telefone;
 	}
 	
@@ -245,11 +245,11 @@ public class DadoPessoal extends DadoPessoalBasico {
 		
 	}
 	
-	public Telefone getCelular() {
+	public TelefoneRamal getCelular() {
 		return celular;
 	}
 
-	protected void setCelular(Telefone celular) {
+	protected void setCelular(TelefoneRamal celular) {
 		this.celular = celular;
 	}
 	

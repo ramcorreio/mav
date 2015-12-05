@@ -1,8 +1,5 @@
 package com.stefanini.mav.mensagem;
 
-import java.text.ParseException;
-import java.util.LinkedList;
-
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 
 public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFinanciamento> {
@@ -11,9 +8,9 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		super(CodigoMensagem.C0100, PropostaFinanciamento.class);
 	}
 	
-	private void lerDadosClientes(String input, PropostaFinanciamento m) throws ParseException {
+	/*private void lerDadosClientes(String input, PropostaFinanciamento m) throws ParseException {
 		
-		/*private DadoComplementar complemento;
+		private DadoComplementar complemento;
 		
 		private Boolean cobraTac;
 		
@@ -21,7 +18,7 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		
 		private String codigoProdutoLosango;
 		
-		private Integer qtdNumeroSorte;*/
+		private Integer qtdNumeroSorte;
 		
 		
 		m.setDadosPessoais(new DadoPessoalDetalhado());
@@ -221,14 +218,14 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		//0593 a 0625	Filler	33	A
 		m.getDadosPessoais().setFiller2(lerString(input, 592, 33));
 
-	}
+	}*/
 
 	@Override
 	void ler(String input, PropostaFinanciamento mensagem) throws MensagemNaoEncontradaException {
 
 		mensagem.getCabecalho().setSentidoFluxo(Fluxo.ENTRADA);
 		
-		try {
+		/*try {
 			//dados pessoais
 			lerDadosClientes(input, mensagem);
 			
@@ -660,11 +657,11 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		mensagem.getIndicadores().setIdentificadorCanal(lerString(input, 2711, 1));
 		mensagem.getIndicadores().setVersaoCanal(lerString(input, 2712, 10));
 		mensagem.getIndicadores().setPolitica(lerString(input, 2722, 1));
-		mensagem.getIndicadores().setAmbiente(lerString(input, 2723, 2));
+		mensagem.getIndicadores().setAmbiente(lerString(input, 2723, 2));*/
 		
 	}
 
-	private void lerDadosConjuge(String input, PropostaFinanciamento m) throws ParseException {
+	/*private void lerDadosConjuge(String input, PropostaFinanciamento m) throws ParseException {
 		
 		m.setDadosConjuge(new DadoConjuge());
 		m.getDadosConjuge().setDadoProfissional(new DadoProfissionalBasico());
@@ -839,9 +836,9 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		
 		//1331 a 1364	Filler	20	A			X, se Empresario ou Proprietario
 		m.getDadosConjuge().setFiller(lerString(input, 1330, 20));
-	}
+	}*/
 
-	private void lerDadosProfissionais(String input, PropostaFinanciamento m) throws ParseException {
+	/*private void lerDadosProfissionais(String input, PropostaFinanciamento m) throws ParseException {
 		
 		m.setDadosProfissionais(new DadoProfissional());
 		//0626 a 0633	Data de Admissão 	8	N	Data de Admissão na Empresa.                  		X
@@ -926,7 +923,7 @@ public class ContextoPropostaFinanciamento extends ContextoMensagem<PropostaFina
 		
 		//0890 a 0915	Filler	26	A
 		m.getDadosProfissionais().setFiller(lerStringCheia(input, 889, 26));
-	}
+	}*/
 
 	@Override
 	void escrever(StringBuilder b, PropostaFinanciamento mensagem) throws MensagemNaoEncontradaException {

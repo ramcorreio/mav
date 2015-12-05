@@ -4,26 +4,23 @@ import java.util.Date;
 
 public class MapSubBean {
 
-	@MapAtributo(@Mapper(tamanho = 25)) 
+	@MapAtributo(tamanho = 25)
 	private String nome;
 
-	@MapAtributo(@Mapper(tamanho = 3))
+	@MapAtributo(tamanho = 3)
 	private Integer idade;
 
-	@MapAtributo(@Mapper(tamanho = 8))
+	@MapAtributo(tamanho = 8)
 	private Date data;
 	
 	@MapAtributo
 	private Boolean temFilhos;
 
-	@MapAtributo(@Mapper(tamanho = 9))
+	@MapAtributo(tamanho = 9)
 	private Double salario;
 
-	@MapAtributo(bean = @MapBean({ 
-		@Mapper(path = "conta", tamanho = 3), 
-		@Mapper(path = "texto", tamanho = 10) 
-	}))
-	private SubBean bean;
+	@MapBean
+	private SuperBean bean;
 
 	public String getNome() {
 		return nome;
@@ -65,11 +62,11 @@ public class MapSubBean {
 		this.salario = salario;
 	}
 
-	public SubBean getBean() {
+	public SuperBean getBean() {
 		return bean;
 	}
 
-	public void setBean(SubBean bean) {
+	public void setBean(SuperBean bean) {
 		this.bean = bean;
 	}
 }

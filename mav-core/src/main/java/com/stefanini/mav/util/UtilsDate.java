@@ -48,20 +48,20 @@ public class UtilsDate {
 		return format.format(date);
 	}
 
-	public static String format(Date date) {
+	/*public static String format(Date date) {
 
 		return format(date, FormatadorData.DATA.getFormatador());
-	}
+	}*/
 	
-	public static String formatDateTime(Date date) {
+	/*public static String formatDateTime(Date date) {
 
 		return format(date, FormatadorData.DATA_TEMPO.getFormatador());
-	}
+	}*/
 	
-	public static Date parse(String input) throws ParseException {
+	/*public static Date parse(String input) throws ParseException {
 		
 		return parse(input, FormatadorData.DATA.getFormatador());
-	}
+	}*/
 	
 	public static Date parse(String input, FormatadorData format) throws ParseException {
 		
@@ -71,14 +71,14 @@ public class UtilsDate {
 	public static Date parse(String input, DateFormat format) throws ParseException {
 		
 		Calendar cal = parseToCalendar(input, format);
-		zerarHora(cal);
+		//zerarHora(cal);
 		return cal.getTime();
 	}
 	
-	public static Date parseDateHora(String input) throws ParseException {
+	/*public static Date parseDateHora(String input) throws ParseException {
 		
 		return parseToCalendar(input, FormatadorData.DATA_TEMPO.getFormatador()).getTime();
-	}
+	}*/
 
 	private static Calendar parseToCalendar(String input, DateFormat format) throws ParseException {
 

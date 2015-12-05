@@ -14,7 +14,7 @@ public class ContextoRespostaErro extends ContextoMensagem<RespostaErro> {
 		//configuração mensagem de entrada
 		mensagem.getCabecalho().setSentidoFluxo(Fluxo.SAIDA);
 		
-		mensagem.setDescricao(input.substring(83, 164).trim());
+		/*mensagem.setDescricao(input.substring(83, 164).trim());
 		
 		//indicadores
 		//0165 a 0165	Identificação do Canal	1	A	Dados Losango
@@ -26,13 +26,13 @@ public class ContextoRespostaErro extends ContextoMensagem<RespostaErro> {
 		mensagem.getIndicadores().setIdentificadorCanal(input.substring(164, 165).trim());
 		mensagem.getIndicadores().setVersaoCanal(input.substring(164, 175).trim());
 		mensagem.getIndicadores().setPolitica(input.substring(175, 176).trim());
-		mensagem.getIndicadores().setAmbiente(input.substring(176, 178).trim());
+		mensagem.getIndicadores().setAmbiente(input.substring(176, 178).trim());*/
 	}
 	
 	@Override
 	public void escrever(StringBuilder b, RespostaErro mensagem) throws MensagemNaoEncontradaException {
 
-		escreverString(b, 81, mensagem.getDescricao());
+		/*escreverString(b, 81, mensagem.getDescricao());
 		
 		//indicadores
 		//0165 a 0165	Identificação do Canal	1	A	Dados Losango
@@ -42,6 +42,6 @@ public class ContextoRespostaErro extends ContextoMensagem<RespostaErro> {
 		escreverString(b, 1, mensagem.getIndicadores().getIdentificadorCanal());
 		escreverString(b, 10, mensagem.getIndicadores().getVersaoCanal());
 		escreverString(b, 1, mensagem.getIndicadores().getPolitica());
-		escreverString(b, 2, mensagem.getIndicadores().getAmbiente());		
+		escreverString(b, 2, mensagem.getIndicadores().getAmbiente());*/		
 	}
 }
