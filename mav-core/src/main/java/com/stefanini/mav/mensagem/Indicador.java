@@ -33,7 +33,7 @@ public class Indicador implements Serializable {
 		return identificadorCanal;
 	}
 
-	protected void setIdentificadorCanal(String identificadorCanal) {
+	public void setIdentificadorCanal(String identificadorCanal) {
 		this.identificadorCanal = identificadorCanal;
 	}
 
@@ -41,7 +41,7 @@ public class Indicador implements Serializable {
 		return versaoCanal;
 	}
 
-	protected void setVersaoCanal(String versaoCanal) {
+	public void setVersaoCanal(String versaoCanal) {
 		this.versaoCanal = versaoCanal;
 	}
 
@@ -49,7 +49,7 @@ public class Indicador implements Serializable {
 		return politica;
 	}
 
-	protected void setPolitica(String politica) {
+	public void setPolitica(String politica) {
 		this.politica = politica;
 	}
 
@@ -57,7 +57,7 @@ public class Indicador implements Serializable {
 		return ambiente;
 	}
 
-	protected void setAmbiente(String ambiente) {
+	public void setAmbiente(String ambiente) {
 		this.ambiente = ambiente;
 	}
 

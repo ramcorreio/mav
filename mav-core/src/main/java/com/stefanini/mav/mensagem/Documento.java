@@ -3,60 +3,48 @@ package com.stefanini.mav.mensagem;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.stefanini.mav.es.MapAtributo;
+
 public class Documento implements Serializable {
 
 	private static final long serialVersionUID = -7227905734239905303L;
 
+	@MapAtributo(tamanho = 15)
 	private String numero;
 
+	@MapAtributo(tamanho = 2)
 	private String tipo;
 
+	@MapAtributo(tamanho = 5)
 	private String orgaoEmissor;
 
+	@MapAtributo(tamanho = 2)
 	private String ufOrgaoEmissor;
 
+	@MapAtributo(tamanho = 8)
 	private Date dataEmissao;
-	
-	private Date dataVancimento;
 
-	@Override
-	public boolean equals(Object obj) {
-
-		if (!Documento.class.isInstance(obj)) {
-
-			return false;
-		}
-
-		Documento outro = Documento.class.cast(obj);
-
-		return numero.equals(outro.numero) 
-				&& tipo.equals(outro.tipo) 
-				&& orgaoEmissor.equals(outro.orgaoEmissor)
-				&& ufOrgaoEmissor.equals(outro.ufOrgaoEmissor) 
-				&& dataEmissao.equals(outro.dataEmissao);
-	}
-
-	public String getNuDocIdentificacao() {
+	public String getNumero() {
 		return numero;
 	}
 
-	protected void setNuDocIdentificacao(String nuDocIdentificacao) {
-		this.numero = nuDocIdentificacao;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
-	public String getTpDocIdentificacao() {
+	public String getTipo() {
 		return tipo;
 	}
 
-	protected void setTpDocIdentificacao(String tpDocIdentificacao) {
-		this.tipo = tpDocIdentificacao;
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public String getOrgaoEmissor() {
 		return orgaoEmissor;
 	}
 
-	protected void setOrgaoEmissor(String orgaoEmissor) {
+	public void setOrgaoEmissor(String orgaoEmissor) {
 		this.orgaoEmissor = orgaoEmissor;
 	}
 
@@ -64,7 +52,7 @@ public class Documento implements Serializable {
 		return ufOrgaoEmissor;
 	}
 
-	protected void setUfOrgaoEmissor(String ufOrgaoEmissor) {
+	public void setUfOrgaoEmissor(String ufOrgaoEmissor) {
 		this.ufOrgaoEmissor = ufOrgaoEmissor;
 	}
 
@@ -72,15 +60,12 @@ public class Documento implements Serializable {
 		return dataEmissao;
 	}
 
-	protected void setDataEmissao(Date dataEmissao) {
+	public void setDataEmissao(Date dataEmissao) {
 		this.dataEmissao = dataEmissao;
 	}
-	
-	public Date getDataVancimento() {
-		return dataVancimento;
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
-	
-	protected void setDataVancimento(Date dataVancimento) {
-		this.dataVancimento = dataVancimento;
-	}
+
 }

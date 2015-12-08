@@ -6,15 +6,15 @@ public class DadoComplementar implements Serializable {
 
 	private static final long serialVersionUID = -3527343656488827048L;
 
-	private boolean emancipado;
+	private Boolean emancipado;
 
 	private String codigoProduto;
 
-	public boolean isEmancipado() {
+	public Boolean isEmancipado() {
 		return emancipado;
 	}
 
-	protected void setEmancipado(boolean emancipado) {
+	public void setEmancipado(Boolean emancipado) {
 		this.emancipado = emancipado;
 	}
 
@@ -22,7 +22,7 @@ public class DadoComplementar implements Serializable {
 		return codigoProduto;
 	}
 
-	protected void setCodigoProduto(String codigoProduto) {
+	public void setCodigoProduto(String codigoProduto) {
 		this.codigoProduto = codigoProduto;
 	}
 

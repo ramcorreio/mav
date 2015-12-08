@@ -3,7 +3,6 @@ package com.stefanini.mav.mensagem;
 import java.text.ParseException;
 
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
-import com.stefanini.mav.util.UtilsDate;
 
 public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<RespostaCapturaSimplificada> {
 
@@ -24,13 +23,13 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 	 */
 	private void lerOperacaoCartao(String input, RespostaCapturaSimplificada m) {
 
-		m.setDadosOperacaoCartao(new DadoOperacaoCartao());
+		/*m.setDadosOperacaoCartao(new DadoOperacaoCartao());
 		m.getDadosOperacaoCartao().setCodigoModalidade(input.substring(350, 353).trim());
 		m.getDadosOperacaoCartao().setCodigoOrg(input.substring(353, 356).trim());
 		m.getDadosOperacaoCartao().setCodigoLogo(input.substring(356, 359).trim());
 		m.getDadosOperacaoCartao().setCodigoCampanha(input.substring(359, 362).trim());
 
-		m.getDadosOperacaoCartao().setFiller(input.substring(362, 932).trim());
+		m.getDadosOperacaoCartao().setFiller(input.substring(362, 932).trim());*/
 	}
 	
 	private void escreverOperacaoCartao(StringBuilder b, RespostaCapturaSimplificada m) {
@@ -39,12 +38,12 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		escreverString(b, 3, m.getDadosOperacaoCartao().getCodigoOrg());
 		escreverString(b, 3, m.getDadosOperacaoCartao().getCodigoLogo());
 		escreverString(b, 3, m.getDadosOperacaoCartao().getCodigoCampanha());
-		escreverString(b, 570, m.getDadosOperacaoCartao().getFiller());
+		//escreverString(b, 570, m.getDadosOperacaoCartao().getFiller());
 	}
 
 	private void lerDadoCliente(String input, RespostaCapturaSimplificada m) throws ParseException {
 
-		m.setDadosPessoais(new DadoCliente());
+		/*m.setDadosCliente(new DadoCliente());
 		m.getDadosPessoais().setCpf(input.substring(269, 280));
 		m.getDadosPessoais().setDataNascimento(UtilsDate.parse(input.substring(280, 288)));
 		m.getDadosPessoais().setComplemento(new DadoComplementar());
@@ -67,12 +66,12 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		m.getDadosPessoais().setQtdNumeroSorte(Integer.valueOf(input.substring(301, 303)));
 
 		// 0304 a 0350 Filler 47 A
-		m.getDadosPessoais().setFiller(input.substring(303, 350).trim());
+		m.getDadosPessoais().setFiller(input.substring(303, 350).trim());*/
 	}
 	
 	private void escreverDadoCliente(StringBuilder b, RespostaCapturaSimplificada m) {
 
-		escreverString(b, 11, m.getDadosPessoais().getCpf());
+		/*escreverString(b, 11, m.getDadosPessoais().getCpf());
 		escreverString(b, 8, UtilsDate.format(m.getDadosPessoais().getDataNascimento()));
 		// 0289 a 0289 ClienteEmancipado 1 A
 		escreverBoolean(b, 1, m.getDadosPessoais().getComplemento().isEmancipado());
@@ -93,7 +92,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		escreverInt(b, 2, m.getDadosPessoais().getQtdNumeroSorte());
 
 		// 0304 a 0350 Filler 47 A
-		escreverString(b, 47, m.getDadosPessoais().getFiller());
+		escreverString(b, 47, m.getDadosPessoais().getFiller());*/
 	}
 
 	@Override
@@ -101,7 +100,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 
 		mensagem.getCabecalho().setSentidoFluxo(Fluxo.SAIDA);
 		
-		// DADOS DA CONSULTA
+		/*// DADOS DA CONSULTA
 		// 0084 a 0166 Filler 83 A Filler
 		mensagem.setFiller(lerString(input, 83, 83).trim());
 
@@ -146,7 +145,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		mensagem.getIndicadores().setIdentificadorCanal(lerString(input, 932, 1));
 		mensagem.getIndicadores().setVersaoCanal(lerStringCheia(input, 933, 10));
 		mensagem.getIndicadores().setPolitica(lerString(input, 943, 1));
-		mensagem.getIndicadores().setAmbiente(lerString(input, 944, 2));
+		mensagem.getIndicadores().setAmbiente(lerString(input, 944, 2));*/
 	}
 
 	@Override
@@ -154,7 +153,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 
 		// DADOS DA CONSULTA
 		// 0084 a 0166 Filler 83 A Filler
-		escreverString(b, 83, mensagem.getFiller());
+		/*escreverString(b, 83, mensagem.getFiller());
 
 		// 0167 a 0171 mensagemAutorizador 5 A Parecer do autorizador de crédito
 		// (Política): Parecer / Msg Score / Motivo Aprov/Neg
@@ -187,7 +186,7 @@ public class ContextoRespostaCapturaSimplificada extends ContextoMensagem<Respos
 		escreverString(b, 1, mensagem.getIndicadores().getIdentificadorCanal());
 		escreverString(b, 10, mensagem.getIndicadores().getVersaoCanal());
 		escreverString(b, 1, mensagem.getIndicadores().getPolitica());
-		escreverString(b, 2, mensagem.getIndicadores().getAmbiente());
+		escreverString(b, 2, mensagem.getIndicadores().getAmbiente());*/
 	}
 
 }

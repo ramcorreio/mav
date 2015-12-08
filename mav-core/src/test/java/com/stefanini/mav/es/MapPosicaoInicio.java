@@ -2,9 +2,9 @@ package com.stefanini.mav.es;
 
 import java.util.Date;
 
-public class MapSubBean {
+@PosicaoInicio(posicao = 25)
+public class MapPosicaoInicio {
 
-	@MapAtributo(tamanho = 25)
 	private String nome;
 
 	@MapAtributo(tamanho = 3)
@@ -18,9 +18,6 @@ public class MapSubBean {
 
 	@MapAtributo(tamanho = 9)
 	private Double salario;
-
-	@MapBean
-	private SuperBean bean;
 
 	public String getNome() {
 		return nome;
@@ -45,7 +42,7 @@ public class MapSubBean {
 	public void setData(Date data) {
 		this.data = data;
 	}
-
+	
 	public Boolean isTemFilhos() {
 		return temFilhos;
 	}
@@ -62,11 +59,4 @@ public class MapSubBean {
 		this.salario = salario;
 	}
 
-	public SuperBean getBean() {
-		return bean;
-	}
-
-	public void setBean(SuperBean bean) {
-		this.bean = bean;
-	}
 }

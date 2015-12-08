@@ -2,15 +2,15 @@ package com.stefanini.mav.es;
 
 import java.util.Date;
 
-public class MapSubBean {
+public class MapSubBeanHerdado {
 
-	@MapAtributo(tamanho = 25)
+	@MapAtributo(tamanho = 25) 
 	private String nome;
 
 	@MapAtributo(tamanho = 3)
 	private Integer idade;
 
-	@MapAtributo(tamanho = 8)
+	@MapAtributo(tamanho = 8) 
 	private Date data;
 	
 	@MapAtributo
@@ -20,7 +20,7 @@ public class MapSubBean {
 	private Double salario;
 
 	@MapBean
-	private SuperBean bean;
+	private SubBeanHerdado bean;
 
 	public String getNome() {
 		return nome;
@@ -62,11 +62,11 @@ public class MapSubBean {
 		this.salario = salario;
 	}
 
-	public SuperBean getBean() {
+	public SubBeanHerdado getBean() {
 		return bean;
 	}
 
-	public void setBean(SuperBean bean) {
+	public void setBean(SubBeanHerdado bean) {
 		this.bean = bean;
 	}
 }

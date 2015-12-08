@@ -1,13 +1,15 @@
 package com.stefanini.mav.mensagem;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import com.stefanini.mav.es.ContextoEntradaSaida;
+import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.util.UtilsDate;
 
 public abstract class ContextoMensagem<M extends MensagemBasica> {
@@ -21,7 +23,7 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		this.clazz = clazz;
 	}
 	
-	private Cabecalho lerCabecalho(String input) {
+	/*private Cabecalho lerCabecalho(String input) {
 		
 		Cabecalho c = new Cabecalho();
 		
@@ -53,20 +55,24 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		c.setCampoLojista(lerStringCheia(input, 53, 30));
 		
 		return c;
-	}
+	}*/
 	
+	@Deprecated
 	protected static void escreverBoolean(StringBuilder b, int tamanho, Boolean input) {
 		escreverInt(b, tamanho, input ? 1 : 0);
 	}
 	
+	@Deprecated
 	protected static void escreverInt(StringBuilder b, int tamanho, Integer input) {
 		b.append(String.format("%0" + tamanho + "d", input));
 	}
 	
+	@Deprecated
 	protected static void escreverString(StringBuilder b, int tamanho, String input) {
 		b.append(escreverString(tamanho, input));
 	}
 	
+	@Deprecated
 	protected static String escreverString(int tamanho, String input) {
 		return String.format("%-" + tamanho + "s" , input);
 	}
@@ -77,7 +83,8 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 	 * @param input String para leitura
 	 * @param inicio posição onde inicia a leitura
 	 * @param tamanho tamanho a ser lido
-	 * @return Intervalo lido da string de entrada 
+	 * @return Intervalo lido da string de entrada
+	 * @Deprecated 
 	 */
 	protected static String lerStringCheia(String input, int inicio, int tamanho) {
 		return input.substring(inicio, inicio + tamanho);
@@ -89,7 +96,8 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 	 * @param input String para leitura
 	 * @param inicio posição onde inicia a leitura
 	 * @param tamanho tamanho a ser lido
-	 * @return Intervalo lido da string de entrada 
+	 * @return Intervalo lido da string de entrada
+	 * @Deprecated 
 	 */
 	protected static String lerString(String input, int inicio, int tamanho) {
 		return lerStringCheia(input, inicio, tamanho).trim();
@@ -101,21 +109,25 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 	 * @param input String para leitura
 	 * @param inicio posição onde inicia a leitura
 	 * @param tamanho tamanho a ser lido
-	 * @return Intervalo lido da string de entrada 
+	 * @return Intervalo lido da string de entrada
+	 * @Deprecated 
 	 */
 	protected static Integer lerInt(String input, int inicio, int tamanho) {
 		return Integer.valueOf(lerString(input, inicio, tamanho));
 	}
 	
+	@Deprecated
 	protected static Long lerLong(String input, int inicio, int tamanho) {
 		return Long.valueOf(lerString(input, inicio, tamanho));
 	}
 	
+	@Deprecated
 	protected static Double lerDouble(String input, int inicio, int tamanho) throws ParseException {
 		
 		return lerDouble(input, inicio, tamanho, 2);
 	}
 	
+	@Deprecated
 	protected static Double lerDouble(String input, int inicio, int tamanho, int decimal) throws ParseException {
 		
 		int intval = tamanho - decimal;
@@ -135,6 +147,7 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		return Double.valueOf(formmatter.parse(valorComPonto).doubleValue());
 	}
 	
+	@Deprecated
 	protected static Boolean lerBooleanString(String input, int inicio, String comparador) {
 		try {
 			String bool = lerString(input, inicio, 1);
@@ -145,11 +158,13 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		}
 	}
 	
+	@Deprecated
 	protected static Boolean lerBooleanString(String input, int inicio) {
 		
 		return lerBooleanString(input, inicio, "S");
 	}
 	
+	@Deprecated
 	protected static Boolean lerBoolean(String input, int inicio) {
 		try {
 			return Boolean.valueOf(lerInt(input, inicio, 1) != 0);	
@@ -159,22 +174,27 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		}
 	}
 	
+	@Deprecated
 	protected static Date lerDataCurta(String input, int inicio) throws ParseException {
-		return UtilsDate.parse("01" + lerString(input, inicio, 6));
+		return UtilsDate.parse("01" + lerString(input, inicio, 6), UtilsDate.FormatadorData.DATA);
 	}
 	
+	@Deprecated
 	protected static Date lerData(String input, int inicio) throws ParseException {
 		return lerData(input, inicio, 8);
 	}
 	
+	@Deprecated
 	protected static Date lerData(String input, int inicio, int tamanho) throws ParseException {
-		return UtilsDate.parse(lerString(input, inicio, tamanho));
+		return UtilsDate.parse(lerString(input, inicio, tamanho), UtilsDate.FormatadorData.DATA);
 	}
 	
+	@Deprecated
 	protected static Date lerDataHota(String input, int inicio) throws ParseException {
-		return UtilsDate.parseDateHora(lerString(input, inicio, 14));
+		return UtilsDate.parse(lerString(input, inicio, 14), UtilsDate.FormatadorData.DATA_TEMPO);
 	}
 	
+	@Deprecated
 	private String escreverCabecalho(Cabecalho cabecalho) {
 		
 		StringBuilder b = new StringBuilder();
@@ -247,7 +267,17 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 	public M ler(String input) throws MensagemNaoEncontradaException {
 		
 		String hash = md5(input);
-		Cabecalho cabecalho = lerCabecalho(input);
+		Cabecalho cabecalho;
+		try {
+			cabecalho = ContextoEntradaSaida.ler(input, Cabecalho.class);
+		} 
+		catch (MapeamentoNaoEncontrado e) {
+			
+			throw new MensagemNaoEncontradaException(e);
+		}
+		
+		
+		//Cabecalho cabecalho = lerCabecalho(input);
 		if(!tipo.equals(cabecalho.getCodigo())) {
 			throw new MensagemNaoEncontradaException("Tipo " + tipo + " inválido");
 		}
@@ -255,10 +285,10 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		
 		M instance;
 		try {
-			instance = clazz.getDeclaredConstructor(String.class, Cabecalho.class).newInstance(hash, cabecalho);
+			instance = ContextoEntradaSaida.ler(input, clazz, new Object[]{hash, cabecalho});
 			
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			throw new MensagemNaoEncontradaException("Classe " + clazz.getName() + " inválida");
+		} catch (IllegalArgumentException | SecurityException | MapeamentoNaoEncontrado e) {
+			throw new MensagemNaoEncontradaException("Classe " + clazz.getName() + " inválida", e);
 		}
 		
 		ler(input, instance);
@@ -268,12 +298,17 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		return instance;
 	}
 	
-	public String escrever(M mensagem) throws MensagemNaoEncontradaException {
+	public String escrever(M mensagem) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
 		
 		StringBuilder b = new StringBuilder();
+		b.append(ContextoEntradaSaida.escrever(mensagem.getCabecalho()));
+		b.append(ContextoEntradaSaida.escrever(mensagem));
+		return b.toString();
+		
+		/*StringBuilder b = new StringBuilder();
 		b.append(escreverCabecalho(mensagem.getCabecalho()));
 		escrever(b, mensagem);
-		return b.toString();
+		return b.toString();*/
 	}
 	
 	abstract void ler(String input, M mensagem) throws MensagemNaoEncontradaException;

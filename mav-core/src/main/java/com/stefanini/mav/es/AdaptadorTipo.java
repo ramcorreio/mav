@@ -2,8 +2,18 @@ package com.stefanini.mav.es;
 
 public abstract class AdaptadorTipo<T> {
 	
-	public abstract void escrever() throws MapeamentoNaoEncontrado;
+	private Class<?> tipoEnum;
 	
-	public abstract T ler(String in, MapAtributo map)  throws MapeamentoNaoEncontrado;
+	public Class<?> getTipoEnum() {
+		return tipoEnum;
+	}
+	
+	public void setTipoEnum(Class<?> tipoEnum) {
+		this.tipoEnum = tipoEnum;
+	}
+	
+	public abstract String escrever(Object in, SimpleMapper map) throws MapeamentoNaoEncontrado;
+	
+	public abstract T ler(String in, SimpleMapper map)  throws MapeamentoNaoEncontrado;
 
 }

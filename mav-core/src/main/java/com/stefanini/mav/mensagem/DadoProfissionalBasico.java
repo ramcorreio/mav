@@ -11,7 +11,7 @@ public class DadoProfissionalBasico implements Serializable {
 
 	private Date dataAdmissao;
 
-	private Telefone telefone;
+	private TelefoneRamal telefone;
 
 	private Endereco endereco;
 
@@ -61,11 +61,11 @@ public class DadoProfissionalBasico implements Serializable {
 		this.endereco = endereco;
 	}
 
-	public Telefone getTelefone() {
+	public TelefoneRamal getTelefone() {
 		return telefone;
 	}
 
-	protected void setTelefone(Telefone telefone) {
+	protected void setTelefone(TelefoneRamal telefone) {
 		this.telefone = telefone;
 	}
 

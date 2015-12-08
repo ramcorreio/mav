@@ -15,6 +15,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.ContextoMensagem;
 import com.stefanini.mav.mensagem.MensagemBasica;
@@ -50,7 +51,7 @@ public class MensagemBrokerTest {
 	
 	
 	@Test
-	public void erroAusenciaParceira() throws MensagemNaoEncontradaException, IOException, URISyntaxException, BrokerException {
+	public void erroAusenciaParceira() throws MensagemNaoEncontradaException, IOException, URISyntaxException, BrokerException, MapeamentoNaoEncontrado {
 		
 		ContextoMensagem<MensagemBasica> ctxEntrada = MensagemFactory.loadContexto(CodigoMensagem.C0450);
 		MensagemBasica entrada = ctxEntrada.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1"));
@@ -62,7 +63,7 @@ public class MensagemBrokerTest {
 	}
 	
 	@Test
-	public void erroConexaoParceira() throws MensagemNaoEncontradaException, IOException, URISyntaxException, BrokerException {
+	public void erroConexaoParceira() throws MensagemNaoEncontradaException, IOException, URISyntaxException, BrokerException, MapeamentoNaoEncontrado {
 		
 		ContextoMensagem<MensagemBasica> ctxEntrada = MensagemFactory.loadContexto(CodigoMensagem.C0450);
 		MensagemBasica entrada = ctxEntrada.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1"));
@@ -77,7 +78,7 @@ public class MensagemBrokerTest {
 	}
 	
 	@Test
-	public void conexaoParceiraOK() throws MensagemNaoEncontradaException, IOException, URISyntaxException, BrokerException {
+	public void conexaoParceiraOK() throws MensagemNaoEncontradaException, IOException, URISyntaxException, BrokerException, MapeamentoNaoEncontrado {
 		
 		IMocksControl mocker = EasyMock.createStrictControl();
 		

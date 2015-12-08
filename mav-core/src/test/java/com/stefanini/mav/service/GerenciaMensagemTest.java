@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.stefanini.mav.core.Mensagem;
+import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.ContextoMensagem;
 import com.stefanini.mav.mensagem.MensagemBasica;
@@ -36,7 +37,7 @@ public class GerenciaMensagemTest {
 	}
 	
 	@Test
-	public void salvarMensagem() throws IOException, URISyntaxException, MensagemNaoEncontradaException, BrokerException {
+	public void salvarMensagem() throws IOException, URISyntaxException, MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 		
 		String input = MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1");
 		ContextoMensagem<MensagemBasica> ctx = MensagemFactory.loadContexto(CodigoMensagem.C0450);

@@ -1,19 +1,28 @@
 package com.stefanini.mav.mensagem;
 
+import com.stefanini.mav.es.MapAtributo;
+
 public class Endereco {
 
+	@MapAtributo(tamanho = 40)
 	private String logradouro;
 
+	@MapAtributo(tamanho = 5)
 	private String numero;
 
+	@MapAtributo(tamanho = 15)
 	private String complemento;
 
+	@MapAtributo(tamanho = 20)
 	private String bairro;
 
+	@MapAtributo(tamanho = 20)
 	private String cidade;
 
+	@MapAtributo(tamanho = 2)
 	private String uf;
 
+	@MapAtributo(tamanho = 8)
 	private Integer cep;
 	
 	@Override

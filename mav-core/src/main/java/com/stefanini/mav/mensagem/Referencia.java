@@ -8,7 +8,7 @@ public class Referencia implements Serializable {
 
 	private String nome;
 	
-	private Telefone telefone;
+	private TelefoneRamal telefone;
 	
 	public String getNome() {
 		return nome;
@@ -18,11 +18,11 @@ public class Referencia implements Serializable {
 		this.nome = nome;
 	}
 	
-	public Telefone getTelefone() {
+	public TelefoneRamal getTelefone() {
 		return telefone;
 	}
 	
-	protected void setTelefone(Telefone telefone) {
+	protected void setTelefone(TelefoneRamal telefone) {
 		this.telefone = telefone;
 	}
 

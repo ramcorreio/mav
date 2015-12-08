@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MapAtributo {
 	
-	String nome() default "";
+	String path() default "";
 	
 	int tamanho() default 1;
 	

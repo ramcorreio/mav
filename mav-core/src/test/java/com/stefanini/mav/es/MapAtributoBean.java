@@ -4,19 +4,19 @@ import java.util.Date;
 
 public class MapAtributoBean {
 
-	@MapAtributo(nome = "nome", tamanho = 25)
+	@MapAtributo(tamanho = 25)
 	private String nome;
 
-	@MapAtributo(nome = "idade", tamanho = 3)
+	@MapAtributo(tamanho = 3)
 	private Integer idade;
 
-	@MapAtributo(nome = "data", tamanho = 8)
+	@MapAtributo(tamanho = 8)
 	private Date data;
 
-	@MapAtributo(nome = "temFilhos")
+	@MapAtributo
 	private Boolean temFilhos;
 
-	@MapAtributo(nome = "salario", tamanho = 9)
+	@MapAtributo(tamanho = 9)
 	private Double salario;
 
 	public String getNome() {
