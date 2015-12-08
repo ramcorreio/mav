@@ -13,6 +13,9 @@ public class PropostaFinanciamento extends MensagemBasica {
 
 	@MapBean
 	private DadoPessoal dadosPessoais;
+	
+	@MapBean
+	private DadoProfissional dadosProfissionais;
 
 /*	private Indicador indicadores;
 
@@ -156,6 +159,14 @@ public class PropostaFinanciamento extends MensagemBasica {
 	
 	public void setDadosPessoais(DadoPessoal dadosPessoais) {
 		this.dadosPessoais = dadosPessoais;
+	}
+	
+	public DadoProfissional getDadosProfissionais() {
+		return dadosProfissionais;
+	}
+	
+	public void setDadosProfissionais(DadoProfissional dadosProfissionais) {
+		this.dadosProfissionais = dadosProfissionais;
 	}
 	
 	// 0084 a 0084	Tipo de personalidade do CPF	1	A	T = Tipo de Pessoa (F – Fisica).	“F”	X
@@ -599,6 +610,232 @@ public class PropostaFinanciamento extends MensagemBasica {
 
 		public void setFillerDados(String fillerDados) {
 			this.fillerDados = fillerDados;
+		}
+	}
+	
+	
+	//0626 a 0633	Data de Admissão 	8	N	Data de Admissão na Empresa.                  		X
+	//0634 a 0663	Empresa	30	A	Empresa Em Que Trabalha o Cliente                              		X
+	//0664 a 0703	Logradouro	40	A	Logradouro onde Trabalha o Cliente		X
+	//0704 a 0708	Numero	5	A	Numero do Logradouro		X
+	//0709 a 0723	Complemento	15	A	Complemento do logradouro		
+	//0724 a 0743	Bairro	20	A	Bairro onde Trabalha o Cliente		X
+	//0744 a 0763	Cidade	20	A	Cidade onde Trabalha o Cliente		X
+	//0764 a 0765	UF	2	A	Unidade Federativa onde Trabalha o Cliente		X
+	//0766 a 0773	CEP	8	N	CEP onde trabalha o cliente		X
+	//0774 a 0776	DDD	3	N	DDD da Cidade Onde Trabalha o Cliente		X
+	//0777 a 0785	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+	//Exemplos:
+	//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+	//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+	//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+	//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+	//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		X
+	//0786 a 0789	Ramal	4	N	Ramal do Trabalho do Cliente		
+	//0790 a 0800	Valor Renda Líquida 	11	N	Renda Líquida do Cliente (em R$)                                              		X
+	//0801 a 0820	Cargo	20	A	Cargo do Cliente	Ver tabela de Dominio Cargo	X
+	//0821 a 0840	Profissão	20	A	Profissão do Cliente	Ver tabela de dominio Profissão	X
+	//0841 a 0841	Aposentado	1	A	"Aponta se o cliente é aposentado:
+	//S - Sim; N - Não"	"S"  "N"	X
+	//0842 a 0842	Pensionista	1	A	"Aponta se o cliente é Pensionista:
+	//S - Sim; N - Não"	"S"  "N"	X
+	//0843 a 0843	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango		
+	//0844 a 0845	Orgão Beneficio	2	A		Ver tabela de dominio Orgao Beneficio	X. Se Aposentado ou Pensionista = SIM
+	//0846 a 0865	Número do benefício	20	A			X. Se Aposentado ou Pensionista = SIM
+	//0866 a 0871	Data do Comprovante de Renda	6	A	Mes/Ano do comprovante de Renda apresentado pelo Cliente	MMAAAA	X, salvo se o Tipo de Comprovante de Renda = "N"
+	//0872 a 0873	Tipo Comprovante de Renda	2	A		Ver tabela Dominio tipo C Renda	X
+	//0874 a 0875	Ocupação nova	2	A	Código da Profissão	Ver tabela Dominio Código da Profissão	X
+	//0876 a 0889	Cnpj Cliente	14	A			X, se Empresario ou Proprietario
+	//0890 a 0915	Filler	26	A			
+	public static class DadoProfissional {
+
+		@MapAtributo(tamanho = 8)
+		private Date dataAdmissao;
+		
+		@MapAtributo(tamanho = 30)
+		private String empresa;
+		
+		@MapBean
+		private Endereco endereco;
+		
+		@MapBean
+		private TelefoneRamal telefone;
+
+		@MapAtributo(tamanho = 11, scale = 2)
+		private Double valorRendaLiquida;
+
+		@MapAtributo(tamanho = 20)
+		private String cargo;
+
+		@MapAtributo(tamanho = 20)
+		private String profissao;
+
+		@MapAtributo
+		private Boolean aposentado;
+
+		@MapAtributo
+		private Boolean pensionista;
+
+		@MapAtributo
+		private String usoExclusivoLosango;
+
+		
+		@MapAtributo(tamanho = 2)
+		private String orgaoBeneficio;
+
+		@MapAtributo(tamanho = 20)
+		private String numeroBeneficio;
+		
+		
+		@MapAtributo(tamanho = 6, formato = "MMyyyy")
+		private Date dataComprovanteRenda;
+
+		@MapAtributo(tamanho = 2)
+		private String tipoComprovanteRenda;
+
+		@MapAtributo(tamanho = 2)
+		private String ocupacaoNova;
+
+		@MapAtributo(tamanho = 14)
+		private String cnpj;
+
+		@MapAtributo(tamanho = 26, trim = false)
+		private String filler;
+
+		public Date getDataAdmissao() {
+			return dataAdmissao;
+		}
+
+		public void setDataAdmissao(Date dataAdmissao) {
+			this.dataAdmissao = dataAdmissao;
+		}
+
+		public String getEmpresa() {
+			return empresa;
+		}
+
+		public void setEmpresa(String empresa) {
+			this.empresa = empresa;
+		}
+
+		public Endereco getEndereco() {
+			return endereco;
+		}
+
+		public void setEndereco(Endereco endereco) {
+			this.endereco = endereco;
+		}
+
+		public TelefoneRamal getTelefone() {
+			return telefone;
+		}
+
+		public void setTelefone(TelefoneRamal telefone) {
+			this.telefone = telefone;
+		}
+
+		public Double getValorRendaLiquida() {
+			return valorRendaLiquida;
+		}
+		
+		public void setValorRendaLiquida(Double valorRendaLiquida) {
+			this.valorRendaLiquida = valorRendaLiquida;
+		}
+
+		public String getCargo() {
+			return cargo;
+		}
+
+		public void setCargo(String cargo) {
+			this.cargo = cargo;
+		}
+
+		public String getProfissao() {
+			return profissao;
+		}
+
+		public void setProfissao(String profissao) {
+			this.profissao = profissao;
+		}
+
+		public Boolean isAposentado() {
+			return aposentado;
+		}
+
+		public void setAposentado(Boolean aposentado) {
+			this.aposentado = aposentado;
+		}
+
+		public Boolean isPensionista() {
+			return pensionista;
+		}
+
+		public void setPensionista(Boolean pensionista) {
+			this.pensionista = pensionista;
+		}
+
+		public String getUsoExclusivoLosango() {
+			return usoExclusivoLosango;
+		}
+
+		public void setUsoExclusivoLosango(String usoExclusivoLosango) {
+			this.usoExclusivoLosango = usoExclusivoLosango;
+		}
+
+		public String getOrgaoBeneficio() {
+			return orgaoBeneficio;
+		}
+
+		public void setOrgaoBeneficio(String orgaoBeneficio) {
+			this.orgaoBeneficio = orgaoBeneficio;
+		}
+
+		public String getNumeroBeneficio() {
+			return numeroBeneficio;
+		}
+
+		public void setNumeroBeneficio(String numeroBeneficio) {
+			this.numeroBeneficio = numeroBeneficio;
+		}
+
+		public Date getDataComprovanteRenda() {
+			return dataComprovanteRenda;
+		}
+
+		public void setDataComprovanteRenda(Date dataComprovanteRenda) {
+			this.dataComprovanteRenda = dataComprovanteRenda;
+		}
+
+		public String getTipoComprovanteRenda() {
+			return tipoComprovanteRenda;
+		}
+
+		public void setTipoComprovanteRenda(String tipoComprovanteRenda) {
+			this.tipoComprovanteRenda = tipoComprovanteRenda;
+		}
+
+		public String getOcupacaoNova() {
+			return ocupacaoNova;
+		}
+
+		public void setOcupacaoNova(String ocupacaoNova) {
+			this.ocupacaoNova = ocupacaoNova;
+		}
+
+		public String getCnpj() {
+			return cnpj;
+		}
+
+		public void setCnpj(String cnpj) {
+			this.cnpj = cnpj;
+		}
+
+		public String getFiller() {
+			return filler;
+		}
+
+		public void setFiller(String filler) {
+			this.filler = filler;
 		}
 	}
 }

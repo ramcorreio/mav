@@ -161,12 +161,12 @@ public class ContextoEntradaSaidaTest {
 	}
 	
 	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho) {
-		return criarSimpleMapper(tipo, nome, path, tamanho, false, 2, true, "ddMMyyyy");
+		return criarSimpleMapper(tipo, nome, path, tamanho, false, 2, true, "ddMMyyyy", "1");
 	}
 	
-	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato) {
+	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato, String comparador) {
 		
-		return ContextoEntradaSaida.criarSimpleMapper(tipo, nome, path, tamanho, obrigatorio, scale, trim, formato);
+		return ContextoEntradaSaida.criarSimpleMapper(tipo, nome, path, tamanho, obrigatorio, scale, trim, formato, comparador);
 	}
 	
 	private <T> void assertMapper(BaseMapper actual, BaseMapper expected) {

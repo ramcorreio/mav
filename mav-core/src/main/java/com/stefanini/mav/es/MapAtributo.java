@@ -21,4 +21,6 @@ public @interface MapAtributo {
 	boolean trim() default true;
 	
 	String formato() default "ddMMyyyy";
+	
+	String comparador() default "1";
 }

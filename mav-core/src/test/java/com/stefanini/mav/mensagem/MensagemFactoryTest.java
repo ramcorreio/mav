@@ -336,14 +336,13 @@ public class MensagemFactoryTest {
 		//TODO: montar massa de testes
 		//esperado.getDadosPessoais().setOrigemPatrimonio(ContextoMensagem.escreverString(4, " "));
 		/*if(esperado.getDadosPessoais().isPossuiPatrimonio()) {
-			
-			
-		}*/
-		/*esperado.getDadosPessoais().getPatrimonio().add(new Patrimonio());
+		 * /*esperado.getDadosPessoais().getPatrimonio().add(new Patrimonio());
 		esperado.getDadosPessoais().getPatrimonio().get(0).setNome("Meu");
 		esperado.getDadosPessoais().getPatrimonio().get(0).setTipo("Opa");
 		esperado.getDadosPessoais().getPatrimonio().get(0).setValor(100.00);
-		esperado.getDadosPessoais().getPatrimonio().get(0).setOrigem("1");*/
+		esperado.getDadosPessoais().getPatrimonio().get(0).setOrigem("1");
+		}*/
+		
 		
 		esperado.getDadosPessoais().setFillerPatrimonio("");
 		esperado.getDadosPessoais().setCodigoPais("");
@@ -355,7 +354,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosPessoais().setFillerDados(ContextoMensagem.escreverString(33, " "));
 		
 		
-		/*esperado.setDadosProfissionais(new DadoProfissional());
+		esperado.setDadosProfissionais(new PropostaFinanciamento.DadoProfissional());
 		//0626 a 0633	Data de Admissão 	8	N	Data de Admissão na Empresa.                  		X
 		esperado.getDadosProfissionais().setDataAdmissao(null);
 		
@@ -384,7 +383,7 @@ public class MensagemFactoryTest {
 		//0766 a 0773	CEP	8	N	CEP onde trabalha o cliente		X
 		esperado.getDadosProfissionais().getEndereco().setCep(79041904);
 		
-		esperado.getDadosProfissionais().setTelefone(new Telefone());
+		esperado.getDadosProfissionais().setTelefone(new TelefoneRamal());
 		//0774 a 0776	DDD	3	N	DDD da Cidade Onde Trabalha o Cliente		X
 		esperado.getDadosProfissionais().getTelefone().setDdd(6);
 		
@@ -395,7 +394,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosProfissionais().getTelefone().setRamal(0000);
 		
 		//0790 a 0800	Valor Renda Líquida 	11	N	Renda Líquida do Cliente (em R$)                                              		X
-		esperado.getDadosProfissionais().setRendaLiquida(130000);
+		esperado.getDadosProfissionais().setValorRendaLiquida(1300.00);
 		
 		//0801 a 0820	Cargo	20	A	Cargo do Cliente	Ver tabela de Dominio Cargo	X
 		esperado.getDadosProfissionais().setCargo("ADVOGADA");
@@ -412,10 +411,10 @@ public class MensagemFactoryTest {
 		esperado.getDadosProfissionais().setPensionista(false);
 		
 		//0843 a 0843	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango
-		esperado.getDadosProfissionais().setLosango("");
+		esperado.getDadosProfissionais().setUsoExclusivoLosango("");
 		
 		//0844 a 0845	Orgão Beneficio	2	A		Ver tabela de dominio Orgao Beneficio	X. Se Aposentado ou Pensionista = SIM
-		esperado.getDadosProfissionais().setOpcaoBeneficio("");
+		esperado.getDadosProfissionais().setOrgaoBeneficio("");
 		
 		//0846 a 0865	Número do benefício	20	A			X. Se Aposentado ou Pensionista = SIM
 		esperado.getDadosProfissionais().setNumeroBeneficio("");
@@ -436,6 +435,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosProfissionais().setFiller(ContextoMensagem.escreverString(26, " "));
 		
 		
+		/*
 		esperado.setDadosConjuge(new DadoConjuge());
 		esperado.getDadosConjuge().setDadoProfissional(new DadoProfissionalBasico());
 		//0916 a 0945	Nome Do Cônjuge	30	A	Nome do Cônjuge do Cliente		X. Se conjuge compoe renda = 1 ou Estado Civil = 2

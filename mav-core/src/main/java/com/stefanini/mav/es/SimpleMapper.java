@@ -11,6 +11,8 @@ public class SimpleMapper extends BaseMapper {
 	private boolean trim;
 
 	private String formato;
+	
+	private String comparador;
 
 	public int getTamanho() {
 		return tamanho;
@@ -52,6 +54,14 @@ public class SimpleMapper extends BaseMapper {
 		this.formato = formato;
 	}
 	
+	public String getComparador() {
+		return comparador;
+	}
+	
+	public void setComparador(String comparador) {
+		this.comparador = comparador;
+	}
+	
 	@Override
 	public String toString() {
 		
@@ -68,6 +78,8 @@ public class SimpleMapper extends BaseMapper {
 		b.append("trim: " + trim);
 		b.append(", ");
 		b.append("formato: " + formato);
+		b.append(", ");
+		b.append("comparador: " + comparador);
 		b.append("}");
 		
 		return b.toString();

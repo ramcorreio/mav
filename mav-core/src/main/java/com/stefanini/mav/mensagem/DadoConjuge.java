@@ -4,14 +4,14 @@ public class DadoConjuge extends DadoPessoal {
 	
 	private static final long serialVersionUID = -1628342254293004067L;
 	
-	private DadoProfissionalBasico dadoProfissional;
+	/*private DadoProfissional dadoProfissional;
 	
-	public DadoProfissionalBasico getDadoProfissional() {
+	public DadoProfissional getDadoProfissional() {
 		return dadoProfissional;
 	}
 	
-	protected void setDadoProfissional(DadoProfissionalBasico dadoProfissional) {
+	protected void setDadoProfissional(DadoProfissional dadoProfissional) {
 		this.dadoProfissional = dadoProfissional;
-	}
+	}*/
 
 }

@@ -157,11 +157,11 @@ public class ContextoEntradaSaida {
 			@Override
 			public Boolean ler(String in, SimpleMapper m) {
 				
-				if(in.trim().isEmpty()) {
-					return Boolean.FALSE;
+				try {
+					return in.trim().isEmpty() ? false : (in.trim().equals(m.getComparador()) ? true : false);
 				}
-				else {
-					return Integer.valueOf(in) == 1;	
+				catch(NullPointerException e) {
+					return false;
 				}
 			}
 		});
@@ -250,7 +250,7 @@ public class ContextoEntradaSaida {
 	
 	
 	
-	protected static SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato) {
+	protected static SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato, String comparador) {
 		
 		SimpleMapper sm = new SimpleMapper();
 		sm.setNome(nome);
@@ -261,6 +261,7 @@ public class ContextoEntradaSaida {
 		sm.setScale(scale);
 		sm.setTrim(trim);
 		sm.setFormato(formato);
+		sm.setComparador(comparador);
 		
 		return sm;
 	}
@@ -336,7 +337,7 @@ public class ContextoEntradaSaida {
 		return impl;
 	}*/
 	
-	protected static MapAtributo criarMapper(final Class<? extends Annotation> annotationType, final String path, final int tamanho, final boolean obrigatorio, final int scale, final boolean trim, final String formato) {
+	protected static MapAtributo criarMapper(final Class<? extends Annotation> annotationType, final String path, final int tamanho, final boolean obrigatorio, final int scale, final boolean trim, final String formato, final String comparador) {
 		
 		return new MapAtributo() {
 			
@@ -379,6 +380,12 @@ public class ContextoEntradaSaida {
 
 				return formato;
 			}
+			
+			@Override
+			public String comparador() {
+				
+				return comparador;
+			}
 		};
 	}
 	
@@ -405,7 +412,8 @@ public class ContextoEntradaSaida {
 					map.obrigatorio(), 
 					map.scale(), 
 					map.trim(), 
-					map.formato()));
+					map.formato(),
+					map.comparador()));
 			}
 			else if(field.isAnnotationPresent(MapBean.class)) {
 				
@@ -634,7 +642,7 @@ public class ContextoEntradaSaida {
 			invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), valor);
 			return position + attr.getMapper().getTamanho();
 		}
-		catch (StringIndexOutOfBoundsException e) {
+		catch (StringIndexOutOfBoundsException | NumberFormatException e) {
 			
 			throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getDeclaringClass()) + ".", e);
 		}
