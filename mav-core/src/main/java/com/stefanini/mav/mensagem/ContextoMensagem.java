@@ -72,7 +72,9 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		b.append(escreverString(tamanho, input));
 	}
 	
-	@Deprecated
+	/**
+	 * método responsável por gerar uma string com valor informado e completar até o tamanho com espaços em branco.
+	 */
 	protected static String escreverString(int tamanho, String input) {
 		return String.format("%-" + tamanho + "s" , input);
 	}

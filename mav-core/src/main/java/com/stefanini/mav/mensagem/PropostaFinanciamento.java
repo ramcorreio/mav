@@ -16,138 +16,13 @@ public class PropostaFinanciamento extends MensagemBasica {
 	
 	@MapBean
 	private DadoProfissional dadosProfissionais;
-
-/*	private Indicador indicadores;
-
-	private DadoProfissional dadosProfissionais;
-
+	
+	@MapBean
 	private DadoConjuge dadosConjuge;
+	
+	@MapBean
+	private DadoComplementar dadoComplementar;
 
-	private Integer escolaridade;
-
-	private String formacao;
-
-	private Boolean possuiCartao;
-
-	private Boolean possuiVeiculoProprio;
-
-	private String placa;
-
-	private String renavam;
-
-	private Boolean veiculoQuitado;
-
-	private Boolean possuiExperienciaCredito;
-
-	private String localExperienciaCredito;
-
-	private Integer planoExperienciaCredito;
-
-	private Integer valorPrestacaoExperienciaCredito;
-
-	private Date inicioExperienciaCredito;
-
-	private String classificacaoCliente;
-
-	private Boolean possuiCartaoFinanceira;
-
-	private Boolean possuiContaCorrente;
-
-	private Boolean possuiDependente;
-
-	private Integer quantidadeDependente;
-
-	private String nomeCartao;
-
-	private String indicadorCapturarFoto;
-
-	private String indicadorCapturarDocumento;
-
-	private String indicadorCapturarBiometria;
-
-	private String fillerDadosComplementares;
-
-	private List<Referencia> referenciasPessoais;
-
-	private List<Referencia> referenciasComerciais;
-
-	private Banco referenciaBancaria;
-
-	private Integer tabelaFinanciamento;
-
-	private String sinalCarencia;
-
-	private Integer carencia;
-
-	private Integer formaPagamento;
-
-	private Date dataOperacao;
-
-	private Integer produto;
-
-	private Integer prestacoes;
-
-	private Double taxaMensal;
-
-	private Double taxaAnual;
-
-	private Integer valorEntrada;
-
-	private Integer tipoPagamento;
-
-	private Integer top;
-
-	private Integer valorTac;
-
-	private Integer pagTac;
-
-	private Integer valorOperacaoSolicitado;
-
-	private Integer valorTotalFinanciado;
-
-	private Integer valorPrestacao;
-
-	private Date vencimentoPrestacao;
-
-	private String descricaoDoBem;
-
-	private Boolean impressaoCarne;
-
-	private String nuPedido;
-
-	private String nuCd;
-
-	private String cpfVendedor;
-
-	private String telefoneVendedor;
-
-	private Boolean prePago;
-
-	private Boolean levaNaHora;
-
-	private Integer betaGama;
-
-	private Integer promotor;
-
-	private Boolean aceitaConsulta;
-
-	private Double cetMensal;
-
-	private Double cetAnual;
-
-	private Double iof;
-
-	private Date dataEvento;
-
-	private Integer valorEntradaLojista;
-
-	private String fillerDadosOperacao;
-
-	private String codigoOfertaAderidaContaCorrente;
-
-	private String codigoPerfilOfertaAderidaCdc;
-
-	private String fillerPreScreening;*/
 
 	public PropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
@@ -167,6 +42,22 @@ public class PropostaFinanciamento extends MensagemBasica {
 	
 	public void setDadosProfissionais(DadoProfissional dadosProfissionais) {
 		this.dadosProfissionais = dadosProfissionais;
+	}
+	
+	public DadoConjuge getDadosConjuge() {
+		return dadosConjuge;
+	}
+	
+	public void setDadosConjuge(DadoConjuge dadosConjuge) {
+		this.dadosConjuge = dadosConjuge;
+	}
+	
+	public DadoComplementar getDadoComplementar() {
+		return dadoComplementar;
+	}
+	
+	public void setDadoComplementar(DadoComplementar dadoComplementar) {
+		this.dadoComplementar = dadoComplementar;
 	}
 	
 	// 0084 a 0084	Tipo de personalidade do CPF	1	A	T = Tipo de Pessoa (F – Fisica).	“F”	X
@@ -678,14 +569,12 @@ public class PropostaFinanciamento extends MensagemBasica {
 
 		@MapAtributo
 		private String usoExclusivoLosango;
-
 		
 		@MapAtributo(tamanho = 2)
 		private String orgaoBeneficio;
 
 		@MapAtributo(tamanho = 20)
-		private String numeroBeneficio;
-		
+		private String numeroBeneficio;		
 		
 		@MapAtributo(tamanho = 6, formato = "MMyyyy")
 		private Date dataComprovanteRenda;
@@ -834,6 +723,739 @@ public class PropostaFinanciamento extends MensagemBasica {
 			return filler;
 		}
 
+		public void setFiller(String filler) {
+			this.filler = filler;
+		}
+	}
+	
+	//0916 a 0945	Nome Do Cônjuge	30	A	Nome do Cônjuge do Cliente		X. Se conjuge compoe renda = 1 ou Estado Civil = 2 
+	//0946 a 0985	Local de Nascimento	40	A			
+	//0986 a 0993	Data de Nascimento	8	N	Data nascimento do cônjuge.		X. Se conjuge compoe renda = 1 
+	//0994 a 1004	CPF	11	N	CPF do Cônjuge		X. Se conjuge compoe renda = 1 
+	//1005 a 1014	Identidade / RG	10	A	Número da Identidade do Cônjuge		X. Se conjuge compoe renda = 1 
+	//1015 a 1016	Tipo de Documento	2	A		Ver tabela de dominio TP  DOCUMENTO IDENTIDADE	X. Se conjuge compoe renda = 1 
+	//1017 a 1021	Órgão Emissor	5	A	Órgão Emissor do Documento de Identidade do Cônjuge	Ver tabela de dominio Orgão Emissor	X. Se conjuge compoe renda = 1 
+	//1022 a 1023	UF Órgão Emissor	2	A		Ver tabela de dominio UF	X. Se conjuge compoe renda = 1 
+	//1024 a 1031	Data Emissão	8	N	Data de emissão do documento do Cônjuge		X. Se conjuge compoe renda = 1 
+	//1032 a 1056	Empresa 	25	A	Empresa Em Que o Cônjuge Trabalha		X. Se conjuge compoe renda = 1 
+	//1057 a 1064	Data  Admissão	8	N	Data da Admissão na Empresa		X. Se conjuge compoe renda = 1 
+	//1065 a 1104	Logradouro	40	A	Logradouro do trabalho do conjuge		X. Se conjuge compoe renda = 1 
+	//1105 a 1109	Numero	5	A	Numero do Logradouro		X. Se conjuge compoe renda = 1 
+	//1110 a 1124	Complemento	15	A	Complemento do Logradouro		
+	//1125 a 1144	Bairro	20	A	Bairro onde trabalha o cônjuge		X. Se conjuge compoe renda = 1 
+	//1145 a 1164	Cidade	20	A	Cidade Onde Trabalha o cônjuge		X. Se conjuge compoe renda = 1 
+	//1165 a 1166	UF	2	A	Abreviatura da Unidade Federativa 		X. Se conjuge compoe renda = 1 
+	//1167 a 1174	CEP	8	N	CEP do endereço comercial do cônjuge		X. Se conjuge compoe renda = 1 
+	//1175 a 1177	DDD	3	N	DDD da Cidade Onde Trabalha o cônjuge		X. Se conjuge compoe renda = 1 
+	//1178 a 1186	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
+	//Exemplos:
+	//1º) DDD=011 e numero = 8240-3043 ==> 98240-3043
+	//2º) DDD=011 e numero = 7040-3043 ==> 07040-3043
+	//3º) DDD=011 e numero = 3043-5322 ==> 03043-5322
+	//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
+	//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		X. Se conjuge compoe renda = 1 
+	//1187 a 1190	Ramal	4	N	Ramal do Trabalho do cônjuge		
+	//1191 a 1210	Cargo	20	A	Cargo do Cônjuge	Ver tabela de Dominio Cargo	X. Se conjuge compoe renda = 1
+	//1211 a 1230	Profissão	20	A	Profissão do Conjuge	Ver tabela de dominio Profissão	X. Se conjuge compoe renda = 1
+	//1231 a 1231	Aposentado	1	A	"Aponta se o cliente é aposentado:
+	//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1 
+	//1232 a 1232	Pensionista	1	A	"Aponta se o cliente é Pensionista:
+	//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1 
+	//1233 a 1233	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango		
+	//1234 a 1244	Valor Renda Líquida 	11	N	Renda Líquida do Cônjuge (em R$)                                                  		X. Se conjuge compoe renda = 1 
+	//1245 a 1314	Patrimônio	70	A			
+	//1315 a 1315	Nacionalidade	1	N	Nacionalidade do Conjuge	"0-Brasileiro
+	//1-Estrangeiro        "	X. Se conjuge compoe renda = 1
+	//1316 a 1317	Código do País (informar se nacionalidade = estrangeiro)	2	A	Tabela de Paises	Ver tabela de Dominio Paises	X. Se conjuge compoe renda = 1
+	//1318 a 1319	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF	Ver tabela de dominio UF	X. Se conjuge compoe renda = 1
+	//1320 a 1325	Data do Comprovante de Renda	6	A	Mes/Ano do comprovante de Renda apresentado pelo Conjuge	MMAAAA	X. Se conjuge compoe renda = 1
+	//1326 a 1327	Tipo Comprovante de Renda	2	A		Ver tabela Dominio tipo C Renda	X. Se conjuge compoe renda = 1
+	//1328 a 1329	Ocupação nova	2	A	Código da Profissão	Ver tabela Dominio Código da Profissão	X. Se conjuge compoe renda = 1
+	//1330 a 1330	Sexo do Conjuge	1	A	M – Masculino     F – Feminino         	“M”   ”F”	X. Se conjuge compoe renda = 1 ou Estado Civil = 2 
+	//1331 a 1344	CNPJ Conjuge	14	A			
+	//1331 a 1364	Filler	20	A			X, se Empresario ou Proprietario
+	public static class DadoConjuge {
+		
+		@MapAtributo(tamanho = 30) 
+		private String nome;
+		
+		@MapAtributo(tamanho = 40) 
+		private String localNascimento;
+		
+		@MapAtributo(tamanho = 8) 
+		private Date dataNascimento;
+		
+		@MapAtributo(tamanho = 11) 
+		private String cpf;
+		
+		@MapBean 
+		private DocumentoConjuge identidade;
+		
+		@MapAtributo(tamanho = 25)
+		private String empresa;
+		
+		@MapAtributo(tamanho = 8)
+		private Date dataAdmissao;
+		
+		@MapBean
+		private Endereco endereco;
+		
+		@MapBean
+		private TelefoneRamal telefone;
+
+		@MapAtributo(tamanho = 20)
+		private String cargo;
+
+		@MapAtributo(tamanho = 20)
+		private String profissao;
+		
+		@MapAtributo
+		private Boolean aposentado;
+
+		@MapAtributo
+		private Boolean pensionista;
+
+		@MapAtributo
+		private String usoExclusivoLosango;
+		
+		@MapAtributo(tamanho = 11, scale = 2)
+		private Double valorRendaLiquida;
+		
+		@MapAtributo(tamanho = 70)
+		//TODO: rever a carga desse item
+		private String patrimonio;
+		
+		@MapAtributo
+		private Integer nacionalidade;
+		
+		@MapAtributo(tamanho = 2)
+		private String codigoPais;
+		
+		@MapAtributo(tamanho = 2)
+		private String codigoUfNaturalidade;
+		
+		@MapAtributo(tamanho = 6, formato = "MMyyyy")
+		private Date dataComprovanteRenda;
+
+		@MapAtributo(tamanho = 2)
+		private String tipoComprovanteRenda;
+
+		@MapAtributo(tamanho = 2)
+		private String ocupacaoNova;
+		
+		@MapAtributo
+		private String sexo;
+
+		@MapAtributo(tamanho = 14)
+		private String cnpj;
+
+		@MapAtributo(tamanho = 20, trim = false)
+		private String filler;
+
+		public String getNome() {
+			return nome;
+		}
+
+		public void setNome(String nome) {
+			this.nome = nome;
+		}
+
+		public String getLocalNascimento() {
+			return localNascimento;
+		}
+
+		public void setLocalNascimento(String localNascimento) {
+			this.localNascimento = localNascimento;
+		}
+
+		public Date getDataNascimento() {
+			return dataNascimento;
+		}
+
+		public void setDataNascimento(Date dataNascimento) {
+			this.dataNascimento = dataNascimento;
+		}
+
+		public String getCpf() {
+			return cpf;
+		}
+
+		public void setCpf(String cpf) {
+			this.cpf = cpf;
+		}
+
+		public DocumentoConjuge getIdentidade() {
+			return identidade;
+		}
+
+		public void setIdentidade(DocumentoConjuge identidade) {
+			this.identidade = identidade;
+		}
+
+		public String getEmpresa() {
+			return empresa;
+		}
+
+		public void setEmpresa(String empresa) {
+			this.empresa = empresa;
+		}
+
+		public Date getDataAdmissao() {
+			return dataAdmissao;
+		}
+
+		public void setDataAdmissao(Date dataAdmissao) {
+			this.dataAdmissao = dataAdmissao;
+		}
+
+		public Endereco getEndereco() {
+			return endereco;
+		}
+
+		public void setEndereco(Endereco endereco) {
+			this.endereco = endereco;
+		}
+
+		public TelefoneRamal getTelefone() {
+			return telefone;
+		}
+
+		public void setTelefone(TelefoneRamal telefone) {
+			this.telefone = telefone;
+		}
+
+		public String getCargo() {
+			return cargo;
+		}
+
+		public void setCargo(String cargo) {
+			this.cargo = cargo;
+		}
+
+		public String getProfissao() {
+			return profissao;
+		}
+
+		public void setProfissao(String profissao) {
+			this.profissao = profissao;
+		}
+
+		public Boolean getAposentado() {
+			return aposentado;
+		}
+
+		public void setAposentado(Boolean aposentado) {
+			this.aposentado = aposentado;
+		}
+
+		public Boolean getPensionista() {
+			return pensionista;
+		}
+
+		public void setPensionista(Boolean pensionista) {
+			this.pensionista = pensionista;
+		}
+
+		public String getUsoExclusivoLosango() {
+			return usoExclusivoLosango;
+		}
+
+		public void setUsoExclusivoLosango(String usoExclusivoLosango) {
+			this.usoExclusivoLosango = usoExclusivoLosango;
+		}
+
+		public Double getValorRendaLiquida() {
+			return valorRendaLiquida;
+		}
+
+		public void setValorRendaLiquida(Double valorRendaLiquida) {
+			this.valorRendaLiquida = valorRendaLiquida;
+		}
+
+		public String getPatrimonio() {
+			return patrimonio;
+		}
+
+		public void setPatrimonio(String patrimonio) {
+			this.patrimonio = patrimonio;
+		}
+
+		public Integer getNacionalidade() {
+			return nacionalidade;
+		}
+
+		public void setNacionalidade(Integer nacionalidade) {
+			this.nacionalidade = nacionalidade;
+		}
+
+		public String getCodigoPais() {
+			return codigoPais;
+		}
+
+		public void setCodigoPais(String codigoPais) {
+			this.codigoPais = codigoPais;
+		}
+
+		public String getCodigoUfNaturalidade() {
+			return codigoUfNaturalidade;
+		}
+
+		public void setCodigoUfNaturalidade(String codigoUfNaturalidade) {
+			this.codigoUfNaturalidade = codigoUfNaturalidade;
+		}
+
+		public Date getDataComprovanteRenda() {
+			return dataComprovanteRenda;
+		}
+
+		public void setDataComprovanteRenda(Date dataComprovanteRenda) {
+			this.dataComprovanteRenda = dataComprovanteRenda;
+		}
+
+		public String getTipoComprovanteRenda() {
+			return tipoComprovanteRenda;
+		}
+
+		public void setTipoComprovanteRenda(String tipoComprovanteRenda) {
+			this.tipoComprovanteRenda = tipoComprovanteRenda;
+		}
+
+		public String getOcupacaoNova() {
+			return ocupacaoNova;
+		}
+
+		public void setOcupacaoNova(String ocupacaoNova) {
+			this.ocupacaoNova = ocupacaoNova;
+		}
+		
+		public String getSexo() {
+			return sexo;
+		}
+		
+		public void setSexo(String sexo) {
+			this.sexo = sexo;
+		}
+
+		public String getCnpj() {
+			return cnpj;
+		}
+
+		public void setCnpj(String cnpj) {
+			this.cnpj = cnpj;
+		}
+
+		public String getFiller() {
+			return filler;
+		}
+
+		public void setFiller(String filler) {
+			this.filler = filler;
+		}
+	}
+	
+	//1365 a 1366	Escolaridade	2	A	Codigo da Escolaridade	Ver tabela de dominio Escolaridade	
+	//1367 a 1386	Formação	20	A	Formação		
+	//1387 a 1387	Indicador Possui cartão	1	N	Indicador se possui cartão	0 - Não 1 - Sim	X
+	//1388 a 1388	Indicador Possui veículo próprio	1	N	Indicador Possui veículo próprio	0 - Não 1 - Sim	X
+	//1389 a 1398	Placa	10	A			
+	//1399 a 1458	Renavam	60	A			
+	//1459 a 1459	Indicador Possui veículo quitado	1	N	Indicador Possui veículo quitado	0 - Não 1 - Sim	X
+	//1460 a 1460	Possui experiencia de crédito	1	N	Indicador Possui experiência	0 - Não 1 - Sim	X
+	//1461 a 1480	Local da Experiência	20	A			X. Se Possui experiencia de crédito = 1
+	//1481 a 1482	Plano da Experiência	2	N			X. Se Possui experiencia de crédito = 1
+	//1483 a 1497	Valor da Prestação da Experiência	15	N			X. Se Possui experiencia de crédito = 1
+	//1498 a 1503	Inicio da Experiência de Crédito	6	N	Inicio da Experiência MMAAAA		X. Se Possui experiencia de crédito = 1
+	//1504 a 1543	Classificação do Cliente	40	A			
+	//1544 a 1544	Indicador Possui Cartão Financeira	1	N	Indicador Possui Cartão Financeira	0 - Não 1 - Sim	X
+	//1545 a 1545	Indicador Possui Conta Corrente	1	N	Indicador Possui Conta Corrente	0 - Não 1 - Sim	X
+	//1546 a 1546	Indicador Possui dependente	1	N		0 - Não 1 - Sim	X
+	//1547 a 1548	Quantidade de dependentes	2	N			X. Se Indicador Possui dependente = 1
+	//1549 a 1563	Nome do cartão	15	A			
+	//1564 a 1564	indicadorCapturarFoto	1	A	Indicador da captura da Foto do Cliente.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
+	//1 - Problemas Técnicos
+	//2 - Cliente não autoriza
+	//3 - Outros"	X
+	//1565 a 1565	indicadorCapturarDocumento	1	A	Indicador da captura do Documento.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
+	//1 - Problemas Técnicos
+	//2 - Cliente não autoriza
+	//3 - Outros"	X
+	//1566 a 1566	indicadorCapturarBiometria	1	A	Indicador da captura da Biometria	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
+	//1 - Problemas Técnicos
+	//2 - Cliente não autoriza
+	//3 - Outros"	X
+	//1567 a 1613	Filler	47	A
+	public static class DadoComplementar {
+		
+		@MapAtributo(tamanho = 2)
+		private String escolaridade;
+		
+		@MapAtributo(tamanho = 20)
+		private String formacao;
+		
+		@MapAtributo
+		private Boolean possuiCartao;
+		
+		@MapAtributo
+		private Boolean possuiVeiculoProprio;
+		
+		@MapAtributo(tamanho = 10)
+		private String placa;
+
+		@MapAtributo(tamanho = 60)
+		private String renavam;
+		
+		@MapAtributo
+		private Boolean possuiVeiculoQuitado;
+		
+		@MapAtributo
+		private Boolean possuiExperienciaCredito;
+		
+		@MapAtributo(tamanho = 20)
+		private String localExperiencia;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer planoExperiencia;
+		
+		@MapAtributo(tamanho = 15, scale = 2)
+		private Integer valorPrestacaoExperiencia;
+		
+		@MapAtributo(tamanho = 6, formato = "MMyyyy")
+		private Date inicioExperienciaCredito;
+		
+		@MapAtributo(tamanho = 40)
+		private String classificao;
+		
+		@MapAtributo
+		private Boolean possuiCartaoFinanceira;
+		
+		@MapAtributo
+		private Boolean possuiContaCorrente;
+		
+		@MapAtributo
+		private Boolean possuiDependente;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer quantidadeDependentes;
+		
+		@MapAtributo(tamanho = 15)
+		private String nomeCartao;
+		
+		@MapAtributo
+		private Boolean capturarFoto;
+		
+		@MapAtributo
+		private Boolean capturarDocumento;
+		
+		@MapAtributo
+		private Boolean capturarBiometria;
+		
+		@MapAtributo(tamanho = 47, trim = false)
+		private String filler;
+
+		/**
+		 * @return the escolaridade
+		 */
+		public String getEscolaridade() {
+			return escolaridade;
+		}
+
+		/**
+		 * @param escolaridade the escolaridade to set
+		 */
+		public void setEscolaridade(String escolaridade) {
+			this.escolaridade = escolaridade;
+		}
+
+		/**
+		 * @return the formacao
+		 */
+		public String getFormacao() {
+			return formacao;
+		}
+
+		/**
+		 * @param formacao the formacao to set
+		 */
+		public void setFormacao(String formacao) {
+			this.formacao = formacao;
+		}
+
+		/**
+		 * @return the possuiCartao
+		 */
+		public Boolean getPossuiCartao() {
+			return possuiCartao;
+		}
+
+		/**
+		 * @param possuiCartao the possuiCartao to set
+		 */
+		public void setPossuiCartao(Boolean possuiCartao) {
+			this.possuiCartao = possuiCartao;
+		}
+
+		/**
+		 * @return the possuiVeiculoProprio
+		 */
+		public Boolean getPossuiVeiculoProprio() {
+			return possuiVeiculoProprio;
+		}
+
+		/**
+		 * @param possuiVeiculoProprio the possuiVeiculoProprio to set
+		 */
+		public void setPossuiVeiculoProprio(Boolean possuiVeiculoProprio) {
+			this.possuiVeiculoProprio = possuiVeiculoProprio;
+		}
+
+		/**
+		 * @return the placa
+		 */
+		public String getPlaca() {
+			return placa;
+		}
+
+		/**
+		 * @param placa the placa to set
+		 */
+		public void setPlaca(String placa) {
+			this.placa = placa;
+		}
+
+		/**
+		 * @return the renavam
+		 */
+		public String getRenavam() {
+			return renavam;
+		}
+
+		/**
+		 * @param renavam the renavam to set
+		 */
+		public void setRenavam(String renavam) {
+			this.renavam = renavam;
+		}
+
+		/**
+		 * @return the possuiVeiculoQuitado
+		 */
+		public Boolean getPossuiVeiculoQuitado() {
+			return possuiVeiculoQuitado;
+		}
+
+		/**
+		 * @param possuiVeiculoQuitado the possuiVeiculoQuitado to set
+		 */
+		public void setPossuiVeiculoQuitado(Boolean possuiVeiculoQuitado) {
+			this.possuiVeiculoQuitado = possuiVeiculoQuitado;
+		}
+
+		/**
+		 * @return the possuiExperienciaCredito
+		 */
+		public Boolean getPossuiExperienciaCredito() {
+			return possuiExperienciaCredito;
+		}
+
+		/**
+		 * @param possuiExperienciaCredito the possuiExperienciaCredito to set
+		 */
+		public void setPossuiExperienciaCredito(Boolean possuiExperienciaCredito) {
+			this.possuiExperienciaCredito = possuiExperienciaCredito;
+		}
+
+		/**
+		 * @return the localExperiencia
+		 */
+		public String getLocalExperiencia() {
+			return localExperiencia;
+		}
+
+		/**
+		 * @param localExperiencia the localExperiencia to set
+		 */
+		public void setLocalExperiencia(String localExperiencia) {
+			this.localExperiencia = localExperiencia;
+		}
+
+		/**
+		 * @return the planoExperiencia
+		 */
+		public Integer getPlanoExperiencia() {
+			return planoExperiencia;
+		}
+
+		/**
+		 * @param planoExperiencia the planoExperiencia to set
+		 */
+		public void setPlanoExperiencia(Integer planoExperiencia) {
+			this.planoExperiencia = planoExperiencia;
+		}
+
+		/**
+		 * @return the valorPrestacaoExperiencia
+		 */
+		public Integer getValorPrestacaoExperiencia() {
+			return valorPrestacaoExperiencia;
+		}
+
+		/**
+		 * @param valorPrestacaoExperiencia the valorPrestacaoExperiencia to set
+		 */
+		public void setValorPrestacaoExperiencia(Integer valorPrestacaoExperiencia) {
+			this.valorPrestacaoExperiencia = valorPrestacaoExperiencia;
+		}
+
+		/**
+		 * @return the inicioExperienciaCredito
+		 */
+		public Date getInicioExperienciaCredito() {
+			return inicioExperienciaCredito;
+		}
+
+		/**
+		 * @param inicioExperienciaCredito the inicioExperienciaCredito to set
+		 */
+		public void setInicioExperienciaCredito(Date inicioExperienciaCredito) {
+			this.inicioExperienciaCredito = inicioExperienciaCredito;
+		}
+
+		/**
+		 * @return the classificao
+		 */
+		public String getClassificao() {
+			return classificao;
+		}
+
+		/**
+		 * @param classificao the classificao to set
+		 */
+		public void setClassificao(String classificao) {
+			this.classificao = classificao;
+		}
+
+		/**
+		 * @return the possuiCartaoFinanceira
+		 */
+		public Boolean getPossuiCartaoFinanceira() {
+			return possuiCartaoFinanceira;
+		}
+
+		/**
+		 * @param possuiCartaoFinanceira the possuiCartaoFinanceira to set
+		 */
+		public void setPossuiCartaoFinanceira(Boolean possuiCartaoFinanceira) {
+			this.possuiCartaoFinanceira = possuiCartaoFinanceira;
+		}
+
+		/**
+		 * @return the possuiContaCorrente
+		 */
+		public Boolean getPossuiContaCorrente() {
+			return possuiContaCorrente;
+		}
+
+		/**
+		 * @param possuiContaCorrente the possuiContaCorrente to set
+		 */
+		public void setPossuiContaCorrente(Boolean possuiContaCorrente) {
+			this.possuiContaCorrente = possuiContaCorrente;
+		}
+
+		/**
+		 * @return the possuiDependente
+		 */
+		public Boolean getPossuiDependente() {
+			return possuiDependente;
+		}
+
+		/**
+		 * @param possuiDependente the possuiDependente to set
+		 */
+		public void setPossuiDependente(Boolean possuiDependente) {
+			this.possuiDependente = possuiDependente;
+		}
+
+		/**
+		 * @return the quantidadeDependentes
+		 */
+		public Integer getQuantidadeDependentes() {
+			return quantidadeDependentes;
+		}
+
+		/**
+		 * @param quantidadeDependentes the quantidadeDependentes to set
+		 */
+		public void setQuantidadeDependentes(Integer quantidadeDependentes) {
+			this.quantidadeDependentes = quantidadeDependentes;
+		}
+
+		/**
+		 * @return the nomeCartao
+		 */
+		public String getNomeCartao() {
+			return nomeCartao;
+		}
+
+		/**
+		 * @param nomeCartao the nomeCartao to set
+		 */
+		public void setNomeCartao(String nomeCartao) {
+			this.nomeCartao = nomeCartao;
+		}
+
+		/**
+		 * @return the capturarFoto
+		 */
+		public Boolean getCapturarFoto() {
+			return capturarFoto;
+		}
+
+		/**
+		 * @param capturarFoto the capturarFoto to set
+		 */
+		public void setCapturarFoto(Boolean capturarFoto) {
+			this.capturarFoto = capturarFoto;
+		}
+
+		/**
+		 * @return the capturarDocumento
+		 */
+		public Boolean getCapturarDocumento() {
+			return capturarDocumento;
+		}
+
+		/**
+		 * @param capturarDocumento the capturarDocumento to set
+		 */
+		public void setCapturarDocumento(Boolean capturarDocumento) {
+			this.capturarDocumento = capturarDocumento;
+		}
+
+		/**
+		 * @return the capturarBiometria
+		 */
+		public Boolean getCapturarBiometria() {
+			return capturarBiometria;
+		}
+
+		/**
+		 * @param capturarBiometria the capturarBiometria to set
+		 */
+		public void setCapturarBiometria(Boolean capturarBiometria) {
+			this.capturarBiometria = capturarBiometria;
+		}
+
+		/**
+		 * @return the filler
+		 */
+		public String getFiller() {
+			return filler;
+		}
+
+		/**
+		 * @param filler the filler to set
+		 */
 		public void setFiller(String filler) {
 			this.filler = filler;
 		}

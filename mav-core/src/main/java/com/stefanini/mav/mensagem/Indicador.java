@@ -2,19 +2,25 @@ package com.stefanini.mav.mensagem;
 
 import java.io.Serializable;
 
+import com.stefanini.mav.es.MapAtributo;
+
 public class Indicador implements Serializable {
 	
 	private static final long serialVersionUID = -1235658988407468213L;
 
+	@MapAtributo
 	private String identificadorCanal;
 	
+	@MapAtributo(tamanho = 10)
 	private String versaoCanal;
 	
+	@MapAtributo
 	private String politica;
 	
+	@MapAtributo(tamanho = 2)
 	private String ambiente;
 	
-	@Override
+	/*@Override
 	public boolean equals(Object obj) {
 		
 		if(!Indicador.class.isInstance(obj)) {
@@ -27,7 +33,7 @@ public class Indicador implements Serializable {
 				&& versaoCanal.equals(outro.versaoCanal)
 				&& politica.equals(outro.politica)
 				&& ambiente.equals(outro.ambiente);
-	}
+	}*/
 
 	public String getIdentificadorCanal() {
 		return identificadorCanal;

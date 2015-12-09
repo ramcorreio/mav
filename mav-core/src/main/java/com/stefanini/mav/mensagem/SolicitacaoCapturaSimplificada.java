@@ -21,6 +21,10 @@ public class SolicitacaoCapturaSimplificada extends MensagemBasica {
 	@MapBean
 	private DadoComplementar complemento;
 
+	// 0186 a 0186 Identificação do Canal 1 A Dados Losango T X
+	// 0187 a 0196 Versão do Canal 10 A Uso exclusivo da Losango
+	// 0197 a 0197 Política 1 A Uso exclusivo da Losango
+	// 0198 a 0199 Ambiente 2 A Uso exclusivo da Losango
 	@MapBean
 	private Indicador indicadores;
 
@@ -188,71 +192,5 @@ public class SolicitacaoCapturaSimplificada extends MensagemBasica {
 		public void setCodigoProduto(String codigoProduto) {
 			this.codigoProduto = codigoProduto;
 		}
-	}
-
-	// 0186 a 0186 Identificação do Canal 1 A Dados Losango T X
-	// 0187 a 0196 Versão do Canal 10 A Uso exclusivo da Losango
-	// 0197 a 0197 Política 1 A Uso exclusivo da Losango
-	// 0198 a 0199 Ambiente 2 A Uso exclusivo da Losango
-	public static class Indicador implements Serializable {
-
-		private static final long serialVersionUID = -1235658988407468213L;
-		
-		@MapAtributo(tamanho = 1)
-		private String identificadorCanal;
-
-		@MapAtributo(tamanho = 10)
-		private String versaoCanal;
-
-		@MapAtributo(tamanho = 1)
-		private String politica;
-
-		@MapAtributo(tamanho = 2)
-		private String ambiente;
-
-		@Override
-		public boolean equals(Object obj) {
-
-			if (!Indicador.class.isInstance(obj)) {
-				return false;
-			}
-
-			Indicador outro = Indicador.class.cast(obj);
-
-			return identificadorCanal.equals(outro.identificadorCanal) && versaoCanal.equals(outro.versaoCanal)
-					&& politica.equals(outro.politica) && ambiente.equals(outro.ambiente);
-		}
-
-		public String getIdentificadorCanal() {
-			return identificadorCanal;
-		}
-
-		public void setIdentificadorCanal(String identificadorCanal) {
-			this.identificadorCanal = identificadorCanal;
-		}
-
-		public String getVersaoCanal() {
-			return versaoCanal;
-		}
-
-		public void setVersaoCanal(String versaoCanal) {
-			this.versaoCanal = versaoCanal;
-		}
-
-		public String getPolitica() {
-			return politica;
-		}
-
-		public void setPolitica(String politica) {
-			this.politica = politica;
-		}
-
-		public String getAmbiente() {
-			return ambiente;
-		}
-
-		public void setAmbiente(String ambiente) {
-			this.ambiente = ambiente;
-		}
-	}
+	}	
 }

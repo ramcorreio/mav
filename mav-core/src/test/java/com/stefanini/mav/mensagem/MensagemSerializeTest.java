@@ -51,7 +51,7 @@ public class MensagemSerializeTest {
 		scs.getComplemento().setCodigoProduto("01");
 		
 		//validação outros indicadores
-		scs.setIndicadores(new com.stefanini.mav.mensagem.SolicitacaoCapturaSimplificada.Indicador());
+		scs.setIndicadores(new Indicador());
 		scs.getIndicadores().setIdentificadorCanal("T");
 		scs.getIndicadores().setVersaoCanal("");
 		scs.getIndicadores().setPolitica("");
@@ -112,7 +112,7 @@ public class MensagemSerializeTest {
 		rcs.setFiller("0000 0000 0000 0000           000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000   ".trim());
 		
 		//validação outros indicadores
-		rcs.setIndicadores(new RespostaCapturaSimplificada.Indicador());
+		rcs.setIndicadores(new Indicador());
 		rcs.getIndicadores().setIdentificadorCanal("T");
 		rcs.getIndicadores().setVersaoCanal("1");
 		rcs.getIndicadores().setPolitica("2");

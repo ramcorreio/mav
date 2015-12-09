@@ -289,11 +289,12 @@ public class MensagemFactoryTest {
 		esperado.getDadosPessoais().setUsuarioCpf("T");
 		esperado.getDadosPessoais().setCorrespondencia("1");
 		esperado.getDadosPessoais().setIdentificacao(new Documento());
+		esperado.getDadosPessoais().getIdentificacao().setAttr(new DocumentoAttr());
 		esperado.getDadosPessoais().getIdentificacao().setNumero("201570496  0");
-		esperado.getDadosPessoais().getIdentificacao().setTipo("01");
-		esperado.getDadosPessoais().getIdentificacao().setOrgaoEmissor("SSP");
-		esperado.getDadosPessoais().getIdentificacao().setUfOrgaoEmissor("MS");
-		esperado.getDadosPessoais().getIdentificacao().setDataEmissao(UtilsDate.parse("06072001", UtilsDate.FormatadorData.DATA));
+		esperado.getDadosPessoais().getIdentificacao().getAttr().setTipo("01");
+		esperado.getDadosPessoais().getIdentificacao().getAttr().setOrgaoEmissor("SSP");
+		esperado.getDadosPessoais().getIdentificacao().getAttr().setUfOrgaoEmissor("MS");
+		esperado.getDadosPessoais().getIdentificacao().getAttr().setDataEmissao(UtilsDate.parse("06072001", UtilsDate.FormatadorData.DATA));
 		
 		esperado.getDadosPessoais().setConjugeCompoeRenda(false);
 		esperado.getDadosPessoais().setNome("PROPOSTA TESTE");
@@ -435,9 +436,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosProfissionais().setFiller(ContextoMensagem.escreverString(26, " "));
 		
 		
-		/*
-		esperado.setDadosConjuge(new DadoConjuge());
-		esperado.getDadosConjuge().setDadoProfissional(new DadoProfissionalBasico());
+		esperado.setDadosConjuge(new PropostaFinanciamento.DadoConjuge());
 		//0916 a 0945	Nome Do Cônjuge	30	A	Nome do Cônjuge do Cliente		X. Se conjuge compoe renda = 1 ou Estado Civil = 2
 		esperado.getDadosConjuge().setNome("");
 		
@@ -450,29 +449,30 @@ public class MensagemFactoryTest {
 		//0994 a 1004	CPF	11	N	CPF do Cônjuge		X. Se conjuge compoe renda = 1
 		esperado.getDadosConjuge().setCpf("00000000000");
 		
-		esperado.getDadosConjuge().setDocumentoIdentificacao(new Documento());
+		esperado.getDadosConjuge().setIdentidade(new DocumentoConjuge());
+		esperado.getDadosConjuge().getIdentidade().setAttr(new DocumentoAttr());
 		//1005 a 1014	Identidade / RG	10	A	Número da Identidade do Cônjuge		X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDocumentoIdentificacao().setNuDocIdentificacao("");
+		esperado.getDadosConjuge().getIdentidade().setNumero("");
 		
 		//1015 a 1016	Tipo de Documento	2	A		Ver tabela de dominio TP  DOCUMENTO IDENTIDADE	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDocumentoIdentificacao().setTpDocIdentificacao("");
+		esperado.getDadosConjuge().getIdentidade().getAttr().setTipo("");
 		
 		//1017 a 1021	Órgão Emissor	5	A	Órgão Emissor do Documento de Identidade do Cônjuge	Ver tabela de dominio Orgão Emissor	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDocumentoIdentificacao().setOrgaoEmissor("");
+		esperado.getDadosConjuge().getIdentidade().getAttr().setOrgaoEmissor("");
 		
 		//1022 a 1023	UF Órgão Emissor	2	A		Ver tabela de dominio UF	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDocumentoIdentificacao().setUfOrgaoEmissor("");
+		esperado.getDadosConjuge().getIdentidade().getAttr().setUfOrgaoEmissor("");
 		
 		//1024 a 1031	Data Emissão	8	N	Data de emissão do documento do Cônjuge		X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDocumentoIdentificacao().setDataEmissao(null);
+		esperado.getDadosConjuge().getIdentidade().getAttr().setDataEmissao(null);
 		
 		//1032 a 1056	Empresa 	25	A	Empresa Em Que o Cônjuge Trabalha		X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setEmpresa("");
+		esperado.getDadosConjuge().setEmpresa("");
 		
 		//1057 a 1064	Data  Admissão	8	N	Data da Admissão na Empresa		X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setDataAdmissao(null);
+		esperado.getDadosConjuge().setDataAdmissao(null);
 		
-		esperado.getDadosConjuge().getDadoProfissional().setEndereco(new Endereco());
+		esperado.getDadosConjuge().setEndereco(new Endereco());
 		//1065 a 1104	Logradouro	40	A	Logradouro do trabalho do conjuge		X. Se conjuge compoe renda = 1
 		//1105 a 1109	Numero	5	A	Numero do Logradouro		X. Se conjuge compoe renda = 1
 		//1110 a 1124	Complemento	15	A	Complemento do Logradouro
@@ -480,152 +480,154 @@ public class MensagemFactoryTest {
 		//1145 a 1164	Cidade	20	A	Cidade Onde Trabalha o cônjuge		X. Se conjuge compoe renda = 1 
 		//1165 a 1166	UF	2	A	Abreviatura da Unidade Federativa 		X. Se conjuge compoe renda = 1 
 		//1167 a 1174	CEP	8	N	CEP do endereço comercial do cônjuge		X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setLogradouro("");
-		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setNumero("");
-		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setComplemento("");
-		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setBairro("");
-		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setCidade("");
-		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setUf("");
-		esperado.getDadosConjuge().getDadoProfissional().getEndereco().setCep(null);
+		esperado.getDadosConjuge().getEndereco().setLogradouro("");
+		esperado.getDadosConjuge().getEndereco().setNumero("");
+		esperado.getDadosConjuge().getEndereco().setComplemento("");
+		esperado.getDadosConjuge().getEndereco().setBairro("");
+		esperado.getDadosConjuge().getEndereco().setCidade("");
+		esperado.getDadosConjuge().getEndereco().setUf("");
+		esperado.getDadosConjuge().getEndereco().setCep(null);
 		
 		 
-		esperado.getDadosConjuge().getDadoProfissional().setTelefone(new Telefone());
+		esperado.getDadosConjuge().setTelefone(new TelefoneRamal());
 		//1175 a 1177	DDD	3	N	DDD da Cidade Onde Trabalha o cônjuge		X. Se conjuge compoe renda = 1 
 		//1178 a 1186	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
 		//1187 a 1190	Ramal	4	N	Ramal do Trabalho do cônjuge
-		esperado.getDadosConjuge().getDadoProfissional().getTelefone().setDdd(0);
-		esperado.getDadosConjuge().getDadoProfissional().getTelefone().setNumero(0);
-		esperado.getDadosConjuge().getDadoProfissional().getTelefone().setRamal(0);
+		esperado.getDadosConjuge().getTelefone().setDdd(null);
+		esperado.getDadosConjuge().getTelefone().setNumero(null);
+		esperado.getDadosConjuge().getTelefone().setRamal(0);
 				
 		//1191 a 1210	Cargo	20	A	Cargo do Cônjuge	Ver tabela de Dominio Cargo	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setCargo("");
+		esperado.getDadosConjuge().setCargo("");
 		
 		//1211 a 1230	Profissão	20	A	Profissão do Conjuge	Ver tabela de dominio Profissão	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setProfissao("");
+		esperado.getDadosConjuge().setProfissao("");
 		
 		//1231 a 1231	Aposentado	1	A	"Aponta se o cliente é aposentado:
 		//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setAposentado(false);
+		esperado.getDadosConjuge().setAposentado(false);
 		
 		//1232 a 1232	Pensionista	1	A	"Aponta se o cliente é Pensionista:
 		//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setPensionista(false);
+		esperado.getDadosConjuge().setPensionista(false);
 		
 		//1233 a 1233	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango
-		esperado.getDadosConjuge().getDadoProfissional().setLosango("");
+		esperado.getDadosConjuge().setUsoExclusivoLosango("");
 		
 		//1234 a 1244	Valor Renda Líquida 	11	N	Renda Líquida do Cônjuge (em R$)                                                  		X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setRendaLiquida(0);
+		esperado.getDadosConjuge().setValorRendaLiquida(null);
 
 		//1245 a 1314	Patrimônio	70	A			
-		esperado.getDadosConjuge().setPatrimonio(new LinkedList<Patrimonio>());
+		//esperado.getDadosConjuge().setPatrimonio(new LinkedList<Patrimonio>());
+		esperado.getDadosConjuge().setPatrimonio("");
 
 		//1315 a 1315	Nacionalidade	1	N	Nacionalidade do Conjuge	"0-Brasileiro
 		//1-Estrangeiro        "	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().setNacionalidade("");
+		esperado.getDadosConjuge().setNacionalidade(null);
 		
 		//1316 a 1317	Código do País (informar se nacionalidade = estrangeiro)	2	A	Tabela de Paises	Ver tabela de Dominio Paises	X. Se conjuge compoe renda = 1
 		esperado.getDadosConjuge().setCodigoPais("");
 		
 		//1318 a 1319	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF	Ver tabela de dominio UF	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().setUFNaturalidade("");
+		esperado.getDadosConjuge().setCodigoUfNaturalidade("");
 		
 		//1320 a 1325	Data do Comprovante de Renda	6	A	Mes/Ano do comprovante de Renda apresentado pelo Conjuge	MMAAAA	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setDataComprovanteRenda(null);
+		esperado.getDadosConjuge().setDataComprovanteRenda(null);
 		
 		//1326 a 1327	Tipo Comprovante de Renda	2	A		Ver tabela Dominio tipo C Renda	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setTipoComprovanteRenda("");
+		esperado.getDadosConjuge().setTipoComprovanteRenda("");
 		
 		//1328 a 1329	Ocupação nova	2	A	Código da Profissão	Ver tabela Dominio Código da Profissão	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().getDadoProfissional().setOcupacaoNova("");
+		esperado.getDadosConjuge().setOcupacaoNova("");
 		
 		//1330 a 1330	Sexo do Conjuge	1	A	M – Masculino     F – Feminino         	“M”   ”F”	X. Se conjuge compoe renda = 1 ou Estado Civil = 2
 		esperado.getDadosConjuge().setSexo("");
 		
 		//1331 a 1344	CNPJ Conjuge	14	A
-		esperado.getDadosConjuge().getDadoProfissional().setCnpj("");
+		esperado.getDadosConjuge().setCnpj("");
 		
 		//1331 a 1364	Filler	20	A			X, se Empresario ou Proprietario
-		esperado.getDadosConjuge().setFiller("");
+		esperado.getDadosConjuge().setFiller(ContextoMensagem.escreverString(20, " "));
 		
 		//DADOS COMPLEMENTARES
+		esperado.setDadoComplementar(new PropostaFinanciamento.DadoComplementar());
 		//1365 a 1366	Escolaridade	2	A	Codigo da Escolaridade	Ver tabela de dominio Escolaridade
-		esperado.setEscolaridade(11);
+		esperado.getDadoComplementar().setEscolaridade("11");
 		
 		//1367 a 1386	Formação	20	A	Formação
-		esperado.setFormacao("OK");
+		esperado.getDadoComplementar().setFormacao("OK");
 		
 		//1387 a 1387	Indicador Possui cartão	1	N	Indicador se possui cartão	0 - Não 1 - Sim	X
-		esperado.setPossuiCartao(false);
+		esperado.getDadoComplementar().setPossuiCartao(false);
 		
 		//1388 a 1388	Indicador Possui veículo próprio	1	N	Indicador Possui veículo próprio	0 - Não 1 - Sim	X
-		esperado.setPossuiVeiculoProprio(false);
+		esperado.getDadoComplementar().setPossuiVeiculoProprio(false);
 		
 		//1389 a 1398	Placa	10	A
-		esperado.setPlaca("");
+		esperado.getDadoComplementar().setPlaca("");
 		
 		//1399 a 1458	Renavam	60	A
-		esperado.setRenavam("");
+		esperado.getDadoComplementar().setRenavam("");
 		
 		//1459 a 1459	Indicador Possui veículo quitado	1	N	Indicador Possui veículo quitado	0 - Não 1 - Sim	X
-		esperado.setVeiculoQuitado(false);
+		esperado.getDadoComplementar().setPossuiVeiculoQuitado(false);
 		
 		//1460 a 1460	Possui experiencia de crédito	1	N	Indicador Possui experiência	0 - Não 1 - Sim	X
-		esperado.setPossuiExperienciaCredito(false);
+		esperado.getDadoComplementar().setPossuiExperienciaCredito(false);
 		
 		//1461 a 1480	Local da Experiência	20	A			X. Se Possui experiencia de crédito = 1
-		esperado.setLocalExperienciaCredito(null);
+		esperado.getDadoComplementar().setLocalExperiencia("");
 		
 		//1481 a 1482	Plano da Experiência	2	N			X. Se Possui experiencia de crédito = 1
-		esperado.setPlanoExperienciaCredito(null);
+		esperado.getDadoComplementar().setPlanoExperiencia(null);
 		
 		//1483 a 1497	Valor da Prestação da Experiência	15	N			X. Se Possui experiencia de crédito = 1
-		esperado.setValorPrestacao(null);
+		esperado.getDadoComplementar().setValorPrestacaoExperiencia(0);
 		
 		//1498 a 1503	Inicio da Experiência de Crédito	6	N	Inicio da Experiência MMAAAA		X. Se Possui experiencia de crédito = 1
-		esperado.setInicioExperienciaCredito(null);
+		esperado.getDadoComplementar().setInicioExperienciaCredito(null);
 		
 		//1504 a 1543	Classificação do Cliente	40	A
-		esperado.setClassificacaoCliente("");
+		esperado.getDadoComplementar().setClassificao("");
 		
 		//1544 a 1544	Indicador Possui Cartão Financeira	1	N	Indicador Possui Cartão Financeira	0 - Não 1 - Sim	X
-		esperado.setPossuiCartaoFinanceira(false);
+		esperado.getDadoComplementar().setPossuiCartaoFinanceira(false);
 		
 		//1545 a 1545	Indicador Possui Conta Corrente	1	N	Indicador Possui Conta Corrente	0 - Não 1 - Sim	X
-		esperado.setPossuiContaCorrente(false);
+		esperado.getDadoComplementar().setPossuiContaCorrente(false);
 		
 		//1546 a 1546	Indicador Possui dependente	1	N		0 - Não 1 - Sim	X
-		esperado.setPossuiDependente(false);
+		esperado.getDadoComplementar().setPossuiDependente(false);
 		
 		//1547 a 1548	Quantidade de dependentes	2	N			X. Se Indicador Possui dependente = 1
-		esperado.setQuantidadeDependente(0);
+		esperado.getDadoComplementar().setQuantidadeDependentes(0);
 		
 		//1549 a 1563	Nome do cartão	15	A
-		esperado.setNomeCartao("");
+		esperado.getDadoComplementar().setNomeCartao("");
 		
 		//1564 a 1564	indicadorCapturarFoto	1	A	Indicador da captura da Foto do Cliente.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
 		//1 - Problemas Técnicos
 		//2 - Cliente não autoriza
 		//3 - Outros"	X
-		esperado.setIndicadorCapturarFoto("");
+		esperado.getDadoComplementar().setCapturarFoto(false);
 		
 		//1565 a 1565	indicadorCapturarDocumento	1	A	Indicador da captura do Documento.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
 		//1 - Problemas Técnicos
 		//2 - Cliente não autoriza
 		//3 - Outros"	X
-		esperado.setIndicadorCapturarDocumento("");
+		esperado.getDadoComplementar().setCapturarDocumento(false);
 		
 		//1566 a 1566	indicadorCapturarBiometria	1	A	Indicador da captura da Biometria	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
 		//1 - Problemas Técnicos
 		//2 - Cliente não autoriza
 		//3 - Outros"	X
-		esperado.setIndicadorCapturarBiometria("");
+		esperado.getDadoComplementar().setCapturarBiometria(false);
 		
 		//1567 a 1613	Filler	47	A
-		esperado.setFillerDadosComplementares(ContextoMensagem.escreverString(47, " "));
+		esperado.getDadoComplementar().setFiller(ContextoMensagem.escreverString(47, " "));
 		
 		//REFERÊNCIAS PESSOAIS
-		esperado.setReferenciasPessoais(new LinkedList<Referencia>());
+		/*esperado.setReferenciasPessoais(new LinkedList<Referencia>());
 		//1614 a 1643	Nome	30	A	Nome da Pessoa de Referência		X
 		//1644 a 1646	DDD	3	N	DDD da Pessoa de Referência		X
 		//1647 a 1655	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".

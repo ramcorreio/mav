@@ -95,8 +95,8 @@ public class ContextoEntradaSaida {
 			
 			@Override
 			public Integer ler(String in, SimpleMapper map) {
-				
-				return Integer.valueOf(in);
+
+				return in.trim().isEmpty() ? null : Integer.valueOf(in.trim());
 			}
 		});
 		
@@ -182,6 +182,11 @@ public class ContextoEntradaSaida {
 			@Override
 			public Double ler(String in, SimpleMapper m) throws MapeamentoNaoEncontrado {
 				
+				String cleanVal = in.trim();
+				if(cleanVal.isEmpty()) {
+					return null;
+				}
+				
 				int scale = m.getScale();
 				int intval = m.getTamanho() - scale;
 				
@@ -192,7 +197,7 @@ public class ContextoEntradaSaida {
 				formmatter.setMaximumFractionDigits(scale);
 				
 				//montagem de valor com ponto
-				String valorComPonto = in.substring(0, intval);
+				String valorComPonto = cleanVal.substring(0, intval);
 				valorComPonto += Character.toString(formmatter.getDecimalFormatSymbols().getDecimalSeparator());
 				valorComPonto += in.substring(intval);
 				

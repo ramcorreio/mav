@@ -25,25 +25,6 @@ public class Endereco {
 	@MapAtributo(tamanho = 8)
 	private Integer cep;
 	
-	/*@Override
-	public boolean equals(Object obj) {
-		
-		if(!Endereco.class.isInstance(obj)) {
-			
-			return false;
-		}
-		
-		Endereco outro = Endereco.class.cast(obj);
-		
-		return logradouro.equals(outro.logradouro)
-				&&	numero.equals(outro.numero)
-				&&	complemento.equals(outro.complemento)
-				&&	bairro.equals(outro.bairro)
-				&&	cidade.equals(outro.cidade)
-				&&	uf.equals(outro.uf)
-				&&	cep.equals(outro.cep);
-	}*/
-
 	public String getLogradouro() {
 		return logradouro;
 	}

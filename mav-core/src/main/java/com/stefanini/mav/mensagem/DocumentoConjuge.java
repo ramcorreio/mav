@@ -3,9 +3,9 @@ package com.stefanini.mav.mensagem;
 import com.stefanini.mav.es.MapAtributo;
 import com.stefanini.mav.es.MapBean;
 
-public class Documento {
+public class DocumentoConjuge {
 
-	@MapAtributo(tamanho = 15)
+	@MapAtributo(tamanho = 10)
 	private String numero;
 
 	@MapBean
