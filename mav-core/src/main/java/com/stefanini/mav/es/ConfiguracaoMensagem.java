@@ -6,9 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
+
 @Target(TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PosicaoInicio {
+public @interface ConfiguracaoMensagem {
 	
-	int posicao() default 0;
+	int inicio() default 0;
+	
+	Fluxo sentido();
 }

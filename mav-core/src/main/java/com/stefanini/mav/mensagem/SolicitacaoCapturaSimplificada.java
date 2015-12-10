@@ -5,9 +5,10 @@ import java.util.Date;
 
 import com.stefanini.mav.es.MapAtributo;
 import com.stefanini.mav.es.MapBean;
-import com.stefanini.mav.es.PosicaoInicio;
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
+import com.stefanini.mav.es.ConfiguracaoMensagem;
 
-@PosicaoInicio(posicao = 83)
+@ConfiguracaoMensagem(inicio = 83, sentido = Fluxo.ENTRADA)
 public class SolicitacaoCapturaSimplificada extends MensagemBasica {
 
 	private static final long serialVersionUID = -7402704207923363603L;

@@ -4,9 +4,10 @@ import java.util.Date;
 
 import com.stefanini.mav.es.MapAtributo;
 import com.stefanini.mav.es.MapBean;
-import com.stefanini.mav.es.PosicaoInicio;
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
+import com.stefanini.mav.es.ConfiguracaoMensagem;
 
-@PosicaoInicio(posicao = 83)
+@ConfiguracaoMensagem(inicio = 83, sentido = Fluxo.ENTRADA)
 public class PropostaFinanciamento extends MensagemBasica {
 
 	private static final long serialVersionUID = 2703729128402664733L;
@@ -80,8 +81,17 @@ public class PropostaFinanciamento extends MensagemBasica {
 	@MapBean
 	private Banco debitoConta;
 	
-	/*@MapBean
-	private Indicador indicadores;*/
+	@MapBean
+	private DadoCheque dadosCheque;
+	
+	@MapAtributo(tamanho = 2)
+	private String circular3461BancoCentral;
+	
+	@MapAtributo(tamanho = 255)
+	private String observacao;
+	
+	@MapBean
+	private Indicador indicadores;
 
 	public PropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
@@ -271,13 +281,37 @@ public class PropostaFinanciamento extends MensagemBasica {
 		this.debitoConta = debitoConta;
 	}
 	
-	/*public Indicador getIndicadores() {
+	public DadoCheque getDadosCheque() {
+		return dadosCheque;
+	}
+	
+	public void setDadosCheque(DadoCheque dadosCheque) {
+		this.dadosCheque = dadosCheque;
+	}
+	
+	public String getCircular3461BancoCentral() {
+		return circular3461BancoCentral;
+	}
+	
+	public void setCircular3461BancoCentral(String circular3461BancoCentral) {
+		this.circular3461BancoCentral = circular3461BancoCentral;
+	}
+	
+	public String getObservacao() {
+		return observacao;
+	}
+	
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+	
+	public Indicador getIndicadores() {
 		return indicadores;
 	}
 	
 	public void setIndicadores(Indicador indicadores) {
 		this.indicadores = indicadores;
-	}*/
+	}
 
 	// 0084 a 0084	Tipo de personalidade do CPF	1	A	T = Tipo de Pessoa (F – Fisica).	“F”	X
 	// 0085 a 0098	CPF 	14	N	CPF / CGC do cliente  		X
@@ -2108,6 +2142,141 @@ public class PropostaFinanciamento extends MensagemBasica {
 
 		public void setValorEntradaLojista(Integer valorEntradaLojista) {
 			this.valorEntradaLojista = valorEntradaLojista;
+		}
+
+		public String getFiller() {
+			return filler;
+		}
+
+		public void setFiller(String filler) {
+			this.filler = filler;
+		}
+	}
+	
+//	2352 a 2354	CÓDIGO DO BANCO dos cheques	3	N	Código do Banco da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+//	2355 a 2358	AGÊNCIA  DE DESTINO dos cheques	4	N	Código da Agência Bancária da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+//	2359 a 2359	DV Agencia dos cheques	1	A			
+//	2360 a 2372	Codigo da Conta	13	N			X
+//	2373 a 2374	DV da Conta	2	A			X
+//	2375 a 2380	NÚMERO DO CHEQUE do Primeiro Cheque da 1a. Faixa de Cheques	6	N	Número do primeiro cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+//	2381 a 2386	NÚMERO DO CHEQUE do Último Cheque da 1a. Faixa de Cheques	6	N	Número do último cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+//	2387 a 2392	NÚMERO DO CHEQUE do Primeiro Cheque da 2a. Faixa de Cheques	6	N	Número do primeiro cheque da segunda faixa de cheques para as operações de cheque-pré		
+//	2393 a 2398	NÚMERO DO CHEQUE do Último Cheque da 2a. Faixa de Cheques	6	N	Número do último cheque da segunda faixa de cheques para as operações de cheque-pré		
+//	2399 a 2406	Data da abertura da conta corrente	8	N	Data da abertura da conta corrente	Se produto igual a "2"	X
+//	2407 a 2454	Filler	48	A
+	public static class DadoCheque {
+		
+		@MapAtributo(tamanho = 3)
+		private Integer codigoBanco;
+		
+		@MapAtributo(tamanho = 4)
+		private Integer agenciaDestino;
+		
+		@MapAtributo
+		private String dvAgenciaDestino;
+		
+		@MapAtributo(tamanho = 13)
+		private Integer codigoConta;
+		
+		@MapAtributo(tamanho = 2)
+		private String dvConta;
+		
+		@MapAtributo(tamanho = 6)
+		private Integer numeroPrimeiroChequeFaixa1;
+		
+		@MapAtributo(tamanho = 6)
+		private Integer numeroUltimoChequeFaixa1;
+		
+		@MapAtributo(tamanho = 6)
+		private Integer numeroPrimeiroChequeFaixa2;
+		
+		@MapAtributo(tamanho = 6)
+		private Integer numeroUltimoChequeFaixa2;
+		
+		@MapAtributo(tamanho = 8)
+		private Date dataAberturaConta;
+		
+		@MapAtributo(tamanho = 48, trim = false)
+		private String filler;
+
+		public Integer getCodigoBanco() {
+			return codigoBanco;
+		}
+
+		public void setCodigoBanco(Integer codigoBanco) {
+			this.codigoBanco = codigoBanco;
+		}
+
+		public Integer getAgenciaDestino() {
+			return agenciaDestino;
+		}
+
+		public void setAgenciaDestino(Integer agenciaDestino) {
+			this.agenciaDestino = agenciaDestino;
+		}
+
+		public String getDvAgenciaDestino() {
+			return dvAgenciaDestino;
+		}
+
+		public void setDvAgenciaDestino(String dvAgenciaDestino) {
+			this.dvAgenciaDestino = dvAgenciaDestino;
+		}
+
+		public Integer getCodigoConta() {
+			return codigoConta;
+		}
+
+		public void setCodigoConta(Integer codigoConta) {
+			this.codigoConta = codigoConta;
+		}
+
+		public String getDvConta() {
+			return dvConta;
+		}
+
+		public void setDvConta(String dvConta) {
+			this.dvConta = dvConta;
+		}
+
+		public Integer getNumeroPrimeiroChequeFaixa1() {
+			return numeroPrimeiroChequeFaixa1;
+		}
+
+		public void setNumeroPrimeiroChequeFaixa1(Integer numeroPrimeiroChequeFaixa1) {
+			this.numeroPrimeiroChequeFaixa1 = numeroPrimeiroChequeFaixa1;
+		}
+
+		public Integer getNumeroUltimoChequeFaixa1() {
+			return numeroUltimoChequeFaixa1;
+		}
+
+		public void setNumeroUltimoChequeFaixa1(Integer numeroUltimoChequeFaixa1) {
+			this.numeroUltimoChequeFaixa1 = numeroUltimoChequeFaixa1;
+		}
+
+		public Integer getNumeroPrimeiroChequeFaixa2() {
+			return numeroPrimeiroChequeFaixa2;
+		}
+
+		public void setNumeroPrimeiroChequeFaixa2(Integer numeroPrimeiroChequeFaixa2) {
+			this.numeroPrimeiroChequeFaixa2 = numeroPrimeiroChequeFaixa2;
+		}
+
+		public Integer getNumeroUltimoChequeFaixa2() {
+			return numeroUltimoChequeFaixa2;
+		}
+
+		public void setNumeroUltimoChequeFaixa2(Integer numeroUltimoChequeFaixa2) {
+			this.numeroUltimoChequeFaixa2 = numeroUltimoChequeFaixa2;
+		}
+
+		public Date getDataAberturaConta() {
+			return dataAberturaConta;
+		}
+
+		public void setDataAberturaConta(Date dataAberturaConta) {
+			this.dataAberturaConta = dataAberturaConta;
 		}
 
 		public String getFiller() {

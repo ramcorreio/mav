@@ -1,7 +1,5 @@
 package com.stefanini.mav.mensagem;
 
-import java.util.Date;
-
 import com.stefanini.mav.es.MapAtributo;
 
 public class InfoBanco {

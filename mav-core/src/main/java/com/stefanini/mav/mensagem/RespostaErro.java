@@ -2,9 +2,10 @@ package com.stefanini.mav.mensagem;
 
 import com.stefanini.mav.es.MapAtributo;
 import com.stefanini.mav.es.MapBean;
-import com.stefanini.mav.es.PosicaoInicio;
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
+import com.stefanini.mav.es.ConfiguracaoMensagem;
 
-@PosicaoInicio(posicao = 83)
+@ConfiguracaoMensagem(inicio = 83, sentido = Fluxo.SAIDA)
 public class RespostaErro extends MensagemBasica {
 
 	private static final long serialVersionUID = 9221336402909229843L;

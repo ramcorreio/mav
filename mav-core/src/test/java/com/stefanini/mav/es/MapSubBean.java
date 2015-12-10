@@ -2,6 +2,9 @@ package com.stefanini.mav.es;
 
 import java.util.Date;
 
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
+
+@ConfiguracaoMensagem(sentido = Fluxo.ENTRADA)
 public class MapSubBean {
 
 	@MapAtributo(tamanho = 25)

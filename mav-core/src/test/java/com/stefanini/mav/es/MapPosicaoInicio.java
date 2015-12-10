@@ -2,8 +2,13 @@ package com.stefanini.mav.es;
 
 import java.util.Date;
 
-@PosicaoInicio(posicao = 25)
+import com.stefanini.mav.mensagem.Cabecalho;
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
+
+@ConfiguracaoMensagem(inicio = 25, sentido = Fluxo.ENTRADA)
 public class MapPosicaoInicio {
+	
+	private Cabecalho cabecalho;
 
 	private String nome;
 
@@ -18,6 +23,14 @@ public class MapPosicaoInicio {
 
 	@MapAtributo(tamanho = 9)
 	private Double salario;
+	
+	public MapPosicaoInicio(Cabecalho cabecalho) {
+		this.cabecalho = cabecalho;
+	}
+	
+	public Cabecalho getCabecalho() {
+		return cabecalho;
+	}
 
 	public String getNome() {
 		return nome;

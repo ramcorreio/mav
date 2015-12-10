@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.util.Date;
 
 import org.exparity.hamcrest.BeanMatchers;
 import org.hamcrest.MatcherAssert;
@@ -18,6 +17,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.stefanini.mav.es.AdaptadorTipo;
 import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 import com.stefanini.mav.util.MensagemHelper;
@@ -44,78 +44,6 @@ public class MensagemFactoryTest {
 		MensagemFactory.parse(null);
 	}
 	
-	@Test
-	public void lerStringCheia() {
-		
-		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
-		String saida = ContextoMensagem.lerStringCheia(entrada, 30, 8);
-		MatcherAssert.assertThat("UILSON  ", Matchers.equalTo(saida));
-	}
-	
-	@Test
-	public void lerString() {
-		
-		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
-		String saida = ContextoMensagem.lerString(entrada, 30, 8);
-		MatcherAssert.assertThat("UILSON", Matchers.equalTo(saida));
-	}
-	
-	@Test
-	public void lerInt() {
-		
-		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
-		Integer saida = ContextoMensagem.lerInt(entrada, 5, 7);
-		MatcherAssert.assertThat(460980, Matchers.equalTo(saida));
-	}
-	
-	@Test
-	public void lerBooleanTrue() {
-		
-		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
-		Boolean saida = ContextoMensagem.lerBoolean(entrada, 19);
-		MatcherAssert.assertThat(true, Matchers.equalTo(saida));
-	}
-	
-	@Test
-	public void lerBooleanFalse() {
-		
-		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
-		Boolean saida = ContextoMensagem.lerBoolean(entrada, 1);
-		MatcherAssert.assertThat(false, Matchers.equalTo(saida));
-	}
-	
-	@Test
-	public void lerData() throws ParseException {
-		
-		Date expected = UtilsDate.parse("20151808", UtilsDate.FormatadorData.DATA);
-		
-		String entrada = "Xx   2508201518081502                    ";
-		Date saida = ContextoMensagem.lerData(entrada, 9);
-		MatcherAssert.assertThat(expected, Matchers.equalTo(saida));
-	}
-	
-
-	@Test
-	public void lerDouble() throws ParseException {
-		
-		String input = "0649000";
-		Double expected = 6.49;
-		Double value = ContextoMensagem.lerDouble(input, 0,	7, 5);
-		
-		MatcherAssert.assertThat(value, Matchers.equalTo(expected));
-	}
-	
-	
-	@Test
-	public void escreverString() {
-		
-		String entrada = "MAV";
-		String expected = entrada.concat("  ");
-		String saida = ContextoMensagem.escreverString(5, entrada);
-		
-		MatcherAssert.assertThat(expected, Matchers.equalTo(saida));
-	}
-	
 	private SolicitacaoCapturaSimplificada montarSolicitacaoCapturaSimplificada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
 		String mensagem = MensagemHelper.lerMensagem(199, 450, "criarCapturaSimplicada.1");
@@ -132,7 +60,7 @@ public class MensagemFactoryTest {
 		expected.setCodigoRetorno("");
 		expected.setCodigoLojista(170894002);
 		expected.setVersao("9");
-		expected.setCampoLojista(ContextoMensagem.escreverString(30, " "));
+		expected.setCampoLojista(AdaptadorTipo.escreverString(30, " "));
 		
 		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
 		
@@ -141,7 +69,7 @@ public class MensagemFactoryTest {
 		//TODO: rever
 		//assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
 		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilsDate.parse("01011960", UtilsDate.FormatadorData.DATA))));
-		assertThat(m.getDadosPessoais().getFiller(), is(ContextoMensagem.escreverString(40, " ")));
+		assertThat(m.getDadosPessoais().getFiller(), is(AdaptadorTipo.escreverString(40, " ")));
 		
 		//validação de dados operação cartão
 		assertThat(m.getDadosOperacaoCartao(), notNullValue());
@@ -149,7 +77,7 @@ public class MensagemFactoryTest {
 		assertThat(m.getDadosOperacaoCartao().getCodigoLogo(), is(""));
 		assertThat(m.getDadosOperacaoCartao().getCodigoCampanha(), is(""));
 		assertThat(m.getDadosOperacaoCartao().getCodigoModalidade(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getFiller(), is(ContextoMensagem.escreverString(28, " ")));
+		assertThat(m.getDadosOperacaoCartao().getFiller(), is(AdaptadorTipo.escreverString(28, " ")));
 		
 		//validação de Dados Complementares
 		assertThat(m.getComplemento(), notNullValue());
@@ -203,12 +131,12 @@ public class MensagemFactoryTest {
 		expected.setCodigoRetorno("A0062");
 		expected.setCodigoLojista(170894002);
 		expected.setVersao("9");
-		expected.setCampoLojista(ContextoMensagem.escreverString(30, " "));
+		expected.setCampoLojista(AdaptadorTipo.escreverString(30, " "));
 		
 		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
 		
 		//DADOS DA CONSULTA					
-		assertThat(m.getDadosConsulta().getFiller(), is(ContextoMensagem.escreverString(83, " ")));
+		assertThat(m.getDadosConsulta().getFiller(), is(AdaptadorTipo.escreverString(83, " ")));
 		assertThat(m.getDadosConsulta().getMensagemAutorizador(), is("Xx"));		  
 		assertThat(m.getDadosConsulta().getData(), is(equalTo(UtilsDate.parse("25082015180815", UtilsDate.FormatadorData.DATA_TEMPO))));
 		assertThat(m.getDadosConsulta().getCodigoStatusProposta(), is(equalTo(StatusProposta.ELEGIVEL)));
@@ -225,7 +153,7 @@ public class MensagemFactoryTest {
 		assertThat(m.getDadosCliente().isElegibilidadeSeguro(), is(equalTo(true)));
 		assertThat(m.getDadosCliente().getCodigoProdutoLosango(), is(equalTo("HSSOR002")));
 		assertThat(m.getDadosCliente().getQtdNumeroSorte(), is(equalTo(0)));
-		assertThat(m.getDadosCliente().getFiller(), is(ContextoMensagem.escreverString(47, " ")));
+		assertThat(m.getDadosCliente().getFiller(), is(AdaptadorTipo.escreverString(47, " ")));
 		
 		//validação de dados operação cartão
 		assertThat(m.getDadosOperacaoCartao(), notNullValue());
@@ -305,7 +233,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosPessoais().setNaturalidade("CAMPO GRANDE");
 		esperado.getDadosPessoais().setNomeMae("MARIA DO CARMO PINHEIRO NE");
 		esperado.getDadosPessoais().setNomePai("LEANDRO NE");
-		esperado.getDadosPessoais().setCtps(ContextoMensagem.lerInt("00000", 0, 5));
+		esperado.getDadosPessoais().setCtps(0);
 		esperado.getDadosPessoais().setCtpsSerie("00000");
 		esperado.getDadosPessoais().setEstadoCivil(1);
 		
@@ -335,7 +263,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosPessoais().setPossuiPatrimonio(false);
 		esperado.getDadosPessoais().setPatrimonio("");
 		//TODO: montar massa de testes
-		//esperado.getDadosPessoais().setOrigemPatrimonio(ContextoMensagem.escreverString(4, " "));
+		//esperado.getDadosPessoais().setOrigemPatrimonio(AdaptadorTipo.escreverString(4, " "));
 		/*if(esperado.getDadosPessoais().isPossuiPatrimonio()) {
 		 * /*esperado.getDadosPessoais().getPatrimonio().add(new Patrimonio());
 		esperado.getDadosPessoais().getPatrimonio().get(0).setNome("Meu");
@@ -352,7 +280,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosPessoais().setEmancipado(false);
 		
 		esperado.getDadosPessoais().setOrigemPatrimonio("");
-		esperado.getDadosPessoais().setFillerDados(ContextoMensagem.escreverString(33, " "));
+		esperado.getDadosPessoais().setFillerDados(AdaptadorTipo.escreverString(33, " "));
 		
 		
 		esperado.setDadosProfissionais(new PropostaFinanciamento.DadoProfissional());
@@ -433,7 +361,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosProfissionais().setCnpj("");
 		
 		//0890 a 0915	Filler	26	A
-		esperado.getDadosProfissionais().setFiller(ContextoMensagem.escreverString(26, " "));
+		esperado.getDadosProfissionais().setFiller(AdaptadorTipo.escreverString(26, " "));
 		
 		
 		esperado.setDadosConjuge(new PropostaFinanciamento.DadoConjuge());
@@ -547,7 +475,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosConjuge().setCnpj("");
 		
 		//1331 a 1364	Filler	20	A			X, se Empresario ou Proprietario
-		esperado.getDadosConjuge().setFiller(ContextoMensagem.escreverString(20, " "));
+		esperado.getDadosConjuge().setFiller(AdaptadorTipo.escreverString(20, " "));
 		
 		//DADOS COMPLEMENTARES
 		esperado.setDadoComplementar(new PropostaFinanciamento.DadoComplementar());
@@ -624,7 +552,7 @@ public class MensagemFactoryTest {
 		esperado.getDadoComplementar().setCapturarBiometria(false);
 		
 		//1567 a 1613	Filler	47	A
-		esperado.getDadoComplementar().setFiller(ContextoMensagem.escreverString(47, " "));
+		esperado.getDadoComplementar().setFiller(AdaptadorTipo.escreverString(47, " "));
 		
 		esperado.setReferenciasPessoais("THIAGO IRMAO                  0067302227580000MARIA DO CARMO MAE            0067928185710000");
 		//REFERÊNCIAS PESSOAIS
@@ -843,7 +771,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosOperacao().setValorEntradaLojista(0);
 		
 		//2092 a 2141	Filler	50	A
-		esperado.getDadosOperacao().setFiller(ContextoMensagem.escreverString(50, " "));
+		esperado.getDadosOperacao().setFiller(AdaptadorTipo.escreverString(50, " "));
 		
 		//Dados do Pre Screening						
 		//2142 a 2143	Código da Oferta Aderida de Conta Corrente	2	A	Código da Oferta recuperada na mensagem 0460.
@@ -856,7 +784,7 @@ public class MensagemFactoryTest {
 		esperado.setCodigoPerfilOfertaAderidaCdc("");
 		
 		//2148 a 2160	Filler	13	A
-		esperado.setFillerPreScreening(ContextoMensagem.escreverString(13, " "));
+		esperado.setFillerPreScreening(AdaptadorTipo.escreverString(13, " "));
 		
 		
 		//Atendimento ao Cliente						
@@ -962,32 +890,132 @@ public class MensagemFactoryTest {
 		esperado.getDebitoConta().setDataAbertura(null);
 		
 		
+		//Dados de Cheques
+		esperado.setDadosCheque(new PropostaFinanciamento.DadoCheque());
+		//2352 a 2354	CÓDIGO DO BANCO dos cheques	3	N	Código do Banco da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+		esperado.getDadosCheque().setCodigoBanco(0);
+		
+		//2355 a 2358	AGÊNCIA  DE DESTINO dos cheques	4	N	Código da Agência Bancária da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+		esperado.getDadosCheque().setAgenciaDestino(0);
+		
+		//2359 a 2359	DV Agencia dos cheques	1	A
+		esperado.getDadosCheque().setDvAgenciaDestino("");
+		
+		//2360 a 2372	Codigo da Conta	13	N			X
+		esperado.getDadosCheque().setCodigoConta(0);
+		
+		//2373 a 2374	DV da Conta	2	A			X
+		esperado.getDadosCheque().setDvConta("");
+		
+		//2375 a 2380	NÚMERO DO CHEQUE do Primeiro Cheque da 1a. Faixa de Cheques	6	N	Número do primeiro cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+		esperado.getDadosCheque().setNumeroPrimeiroChequeFaixa1(0);
+		
+		//2381 a 2386	NÚMERO DO CHEQUE do Último Cheque da 1a. Faixa de Cheques	6	N	Número do último cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"	X
+		esperado.getDadosCheque().setNumeroUltimoChequeFaixa1(0);
+		
+		//2387 a 2392	NÚMERO DO CHEQUE do Primeiro Cheque da 2a. Faixa de Cheques	6	N	Número do primeiro cheque da segunda faixa de cheques para as operações de cheque-pré		
+		esperado.getDadosCheque().setNumeroPrimeiroChequeFaixa2(0);
+		
+		//2393 a 2398	NÚMERO DO CHEQUE do Último Cheque da 2a. Faixa de Cheques	6	N	Número do último cheque da segunda faixa de cheques para as operações de cheque-pré		
+		esperado.getDadosCheque().setNumeroUltimoChequeFaixa2(0);
+		
+		//2399 a 2406	Data da abertura da conta corrente	8	N	Data da abertura da conta corrente	Se produto igual a "2"	X
+		esperado.getDadosCheque().setDataAberturaConta(null);
+		
+		//2407 a 2454	Filler	48	A			
+		esperado.getDadosCheque().setFiller(AdaptadorTipo.escreverString(48, " "));
+		
+		//Circular 3641 Banco Central						
+		//2455 a 2456	Flag Circular 3461 Banco Central	2	A	informar sempre o valor X2 nesse campo	X2	X
+		esperado.setCircular3461BancoCentral("X2");
+		
+		//Observação						
+		//2457 a 2711	Observação	255	A	Campo observação 	 	
+		esperado.setObservacao("PROPOSTA TESTE MATRIZ FAVOR NAO ANALISAR NA MESA");
+		
 		//validação outros indicadores
-		/*esperado.setIndicadores(new Indicador());
+		esperado.setIndicadores(new Indicador());
 		esperado.getIndicadores().setIdentificadorCanal("T");
 		esperado.getIndicadores().setVersaoCanal("");
 		esperado.getIndicadores().setPolitica("");
-		esperado.getIndicadores().setAmbiente("");*/
-		
-		/*assertThat(m.getCabecalho(), Matchers.samePropertyValuesAs(esperado.getCabecalho()));
-		assertThat(m.getDadosPessoais().getDocumentoIdentificacao(), Matchers.samePropertyValuesAs(esperado.getDadosPessoais().getDocumentoIdentificacao()));
-		assertThat(m.getDadosPessoais().getEndereco(), Matchers.samePropertyValuesAs(esperado.getDadosPessoais().getEndereco()));
-		assertThat(m.getDadosPessoais().getTelefone(), Matchers.samePropertyValuesAs(esperado.getDadosPessoais().getTelefone()));
-		assertThat(m.getDadosPessoais().getCelular(), Matchers.samePropertyValuesAs(esperado.getDadosPessoais().getCelular()));
-		assertThat(m.getDadosPessoais(), BeanMatchers.theSameAs(esperado.getDadosPessoais()));
-		
-		assertThat(m.getDadosProfissionais().getEndereco(), Matchers.samePropertyValuesAs(esperado.getDadosProfissionais().getEndereco()));
-		assertThat(m.getDadosProfissionais().getTelefone(), Matchers.samePropertyValuesAs(esperado.getDadosProfissionais().getTelefone()));
-		assertThat(m.getDadosProfissionais(), BeanMatchers.theSameAs(esperado.getDadosProfissionais()));
-		assertThat(m.getDadosConjuge(), BeanMatchers.theSameAs(esperado.getDadosConjuge()));*/
+		esperado.getIndicadores().setAmbiente("");
 		
 		assertThat(m, BeanMatchers.theSameAs(esperado));
 	}
 	
 	@Test
-	@Ignore
-	public void criarRespostaPropostaFinanciamento() {
+	public void criarRespostaPropostaFinanciamento() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
-		Assert.fail("Não implementado.");
+		String mensagem = MensagemHelper.lerMensagem(5102, 110, "criarRespostaPropostaFinanciamento.1");
+		assertThat(mensagem, notNullValue());
+		
+		RespostaPropostaFinanciamento m = (RespostaPropostaFinanciamento) MensagemFactory.parse(mensagem);
+		assertThat(m, notNullValue());
+		
+		Cabecalho cabecalhoEsperado = new Cabecalho();
+		cabecalhoEsperado.setSentidoFluxo(Fluxo.ENTRADA);
+		cabecalhoEsperado.setTamanho(5019);
+		cabecalhoEsperado.setCodigo(CodigoMensagem.C0110);
+		cabecalhoEsperado.setNumeroTransacao(980009);
+		cabecalhoEsperado.setNumeroProposta("P4201170358");
+		cabecalhoEsperado.setCodigoUsuario("UILSON");
+		cabecalhoEsperado.setCodigoRetorno("A0050");
+		cabecalhoEsperado.setCodigoLojista(170894002);
+		cabecalhoEsperado.setVersao("9");
+		cabecalhoEsperado.setCampoLojista("TOP 01       6  06            ");
+		
+		RespostaPropostaFinanciamento esperado = new RespostaPropostaFinanciamento(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
+		
+		//DADOS RESPOSTA DA PROPOSTA					
+		//0084 a 0084	Indicador Liberação Cessão	1	A	Indica se a cessão foi realizada pelo Lojista	"""0"" - Não cedido
+		//""1"" - Cedido
+		//"" "" - Produto não possui cessão"
+		esperado.setLiberacaoCessao("0");
+		
+		//0085 a 0339	Restrição	255	A	Motivo da restrição
+		esperado.setRestricao("Aprovada CPF de Teste");
+		
+		//0340 a 0346	Cod_autorizador	7	N	Código de autorização
+		esperado.setCodAutorizador(11621);
+		
+		//0347 a 0354	Data_Autorização	8	N	Data da resposta do Autorizador
+		esperado.setDataAutorizacao(UtilsDate.parse("25082015", UtilsDate.FormatadorData.DATA));
+		
+		//0355 a 0404	Filler	50	A
+		esperado.setFillerRespostaProposta(AdaptadorTipo.escreverString(50, " "));
+		
+		//DADOS DA OPERAÇÃO					
+		//0405 a 0406	Prestações	2	N	Indicar O Nº de Parcelas do contrato
+		esperado.setPrestacoes(10);
+		
+		//0407 a 0421	Valor da Prestação 	15	N	Valor A Ser Pago Mensalmente Já Com Taxa de Juros (em R$)
+		esperado.setValorPrestacao(9920);
+		
+		
+		//DADOS PARA IMPRESSÃO DE CARNÊ					
+		//0422 a 0451	Nome_Cedente	30	A	Nome do Cedente 	
+		//0452 a 0453	Especie_Doc	2	A	Especie do Documento	
+		//0454 a 0454	Aceite	1	A	Identificação do aceite Default=N	
+		//0455 a 0457	CIP	3	A	CIP	
+		//0458 a 0460	Carteira	3	A	Tipo de cobrança	
+		//0461 a 0465	Especie	5	A	Tipo de Moeda	
+		//0466 a 0480	Quantidade	15	N	Quantidade relacionada a especie de moeda (cinco (5) decimais)	
+		//0481 a 0495	Valor_Mora_Dia	15	N	Valor do juros de mora expresso em quantidade de moeda (2) decimais)	
+		//0496 a 0510	Val_A_Pagar	15	N	Valor da parcela a pagar com os encargos	
+		//0511 a 0513	Banco	3	N	Codigo do Banco	
+		//0514 a 0517	Agencia_Cedente	4	N	Codigo da Agencia	
+		//0518 a 0518	Agencia_Digito_Cedente	1	A	Digito verificador da Agencia	
+		//0519 a 0525	Codigo_Cedente	7	N	Número da conta do cedente	
+		//0526 a 0526	Digito_Cedente	1	A	Digito verificador da C.C. do cedente	
+		//0527 a 0606	Msg_01	80	A	Campo de Instrução	
+		//0607 a 0686	Msg_02	80	A	Campo de Instrução	
+		//0687 a 0766	Msg_03	80	A	Campo de Instrução	
+		//0767 a 0846	Msg_04	0080	A	Campo de Instrução	
+		//0847 a 0926	Msg_05	0080	A	Campo de Instrução	
+		//0927 a 1006	Msg_06	0080	A	Campo de Instrução	
+		//1007 a 1086	Filler	80	A		
+		
+		assertThat(m, BeanMatchers.theSameAs(esperado));
+
 	}
 }

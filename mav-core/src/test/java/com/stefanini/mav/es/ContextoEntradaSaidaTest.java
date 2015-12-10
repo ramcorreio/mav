@@ -14,6 +14,9 @@ import org.junit.Test;
 
 import com.stefanini.mav.es.MapSubSubBean.SubBean;
 import com.stefanini.mav.es.MapSubSubBean.SubSubBean;
+import com.stefanini.mav.mensagem.Cabecalho;
+import com.stefanini.mav.mensagem.CodigoMensagem;
+import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 import com.stefanini.mav.util.UtilsDate;
 
 public class ContextoEntradaSaidaTest {
@@ -37,7 +40,7 @@ public class ContextoEntradaSaidaTest {
 		expected.setTemFilhos(true);
 		expected.setSalario(345.23);
 		
-		MapAtributoBean b = ContextoEntradaSaida.ler(entrada, MapAtributoBean.class);
+		MapAtributoBean b = ContextoEntradaSaida.ler(entrada, MapAtributoBean.class, false);
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
 		
 	}
@@ -56,7 +59,7 @@ public class ContextoEntradaSaidaTest {
 		expected.getBean().setConta(45);
 		expected.getBean().setTexto("Opa!!!");
 		
-		MapSubBean b = ContextoEntradaSaida.ler(entrada, MapSubBean.class);
+		MapSubBean b = ContextoEntradaSaida.ler(entrada, MapSubBean.class, false);
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
 	}
 	
@@ -75,7 +78,7 @@ public class ContextoEntradaSaidaTest {
 		expected.getBean().setTexto("Opa!!!");
 		expected.getBean().setHoje(UtilsDate.parse("04122015", UtilsDate.FormatadorData.DATA));
 		
-		MapSubBeanHerdado b = ContextoEntradaSaida.ler(entrada, MapSubBeanHerdado.class);
+		MapSubBeanHerdado b = ContextoEntradaSaida.ler(entrada, MapSubBeanHerdado.class, false);
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
 		
 	}
@@ -96,23 +99,27 @@ public class ContextoEntradaSaidaTest {
 		expected.getSubSubBean().getSubBean().setTexto("Opa!!!");
 		expected.getSubSubBean().setHoje(UtilsDate.parse("04122015", UtilsDate.FormatadorData.DATA));
 		
-		MapSubSubBean b = ContextoEntradaSaida.ler(entrada, MapSubSubBean.class);
+		MapSubSubBean b = ContextoEntradaSaida.ler(entrada, MapSubSubBean.class, false);
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
 		
 	}
 	
 	@Test
-	public void posicaoInicio() throws MapeamentoNaoEncontrado, ParseException {
+	public void checkConfig() throws MapeamentoNaoEncontrado, ParseException {
 		
 		String entrada = "rodrigo afonso macedo    037281119781000034523045Opa!!!    ";
-		MapPosicaoInicio expected = new MapPosicaoInicio();
-		//expected.setNome("rodrigo afonso macedo");
+		MapPosicaoInicio expected = new MapPosicaoInicio(new Cabecalho());
+		expected.getCabecalho().setSentidoFluxo(Fluxo.ENTRADA);
+		expected.getCabecalho().setCodigo(CodigoMensagem.C0100);
 		expected.setIdade(37);
 		expected.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
 		expected.setTemFilhos(true);
 		expected.setSalario(345.23);
 		
-		MapPosicaoInicio b = ContextoEntradaSaida.ler(entrada, MapPosicaoInicio.class);
+		Cabecalho c = new Cabecalho();
+		c.setCodigo(CodigoMensagem.C0100);
+		
+		MapPosicaoInicio b = ContextoEntradaSaida.ler(entrada, MapPosicaoInicio.class, new Object[]{c});
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
 	}
 	
