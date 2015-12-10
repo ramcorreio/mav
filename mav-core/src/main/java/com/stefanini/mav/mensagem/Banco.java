@@ -2,60 +2,26 @@ package com.stefanini.mav.mensagem;
 
 import java.util.Date;
 
+import com.stefanini.mav.es.MapAtributo;
+import com.stefanini.mav.es.MapBean;
+
 public class Banco {
 
-	private String banco;
+	@MapBean
+	private InfoBanco info;
 
-	private String agencia;
-
-	private String dvAgencia;
-
-	private String contaCorrente;
-
-	private String dvContaCorrente;
-
+	@MapAtributo(tamanho = 2)
 	private String tipoConta;
 
+	@MapAtributo(tamanho = 8)
 	private Date dataAbertura;
-
-	public String getBanco() {
-		return banco;
+	
+	public InfoBanco getInfo() {
+		return info;
 	}
-
-	public void setBanco(String banco) {
-		this.banco = banco;
-	}
-
-	public String getAgencia() {
-		return agencia;
-	}
-
-	public void setAgencia(String agencia) {
-		this.agencia = agencia;
-	}
-
-	public String getDvAgencia() {
-		return dvAgencia;
-	}
-
-	public void setDvAgencia(String dvAgencia) {
-		this.dvAgencia = dvAgencia;
-	}
-
-	public String getContaCorrente() {
-		return contaCorrente;
-	}
-
-	public void setContaCorrente(String contaCorrente) {
-		this.contaCorrente = contaCorrente;
-	}
-
-	public String getDvContaCorrente() {
-		return dvContaCorrente;
-	}
-
-	public void setDvContaCorrente(String dvContaCorrente) {
-		this.dvContaCorrente = dvContaCorrente;
+	
+	public void setInfo(InfoBanco info) {
+		this.info = info;
 	}
 
 	public String getTipoConta() {

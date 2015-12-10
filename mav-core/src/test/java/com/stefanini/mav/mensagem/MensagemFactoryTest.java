@@ -626,6 +626,7 @@ public class MensagemFactoryTest {
 		//1567 a 1613	Filler	47	A
 		esperado.getDadoComplementar().setFiller(ContextoMensagem.escreverString(47, " "));
 		
+		esperado.setReferenciasPessoais("THIAGO IRMAO                  0067302227580000MARIA DO CARMO MAE            0067928185710000");
 		//REFERÊNCIAS PESSOAIS
 		/*esperado.setReferenciasPessoais(new LinkedList<Referencia>());
 		//1614 a 1643	Nome	30	A	Nome da Pessoa de Referência		X
@@ -662,10 +663,11 @@ public class MensagemFactoryTest {
 		esperado.getReferenciasPessoais().get(1).setNome("");
 		//mensagem.getReferenciasPessoais().get(1).getTelefone().setDdd(lerInt(input, 1689, 3));
 		//mensagem.getReferenciasPessoais().get(1).getTelefone().setNumero(lerInt(input, 1692, 9));
-		//mensagem.getReferenciasPessoais().get(1).getTelefone().setRamal(lerInt(input, 1701, 4));
+		//mensagem.getReferenciasPessoais().get(1).getTelefone().setRamal(lerInt(input, 1701, 4));*/
 		
+		esperado.setReferenciasComerciais("");
 		//REFERÊNCIAS COMERCIAIS
-		esperado.setReferenciasComerciais(new LinkedList<Referencia>());*/
+		/*esperado.setReferenciasComerciais(new LinkedList<Referencia>());
 		
 		//1706 a 1735	Nome 1	30	A	Nome da Pessoa de Referência  (PC)		
 		//1736 a 1738	DDD 1	3	N	DDD da referencia comercial		
@@ -708,25 +710,27 @@ public class MensagemFactoryTest {
 		//1820 a 1821	DV Conta Corrente	2	A			X. Se algum campo da referencia bancaria for preenchuda 
 		//1822 a 1823	Tipo da Conta	2	A		Ver tabela de dominio Tipo de Conta Corrente	X. Se algum campo da referencia bancaria for preenchuda 
 		//1824 a 1831	Data Abertura	8	N	DDMMAAAA		X. Se algum campo da referencia bancaria for preenchuda
-		/*esperado.setReferenciaBancaria(new Banco());
-		esperado.getReferenciaBancaria().setBanco("0341");
-		esperado.getReferenciaBancaria().setAgencia("1585");
-		esperado.getReferenciaBancaria().setDvAgencia("0");
-		esperado.getReferenciaBancaria().setDvContaCorrente("0000000006446");
-		esperado.getReferenciaBancaria().setDvContaCorrente("0");
+		esperado.setReferenciaBancaria(new Banco());
+		esperado.getReferenciaBancaria().setInfo(new InfoBanco());
+		esperado.getReferenciaBancaria().getInfo().setNumero(341);
+		esperado.getReferenciaBancaria().getInfo().setAgencia(1585);
+		esperado.getReferenciaBancaria().getInfo().setDvAgencia("0");
+		esperado.getReferenciaBancaria().getInfo().setContaCorrente(6446);
+		esperado.getReferenciaBancaria().getInfo().setDvContaCorrente("0");
 		esperado.getReferenciaBancaria().setTipoConta("01");
-		esperado.getReferenciaBancaria().setDataAbertura(UtilsDate.parse("13082001", UtilsDate.FormatadorData.DATA));*/
+		esperado.getReferenciaBancaria().setDataAbertura(UtilsDate.parse("13082001", UtilsDate.FormatadorData.DATA));
 		
 
-		//DADOS DA OPERAÇÃO						
+		//DADOS DA OPERAÇÃO
+		esperado.setDadosOperacao(new PropostaFinanciamento.DadoOperacao());
 		//1832 a 1839	Tabela de Financiamento	8	N	Identificação da tabela de financiamento  (COP’s) referente ao crédito solicitado, específica para o lojista ou Crédito Pessoal 		X
-		/*esperado.setTabelaFinanciamento(288799);
+		esperado.getDadosOperacao().setTabelaFinanciamento(288799);
 		
 		//1840 a 1840	Sinal da Carência 	1	A	Sinal da carência  (+) - Positiva  (-) - Negativa	"+"  -  "-" 	X
-		esperado.setSinalCarencia("+");
+		esperado.getDadosOperacao().setSinalCarencia("+");
 		
 		//1841 a 1842	Carência 	2	N	Quantidade de Dias Para Ajuste do Vencimento da Prestação		X
-		esperado.setCarencia(0);
+		esperado.getDadosOperacao().setCarencia(0);
 		
 		//1843 a 1843	Forma de pagamento	1	N	"Indicação da Forma de Cobrança
 		//0) Carnë
@@ -735,118 +739,118 @@ public class MensagemFactoryTest {
 		//3) Extrato Rotativo
 		//4) Extrato Parcelado
 		//5) Debito em Conta"	“0”  “1”  “2”   “3”  ”4”, "5"	X
-		esperado.setFormaPagamento(0);
+		esperado.getDadosOperacao().setFormaPagamento(FormaPagamento.CARNE);
 		
 		
 		//1844 a 1851	Data da  Operação	8	N	Data da Realização da Operação		X
-		esperado.setDataOperacao(UtilsDate.parse("25082015", UtilsDate.FormatadorData.DATA));
+		esperado.getDadosOperacao().setDataOperacao(UtilsDate.parse("25082015", UtilsDate.FormatadorData.DATA));
 		
 		//1852 a 1853	Produto (Tabela de Produto)	2	N	Informar o Produto		X
-		esperado.setProduto(1);
+		esperado.getDadosOperacao().setProduto(1);
 		
 		//1854 a 1855	Prestações	2	N	Indicar O Nº de Parcelas do contrato		X
-		esperado.setPrestacoes(10);
+		esperado.getDadosOperacao().setPrestacoes(10);
 		
 		//1856 a 1862	Taxa Mensal	7	N	Taxa de Juros Aplicada Ao Mês (2 inteiras e 5 decimais)		X
-		esperado.setTaxaMensal(6.49000);
+		esperado.getDadosOperacao().setTaxaMensal(6.49000);
 		
 		//1863 a 1869	Taxa Anual	7	N	Taxa de Juros Aplicada Ao Ano (3 inteiras 4 decimais)		
-		esperado.setTaxaAnual(0.0);
+		esperado.getDadosOperacao().setTaxaAnual(0.0);
 		
 		//1870 a 1884	Valor da Entrada (não é mais utilizado)	15	N	Valor da Entrada (não é mais utilizado)		
-		esperado.setValorEntrada(0);
+		esperado.getDadosOperacao().setValorEntrada(0.00);
 		
 		//1885 a 1885	Tipo de Pagamento	1	N	0-Pré 1-Pós (Flag que indica se a negociação será efetuada com Pré fixado ou Pos fixado)	“0”  “1”	X
-		esperado.setTipoPagamento(0);
+		esperado.getDadosOperacao().setTipoPagamento(0);
 		
 		//1886 a 1887	Top	2	N	Tipo de Operação		X
-		esperado.setTop(1);
+		esperado.getDadosOperacao().setTop(1);
 		
 		//1888 a 1902	Valor Tac	15	N	Valor da TAC (em R$)		X
-		esperado.setValorTac(0);
+		esperado.getDadosOperacao().setValorTac(0);
 		
 		//1903 a 1903	Pag_Tac	1	N	Flag que indica a forma de pagamento da TAC ( 0 -Financiada   1- A vista 2 - Descontada em (RO))	“0”   “1”    “2”	X
-		esperado.setPagTac(0);
+		esperado.getDadosOperacao().setPagTac(0);
 		
 		//1904 a 1918	Valor  da Operação/Solicitado	15	N	Valor solicitado pelo cliente (em R$)		X
-		esperado.setValorOperacaoSolicitado(70000);
+		esperado.getDadosOperacao().setValorOperacaoSolicitado(70000);
 		
 		//1919 a 1933	Valor Total do Financiamento	15	N	Valor Total do Financiamento (em R$).		X
-		esperado.setValorTotalFinanciado(70000);
+		esperado.getDadosOperacao().setValorTotalFinanciado(70000);
 		
 		//1934 a 1948	Valor da Prestação 	15	N	Valor A Ser Pago Mensalmente Já Com Taxa de Juros (em R$).		X
-		esperado.setValorPrestacao(9920);
+		esperado.getDadosOperacao().setValorPrestacao(9920);
 		
 		//1949 a 1956	Vencimento 1ª prestação	8	N	Data do primeiro  vencimento		X
-		esperado.setVencimentoPrestacao(UtilsDate.parse("25092015", UtilsDate.FormatadorData.DATA));
+		esperado.getDadosOperacao().setVencimentoPrimeiraPrestacao(UtilsDate.parse("25092015", UtilsDate.FormatadorData.DATA));
 		
 		//1957 a 1981	Descrição do bem	25	A	Identificação da mercadoria financiada (obrigatório para TOP 31 e 34)
-		esperado.setDescricaoDoBem("");
+		esperado.getDadosOperacao().setDescricaoDoBem("");
 		
 		//1982 a 1982	Imp_Carne	1	A	Flag que indica que o lojista vai imprimir carnê na loja (0-Não   e     1-Sim)	“0”     “1”	X
-		esperado.setImpressaoCarne(true);
+		esperado.getDadosOperacao().setImprimeCarne(true);
 		
 		//1983 a 1997	Nº Pedido	15	A	Campo para o lojista associar o número de pedido, nota fiscal, etc.
-		esperado.setNuPedido("");
+		esperado.getDadosOperacao().setNumeroPedido("");
 		
 		//1998 a 2008	Nº do CD	11	A	Numeração gráfica pré impressa do comprovante de débito ( não é obrigatorio)
-		esperado.setNuCd("");
+		esperado.getDadosOperacao().setNumeroCd("");
 		
 		//2009 a 2019	CPF do Vendedor	11	A	Identificação do vendedor/atendente  responsável pela operação		X
-		esperado.setCpfVendedor("01234567890");
+		esperado.getDadosOperacao().setCpfVendedor("01234567890");
 		
 		//2020 a 2033	Telefone	14	A	Telefone do Vendedor		X
-		esperado.setTelefoneVendedor("");
+		esperado.getDadosOperacao().setTelefoneVendedor("");
 		
 		//2034 a 2034	Pre-Pago	1	A	"Indica a compra de telefone celular Pre-Pago
 		//  0 - Default - Não
 		//  1 - Pre     - Sim"	 '0' '1'	X
-		esperado.setPrePago(false);
+		esperado.getDadosOperacao().setPrePago(false);
 		
 		//2035 a 2035	Leva na Hora	1	A	"Indica se o cliente levara a mercadoria na hora
 		//  0 - Default - Não
 		//  1 - leva    - Sim"	 '0' '1'	X
-		esperado.setLevaNaHora(true);
+		esperado.getDadosOperacao().setLevaNaHora(true);
 		
 		//2036 a 2036	Beta-Gama	1	A	"Indicadore de Fraude
 		//  0 - Default - Sem fraude
 		//  2 - Beta    - Susp fraude
 		//  1 - Gama    - Confirm fraude"	 '0' '1' '2'	X
-		esperado.setBetaGama(0);
+		esperado.getDadosOperacao().setBetaGama(0);
 		
 		//2037 a 2046	Promotor	10	N	Código do Promotor
-		esperado.setPromotor(null);
+		esperado.getDadosOperacao().setPromtor("");
 		
 		//2047 a 2047	Indicador aceita consulta ao sysbacen	1	A	Indica se o cliente permitiu a consulta ao sysbacen 0- Não(Default), 1 - Sim	 '0' '1'	X
-		esperado.setAceitaConsulta(false);
+		esperado.getDadosOperacao().setAceitaConsultaSysBacen(false);
 		
 		//2048 a 2054	CET Mensal (%)	7	N	Taxa Mensal do Custo efetivo Total (2 decimais)	"Preencher com o valor 
 		//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
-		esperado.setCetMensal(0.00);
+		esperado.getDadosOperacao().setCetMensal(0.00);
 		
 		//2055 a 2061	CET Anual  (%)	7	N	Taxa Anual   do Custo efetivo Total (2 decimais)	"Preencher com o valor 
 		//informado pelo Simulador ou zero caso o simulador não foi utilizado"
-		esperado.setCetAnual(0.00);
+		esperado.getDadosOperacao().setCetAnual(0.00);
 		
 		//2062 a 2068	IOF	7	N	Valor do IOF (2 casas decimais)	"Preencher com o valor 
 		//informado pelo Simulador ou zero caso o simulador não foi utilizado"
-		esperado.setIof(0.00);
+		esperado.getDadosOperacao().setValorIof(0.00);
 		
 		//2069 a 2076	Data do Evento	8	N	Data da Entrega do Bem/Serviço		X. Se o produto for cessão
-		esperado.setDataEvento(UtilsDate.parse("00000000", UtilsDate.FormatadorData.DATA));
+		esperado.getDadosOperacao().setDataEvento(null);
 		
 		//2077 a 2091	Valor da Entrada ao Lojista	15	N	Valor dado de entrada ao Lojista
-		esperado.setValorEntradaLojista(0);
+		esperado.getDadosOperacao().setValorEntradaLojista(0);
 		
 		//2092 a 2141	Filler	50	A
-		esperado.setFillerDadosOperacao(ContextoMensagem.escreverString(50, " "));
+		esperado.getDadosOperacao().setFiller(ContextoMensagem.escreverString(50, " "));
 		
 		//Dados do Pre Screening						
 		//2142 a 2143	Código da Oferta Aderida de Conta Corrente	2	A	Código da Oferta recuperada na mensagem 0460.
 		esperado.setCodigoOfertaAderidaContaCorrente("");
 		
 		//2144 a 2145	Código da Oferta Aderida de CDC/EP.	2	A	Código da Oferta recuperada na mensagem 0460.		
-		esperado.setCodigoOfertaAderidaContaCorrente("");
+		esperado.setCodigoOfertaAderidaCdc("");
 		
 		//2146 a 2147	Código do Perfil da Oferta Aderida de CDC/EP.	2	A	Código do Perfil recuperado na mensagem 0460.		
 		esperado.setCodigoPerfilOfertaAderidaCdc("");
@@ -855,13 +859,115 @@ public class MensagemFactoryTest {
 		esperado.setFillerPreScreening(ContextoMensagem.escreverString(13, " "));
 		
 		
+		//Atendimento ao Cliente						
+		//2161 a 2195	Nome do Vendedor	35	A			X
+		esperado.setNomeVendedor("VENDEDOR TESTE");
+		
+		//2196 a 2230	Nome do Agente Correspondente	35	A
+		esperado.setNomeAgenteCorrespondente("CERTIFICADOR TESTE");
+		
+		//2231 a 2241	CPF do Agente Correspondente	11	A			X
+		esperado.setCpfAgenteCorrespondente("01115303180");
+		
+		//Dados de Operações para Emprestimo Pessoal (EP) e averbação em folha.
+		esperado.setBancoEp(new BancoEp());
+		esperado.getBancoEp().setInfo(new InfoBanco());
+		//2242 a 2242	Ind. Pagto DOC - EP	1	A	Indicador de pagamento em DOC	"S = Sim com Doc
+		esperado.getBancoEp().setPagtoDoc(false);
+
+		//2243 a 2244	Tipo de Conta (spb) - EP	2	A	Ver tabela de dominio		X. Se Ind. Pagto DOC - EP = "S"
+		esperado.getBancoEp().setTipoConta("");
+		
+		//2245 a 2248	Banco - EP	4	N	Número do Banco para Depósito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+		esperado.getBancoEp().getInfo().setNumero(0);
+		
+		//2249 a 2252	Agencia - EP	4	N	Número da Agencia para Depósito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+		esperado.getBancoEp().getInfo().setAgencia(0);
+		
+		//2253 a 2253	DV Agencia  - EP	1	A	DV da Agencia para Depósito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+		esperado.getBancoEp().getInfo().setDvAgencia("");
+		
+		//2254 a 2266	Nº da conta - EP	13	N	Número da Conta para Depósito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+		esperado.getBancoEp().getInfo().setContaCorrente(0);
+		
+		//2267 a 2268	Dv da conta  - EP	2	A	DV da Conta para deposito do Emprestimo pessoal		X. Se Ind. Pagto DOC - EP = "S"
+		esperado.getBancoEp().getInfo().setDvContaCorrente("");
+		
+		//2269 a 2269	C2 - EP	1	N			X. Se Ind. Pagto DOC - EP = "S"
+		esperado.getBancoEp().setC2(0);
+		
+		//2270 a 2270	C3 - EP	1	N			X. Se Ind. Pagto DOC - EP = "S"
+		esperado.getBancoEp().setC3(0);		
+		
+		
+		//Dados referente ao Seguro						
+		//2271 a 2271	Adesao_Seguro	1	N	Flag que indica se o cliente optou por fazer seguro (0 - NÃO  ;  1 - SIM)	“0”   “1”	X
+		esperado.setAdesaoSeguro(false);
+		
+		//2272 a 2272	Forma pagamento acessório	1	A	Forma de pagamento do produto acessório (V – a vista ; F – Financiado)	“V”  “F”	X.  Se o Campo Adesao_Seguro estiver como 1.
+		esperado.setFormaPagamentoAcessorio("");
+		
+		//2273 a 2273	Quantidade de Seguro	1	N	Indica se o Cliente vai aderir a um Seguro ou aos dois Seguros.	"0 - Não vai aderir;
+		esperado.setQuantidadeSeguro(null);
+		
+		
+		//Dados referente ao Seguro Prestamista
+		esperado.setSeguroPremista(new InfoSeguro());
+		//2274 a 2275	tipo do seguro	2	A	Tipo de produto acessório	"02"	X. Se algum campo do seguro prestamista for preenchido
+		esperado.getSeguroPremista().setTipo("");
+		
+		//2276 a 2279	código do seguro	4	A	Codigo do produto acessório	De acordo com a Matriz de Seguros	X. Se algum campo do seguro prestamista for preenchido
+		esperado.getSeguroPremista().setCodigo("");
+		
+		//2280 a 2294	valor do seguro	15	N	Valor do produto acessório (em R$)	De acordo com a Matriz de Seguros	X. Se algum campo do seguro prestamista for preenchido
+		esperado.getSeguroPremista().setValor(0);
+
+		//Dados referente ao Seguro da Sorte		
+		esperado.setSeguroSorte(new InfoSeguro());
+		//2295 a 2296	tipo do seguro	2	A	Tipo de produto acessório	"02"	X. Se algum campo do seguro da sorte for preenchido
+		esperado.getSeguroSorte().setTipo("");
+		
+		//2297 a 2300	código do seguro	4	A	Codigo do produto acessório	De acordo com a Matriz de Seguros	X. Se algum campo do seguro da sorte for preenchido
+		esperado.getSeguroSorte().setCodigo("");
+		
+		//2301 a 2315	valor do seguro	15	N	Valor do produto acessório (em R$)	De acordo com a Matriz de Seguros	X. Se algum campo do seguro da sorte for preenchido
+		esperado.getSeguroSorte().setValor(0);
+		
+		//2316 a 2317	Quantidade Numero da Sorte	2	N	Usar o valor da matriz de Seguros	De acordo com a Matriz de Seguros	X. Se algum campo do seguro da sorte for preenchido
+		esperado.setQuantidadeNumeroSorte(0);
+
+
+		//DEBITO EM CONTA						
+		esperado.setDebitoConta(new Banco());
+		esperado.getDebitoConta().setInfo(new InfoBanco());
+		//2318 a 2321	Banco	4	N		Ver tabela de dominio Banco	X. Se Forma de pagamento = "5"
+		esperado.getDebitoConta().getInfo().setNumero(0);
+		
+		//2322 a 2325	Agencia	4	N			X. Se Forma de pagamento = "5"
+		esperado.getDebitoConta().getInfo().setAgencia(0);
+		
+		//2326 a 2326	DV Agência	1	A
+		esperado.getDebitoConta().getInfo().setDvAgencia("");
+		
+		//2327 a 2339	Conta Corrente	13	N			X. Se Forma de pagamento = "5"
+		esperado.getDebitoConta().getInfo().setContaCorrente(0);
+		
+		//2340 a 2341	DV Conta Corrente	2	A			X. Se Forma de pagamento = "5"
+		esperado.getDebitoConta().getInfo().setDvContaCorrente("");
+		
+		//2342 a 2343	Tipo da Conta	2	A		Ver tabela de dominio Tipo de Conta Corrente	X. Se Forma de pagamento = "5"
+		esperado.getDebitoConta().setTipoConta("");
+		
+		//2344 a 2351	Data de Abertura	8	N	DDMMAAAA		X. Se Forma de pagamento = "5"
+		esperado.getDebitoConta().setDataAbertura(null);
+		
+		
 		//validação outros indicadores
-		esperado.setIndicadores(new Indicador());
+		/*esperado.setIndicadores(new Indicador());
 		esperado.getIndicadores().setIdentificadorCanal("T");
 		esperado.getIndicadores().setVersaoCanal("");
 		esperado.getIndicadores().setPolitica("");
 		esperado.getIndicadores().setAmbiente("");*/
-		
 		
 		/*assertThat(m.getCabecalho(), Matchers.samePropertyValuesAs(esperado.getCabecalho()));
 		assertThat(m.getDadosPessoais().getDocumentoIdentificacao(), Matchers.samePropertyValuesAs(esperado.getDadosPessoais().getDocumentoIdentificacao()));

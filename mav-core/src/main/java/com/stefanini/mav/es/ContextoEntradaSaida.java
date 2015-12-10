@@ -18,6 +18,7 @@ import java.util.Map;
 import org.springframework.util.ClassUtils;
 
 import com.stefanini.mav.mensagem.CodigoMensagem;
+import com.stefanini.mav.mensagem.FormaPagamento;
 import com.stefanini.mav.mensagem.StatusProposta;
 import com.stefanini.mav.util.UtilsDate;
 
@@ -134,6 +135,9 @@ public class ContextoEntradaSaida {
 				if(in.trim().isEmpty()) {
 					return null;
 				}
+				else if(Long.parseLong(in.trim()) == 0) {
+					return null;
+				}
 				else {
 					try {
 						
@@ -236,6 +240,21 @@ public class ContextoEntradaSaida {
 			public StatusProposta ler(String in, SimpleMapper map) throws MapeamentoNaoEncontrado {
 			
 				return StatusProposta.parse(in);
+			}
+		});
+
+		adapters.put(FormaPagamento.class, new AdaptadorTipo<FormaPagamento>() {
+			
+			@Override
+			public String escrever(Object in, SimpleMapper map) throws MapeamentoNaoEncontrado {
+				
+				return escreverInt(map.getTamanho(), FormaPagamento.class.cast(in).getCodigo());
+			}
+			
+			@Override
+			public FormaPagamento ler(String in, SimpleMapper map) throws MapeamentoNaoEncontrado {
+			
+				return FormaPagamento.parse(Integer.parseInt(in));
 			}
 		});
 	}

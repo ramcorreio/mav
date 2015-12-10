@@ -22,7 +22,66 @@ public class PropostaFinanciamento extends MensagemBasica {
 	
 	@MapBean
 	private DadoComplementar dadoComplementar;
+	
+	@MapAtributo(tamanho = 92)
+	private String referenciasPessoais;
+	
+	@MapAtributo(tamanho = 92)
+	private String referenciasComerciais;
+	
+	@MapBean
+	private Banco referenciaBancaria;
+	
+	@MapBean
+	private DadoOperacao dadosOperacao;
 
+	@MapAtributo(tamanho = 2)
+	private String codigoOfertaAderidaContaCorrente;
+	
+	@MapAtributo(tamanho = 2)
+	private String codigoOfertaAderidaCdc;
+	
+	@MapAtributo(tamanho = 2)
+	private String codigoPerfilOfertaAderidaCdc;
+	
+	@MapAtributo(tamanho = 13, trim = false)
+	private String fillerPreScreening;
+	
+	@MapAtributo(tamanho = 35)
+	private String nomeVendedor;
+	
+	@MapAtributo(tamanho = 35)
+	private String nomeAgenteCorrespondente;
+	
+	@MapAtributo(tamanho = 11)
+	private String cpfAgenteCorrespondente;
+	
+	@MapBean
+	private BancoEp bancoEp;
+	
+	@MapAtributo
+	private Boolean adesaoSeguro;
+	
+	@MapAtributo
+	private String formaPagamentoAcessorio;
+	
+	@MapAtributo
+	private Integer quantidadeSeguro;
+	
+	@MapBean
+	private InfoSeguro seguroPremista;
+	
+	@MapBean
+	private InfoSeguro seguroSorte;
+
+	@MapAtributo(tamanho = 2)
+	private Integer quantidadeNumeroSorte;
+	
+	@MapBean
+	private Banco debitoConta;
+	
+	/*@MapBean
+	private Indicador indicadores;*/
 
 	public PropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
@@ -60,6 +119,166 @@ public class PropostaFinanciamento extends MensagemBasica {
 		this.dadoComplementar = dadoComplementar;
 	}
 	
+	public String getReferenciasPessoais() {
+		return referenciasPessoais;
+	}
+	
+	public void setReferenciasPessoais(String referenciasPessoais) {
+		this.referenciasPessoais = referenciasPessoais;
+	}
+	
+	public String getReferenciasComerciais() {
+		return referenciasComerciais;
+	}
+	
+	public void setReferenciasComerciais(String referenciasComerciais) {
+		this.referenciasComerciais = referenciasComerciais;
+	}
+	
+	public Banco getReferenciaBancaria() {
+		return referenciaBancaria;
+	}
+	
+	public void setReferenciaBancaria(Banco referenciaBancaria) {
+		this.referenciaBancaria = referenciaBancaria;
+	}
+	
+	public DadoOperacao getDadosOperacao() {
+		return dadosOperacao;
+	}
+	
+	public void setDadosOperacao(DadoOperacao dadosOperacao) {
+		this.dadosOperacao = dadosOperacao;
+	}
+	
+	public String getCodigoOfertaAderidaContaCorrente() {
+		return codigoOfertaAderidaContaCorrente;
+	}
+
+	public void setCodigoOfertaAderidaContaCorrente(String codigoOfertaAderidaContaCorrente) {
+		this.codigoOfertaAderidaContaCorrente = codigoOfertaAderidaContaCorrente;
+	}
+
+	public String getCodigoOfertaAderidaCdc() {
+		return codigoOfertaAderidaCdc;
+	}
+
+	public void setCodigoOfertaAderidaCdc(String codigoOfertaAderidaCdc) {
+		this.codigoOfertaAderidaCdc = codigoOfertaAderidaCdc;
+	}
+
+	public String getCodigoPerfilOfertaAderidaCdc() {
+		return codigoPerfilOfertaAderidaCdc;
+	}
+
+	public void setCodigoPerfilOfertaAderidaCdc(String codigoPerfilOfertaAderidaCdc) {
+		this.codigoPerfilOfertaAderidaCdc = codigoPerfilOfertaAderidaCdc;
+	}
+
+	public String getFillerPreScreening() {
+		return fillerPreScreening;
+	}
+
+	public void setFillerPreScreening(String fillerPreScreening) {
+		this.fillerPreScreening = fillerPreScreening;
+	}
+	
+	public String getNomeVendedor() {
+		return nomeVendedor;
+	}
+
+	public void setNomeVendedor(String nomeVendedor) {
+		this.nomeVendedor = nomeVendedor;
+	}
+
+	public String getNomeAgenteCorrespondente() {
+		return nomeAgenteCorrespondente;
+	}
+
+	public void setNomeAgenteCorrespondente(String nomeAgenteCorrespondente) {
+		this.nomeAgenteCorrespondente = nomeAgenteCorrespondente;
+	}
+
+	public String getCpfAgenteCorrespondente() {
+		return cpfAgenteCorrespondente;
+	}
+
+	public void setCpfAgenteCorrespondente(String cpfAgenteCorrespondente) {
+		this.cpfAgenteCorrespondente = cpfAgenteCorrespondente;
+	}
+
+	public BancoEp getBancoEp() {
+		return bancoEp;
+	}
+
+	public void setBancoEp(BancoEp bancoEp) {
+		this.bancoEp = bancoEp;
+	}
+	
+	public Boolean isAdesaoSeguro() {
+		return adesaoSeguro;
+	}
+	
+	public void setAdesaoSeguro(Boolean adesaoSeguro) {
+		this.adesaoSeguro = adesaoSeguro;
+	}
+	
+	public String getFormaPagamentoAcessorio() {
+		return formaPagamentoAcessorio;
+	}
+	
+	public void setFormaPagamentoAcessorio(String formaPagamentoAcessorio) {
+		this.formaPagamentoAcessorio = formaPagamentoAcessorio;
+	}
+	
+	public Integer getQuantidadeSeguro() {
+		return quantidadeSeguro;
+	}
+	
+	public void setQuantidadeSeguro(Integer quantidadeSeguro) {
+		this.quantidadeSeguro = quantidadeSeguro;
+	}
+	
+	public InfoSeguro getSeguroPremista() {
+		return seguroPremista;
+	}
+
+	public void setSeguroPremista(InfoSeguro seguroPremista) {
+		this.seguroPremista = seguroPremista;
+	}
+
+	public InfoSeguro getSeguroSorte() {
+		return seguroSorte;
+	}
+
+	public void setSeguroSorte(InfoSeguro seguroSorte) {
+		this.seguroSorte = seguroSorte;
+	}
+
+	public Integer getQuantidadeNumeroSorte() {
+		return quantidadeNumeroSorte;
+	}
+
+	public void setQuantidadeNumeroSorte(Integer quantidadeNumeroSorte) {
+		this.quantidadeNumeroSorte = quantidadeNumeroSorte;
+	}
+	
+	public Banco getDebitoConta() {
+		return debitoConta;
+	}
+	
+	public void setDebitoConta(Banco debitoConta) {
+		this.debitoConta = debitoConta;
+	}
+	
+	/*public Indicador getIndicadores() {
+		return indicadores;
+	}
+	
+	public void setIndicadores(Indicador indicadores) {
+		this.indicadores = indicadores;
+	}*/
+
 	// 0084 a 0084	Tipo de personalidade do CPF	1	A	T = Tipo de Pessoa (F – Fisica).	“F”	X
 	// 0085 a 0098	CPF 	14	N	CPF / CGC do cliente  		X
 	// 0099 a 0099	Usuário do CPF	1	A	Tipo de CPF ( T - Titular  ;   D  -  Dependente  )	“T”   “D”	X
@@ -940,7 +1159,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 			this.profissao = profissao;
 		}
 
-		public Boolean getAposentado() {
+		public Boolean isAposentado() {
 			return aposentado;
 		}
 
@@ -948,7 +1167,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 			this.aposentado = aposentado;
 		}
 
-		public Boolean getPensionista() {
+		public Boolean isPensionista() {
 			return pensionista;
 		}
 
@@ -1183,7 +1402,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the possuiCartao
 		 */
-		public Boolean getPossuiCartao() {
+		public Boolean isPossuiCartao() {
 			return possuiCartao;
 		}
 
@@ -1197,7 +1416,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the possuiVeiculoProprio
 		 */
-		public Boolean getPossuiVeiculoProprio() {
+		public Boolean isPossuiVeiculoProprio() {
 			return possuiVeiculoProprio;
 		}
 
@@ -1239,7 +1458,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the possuiVeiculoQuitado
 		 */
-		public Boolean getPossuiVeiculoQuitado() {
+		public Boolean isPossuiVeiculoQuitado() {
 			return possuiVeiculoQuitado;
 		}
 
@@ -1253,7 +1472,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the possuiExperienciaCredito
 		 */
-		public Boolean getPossuiExperienciaCredito() {
+		public Boolean isPossuiExperienciaCredito() {
 			return possuiExperienciaCredito;
 		}
 
@@ -1337,7 +1556,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the possuiCartaoFinanceira
 		 */
-		public Boolean getPossuiCartaoFinanceira() {
+		public Boolean isPossuiCartaoFinanceira() {
 			return possuiCartaoFinanceira;
 		}
 
@@ -1351,7 +1570,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the possuiContaCorrente
 		 */
-		public Boolean getPossuiContaCorrente() {
+		public Boolean isPossuiContaCorrente() {
 			return possuiContaCorrente;
 		}
 
@@ -1365,7 +1584,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the possuiDependente
 		 */
-		public Boolean getPossuiDependente() {
+		public Boolean isPossuiDependente() {
 			return possuiDependente;
 		}
 
@@ -1407,7 +1626,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the capturarFoto
 		 */
-		public Boolean getCapturarFoto() {
+		public Boolean isCapturarFoto() {
 			return capturarFoto;
 		}
 
@@ -1421,7 +1640,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the capturarDocumento
 		 */
-		public Boolean getCapturarDocumento() {
+		public Boolean isCapturarDocumento() {
 			return capturarDocumento;
 		}
 
@@ -1435,7 +1654,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @return the capturarBiometria
 		 */
-		public Boolean getCapturarBiometria() {
+		public Boolean isCapturarBiometria() {
 			return capturarBiometria;
 		}
 
@@ -1456,6 +1675,445 @@ public class PropostaFinanciamento extends MensagemBasica {
 		/**
 		 * @param filler the filler to set
 		 */
+		public void setFiller(String filler) {
+			this.filler = filler;
+		}
+	}
+	
+	//1832 a 1839	Tabela de Financiamento	8	N	Identificação da tabela de financiamento  (COP’s) referente ao crédito solicitado, específica para o lojista ou Crédito Pessoal 		X
+	//1840 a 1840	Sinal da Carência 	1	A	Sinal da carência  (+) - Positiva  (-) - Negativa	"+"  -  "-" 	X
+	//1841 a 1842	Carência 	2	N	Quantidade de Dias Para Ajuste do Vencimento da Prestação		X
+	//1843 a 1843	Forma de pagamento	1	N	"Indicação da Forma de Cobrança
+	//0) Carnë
+	//1) averbação em folha
+	//2) Cheque Pré
+	//3) Extrato Rotativo
+	//4) Extrato Parcelado
+	//5) Debito em Conta"	“0”  “1”  “2”   “3”  ”4”, "5"	X
+	//1844 a 1851	Data da  Operação	8	N	Data da Realização da Operação		X
+	//1852 a 1853	Produto (Tabela de Produto)	2	N	Informar o Produto		X
+	//1854 a 1855	Prestações	2	N	Indicar O Nº de Parcelas do contrato		X
+	//1856 a 1862	Taxa Mensal	7	N	Taxa de Juros Aplicada Ao Mês (2 inteiras e 5 decimais)		X
+	//1863 a 1869	Taxa Anual	7	N	Taxa de Juros Aplicada Ao Ano (3 inteiras 4 decimais)		
+	//1870 a 1884	Valor da Entrada (não é mais utilizado)	15	N	Valor da Entrada (não é mais utilizado)		
+	//1885 a 1885	Tipo de Pagamento	1	N	0-Pré 1-Pós (Flag que indica se a negociação será efetuada com Pré fixado ou Pos fixado)	“0”  “1”	X
+	//1886 a 1887	Top	2	N	Tipo de Operação		X
+	//1888 a 1902	Valor Tac	15	N	Valor da TAC (em R$)		X
+	//1903 a 1903	Pag_Tac	1	N	Flag que indica a forma de pagamento da TAC ( 0 -Financiada   1- A vista 2 - Descontada em (RO))	“0”   “1”    “2”	X
+	//1904 a 1918	Valor  da Operação/Solicitado	15	N	Valor solicitado pelo cliente (em R$)		X
+	//1919 a 1933	Valor Total do Financiamento	15	N	Valor Total do Financiamento (em R$).		X
+	//1934 a 1948	Valor da Prestação 	15	N	Valor A Ser Pago Mensalmente Já Com Taxa de Juros (em R$).		X
+	//1949 a 1956	Vencimento 1ª prestação	8	N	Data do primeiro  vencimento		X
+	//1957 a 1981	Descrição do bem	25	A	Identificação da mercadoria financiada (obrigatório para TOP 31 e 34)		
+	//1982 a 1982	Imp_Carne	1	A	Flag que indica que o lojista vai imprimir carnê na loja (0-Não   e     1-Sim)	“0”     “1”	X
+	//1983 a 1997	Nº Pedido	15	A	Campo para o lojista associar o número de pedido, nota fiscal, etc.		
+	//1998 a 2008	Nº do CD	11	A	Numeração gráfica pré impressa do comprovante de débito ( não é obrigatorio)		
+	//2009 a 2019	CPF do Vendedor	11	A	Identificação do vendedor/atendente  responsável pela operação		X
+	//2020 a 2033	Telefone	14	A	Telefone do Vendedor		X
+	//2034 a 2034	Pre-Pago	1	A	"Indica a compra de telefone celular Pre-Pago
+	//  0 - Default - Não
+	//  1 - Pre     - Sim"	 '0' '1'	X
+	//2035 a 2035	Leva na Hora	1	A	"Indica se o cliente levara a mercadoria na hora
+	//  0 - Default - Não
+	//  1 - leva    - Sim"	 '0' '1'	X
+	//2036 a 2036	Beta-Gama	1	A	"Indicadore de Fraude
+	//  0 - Default - Sem fraude
+	//  2 - Beta    - Susp fraude
+	//  1 - Gama    - Confirm fraude"	 '0' '1' '2'	X
+	//2037 a 2046	Promotor	10	N	Código do Promotor		
+	//2047 a 2047	Indicador aceita consulta ao sysbacen	1	A	Indica se o cliente permitiu a consulta ao sysbacen 0- Não(Default), 1 - Sim	 '0' '1'	X
+	//2048 a 2054	CET Mensal (%)	7	N	Taxa Mensal do Custo efetivo Total (2 decimais)	"Preencher com o valor 
+	//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+	//2055 a 2061	CET Anual  (%)	7	N	Taxa Anual   do Custo efetivo Total (2 decimais)	"Preencher com o valor 
+	//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+	//2062 a 2068	IOF	7	N	Valor do IOF (2 casas decimais)	"Preencher com o valor 
+	//informado pelo Simulador ou zero caso o simulador não foi utilizado"	
+	//2069 a 2076	Data do Evento	8	N	Data da Entrega do Bem/Serviço		X. Se o produto for cessão
+	//2077 a 2091	Valor da Entrada ao Lojista	15	N	Valor dado de entrada ao Lojista		
+	//2092 a 2141	Filler	50	A
+	public static class DadoOperacao {
+		
+		@MapAtributo(tamanho = 8)
+		private Integer tabelaFinanciamento;
+		
+		@MapAtributo
+		private String sinalCarencia;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer carencia;
+		
+		@MapAtributo
+		private FormaPagamento formaPagamento;
+		
+		@MapAtributo(tamanho = 8)
+		private Date dataOperacao;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer produto;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer prestacoes;
+		
+		@MapAtributo(tamanho = 7, scale = 5)
+		private Double taxaMensal;
+		
+		@MapAtributo(tamanho = 7, scale = 4)
+		private Double taxaAnual;
+		
+		@MapAtributo(tamanho = 15, scale = 2)
+		private Double valorEntrada;
+		
+		@MapAtributo
+		private Integer tipoPagamento;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer top;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorTac;
+		
+		@MapAtributo(tamanho = 1)
+		private Integer pagTac;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorOperacaoSolicitado;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorTotalFinanciado;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorPrestacao;
+		
+		@MapAtributo(tamanho = 8)
+		private Date vencimentoPrimeiraPrestacao;
+		
+		@MapAtributo(tamanho = 25)
+		private String descricaoDoBem;
+		
+		@MapAtributo
+		private Boolean imprimeCarne;
+		
+		@MapAtributo(tamanho = 15)
+		private String numeroPedido;
+		
+		@MapAtributo(tamanho = 11)
+		private String numeroCd;
+		
+		@MapAtributo(tamanho = 11)
+		private String cpfVendedor;
+		
+		@MapAtributo(tamanho = 14)
+		private String telefoneVendedor;
+		
+		@MapAtributo
+		private Boolean prePago;
+		
+		@MapAtributo
+		private Boolean levaNaHora;
+		
+		@MapAtributo
+		private Integer betaGama;
+		
+		@MapAtributo(tamanho = 10)
+		private String promtor;
+		
+		@MapAtributo
+		private Boolean aceitaConsultaSysBacen;
+		
+		@MapAtributo(tamanho = 7, scale = 2)
+		private Double cetMensal;
+		
+		@MapAtributo(tamanho = 7, scale = 2)
+		private Double cetAnual;
+		
+		@MapAtributo(tamanho = 7, scale = 2)
+		private Double valorIof;
+ 
+		@MapAtributo(tamanho = 8)
+		private Date dataEvento;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorEntradaLojista;
+		
+		@MapAtributo(tamanho = 50, trim = false)
+		private String filler;
+
+		public Integer getTabelaFinanciamento() {
+			return tabelaFinanciamento;
+		}
+
+		public void setTabelaFinanciamento(Integer tabelaFinanciamento) {
+			this.tabelaFinanciamento = tabelaFinanciamento;
+		}
+
+		public String getSinalCarencia() {
+			return sinalCarencia;
+		}
+
+		public void setSinalCarencia(String sinalCarencia) {
+			this.sinalCarencia = sinalCarencia;
+		}
+
+		public Integer getCarencia() {
+			return carencia;
+		}
+
+		public void setCarencia(Integer carencia) {
+			this.carencia = carencia;
+		}
+
+		public FormaPagamento getFormaPagamento() {
+			return formaPagamento;
+		}
+
+		public void setFormaPagamento(FormaPagamento formaPagamento) {
+			this.formaPagamento = formaPagamento;
+		}
+
+		public Date getDataOperacao() {
+			return dataOperacao;
+		}
+
+		public void setDataOperacao(Date dataOperacao) {
+			this.dataOperacao = dataOperacao;
+		}
+
+		public Integer getProduto() {
+			return produto;
+		}
+
+		public void setProduto(Integer produto) {
+			this.produto = produto;
+		}
+
+		public Integer getPrestacoes() {
+			return prestacoes;
+		}
+
+		public void setPrestacoes(Integer prestacoes) {
+			this.prestacoes = prestacoes;
+		}
+
+		public Double getTaxaMensal() {
+			return taxaMensal;
+		}
+
+		public void setTaxaMensal(Double taxaMensal) {
+			this.taxaMensal = taxaMensal;
+		}
+
+		public Double getTaxaAnual() {
+			return taxaAnual;
+		}
+
+		public void setTaxaAnual(Double taxaAnual) {
+			this.taxaAnual = taxaAnual;
+		}
+
+		public Double getValorEntrada() {
+			return valorEntrada;
+		}
+
+		public void setValorEntrada(Double valorEntrada) {
+			this.valorEntrada = valorEntrada;
+		}
+
+		public Integer getTipoPagamento() {
+			return tipoPagamento;
+		}
+
+		public void setTipoPagamento(Integer tipoPagamento) {
+			this.tipoPagamento = tipoPagamento;
+		}
+
+		public Integer getTop() {
+			return top;
+		}
+
+		public void setTop(Integer top) {
+			this.top = top;
+		}
+
+		public Integer getValorTac() {
+			return valorTac;
+		}
+
+		public void setValorTac(Integer valorTac) {
+			this.valorTac = valorTac;
+		}
+
+		public Integer getPagTac() {
+			return pagTac;
+		}
+
+		public void setPagTac(Integer pagTac) {
+			this.pagTac = pagTac;
+		}
+
+		public Integer getValorOperacaoSolicitado() {
+			return valorOperacaoSolicitado;
+		}
+
+		public void setValorOperacaoSolicitado(Integer valorOperacaoSolicitado) {
+			this.valorOperacaoSolicitado = valorOperacaoSolicitado;
+		}
+
+		public Integer getValorTotalFinanciado() {
+			return valorTotalFinanciado;
+		}
+
+		public void setValorTotalFinanciado(Integer valorTotalFinanciado) {
+			this.valorTotalFinanciado = valorTotalFinanciado;
+		}
+
+		public Integer getValorPrestacao() {
+			return valorPrestacao;
+		}
+
+		public void setValorPrestacao(Integer valorPrestacao) {
+			this.valorPrestacao = valorPrestacao;
+		}
+
+		public Date getVencimentoPrimeiraPrestacao() {
+			return vencimentoPrimeiraPrestacao;
+		}
+
+		public void setVencimentoPrimeiraPrestacao(Date vencimentoPrimeiraPrestacao) {
+			this.vencimentoPrimeiraPrestacao = vencimentoPrimeiraPrestacao;
+		}
+
+		public String getDescricaoDoBem() {
+			return descricaoDoBem;
+		}
+
+		public void setDescricaoDoBem(String descricaoDoBem) {
+			this.descricaoDoBem = descricaoDoBem;
+		}
+
+		public Boolean isImprimeCarne() {
+			return imprimeCarne;
+		}
+
+		public void setImprimeCarne(Boolean imprimeCarne) {
+			this.imprimeCarne = imprimeCarne;
+		}
+
+		public String getNumeroPedido() {
+			return numeroPedido;
+		}
+
+		public void setNumeroPedido(String numeroPedido) {
+			this.numeroPedido = numeroPedido;
+		}
+
+		public String getNumeroCd() {
+			return numeroCd;
+		}
+
+		public void setNumeroCd(String numeroCd) {
+			this.numeroCd = numeroCd;
+		}
+
+		public String getCpfVendedor() {
+			return cpfVendedor;
+		}
+
+		public void setCpfVendedor(String cpfVendedor) {
+			this.cpfVendedor = cpfVendedor;
+		}
+
+		public String getTelefoneVendedor() {
+			return telefoneVendedor;
+		}
+
+		public void setTelefoneVendedor(String telefoneVendedor) {
+			this.telefoneVendedor = telefoneVendedor;
+		}
+
+		public Boolean isPrePago() {
+			return prePago;
+		}
+
+		public void setPrePago(Boolean prePago) {
+			this.prePago = prePago;
+		}
+
+		public Boolean isLevaNaHora() {
+			return levaNaHora;
+		}
+
+		public void setLevaNaHora(Boolean levaNaHora) {
+			this.levaNaHora = levaNaHora;
+		}
+
+		public Integer getBetaGama() {
+			return betaGama;
+		}
+
+		public void setBetaGama(Integer betaGama) {
+			this.betaGama = betaGama;
+		}
+
+		public String getPromtor() {
+			return promtor;
+		}
+
+		public void setPromtor(String promtor) {
+			this.promtor = promtor;
+		}
+
+		public Boolean isAceitaConsultaSysBacen() {
+			return aceitaConsultaSysBacen;
+		}
+
+		public void setAceitaConsultaSysBacen(Boolean aceitaConsultaSysBacen) {
+			this.aceitaConsultaSysBacen = aceitaConsultaSysBacen;
+		}
+
+		public Double getCetMensal() {
+			return cetMensal;
+		}
+
+		public void setCetMensal(Double cetMensal) {
+			this.cetMensal = cetMensal;
+		}
+
+		public Double getCetAnual() {
+			return cetAnual;
+		}
+
+		public void setCetAnual(Double cetAnual) {
+			this.cetAnual = cetAnual;
+		}
+
+		public Double getValorIof() {
+			return valorIof;
+		}
+
+		public void setValorIof(Double valorIof) {
+			this.valorIof = valorIof;
+		}
+
+		public Date getDataEvento() {
+			return dataEvento;
+		}
+
+		public void setDataEvento(Date dataEvento) {
+			this.dataEvento = dataEvento;
+		}
+
+		public Integer getValorEntradaLojista() {
+			return valorEntradaLojista;
+		}
+
+		public void setValorEntradaLojista(Integer valorEntradaLojista) {
+			this.valorEntradaLojista = valorEntradaLojista;
+		}
+
+		public String getFiller() {
+			return filler;
+		}
+
 		public void setFiller(String filler) {
 			this.filler = filler;
 		}
