@@ -504,53 +504,39 @@ public class ContextoEntradaSaida {
 	    return new LinkedList<T>();
 	}
 	
-	private static Lido lerLista(String entrada, int position, Class<?> clazz, ListaMapper<BaseMapper> attr) throws MapeamentoNaoEncontrado {
+	@SuppressWarnings("unchecked")
+	private static <T> Lido lerLista(String entrada, int position, Class<T> clazz, ListaMapper<BaseMapper> attr) throws MapeamentoNaoEncontrado {
 		
-		//try {
-			int tamanhoItem = getTamanho(attr.getMapper());
-			int tamanhoLista = attr.getMaxSize() * tamanhoItem;
-			
-			
-			List<Object> newInstance = (List<Object>) criarListPorTipo(clazz);
-	        
-	        for (int i = 0; i < attr.getMaxSize(); i++) {
-			
-	        	int inicioItem = position + (i * tamanhoItem);
-	        	int fimItem = inicioItem + tamanhoItem;
-	        	if(SimpleMapper.class.isInstance(attr.getMapper())) {
+		int tamanhoItem = getTamanho(attr.getMapper());
+		int tamanhoLista = attr.getMaxSize() * tamanhoItem;		
+		
+		List<T> newInstance = criarListPorTipo(clazz);
+        
+        for (int i = 0; i < attr.getMaxSize(); i++) {
+		
+        	int inicioItem = position + (i * tamanhoItem);
+        	int fimItem = inicioItem + tamanhoItem;
+        	if(SimpleMapper.class.isInstance(attr.getMapper())) {
 
-	        		String item = entrada.substring(inicioItem, fimItem);
-	        		if(item.trim().isEmpty()) {
-	        			break;
-	        		}
-	        		
-	        		Lido lido = lerSimples(item, 0, clazz, (SimpleMapper) attr.getMapper());
-	        		newInstance.add(lido.getObject());
-	        	}
-	        	else {
-	        		
-	        	}
-	        	
-			}
-			
-			//Map<String, Field> fieldsBean = getAllFields(bean.getClass());
-			
-			//List<AttrImpl<BaseMapper>> attrs = montarAttrs(attr.getMapper().getMappers(), bean, fieldsBean);
-			//ler(attrs, bean, 0, entrada.substring(position, position + tamanhoBean));
-			//invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), bean);
-			return new Lido(position + tamanhoLista, newInstance);
-		//} 
-		//catch (InstantiationException | IllegalAccessException | SecurityException | ClassNotFoundException e) {
-		/*catch (SecurityException e) {
-			
-			throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getType()) + ".", e);
-		}*/
+        		String item = entrada.substring(inicioItem, fimItem);
+        		if(item.trim().isEmpty()) {
+        			break;
+        		}
+        		
+        		Lido lido = lerSimples(item, 0, clazz, (SimpleMapper) attr.getMapper());
+        		newInstance.add((T)lido.getObject());
+        	}
+        	else {
+        		//TODO: Falta implementar a leitura para beans
+        	}        	
+		}		
+
+		return new Lido(position + tamanhoLista, newInstance);
+
 	}
 
 	private static Lido lerBean(String entrada, int position, Class<?> clazz, BeanMapper attr) throws MapeamentoNaoEncontrado, InstantiationException, IllegalAccessException {
 
-		
-		//try {
 		int tamanhoBean = getTamanho(attr);
 		Object bean = clazz.newInstance();
 		Map<String, Field> fieldsBean = getAllFields(bean.getClass());
@@ -558,28 +544,13 @@ public class ContextoEntradaSaida {
 		List<AttrImpl<BaseMapper>> attrs = montarAttrs(attr.getMappers(), bean, fieldsBean);
 		ler(attrs, bean, 0, entrada.substring(position, position + tamanhoBean));
 		return new Lido(position + tamanhoBean, bean);
-		//invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), bean);
-		/*} 
-		catch (InstantiationException | IllegalAccessException | SecurityException e) {
-			
-			throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getType()) + ".", e);
-		}*/
 	}
 
 	private static Lido lerSimples(String entrada, int position, Class<?> tipo, SimpleMapper attr) throws MapeamentoNaoEncontrado {
 		
-		//try{
-			
-			String in = entrada.substring(position, position + attr.getTamanho());
-			Object valor = AdaptadorTipo.adapters.get(tipo).ler(in, attr);
-			//Object lido = invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), valor);
-			return new Lido(position + attr.getTamanho(), valor);
-		/*}
-		catch (StringIndexOutOfBoundsException | NumberFormatException e) {
-			
-			throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getDeclaringClass()) + ".", e);
-		}*/
-		
+		String in = entrada.substring(position, position + attr.getTamanho());
+		Object valor = AdaptadorTipo.adapters.get(tipo).ler(in, attr);
+		return new Lido(position + attr.getTamanho(), valor);
 	}
 	
 	private static Object invokeGet(Object target, String metodo) throws MapeamentoNaoEncontrado {
