@@ -11,8 +11,10 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface MapLista {
 	
-	MapBean value();
+	MapBean bean() default @MapBean(tamanho = 0);
 	
-	int length();
+	MapAtributo attr() default @MapAtributo(tamanho = 0);
+	
+	int maxSize();
 	
 }

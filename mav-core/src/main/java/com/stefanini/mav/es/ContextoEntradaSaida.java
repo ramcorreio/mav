@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -17,6 +19,26 @@ import org.springframework.util.ClassUtils;
 import com.stefanini.mav.mensagem.Cabecalho;
 
 public class ContextoEntradaSaida {
+	
+	private static class Lido {
+		
+		private int position;
+		
+		private Object object;
+		
+		public Lido(int position, Object object) {
+			this.position = position;
+			this.object = object;
+		}
+		
+		public int getPosition() {
+			return position;
+		}
+		
+		public Object getObject() {
+			return object;
+		}
+	}
 	
 	private static class AttrImpl<T extends BaseMapper> {
 		
@@ -73,6 +95,19 @@ public class ContextoEntradaSaida {
 		public void setMapper(T mapper) {
 			this.mapper = mapper;
 		}
+		
+		@Override
+		public String toString() {
+			StringBuilder b = new StringBuilder();
+			b.append("{");
+			b.append("campo: " + campo.getName());
+			b.append(", ");
+			b.append("mapper: " + mapper);
+			b.append("}");
+			b.append(campo.getName());
+			
+			return b.toString();
+		}
 	}
 	
 	protected static BeanMapper criarBeanMapper(Class<?> tipo, String nome, String path) {
@@ -84,7 +119,16 @@ public class ContextoEntradaSaida {
 		return impl; 
 	}
 	
-	
+	protected static <T extends BaseMapper> ListaMapper<T> criarListaMapper(Class<?> tipo, String nome, String path, int maxSize, T mapper) {
+		
+		ListaMapper<T> sm = new ListaMapper<T>();
+		sm.setNome(nome);
+		sm.setPath(path);
+		sm.setTipo(tipo);
+		sm.setMaxSize(maxSize);
+		sm.setMapper(mapper);
+		return sm;
+	}
 	
 	protected static SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato, String comparador) {
 		
@@ -101,77 +145,6 @@ public class ContextoEntradaSaida {
 		
 		return sm;
 	}
-	
-	/*protected static void criarSubBeanMapper(List<BaseMapper> mappers, String parent, MapAtributo mapper) {
-		
-		
-		String nome = mapper.path().replaceAll(parent.concat("."), "").split("\\.")[0];
-		String path = parent.concat(".").concat(nome);
-		
-		if(mapper.path().contains(".")) {
-			
-			BeanMapper impl = new BeanMapper();
-			impl.setNome(nome);
-			impl.setPath(path);
-			
-			if(!mappers.contains(impl)) {
-			
-				mappers.add(impl);
-				System.out.println("no bean");
-			}
-			else {
-				impl = (BeanMapper) mappers.get(mappers.indexOf(impl));
-				System.out.println("bean ok");
-			}
-			
-			
-			criarSubBeanMapper(impl.getMappers(), nome, mapper);
-		}
-		else {
-			mappers.add(criarSimpleMapper(
-					nome,
-					path, 
-					mapper.tamanho(), 
-					mapper.obrigatorio(), 
-					mapper.scale(), 
-					mapper.trim(), 
-					mapper.formato()));
-		}
-		System.out.println();
-	}*/
-	
-	/*protected static BeanMapper criarBeanMapper(String nome, String path, MapAtributo[] mappers) {
-		
-		BeanMapper impl = new BeanMapper();
-		impl.setNome(nome);
-		impl.setPath(path);
-		impl.setPath(path);
-		//System.out.println(path);
-		
-		//List<Mapper> beansMapper = new LinkedList<>();
-		
-		for (MapAtributo mapper : mappers) {
-			//System.out.println(mapper);
-			if(mapper.path().contains(".")) {
-				
-				//impl.getMappers().add(criarSubBeanMapper(impl, mapper));
-				//beansMapper.add(mapper);
-			}
-			else {
-				
-				impl.getMappers().add(criarSimpleMapper(
-					nome,
-					mapper.path(), 
-					mapper.tamanho(), 
-					mapper.obrigatorio(), 
-					mapper.scale(), 
-					mapper.trim(), 
-					mapper.formato()));
-			}
-		}
-		
-		return impl;
-	}*/
 	
 	protected static MapAtributo criarMapper(final Class<? extends Annotation> annotationType, final String path, final int tamanho, final boolean obrigatorio, final int scale, final boolean trim, final String formato, final String comparador) {
 		
@@ -225,12 +198,12 @@ public class ContextoEntradaSaida {
 		};
 	}
 	
-	protected static <T> List<BaseMapper> getListaMapper(Class<T> clazz) {
+	protected static <T> List<BaseMapper> getListaMapper(Class<T> clazz) throws MapeamentoNaoEncontrado {
 		
 		return getListaMapper("", clazz);
 	}
 	
-	protected static <T> List<BaseMapper> getListaMapper(String parent, Class<T> clazz) {
+	protected static <T> List<BaseMapper> getListaMapper(String parent, Class<T> clazz) throws MapeamentoNaoEncontrado {
 		
 		List<BaseMapper> mappers = new LinkedList<>();
 		Collection<Field> fields = getAllFields(clazz, false).values();
@@ -240,26 +213,73 @@ public class ContextoEntradaSaida {
 			if(field.isAnnotationPresent(MapAtributo.class)) {
 				
 				MapAtributo map = field.getAnnotation(MapAtributo.class);
-				mappers.add(criarSimpleMapper(
-					field.getType(),
-					field.getName(),
-					parent.concat(field.getName()), 
-					map.tamanho(), 
-					map.obrigatorio(), 
-					map.scale(), 
-					map.trim(), 
-					map.formato(),
-					map.comparador()));
+				mappers.add(criarSimpleMapper0(field.getType(), field.getName(), parent.concat(field.getName()), map));
 			}
 			else if(field.isAnnotationPresent(MapBean.class)) {
 				
-				BeanMapper impl = criarBeanMapper(field.getType(), field.getName(), field.getName());
+				BeanMapper impl = criarBeanMapper(field.getType(), field.getName(), parent.concat(field.getName()));
 				impl.getMappers().addAll(getListaMapper(parent.concat(field.getName()).concat("."), field.getType()));
 				mappers.add(impl);
+			}
+			else if(field.isAnnotationPresent(MapLista.class)) {
+				
+				MapLista map = field.getAnnotation(MapLista.class);
+				if(map.attr().tamanho() > 0) {
+					
+					SimpleMapper sm = criarSimpleMapper0(getGenericClass(field), "[]", parent.concat(field.getName()).concat("[]"), map.attr());
+					mappers.add(criarListaMapper(field.getType(), field.getName(), parent.concat(field.getName()), map.maxSize(), sm));
+					
+				}
+				else if(map.bean().tamanho() > 0) {
+					
+					BeanMapper impl = criarBeanMapper(getGenericClass(field), "[]", parent.concat(field.getName()).concat("[]"));
+					mappers.add(criarListaMapper(field.getType(), field.getName(), field.getName(), map.maxSize(), impl));
+				}
+				else {
+					
+					throw new MapeamentoNaoEncontrado(atributoClasse(field.getName(), clazz));
+				}
 			}
 		}
 		
 		return mappers;
+	}
+
+	/**
+	 * @param <T>
+	 * @param field
+	 * @return
+	 * @throws MapeamentoNaoEncontrado 
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T> Class<T> getGenericClass(Field field) throws MapeamentoNaoEncontrado {
+		
+		Type type = ParameterizedType.class.cast(field.getGenericType()).getActualTypeArguments()[0];
+		try {
+			return (Class<T>) Class.forName(type.getTypeName());
+		} catch (ClassNotFoundException e) {
+			throw new MapeamentoNaoEncontrado(atributoClasse(field.getName(), field.getType()));
+		}
+	}
+
+	/**
+	 * @param parent
+	 * @param field
+	 * @param map
+	 * @return
+	 */
+	private static SimpleMapper criarSimpleMapper0(Class<?> tipo, String nome, String path, MapAtributo map) {
+		
+		return criarSimpleMapper(
+			tipo,
+			nome,
+			path, 
+			map.tamanho(), 
+			map.obrigatorio(), 
+			map.scale(), 
+			map.trim(), 
+			map.formato(),
+			map.comparador());
 	}
 	
 	protected static <T> Map<String, Field> getAllFields(Class<T> clazz) {
@@ -277,9 +297,9 @@ public class ContextoEntradaSaida {
 		return clazz.isEnum()
 				|| clazz.equals(Date.class) 
 				|| clazz.equals(String.class) 
-				|| ClassUtils.isPrimitiveOrWrapper(clazz) 
+				|| ClassUtils.isPrimitiveOrWrapper(clazz)/* 
 				|| ClassUtils.isPrimitiveArray(clazz) 
-				|| ClassUtils.isPrimitiveWrapperArray(clazz);
+				|| ClassUtils.isPrimitiveWrapperArray(clazz)*/;
 		
 	}
 	
@@ -449,53 +469,116 @@ public class ContextoEntradaSaida {
 		
 		for (AttrImpl<T> attr : attrs) {
 			
-			if(AdaptadorTipo.adapters.get(attr.getCampo().getType()) == null) {
-			
-				position = lerBean(entrada, instance, position, (AttrImpl<BeanMapper>) attr);
-			}
-			else {
+			try {	
+				Lido lido;
+				if(AdaptadorTipo.adapters.get(attr.getCampo().getType()) == null) {
 				
-				position = lerSimples(entrada, instance, position, (AttrImpl<SimpleMapper>) attr);	
+					if(BeanMapper.class.isInstance(attr.getMapper())) {
+						lido = lerBean(entrada, position, attr.getCampo().getType(), (BeanMapper) attr.getMapper());	
+					}
+					else {
+						Class<?> genericClass = getGenericClass(attr.getCampo());
+						lido = lerLista(entrada, position, genericClass, (ListaMapper<BaseMapper>) attr.getMapper());
+					}
+				}
+				else {
+					lido = lerSimples(entrada, position, attr.getCampo().getType(), (SimpleMapper) attr.getMapper());
+				}
+				
+				position = lido.getPosition();
+				invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), lido.getObject());
+			}
+			catch (StringIndexOutOfBoundsException | NumberFormatException | InstantiationException | IllegalAccessException | SecurityException e) {
+					
+					//throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getType()) + ".", e);
+				//}
+				throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getDeclaringClass()) + ".", e);
 			}
 		}
+		
 		
 		return position;
 	}
-
-	private static <T> int lerBean(String entrada, Object instance, int position, AttrImpl<BeanMapper> attr) throws MapeamentoNaoEncontrado {
-
-		int tamanhoBean = getTamanho(attr.getMapper());
-		try {
-			
+	
+	public static <T> List<T> criarListPorTipo(Class<T> type) {
+	    return new LinkedList<T>();
+	}
+	
+	private static Lido lerLista(String entrada, int position, Class<?> clazz, ListaMapper<BaseMapper> attr) throws MapeamentoNaoEncontrado {
 		
-			Object bean = attr.getCampo().getType().newInstance();			
-			Map<String, Field> fieldsBean = getAllFields(bean.getClass());
+		//try {
+			int tamanhoItem = getTamanho(attr.getMapper());
+			int tamanhoLista = attr.getMaxSize() * tamanhoItem;
 			
-			List<AttrImpl<BaseMapper>> attrs = montarAttrs(attr.getMapper().getMappers(), bean, fieldsBean);
-			ler(attrs, bean, 0, entrada.substring(position, position + tamanhoBean));
-			invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), bean);
-		} 
+			
+			List<Object> newInstance = (List<Object>) criarListPorTipo(clazz);
+	        
+	        for (int i = 0; i < attr.getMaxSize(); i++) {
+			
+	        	int inicioItem = position + (i * tamanhoItem);
+	        	int fimItem = inicioItem + tamanhoItem;
+	        	if(SimpleMapper.class.isInstance(attr.getMapper())) {
+
+	        		String item = entrada.substring(inicioItem, fimItem);
+	        		if(item.trim().isEmpty()) {
+	        			break;
+	        		}
+	        		
+	        		Lido lido = lerSimples(item, 0, clazz, (SimpleMapper) attr.getMapper());
+	        		newInstance.add(lido.getObject());
+	        	}
+	        	else {
+	        		
+	        	}
+	        	
+			}
+			
+			//Map<String, Field> fieldsBean = getAllFields(bean.getClass());
+			
+			//List<AttrImpl<BaseMapper>> attrs = montarAttrs(attr.getMapper().getMappers(), bean, fieldsBean);
+			//ler(attrs, bean, 0, entrada.substring(position, position + tamanhoBean));
+			//invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), bean);
+			return new Lido(position + tamanhoLista, newInstance);
+		//} 
+		//catch (InstantiationException | IllegalAccessException | SecurityException | ClassNotFoundException e) {
+		/*catch (SecurityException e) {
+			
+			throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getType()) + ".", e);
+		}*/
+	}
+
+	private static Lido lerBean(String entrada, int position, Class<?> clazz, BeanMapper attr) throws MapeamentoNaoEncontrado, InstantiationException, IllegalAccessException {
+
+		
+		//try {
+		int tamanhoBean = getTamanho(attr);
+		Object bean = clazz.newInstance();
+		Map<String, Field> fieldsBean = getAllFields(bean.getClass());
+		
+		List<AttrImpl<BaseMapper>> attrs = montarAttrs(attr.getMappers(), bean, fieldsBean);
+		ler(attrs, bean, 0, entrada.substring(position, position + tamanhoBean));
+		return new Lido(position + tamanhoBean, bean);
+		//invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), bean);
+		/*} 
 		catch (InstantiationException | IllegalAccessException | SecurityException e) {
 			
 			throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getType()) + ".", e);
-		}
-		
-		return position + tamanhoBean;
+		}*/
 	}
 
-	private static int lerSimples(String entrada, Object instance, int position, AttrImpl<SimpleMapper> attr) throws MapeamentoNaoEncontrado {
+	private static Lido lerSimples(String entrada, int position, Class<?> tipo, SimpleMapper attr) throws MapeamentoNaoEncontrado {
 		
-		try{
+		//try{
 			
-			String in = entrada.substring(position, position + attr.getMapper().getTamanho());
-			Object valor = AdaptadorTipo.adapters.get(attr.getCampo().getType()).ler(in, attr.getMapper());
-			invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), valor);
-			return position + attr.getMapper().getTamanho();
-		}
+			String in = entrada.substring(position, position + attr.getTamanho());
+			Object valor = AdaptadorTipo.adapters.get(tipo).ler(in, attr);
+			//Object lido = invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), valor);
+			return new Lido(position + attr.getTamanho(), valor);
+		/*}
 		catch (StringIndexOutOfBoundsException | NumberFormatException e) {
 			
 			throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getDeclaringClass()) + ".", e);
-		}
+		}*/
 		
 	}
 	
@@ -529,6 +612,11 @@ public class ContextoEntradaSaida {
 		if(SimpleMapper.class.isInstance(contar)) {
 			
 			return SimpleMapper.class.cast(contar).getTamanho();
+		}
+		else if(ListaMapper.class.isInstance(contar)) {
+			
+			ListaMapper<?> mapper = ListaMapper.class.cast(contar);
+			return mapper.getMaxSize() * getTamanho(mapper.getMapper());
 		}
 		else {
 			

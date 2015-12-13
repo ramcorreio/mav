@@ -56,6 +56,8 @@ public abstract class BaseMapper {
 		StringBuilder b = new StringBuilder();
 		b.append("nome: " + nome);
 		b.append(", ");
+		b.append("tipo: " + tipo.getSimpleName());
+		b.append(", ");
 		b.append("path: " + path);
 		return b.toString();
 	}

@@ -17,6 +17,8 @@ public class BeanMapper extends BaseMapper {
 		StringBuilder b = new StringBuilder();
 		b.append("{");
 		b.append(super.toString());
+		b.append(", ");
+		b.append("mappers: " + mappers);
 		b.append("}");
 		
 		return b.toString();

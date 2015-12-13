@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.util.LinkedList;
 
 import org.exparity.hamcrest.BeanMatchers;
 import org.hamcrest.MatcherAssert;
@@ -992,28 +993,72 @@ public class MensagemFactoryTest {
 		esperado.setValorPrestacao(9920);
 		
 		
-		//DADOS PARA IMPRESSÃO DE CARNÊ					
-		//0422 a 0451	Nome_Cedente	30	A	Nome do Cedente 	
-		//0452 a 0453	Especie_Doc	2	A	Especie do Documento	
-		//0454 a 0454	Aceite	1	A	Identificação do aceite Default=N	
-		//0455 a 0457	CIP	3	A	CIP	
-		//0458 a 0460	Carteira	3	A	Tipo de cobrança	
-		//0461 a 0465	Especie	5	A	Tipo de Moeda	
-		//0466 a 0480	Quantidade	15	N	Quantidade relacionada a especie de moeda (cinco (5) decimais)	
-		//0481 a 0495	Valor_Mora_Dia	15	N	Valor do juros de mora expresso em quantidade de moeda (2) decimais)	
-		//0496 a 0510	Val_A_Pagar	15	N	Valor da parcela a pagar com os encargos	
-		//0511 a 0513	Banco	3	N	Codigo do Banco	
-		//0514 a 0517	Agencia_Cedente	4	N	Codigo da Agencia	
-		//0518 a 0518	Agencia_Digito_Cedente	1	A	Digito verificador da Agencia	
-		//0519 a 0525	Codigo_Cedente	7	N	Número da conta do cedente	
-		//0526 a 0526	Digito_Cedente	1	A	Digito verificador da C.C. do cedente	
-		//0527 a 0606	Msg_01	80	A	Campo de Instrução	
-		//0607 a 0686	Msg_02	80	A	Campo de Instrução	
-		//0687 a 0766	Msg_03	80	A	Campo de Instrução	
-		//0767 a 0846	Msg_04	0080	A	Campo de Instrução	
-		//0847 a 0926	Msg_05	0080	A	Campo de Instrução	
-		//0927 a 1006	Msg_06	0080	A	Campo de Instrução	
-		//1007 a 1086	Filler	80	A		
+		//DADOS PARA IMPRESSÃO DE CARNÊ
+		esperado.setDadosImpressao(new RespostaPropostaFinanciamento.DadoCarne());
+		
+		//0422 a 0451	Nome_Cedente	30	A	Nome do Cedente
+		esperado.getDadosImpressao().setNomeCedente("HSBC Finance Brasil S.A.");
+		
+		//0452 a 0453	Especie_Doc	2	A	Especie do Documento
+		esperado.getDadosImpressao().setEspecieDocumento("CS");
+		
+		//0454 a 0454	Aceite	1	A	Identificação do aceite Default=N
+		esperado.getDadosImpressao().setAceite(false);
+		
+		//0455 a 0457	CIP	3	A	CIP
+		esperado.getDadosImpressao().setCip("775");
+		
+		//0458 a 0460	Carteira	3	A	Tipo de cobrança
+		esperado.getDadosImpressao().setCarteira("006");
+		
+		//0461 a 0465	Especie	5	A	Tipo de Moeda
+		esperado.getDadosImpressao().setEspecie("REAL");
+		
+		//0466 a 0480	Quantidade	15	N	Quantidade relacionada a especie de moeda (cinco (5) decimais)
+		esperado.getDadosImpressao().setQuantidade(0.0);
+		
+		//0481 a 0495	Valor_Mora_Dia	15	N	Valor do juros de mora expresso em quantidade de moeda (2) decimais)
+		esperado.getDadosImpressao().setValorMoraDia(0.21);
+		
+		//0496 a 0510	Val_A_Pagar	15	N	Valor da parcela a pagar com os encargos
+		esperado.getDadosImpressao().setValorPagar(9920);
+		
+		//0511 a 0513	Banco	3	N	Codigo do Banco
+		esperado.getDadosImpressao().setBanco(237);
+		
+		//0514 a 0517	Agencia_Cedente	4	N	Codigo da Agencia
+		esperado.getDadosImpressao().setAgenciaCedente(2372);
+		
+		//0518 a 0518	Agencia_Digito_Cedente	1	A	Digito verificador da Agencia
+		esperado.getDadosImpressao().setDvAgenciaCedente("8");
+		
+		//0519 a 0525	Codigo_Cedente	7	N	Número da conta do cedente
+		esperado.getDadosImpressao().setCodigoCedente(886);
+		
+		//0526 a 0526	Digito_Cedente	1	A	Digito verificador da C.C. do cedente
+		esperado.getDadosImpressao().setDigitoCedente("9");
+		
+		esperado.getDadosImpressao().setMensagens(new LinkedList<String>());
+		//0527 a 0606	Msg_01	80	A	Campo de Instrução
+		esperado.getDadosImpressao().getMensagens().add("APOS VENCIMENTO, PAGUE NO BRADESCO");
+		
+		//0607 a 0686	Msg_02	80	A	Campo de Instrução
+		esperado.getDadosImpressao().getMensagens().add("INCIDIRA MULTA DE 0.00 % SOBRE VALOR TOTAL");
+		
+		//0687 a 0766	Msg_03	80	A	Campo de Instrução
+		esperado.getDadosImpressao().getMensagens().add("TOP 01 PARCELA ?/10MAGAZINE LUIZA SA / Cod Lojista: 170894002");
+		
+		//0767 a 0846	Msg_04	0080	A	Campo de Instrução
+		esperado.getDadosImpressao().getMensagens().add("END: R JOSE LOUREIRO, 711 - LJ 1/2 CENTRO CURITIBA PR 80010000");
+		
+		//0847 a 0926	Msg_05	0080	A	Campo de Instrução
+		//sem mensagens
+		
+		//0927 a 1006	Msg_06	0080	A	Campo de Instrução
+		//sem mensagens
+		
+		//1007 a 1086	Filler	80	A
+		esperado.getDadosImpressao().setFiller(AdaptadorTipo.escreverString(80, " "));
 		
 		assertThat(m, BeanMatchers.theSameAs(esperado));
 
