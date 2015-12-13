@@ -2,7 +2,7 @@ package com.stefanini.mav.mensagem;
 
 import com.stefanini.mav.es.MapAtributo;
 
-public class Endereco {
+public class EnderecoTp1 {
 
 	@MapAtributo(tamanho = 40)
 	private String logradouro;

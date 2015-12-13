@@ -402,7 +402,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo
 		private String usuarioCpf;
 		
-		@MapAtributo(tamanho = 1)
+		@MapAtributo
 		private String correspondencia;	
 		
 		@MapBean
@@ -445,15 +445,15 @@ public class PropostaFinanciamento extends MensagemBasica {
 		private Integer estadoCivil;
 		
 		@MapBean
-		private Endereco enderecoResidencial;
+		private EnderecoTp1 enderecoResidencial;
 		
 		@MapBean
 		private TelefoneRamal telefoneResidencial;
 		
-		@MapAtributo(tamanho = 1)
+		@MapAtributo
 		private Integer tipoTelefone;
 		
-		@MapAtributo(tamanho = 1)
+		@MapAtributo
 		private Integer tipoResidencia;
 		
 		@MapAtributo(tamanho = 6, formato = "MMyyyy")
@@ -490,7 +490,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		private String origemPatrimonio;
 		
 		@MapAtributo(tamanho = 33, trim = false)
-		private String fillerDados;
+		private String filler;
 
 		public String getTipoPersonalidadede() {
 			return tipoPersonalidadede;
@@ -628,11 +628,11 @@ public class PropostaFinanciamento extends MensagemBasica {
 			this.estadoCivil = estadoCivil;
 		}
 
-		public Endereco getEnderecoResidencial() {
+		public EnderecoTp1 getEnderecoResidencial() {
 			return enderecoResidencial;
 		}
 
-		public void setEnderecoResidencial(Endereco enderecoResidencial) {
+		public void setEnderecoResidencial(EnderecoTp1 enderecoResidencial) {
 			this.enderecoResidencial = enderecoResidencial;
 		}
 
@@ -748,12 +748,12 @@ public class PropostaFinanciamento extends MensagemBasica {
 			this.origemPatrimonio = origemPatrimonio;
 		}
 
-		public String getFillerDados() {
-			return fillerDados;
+		public String getFiller() {
+			return filler;
 		}
-
-		public void setFillerDados(String fillerDados) {
-			this.fillerDados = fillerDados;
+		
+		public void setFiller(String filler) {
+			this.filler = filler;
 		}
 	}
 	
@@ -800,7 +800,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		private String empresa;
 		
 		@MapBean
-		private Endereco endereco;
+		private EnderecoTp1 endereco;
 		
 		@MapBean
 		private TelefoneRamal telefone;
@@ -860,11 +860,11 @@ public class PropostaFinanciamento extends MensagemBasica {
 			this.empresa = empresa;
 		}
 
-		public Endereco getEndereco() {
+		public EnderecoTp1 getEndereco() {
 			return endereco;
 		}
 
-		public void setEndereco(Endereco endereco) {
+		public void setEndereco(EnderecoTp1 endereco) {
 			this.endereco = endereco;
 		}
 
@@ -1051,7 +1051,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		private Date dataAdmissao;
 		
 		@MapBean
-		private Endereco endereco;
+		private EnderecoTp1 endereco;
 		
 		@MapBean
 		private TelefoneRamal telefone;
@@ -1161,11 +1161,11 @@ public class PropostaFinanciamento extends MensagemBasica {
 			this.dataAdmissao = dataAdmissao;
 		}
 
-		public Endereco getEndereco() {
+		public EnderecoTp1 getEndereco() {
 			return endereco;
 		}
 
-		public void setEndereco(Endereco endereco) {
+		public void setEndereco(EnderecoTp1 endereco) {
 			this.endereco = endereco;
 		}
 

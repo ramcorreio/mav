@@ -238,7 +238,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosPessoais().setCtpsSerie("00000");
 		esperado.getDadosPessoais().setEstadoCivil(1);
 		
-		esperado.getDadosPessoais().setEnderecoResidencial(new Endereco());
+		esperado.getDadosPessoais().setEnderecoResidencial(new EnderecoTp1());
 		esperado.getDadosPessoais().getEnderecoResidencial().setLogradouro("RUA ITAQUERA");
 		esperado.getDadosPessoais().getEnderecoResidencial().setNumero("68");
 		esperado.getDadosPessoais().getEnderecoResidencial().setComplemento("");
@@ -281,7 +281,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosPessoais().setEmancipado(false);
 		
 		esperado.getDadosPessoais().setOrigemPatrimonio("");
-		esperado.getDadosPessoais().setFillerDados(AdaptadorTipo.escreverString(33, " "));
+		esperado.getDadosPessoais().setFiller(AdaptadorTipo.escreverString(33, " "));
 		
 		
 		esperado.setDadosProfissionais(new PropostaFinanciamento.DadoProfissional());
@@ -291,7 +291,7 @@ public class MensagemFactoryTest {
 		//0634 a 0663	Empresa	30	A	Empresa Em Que Trabalha o Cliente                              		X
 		esperado.getDadosProfissionais().setEmpresa("JV TUBOS E ACABAMENTOS");
 		
-		esperado.getDadosProfissionais().setEndereco(new Endereco());
+		esperado.getDadosProfissionais().setEndereco(new EnderecoTp1());
 		//0664 a 0703	Logradouro	40	A	Logradouro onde Trabalha o Cliente		X
 		esperado.getDadosProfissionais().getEndereco().setLogradouro("RUA JOAQUIM MURTINHO");
 		
@@ -401,7 +401,7 @@ public class MensagemFactoryTest {
 		//1057 a 1064	Data  Admissão	8	N	Data da Admissão na Empresa		X. Se conjuge compoe renda = 1
 		esperado.getDadosConjuge().setDataAdmissao(null);
 		
-		esperado.getDadosConjuge().setEndereco(new Endereco());
+		esperado.getDadosConjuge().setEndereco(new EnderecoTp1());
 		//1065 a 1104	Logradouro	40	A	Logradouro do trabalho do conjuge		X. Se conjuge compoe renda = 1
 		//1105 a 1109	Numero	5	A	Numero do Logradouro		X. Se conjuge compoe renda = 1
 		//1110 a 1124	Complemento	15	A	Complemento do Logradouro
@@ -1059,6 +1059,102 @@ public class MensagemFactoryTest {
 		
 		//1007 a 1086	Filler	80	A
 		esperado.getDadosImpressao().setFiller(AdaptadorTipo.escreverString(80, " "));
+		
+		
+		//validação de dados pessoais
+		esperado.setDadosCliente(new RespostaPropostaFinanciamento.DadoCliente());
+		esperado.getDadosCliente().setNome("PROPOSTA TESTE");
+		esperado.getDadosCliente().setTipoPersonalidadeCpf("F");
+		esperado.getDadosCliente().setCpf("00000000000191");
+		esperado.getDadosCliente().setCorrespondencia("1");
+		esperado.getDadosCliente().setIdentidade(new Documento());
+		esperado.getDadosCliente().getIdentidade().setAttr(new DocumentoAttr());
+		esperado.getDadosCliente().getIdentidade().setNumero("201570496  0");
+		esperado.getDadosCliente().getIdentidade().getAttr().setTipo("01");
+		esperado.getDadosCliente().getIdentidade().getAttr().setOrgaoEmissor("SSP");
+		esperado.getDadosCliente().getIdentidade().getAttr().setUfOrgaoEmissor("MS");
+		esperado.getDadosCliente().getIdentidade().getAttr().setDataEmissao(UtilsDate.parse("06072001", UtilsDate.FormatadorData.DATA));
+		
+		esperado.getDadosCliente().setConjugeCompoeRenda(false);
+		esperado.getDadosCliente().setLocalNascimento("CAMPO GRANDE");
+		esperado.getDadosCliente().setDataNascimento(UtilsDate.parse("20101944", UtilsDate.FormatadorData.DATA));
+		esperado.getDadosCliente().setSexo("F");
+		esperado.getDadosCliente().setNacionalidade(0);
+		esperado.getDadosCliente().setNaturalidade("MATO GROSSO DO");
+		esperado.getDadosCliente().setNomeDaMae("MARIA DO CARMO PINHEIRO NE");
+		esperado.getDadosCliente().setNomeDoPai("LEANDRO NE");
+		esperado.getDadosCliente().setCtps(0);
+		esperado.getDadosCliente().setSerieCtps("00000");
+		esperado.getDadosCliente().setEstadoCivil(1);
+		
+		esperado.getDadosCliente().setEnderecoResidencia(new EnderecoTp2());
+		esperado.getDadosCliente().getEnderecoResidencia().setLogradouro("RUA ITAQUERA");
+		esperado.getDadosCliente().getEnderecoResidencia().setNumero("68");
+		esperado.getDadosCliente().getEnderecoResidencia().setComplemento("");
+		esperado.getDadosCliente().getEnderecoResidencia().setBairro("FLAMBOYANT");
+		esperado.getDadosCliente().getEnderecoResidencia().setCidade("CAMPO GRANDE");
+		esperado.getDadosCliente().getEnderecoResidencia().setUf("RJ");
+		esperado.getDadosCliente().getEnderecoResidencia().setCep(20765070);
+		
+		esperado.getDadosCliente().setTelefoneResidencia(new TelefoneRamal());
+		esperado.getDadosCliente().getTelefoneResidencia().setDdd(67);
+		esperado.getDadosCliente().getTelefoneResidencia().setNumero(30264981);
+		esperado.getDadosCliente().getTelefoneResidencia().setRamal(0);
+		
+		esperado.getDadosCliente().setTipoTelefone(1);
+		esperado.getDadosCliente().setTipoResidencia(1);
+		
+		esperado.getDadosCliente().setDataAdmissao(null);
+		esperado.getDadosCliente().setEmpresa("JV TUBOS E ACABAMENTOS");
+		esperado.getDadosCliente().setEnderecoTrabalho(new EnderecoTp2());
+		esperado.getDadosCliente().getEnderecoTrabalho().setLogradouro("RUA JOAQUIM MURTINHO");
+		esperado.getDadosCliente().getEnderecoTrabalho().setNumero("04665");
+		esperado.getDadosCliente().getEnderecoTrabalho().setComplemento("");
+		esperado.getDadosCliente().getEnderecoTrabalho().setBairro("CIDADE MORENA");
+		esperado.getDadosCliente().getEnderecoTrabalho().setCidade("CAMPO GRANDE");
+		esperado.getDadosCliente().getEnderecoTrabalho().setUf("MS");
+		esperado.getDadosCliente().getEnderecoTrabalho().setCep(79041904);
+		
+		esperado.getDadosCliente().setTelefoneTrabalho(new TelefoneRamal());
+		esperado.getDadosCliente().getTelefoneTrabalho().setDdd(67);
+		esperado.getDadosCliente().getTelefoneTrabalho().setNumero(33481881);
+		esperado.getDadosCliente().getTelefoneTrabalho().setRamal(0);
+		
+		esperado.getDadosCliente().setValorRendaLiquida(130000);
+		esperado.getDadosCliente().setCargo("ADVOGADA");
+		esperado.getDadosCliente().setProfissao("ASSALARIADO COM CART");
+		esperado.getDadosCliente().setAposentado(false);
+		esperado.getDadosCliente().setPensionista(false);
+		esperado.getDadosCliente().setUsoExclusivoLosango("3");
+		esperado.getDadosCliente().setResideDesde(null);
+		
+		esperado.getDadosCliente().setCelular(new Telefone());
+		esperado.getDadosCliente().getCelular().setDdd(67);
+		esperado.getDadosCliente().getCelular().setNumero(92169260);
+		
+		
+		esperado.getDadosCliente().setEmail("TPNE@HOTMAIL.COM");
+		esperado.getDadosCliente().setOrgaoBeneficio("");
+		esperado.getDadosCliente().setNumeroBeneficio("");
+		esperado.getDadosCliente().setPossuiPatrimonio(false);
+		esperado.getDadosCliente().setPatrimonio("      00000000000      00000000000      00000000000      00000000000");
+		esperado.getDadosCliente().setFillerPatrimonio(" ");
+		
+		esperado.getDadosCliente().setCodigoPais("");
+		esperado.getDadosCliente().setCodigoUfNaturalidade("MS");
+		esperado.getDadosCliente().setDataComprovanteRenda(UtilsDate.parse("062015", UtilsDate.FormatadorData.DATA_CURTA));
+		esperado.getDadosCliente().setTipoComprovante("H");
+		esperado.getDadosCliente().setOcupacaoNova("03");
+		esperado.getDadosCliente().setDataVencimentoDocumentoIdentificacao(null);
+		
+		esperado.getDadosCliente().setCnpj("00000000000000");
+		esperado.getDadosCliente().setEmancipado(false);
+		esperado.getDadosCliente().setOrigemPatrimonio("");
+		esperado.getDadosCliente().setFiller(AdaptadorTipo.escreverString(9, " "));
+		
+		
+		//DADOS DO CÔNJUGE				
+
 		
 		assertThat(m, BeanMatchers.theSameAs(esperado));
 
