@@ -217,7 +217,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosPessoais().setCpf("00000000000191");
 		esperado.getDadosPessoais().setUsuarioCpf("T");
 		esperado.getDadosPessoais().setCorrespondencia("1");
-		esperado.getDadosPessoais().setIdentificacao(new Documento());
+		esperado.getDadosPessoais().setIdentificacao(new DocumentoTp1());
 		esperado.getDadosPessoais().getIdentificacao().setAttr(new DocumentoAttr());
 		esperado.getDadosPessoais().getIdentificacao().setNumero("201570496  0");
 		esperado.getDadosPessoais().getIdentificacao().getAttr().setTipo("01");
@@ -378,7 +378,7 @@ public class MensagemFactoryTest {
 		//0994 a 1004	CPF	11	N	CPF do Cônjuge		X. Se conjuge compoe renda = 1
 		esperado.getDadosConjuge().setCpf("00000000000");
 		
-		esperado.getDadosConjuge().setIdentidade(new DocumentoConjuge());
+		esperado.getDadosConjuge().setIdentidade(new DocumentoTp2());
 		esperado.getDadosConjuge().getIdentidade().setAttr(new DocumentoAttr());
 		//1005 a 1014	Identidade / RG	10	A	Número da Identidade do Cônjuge		X. Se conjuge compoe renda = 1
 		esperado.getDadosConjuge().getIdentidade().setNumero("");
@@ -1067,7 +1067,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosCliente().setTipoPersonalidadeCpf("F");
 		esperado.getDadosCliente().setCpf("00000000000191");
 		esperado.getDadosCliente().setCorrespondencia("1");
-		esperado.getDadosCliente().setIdentidade(new Documento());
+		esperado.getDadosCliente().setIdentidade(new DocumentoTp1());
 		esperado.getDadosCliente().getIdentidade().setAttr(new DocumentoAttr());
 		esperado.getDadosCliente().getIdentidade().setNumero("201570496  0");
 		esperado.getDadosCliente().getIdentidade().getAttr().setTipo("01");
@@ -1153,7 +1153,72 @@ public class MensagemFactoryTest {
 		esperado.getDadosCliente().setFiller(AdaptadorTipo.escreverString(9, " "));
 		
 		
-		//DADOS DO CÔNJUGE				
+		//DADOS DO CÔNJUGE
+		esperado.setDadosConjuge(new RespostaPropostaFinanciamento.DadoConjuge());
+		//1848 a 1877	Nome Do Cônjuge	30	A	Nome do Cônjuge do Cliente
+		esperado.getDadosConjuge().setNome("");
+		
+		//1878 a 1917	Local de Nascimento	40	A
+		esperado.getDadosConjuge().setLocalNascimento("");
+		
+		//1918 a 1925	Data de Nascimento	8	N	Data nascimento do cônjuge
+		esperado.getDadosConjuge().setDataAdmissao(null);
+		
+		//1926 a 1936	CPF	11	N	CPF do Cônjuge	
+		esperado.getDadosConjuge().setCpf("00000000000");
+		
+		esperado.getDadosConjuge().setIdentidade(new DocumentoTp2());;
+		esperado.getDadosConjuge().getIdentidade().setAttr(new DocumentoAttr());
+		//1937 a 1946	Identidade	10	A	Número da Identidade do Cônjuge
+		esperado.getDadosConjuge().getIdentidade().setNumero("0000000000");
+		
+		//1947 a 1948	Tipo de Documento	2	A
+		esperado.getDadosConjuge().getIdentidade().getAttr().setTipo("");
+		
+		//1949 a 1953	Órgão Emissor	5	A	Órgão Emissor do Documento de Identidade do Cônjuge	Ver tabela de dominio
+		esperado.getDadosConjuge().getIdentidade().getAttr().setOrgaoEmissor("");
+		
+		//1954 a 1955	UF Órgão Emissor	2	A
+		esperado.getDadosConjuge().getIdentidade().getAttr().setUfOrgaoEmissor("");
+		
+		//1956 a 1963	Data Emissão	8	N	Data de emissão da identidade
+		esperado.getDadosConjuge().getIdentidade().getAttr().setDataEmissao(null);
+		
+		//1964 a 1988	Empresa 	25	A	Empresa Em Que o Cônjuge Trabalha	
+		esperado.getDadosConjuge().setEmpresa("");
+		
+		//1989 a 1996	Data  Admissão	8	N	Data da Admissão Na Empresa	
+		//1997 a 2036	Logradouro	40	A	Endereço Comercial do Cônjuge	
+		//2037 a 2041	Numero	5	A		
+		//2042 a 2056	Complemento	15	A		
+		//2057 a 2071	Bairro	15	A	Bairro onde trabalha o cônjuge	
+		//2072 a 2086	Cidade	15	A	Cidade Onde Trabalha o cônjuge	
+		//2087 a 2088	UF	2	A	Abreviatura da Unidade Federativa 	
+		//2089 a 2096	CEP	8	N	CEP do endereço comercial do cônjuge	
+		//2097 a 2099	DDD	3	N	DDD da Cidade Onde Trabalha o cônjuge	
+		//2100 a 2108	Telefone	9	N	Telefone do Trabalho do cônjuge	
+		//2109 a 2112	Ramal	4	N	Ramal do Trabalho do cônjuge	
+		//2113 a 2132	Cargo	20	A	Cargo do Cônjuge	
+		//2133 a 2152	Profissão	20	A	Profissão do Conjuge	
+		//2153 a 2153	Aposentado	1	A	"Aponta se o cliente é aposentado:
+		//S - Sim; N - Não"	"S"  "N"
+		//2154 a 2154	Pensionista	1	A	"Aponta se o cliente é Pensionista:
+		//S - Sim; N - Não"	"S"  "N"
+		//2155 a 2155	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango	
+		//2156 a 2166	Valor Renda Líquida 	11	N	Renda Líquida do Cônjuge (em R$)                                            	
+		//2167 a 2236	Patrimônio	70	A		
+		//2237 a 2237	Nacionalidade	1	N	"Nacionalidade do Conjuge
+		//0-Brasileiro
+		//1-Estrangeiro        "	
+		//2238 a 2239	Código do País (informar se nacionalidade = estrangeiro)	2	A	Tabela de Paises	
+		//2240 a 2241	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF	
+		//2242 a 2247	Mes/Ano Comprovante de Renda	6	A		
+		//2248 a 2249	Tipo Comprovante de Renda	2	A		
+		//2250 a 2251	Ocupação nova	2	A	Código da Profissão	
+		//2252 a 2252	Sexo do Conjuge	1	A		
+		//2253 a 2266	CNPJ Conjuge	14	A		
+		//2267 a 2286	Filler	20	A		
+
 
 		
 		assertThat(m, BeanMatchers.theSameAs(esperado));

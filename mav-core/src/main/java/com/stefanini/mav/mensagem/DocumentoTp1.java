@@ -3,7 +3,7 @@ package com.stefanini.mav.mensagem;
 import com.stefanini.mav.es.MapAtributo;
 import com.stefanini.mav.es.MapBean;
 
-public class Documento {
+public class DocumentoTp1 {
 
 	@MapAtributo(tamanho = 15)
 	private String numero;

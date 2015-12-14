@@ -40,7 +40,10 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	
 	@MapBean
 	private DadoCliente dadosCliente;
-
+	
+	@MapBean
+	private DadoConjuge dadosConjuge;
+	
 	public RespostaPropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
 	}
@@ -115,6 +118,14 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	
 	public void setDadosCliente(DadoCliente dadosCliente) {
 		this.dadosCliente = dadosCliente;
+	}
+	
+	public DadoConjuge getDadosConjuge() {
+		return dadosConjuge;
+	}
+	
+	public void setDadosConjuge(DadoConjuge dadosConjuge) {
+		this.dadosConjuge = dadosConjuge;
 	}
 	
 	//0422 a 0451	Nome_Cedente	30	A	Nome do Cedente 	
@@ -433,7 +444,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		private String correspondencia;
 		
 		@MapBean
-		private Documento identidade;
+		private DocumentoTp1 identidade;
 		
 		@MapAtributo
 		private Boolean conjugeCompoeRenda;
@@ -596,11 +607,11 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.correspondencia = correspondencia;
 		}
 
-		public Documento getIdentidade() {
+		public DocumentoTp1 getIdentidade() {
 			return identidade;
 		}
 
-		public void setIdentidade(Documento identidade) {
+		public void setIdentidade(DocumentoTp1 identidade) {
 			this.identidade = identidade;
 		}
 
@@ -947,5 +958,339 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		public void setFiller(String filler) {
 			this.filler = filler;
 		}
+	}
+	
+	//1848 a 1877	Nome Do Cônjuge	30	A	Nome do Cônjuge do Cliente	
+	//1878 a 1917	Local de Nascimento	40	A		
+	//1918 a 1925	Data de Nascimento	8	N	Data nascimento do cônjuge	
+	//1926 a 1936	CPF	11	N	CPF do Cônjuge	
+	//1937 a 1946	Identidade	10	A	Número da Identidade do Cônjuge	
+	//1947 a 1948	Tipo de Documento	2	A	"01 - Carteira Identidade
+	//02 - Carteira Estrangeiro
+	//03 - Passaporte 
+	//04 - Carteira Identidade profissional
+	//05 - Carteira militar
+	//06 - Carteira trabalho e Previdência Social
+	//07 - carteira identidade indigena
+	//08 - carteira ministério público
+	//09 - carteira nacional habilitação
+	//10 - cart. identidade serv. publico federal
+	//11 - numero identificação trabalhador
+	//12 - numero beneficiario
+	//13 - certidao nascimento
+	//14 - identidade estrangeiro - merc"	
+	//1949 a 1953	Órgão Emissor	5	A	Órgão Emissor do Documento de Identidade do Cônjuge	Ver tabela de dominio
+	//1954 a 1955	UF Órgão Emissor	2	A		
+	//1956 a 1963	Data Emissão	8	N	Data de emissão da identidade	
+	//1964 a 1988	Empresa 	25	A	Empresa Em Que o Cônjuge Trabalha	
+	//1989 a 1996	Data  Admissão	8	N	Data da Admissão Na Empresa	
+	//1997 a 2036	Logradouro	40	A	Endereço Comercial do Cônjuge	
+	//2037 a 2041	Numero	5	A		
+	//2042 a 2056	Complemento	15	A		
+	//2057 a 2071	Bairro	15	A	Bairro onde trabalha o cônjuge	
+	//2072 a 2086	Cidade	15	A	Cidade Onde Trabalha o cônjuge	
+	//2087 a 2088	UF	2	A	Abreviatura da Unidade Federativa 	
+	//2089 a 2096	CEP	8	N	CEP do endereço comercial do cônjuge	
+	//2097 a 2099	DDD	3	N	DDD da Cidade Onde Trabalha o cônjuge	
+	//2100 a 2108	Telefone	9	N	Telefone do Trabalho do cônjuge	
+	//2109 a 2112	Ramal	4	N	Ramal do Trabalho do cônjuge	
+	//2113 a 2132	Cargo	20	A	Cargo do Cônjuge	
+	//2133 a 2152	Profissão	20	A	Profissão do Conjuge	
+	//2153 a 2153	Aposentado	1	A	"Aponta se o cliente é aposentado:
+	//S - Sim; N - Não"	"S"  "N"
+	//2154 a 2154	Pensionista	1	A	"Aponta se o cliente é Pensionista:
+	//S - Sim; N - Não"	"S"  "N"
+	//2155 a 2155	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango	
+	//2156 a 2166	Valor Renda Líquida 	11	N	Renda Líquida do Cônjuge (em R$)                                            	
+	//2167 a 2236	Patrimônio	70	A		
+	//2237 a 2237	Nacionalidade	1	N	"Nacionalidade do Conjuge
+	//0-Brasileiro
+	//1-Estrangeiro        "	
+	//2238 a 2239	Código do País (informar se nacionalidade = estrangeiro)	2	A	Tabela de Paises	
+	//2240 a 2241	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF	
+	//2242 a 2247	Mes/Ano Comprovante de Renda	6	A		
+	//2248 a 2249	Tipo Comprovante de Renda	2	A		
+	//2250 a 2251	Ocupação nova	2	A	Código da Profissão	
+	//2252 a 2252	Sexo do Conjuge	1	A		
+	//2253 a 2266	CNPJ Conjuge	14	A		
+	//2267 a 2286	Filler	20	A
+	public static class DadoConjuge {
+		
+		@MapAtributo(tamanho = 30)
+		private String nome;
+		
+		@MapAtributo(tamanho = 40)
+		private String localNascimento;
+		
+		@MapAtributo(tamanho = 8)
+		private Date dataNascimento;
+		
+		@MapAtributo(tamanho = 11)
+		private String cpf;
+		
+		@MapBean
+		private DocumentoTp2 identidade;
+		
+		@MapAtributo(tamanho = 25)
+		private String empresa;
+		
+		@MapAtributo(tamanho = 8)
+		private Date dataAdmissao;
+		
+		@MapBean
+		private EnderecoTp2 enderecoComercial;
+		
+		@MapBean
+		private TelefoneRamal telefoneTrabalho;
+		
+		@MapAtributo(tamanho = 20)
+		private String cargo;
+		
+		@MapAtributo(tamanho = 20)
+		private String profissao;
+		
+		@MapAtributo(comparador = "S")
+		private Boolean aposentado;
+		
+		@MapAtributo(comparador = "S")
+		private Boolean pensionista;
+		
+		@MapAtributo
+		private String usoExclusivoLosango;
+		
+		@MapAtributo(tamanho = 11)
+		private Integer valorRendaLiquida;
+		
+		@MapAtributo(tamanho = 70, trim = false)
+		private String patrimonio;
+		
+		@MapAtributo
+		private String nacionalidade;
+		
+		@MapAtributo(tamanho = 2)
+		private String codigoPais;
+
+		@MapAtributo(tamanho = 2)
+		private String codigoUfNaturalidade;
+		
+		@MapAtributo(tamanho = 6, formato = "MMyyyy")
+		private String dataComprovanteRenda;
+		
+		@MapAtributo(tamanho = 2)
+		private String tipoComprovanteRenda;
+		
+		@MapAtributo(tamanho = 2)
+		private String ocupacaoNova;
+		
+		@MapAtributo
+		private String sexo;
+		
+		@MapAtributo(tamanho = 14)
+		private String cnpj;
+		
+		@MapAtributo(tamanho = 20)
+		private String filler;
+
+		public String getNome() {
+			return nome;
+		}
+
+		public void setNome(String nome) {
+			this.nome = nome;
+		}
+
+		public String getLocalNascimento() {
+			return localNascimento;
+		}
+
+		public void setLocalNascimento(String localNascimento) {
+			this.localNascimento = localNascimento;
+		}
+
+		public Date getDataNascimento() {
+			return dataNascimento;
+		}
+
+		public void setDataNascimento(Date dataNascimento) {
+			this.dataNascimento = dataNascimento;
+		}
+
+		public String getCpf() {
+			return cpf;
+		}
+
+		public void setCpf(String cpf) {
+			this.cpf = cpf;
+		}
+
+		public DocumentoTp2 getIdentidade() {
+			return identidade;
+		}
+
+		public void setIdentidade(DocumentoTp2 identidade) {
+			this.identidade = identidade;
+		}
+
+		public String getEmpresa() {
+			return empresa;
+		}
+
+		public void setEmpresa(String empresa) {
+			this.empresa = empresa;
+		}
+
+		public Date getDataAdmissao() {
+			return dataAdmissao;
+		}
+
+		public void setDataAdmissao(Date dataAdmissao) {
+			this.dataAdmissao = dataAdmissao;
+		}
+
+		public EnderecoTp2 getEnderecoComercial() {
+			return enderecoComercial;
+		}
+
+		public void setEnderecoComercial(EnderecoTp2 enderecoComercial) {
+			this.enderecoComercial = enderecoComercial;
+		}
+
+		public TelefoneRamal getTelefoneTrabalho() {
+			return telefoneTrabalho;
+		}
+
+		public void setTelefoneTrabalho(TelefoneRamal telefoneTrabalho) {
+			this.telefoneTrabalho = telefoneTrabalho;
+		}
+
+		public String getCargo() {
+			return cargo;
+		}
+
+		public void setCargo(String cargo) {
+			this.cargo = cargo;
+		}
+
+		public String getProfissao() {
+			return profissao;
+		}
+
+		public void setProfissao(String profissao) {
+			this.profissao = profissao;
+		}
+
+		public Boolean isAposentado() {
+			return aposentado;
+		}
+
+		public void setAposentado(Boolean aposentado) {
+			this.aposentado = aposentado;
+		}
+
+		public Boolean isPensionista() {
+			return pensionista;
+		}
+
+		public void setPensionista(Boolean pensionista) {
+			this.pensionista = pensionista;
+		}
+
+		public String getUsoExclusivoLosango() {
+			return usoExclusivoLosango;
+		}
+
+		public void setUsoExclusivoLosango(String usoExclusivoLosango) {
+			this.usoExclusivoLosango = usoExclusivoLosango;
+		}
+
+		public Integer getValorRendaLiquida() {
+			return valorRendaLiquida;
+		}
+
+		public void setValorRendaLiquida(Integer valorRendaLiquida) {
+			this.valorRendaLiquida = valorRendaLiquida;
+		}
+
+		public String getPatrimonio() {
+			return patrimonio;
+		}
+
+		public void setPatrimonio(String patrimonio) {
+			this.patrimonio = patrimonio;
+		}
+
+		public String getNacionalidade() {
+			return nacionalidade;
+		}
+
+		public void setNacionalidade(String nacionalidade) {
+			this.nacionalidade = nacionalidade;
+		}
+
+		public String getCodigoPais() {
+			return codigoPais;
+		}
+
+		public void setCodigoPais(String codigoPais) {
+			this.codigoPais = codigoPais;
+		}
+
+		public String getCodigoUfNaturalidade() {
+			return codigoUfNaturalidade;
+		}
+
+		public void setCodigoUfNaturalidade(String codigoUfNaturalidade) {
+			this.codigoUfNaturalidade = codigoUfNaturalidade;
+		}
+
+		public String getDataComprovanteRenda() {
+			return dataComprovanteRenda;
+		}
+
+		public void setDataComprovanteRenda(String dataComprovanteRenda) {
+			this.dataComprovanteRenda = dataComprovanteRenda;
+		}
+
+		public String getTipoComprovanteRenda() {
+			return tipoComprovanteRenda;
+		}
+
+		public void setTipoComprovanteRenda(String tipoComprovanteRenda) {
+			this.tipoComprovanteRenda = tipoComprovanteRenda;
+		}
+
+		public String getOcupacaoNova() {
+			return ocupacaoNova;
+		}
+
+		public void setOcupacaoNova(String ocupacaoNova) {
+			this.ocupacaoNova = ocupacaoNova;
+		}
+
+		public String getSexo() {
+			return sexo;
+		}
+
+		public void setSexo(String sexo) {
+			this.sexo = sexo;
+		}
+
+		public String getCnpj() {
+			return cnpj;
+		}
+
+		public void setCnpj(String cnpj) {
+			this.cnpj = cnpj;
+		}
+
+		public String getFiller() {
+			return filler;
+		}
+
+		public void setFiller(String filler) {
+			this.filler = filler;
+		}
+		
+		
 	}
 }

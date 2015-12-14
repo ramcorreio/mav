@@ -406,7 +406,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		private String correspondencia;	
 		
 		@MapBean
-		private Documento identificacao;
+		private DocumentoTp1 identificacao;
 		
 		@MapAtributo
 		private Boolean conjugeCompoeRenda;
@@ -524,11 +524,11 @@ public class PropostaFinanciamento extends MensagemBasica {
 			this.correspondencia = correspondencia;
 		}
 
-		public Documento getIdentificacao() {
+		public DocumentoTp1 getIdentificacao() {
 			return identificacao;
 		}
 
-		public void setIdentificacao(Documento identificacao) {
+		public void setIdentificacao(DocumentoTp1 identificacao) {
 			this.identificacao = identificacao;
 		}
 
@@ -1042,7 +1042,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		private String cpf;
 		
 		@MapBean 
-		private DocumentoConjuge identidade;
+		private DocumentoTp2 identidade;
 		
 		@MapAtributo(tamanho = 25)
 		private String empresa;
@@ -1137,11 +1137,11 @@ public class PropostaFinanciamento extends MensagemBasica {
 			this.cpf = cpf;
 		}
 
-		public DocumentoConjuge getIdentidade() {
+		public DocumentoTp2 getIdentidade() {
 			return identidade;
 		}
 
-		public void setIdentidade(DocumentoConjuge identidade) {
+		public void setIdentidade(DocumentoTp2 identidade) {
 			this.identidade = identidade;
 		}
 
