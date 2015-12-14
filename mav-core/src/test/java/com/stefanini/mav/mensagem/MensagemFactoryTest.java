@@ -1187,39 +1187,149 @@ public class MensagemFactoryTest {
 		//1964 a 1988	Empresa 	25	A	Empresa Em Que o Cônjuge Trabalha	
 		esperado.getDadosConjuge().setEmpresa("");
 		
-		//1989 a 1996	Data  Admissão	8	N	Data da Admissão Na Empresa	
-		//1997 a 2036	Logradouro	40	A	Endereço Comercial do Cônjuge	
-		//2037 a 2041	Numero	5	A		
+		//1989 a 1996	Data  Admissão	8	N	Data da Admissão Na Empresa
+		esperado.getDadosConjuge().setDataAdmissao(null);
+		
+		esperado.getDadosConjuge().setEnderecoComercial(new EnderecoTp2());
+		//1997 a 2036	Logradouro	40	A	Endereço Comercial do Cônjuge
+		esperado.getDadosConjuge().getEnderecoComercial().setLogradouro("");
+		
+		//2037 a 2041	Numero	5	A
+		esperado.getDadosConjuge().getEnderecoComercial().setNumero("");
+		
 		//2042 a 2056	Complemento	15	A		
-		//2057 a 2071	Bairro	15	A	Bairro onde trabalha o cônjuge	
-		//2072 a 2086	Cidade	15	A	Cidade Onde Trabalha o cônjuge	
-		//2087 a 2088	UF	2	A	Abreviatura da Unidade Federativa 	
-		//2089 a 2096	CEP	8	N	CEP do endereço comercial do cônjuge	
-		//2097 a 2099	DDD	3	N	DDD da Cidade Onde Trabalha o cônjuge	
-		//2100 a 2108	Telefone	9	N	Telefone do Trabalho do cônjuge	
+		esperado.getDadosConjuge().getEnderecoComercial().setComplemento("");
+		
+		//2057 a 2071	Bairro	15	A	Bairro onde trabalha o cônjuge
+		esperado.getDadosConjuge().getEnderecoComercial().setBairro("");
+		
+		//2072 a 2086	Cidade	15	A	Cidade Onde Trabalha o cônjuge
+		esperado.getDadosConjuge().getEnderecoComercial().setCidade("");
+		
+		//2087 a 2088	UF	2	A	Abreviatura da Unidade Federativa
+		esperado.getDadosConjuge().getEnderecoComercial().setUf("");
+		
+		//2089 a 2096	CEP	8	N	CEP do endereço comercial do cônjuge
+		esperado.getDadosConjuge().getEnderecoComercial().setCep(0);
+		
+		esperado.getDadosConjuge().setTelefoneTrabalho(new TelefoneRamal());
+		//2097 a 2099	DDD	3	N	DDD da Cidade Onde Trabalha o cônjuge
+		esperado.getDadosConjuge().getTelefoneTrabalho().setDdd(0);
+		
+		//2100 a 2108	Telefone	9	N	Telefone do Trabalho do cônjuge
+		esperado.getDadosConjuge().getTelefoneTrabalho().setNumero(0);
+		
 		//2109 a 2112	Ramal	4	N	Ramal do Trabalho do cônjuge	
-		//2113 a 2132	Cargo	20	A	Cargo do Cônjuge	
-		//2133 a 2152	Profissão	20	A	Profissão do Conjuge	
+		esperado.getDadosConjuge().getTelefoneTrabalho().setRamal(0);
+		
+		//2113 a 2132	Cargo	20	A	Cargo do Cônjuge
+		esperado.getDadosConjuge().setCargo("");
+		
+		//2133 a 2152	Profissão	20	A	Profissão do Conjuge
+		esperado.getDadosConjuge().setProfissao("OUTROS");
+		
 		//2153 a 2153	Aposentado	1	A	"Aponta se o cliente é aposentado:
 		//S - Sim; N - Não"	"S"  "N"
+		esperado.getDadosConjuge().setAposentado(false);
+		
 		//2154 a 2154	Pensionista	1	A	"Aponta se o cliente é Pensionista:
 		//S - Sim; N - Não"	"S"  "N"
-		//2155 a 2155	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango	
-		//2156 a 2166	Valor Renda Líquida 	11	N	Renda Líquida do Cônjuge (em R$)                                            	
+		esperado.getDadosConjuge().setPensionista(false);
+		
+		//2155 a 2155	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango
+		esperado.getDadosConjuge().setUsoExclusivoLosango("1");
+		
+		//2156 a 2166	Valor Renda Líquida 	11	N	Renda Líquida do Cônjuge (em R$)
+		esperado.getDadosConjuge().setValorRendaLiquida(0);
+		
 		//2167 a 2236	Patrimônio	70	A		
+		esperado.getDadosConjuge().setPatrimonio(AdaptadorTipo.escreverString(70, " "));
+		
 		//2237 a 2237	Nacionalidade	1	N	"Nacionalidade do Conjuge
 		//0-Brasileiro
-		//1-Estrangeiro        "	
-		//2238 a 2239	Código do País (informar se nacionalidade = estrangeiro)	2	A	Tabela de Paises	
-		//2240 a 2241	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF	
+		//1-Estrangeiro        "
+		esperado.getDadosConjuge().setNacionalidade("");
+		
+		//2238 a 2239	Código do País (informar se nacionalidade = estrangeiro)	2	A	Tabela de Paises
+		esperado.getDadosConjuge().setCodigoPais("");
+		
+		//2240 a 2241	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF
+		esperado.getDadosConjuge().setCodigoUfNaturalidade("");
+		
 		//2242 a 2247	Mes/Ano Comprovante de Renda	6	A		
-		//2248 a 2249	Tipo Comprovante de Renda	2	A		
-		//2250 a 2251	Ocupação nova	2	A	Código da Profissão	
-		//2252 a 2252	Sexo do Conjuge	1	A		
-		//2253 a 2266	CNPJ Conjuge	14	A		
+		esperado.getDadosConjuge().setDataComprovanteRenda(null);
+		
+		//2248 a 2249	Tipo Comprovante de Renda	2	A
+		esperado.getDadosConjuge().setTipoComprovanteRenda("");
+		
+		//2250 a 2251	Ocupação nova	2	A	Código da Profissão
+		esperado.getDadosConjuge().setOcupacaoNova("11");
+		
+		//2252 a 2252	Sexo do Conjuge	1	A
+		esperado.getDadosConjuge().setSexo("");
+		
+		//2253 a 2266	CNPJ Conjuge	14	A
+		esperado.getDadosConjuge().setCnpj("");
+		
 		//2267 a 2286	Filler	20	A		
-
-
+		esperado.getDadosConjuge().setFiller(AdaptadorTipo.escreverString(20, " "));
+		
+		//REFERÊNCIAS PESSOAIS
+		
+		
+		//REFERÊNCIAS COMERCIAIS
+		
+		
+		//REFERÊNCIA BANCÁRIA
+		
+		
+		//DADOS COMPLEMENTARES
+		
+		
+		//DADOS COMPLEMENTARES
+		
+		
+		//Dados do Perfil/Oferta
+		
+		
+		//Dados Captura Digital
+		
+		
+		//Dados de Seguro
+		
+		
+		//Dados de Seguro Prestamista
+		
+		
+		//Dados de Seguro da Sorte/Vida
+		
+		
+		//Dados do SUSEP para Seguro Prestamista
+		
+		
+		//DÉBITO EM CONTA
+		
+		
+		//Dados de Cheques
+		
+		
+		//Dados de operação para Emprestimo Pessoal (EP)
+		
+		
+		//Outros Indicadores
+		
+		
+		//Prestações
+		
+		
+		//Dados CD
+		
+		
+		//Atendimento ao Cliente
+		
+		
+		//Outros Indicadores
+		
 		
 		assertThat(m, BeanMatchers.theSameAs(esperado));
 

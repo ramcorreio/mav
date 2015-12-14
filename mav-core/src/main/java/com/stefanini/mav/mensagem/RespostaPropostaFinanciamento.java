@@ -1074,7 +1074,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		private String codigoUfNaturalidade;
 		
 		@MapAtributo(tamanho = 6, formato = "MMyyyy")
-		private String dataComprovanteRenda;
+		private Date dataComprovanteRenda;
 		
 		@MapAtributo(tamanho = 2)
 		private String tipoComprovanteRenda;
@@ -1088,7 +1088,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 14)
 		private String cnpj;
 		
-		@MapAtributo(tamanho = 20)
+		@MapAtributo(tamanho = 20, trim = false)
 		private String filler;
 
 		public String getNome() {
@@ -1243,11 +1243,11 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.codigoUfNaturalidade = codigoUfNaturalidade;
 		}
 
-		public String getDataComprovanteRenda() {
+		public Date getDataComprovanteRenda() {
 			return dataComprovanteRenda;
 		}
 
-		public void setDataComprovanteRenda(String dataComprovanteRenda) {
+		public void setDataComprovanteRenda(Date dataComprovanteRenda) {
 			this.dataComprovanteRenda = dataComprovanteRenda;
 		}
 
