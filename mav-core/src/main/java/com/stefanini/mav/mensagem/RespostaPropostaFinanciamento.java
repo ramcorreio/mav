@@ -44,6 +44,12 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	@MapBean
 	private DadoConjuge dadosConjuge;
 	
+	@MapLista(maxSize = 2, bean = @MapBean)
+	private List<Referencia> referenciasPessoais;
+	
+	@MapLista(maxSize = 2, bean = @MapBean)
+	private List<Referencia> referenciasComerciais;
+	
 	public RespostaPropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
 	}
@@ -126,6 +132,22 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	
 	public void setDadosConjuge(DadoConjuge dadosConjuge) {
 		this.dadosConjuge = dadosConjuge;
+	}
+	
+	public List<Referencia> getReferenciasPessoais() {
+		return referenciasPessoais;
+	}
+	
+	public void setReferenciasPessoais(List<Referencia> referenciasPessoais) {
+		this.referenciasPessoais = referenciasPessoais;
+	}
+	
+	public List<Referencia> getReferenciasComerciais() {
+		return referenciasComerciais;
+	}
+	
+	public void setReferenciasComerciais(List<Referencia> referenciasComerciais) {
+		this.referenciasComerciais = referenciasComerciais;
 	}
 	
 	//0422 a 0451	Nome_Cedente	30	A	Nome do Cedente 	
@@ -1090,7 +1112,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		
 		@MapAtributo(tamanho = 20, trim = false)
 		private String filler;
-
+		
 		public String getNome() {
 			return nome;
 		}

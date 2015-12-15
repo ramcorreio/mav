@@ -1275,9 +1275,68 @@ public class MensagemFactoryTest {
 		esperado.getDadosConjuge().setFiller(AdaptadorTipo.escreverString(20, " "));
 		
 		//REFERÊNCIAS PESSOAIS
+		esperado.setReferenciasPessoais(new LinkedList<Referencia>());
+		
+		esperado.getReferenciasPessoais().add(new Referencia());
+		esperado.getReferenciasPessoais().get(0).setTelefone(new TelefoneRamal());
+		//2287 a 2316	Nome	30	A	Nome da Pessoa de Referência
+		esperado.getReferenciasPessoais().get(0).setNome("THIAGO IRMAO");
+		
+		//2317 a 2319	DDD	3	N	DDD da Pessoa de Referência
+		esperado.getReferenciasPessoais().get(0).getTelefone().setDdd(67);
+		
+		//2320 a 2328	Telefone	9	N	Telefone da Pessoa de Referência
+		esperado.getReferenciasPessoais().get(0).getTelefone().setNumero(30222758);
+		
+		//2329 a 2332	Ramal	4	N	Ramal da Pessoa de Referência
+		esperado.getReferenciasPessoais().get(0).getTelefone().setRamal(0);
+		
+		esperado.getReferenciasPessoais().add(new Referencia());
+		esperado.getReferenciasPessoais().get(1).setTelefone(new TelefoneRamal());
+		//2333 a 2362	Nome	30	A	Nome da Pessoa de Referência
+		esperado.getReferenciasPessoais().get(1).setNome("MARIA DO CARMO MAE");
+		
+		//2363 a 2365	DDD	3	N	DDD da Pessoa de Referência
+		esperado.getReferenciasPessoais().get(1).getTelefone().setDdd(67);
+		
+		//2366 a 2374	Telefone	9	N	Telefone da Pessoa de Referência
+		esperado.getReferenciasPessoais().get(1).getTelefone().setNumero(92818571);
+		
+		//2375 a 2378	Ramal	4	N	Ramal da Pessoa de Referência
+		esperado.getReferenciasPessoais().get(1).getTelefone().setRamal(0);
+		
 		
 		
 		//REFERÊNCIAS COMERCIAIS
+		esperado.setReferenciasComerciais(new LinkedList<Referencia>());
+		esperado.getReferenciasComerciais().add(new Referencia());
+		esperado.getReferenciasComerciais().get(0).setTelefone(new TelefoneRamal());
+		//2379 a 2408	Nome 1	30	A	Nome da Pessoa de Referência  (PC)
+		esperado.getReferenciasComerciais().get(0).setNome("");
+		
+		//2409 a 2411	DDD 1	3	N	DDD da referencia comercial
+		esperado.getReferenciasComerciais().get(0).getTelefone().setDdd(0);
+		
+		//2412 a 2420	Telefone 1	9	N	Telefone da referencia Comercial
+		esperado.getReferenciasComerciais().get(0).getTelefone().setNumero(0);
+		
+		//2421 a 2424	Ramal 1	4	N	Ramal da referencia comercial	
+		esperado.getReferenciasComerciais().get(0).getTelefone().setRamal(0);
+		
+		esperado.getReferenciasComerciais().add(new Referencia());
+		esperado.getReferenciasComerciais().get(1).setTelefone(new TelefoneRamal());
+		//2425 a 2454	Nome 2	30	A	Nome da Pessoa de Referência  (PC)
+		esperado.getReferenciasComerciais().get(1).setNome("");
+		
+		//2455 a 2457	DDD 2	3	N	DDD da referencia comercial
+		esperado.getReferenciasComerciais().get(1).getTelefone().setDdd(0);
+		
+		//2458 a 2466	Telefone 2	9	N	Telefone da referencia Comercial
+		esperado.getReferenciasComerciais().get(1).getTelefone().setNumero(0);
+		
+		//2467 a 2470	Ramal 2	4	N	Ramal da referencia comercial	
+		esperado.getReferenciasComerciais().get(1).getTelefone().setRamal(0);
+		
 		
 		
 		//REFERÊNCIA BANCÁRIA

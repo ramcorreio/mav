@@ -198,12 +198,12 @@ public class ContextoEntradaSaida {
 		};
 	}
 	
-	protected static <T> List<BaseMapper> getListaMapper(Class<T> clazz) throws MapeamentoNaoEncontrado {
+	protected static <T> List<BaseMapper> getMappersFilhos(Class<T> clazz) throws MapeamentoNaoEncontrado {
 		
-		return getListaMapper("", clazz);
+		return getMappersFilhos("", clazz);
 	}
 	
-	protected static <T> List<BaseMapper> getListaMapper(String parent, Class<T> clazz) throws MapeamentoNaoEncontrado {
+	protected static <T> List<BaseMapper> getMappersFilhos(String parent, Class<T> clazz) throws MapeamentoNaoEncontrado {
 		
 		List<BaseMapper> mappers = new LinkedList<>();
 		Collection<Field> fields = getAllFields(clazz, false).values();
@@ -218,7 +218,7 @@ public class ContextoEntradaSaida {
 			else if(field.isAnnotationPresent(MapBean.class)) {
 				
 				BeanMapper impl = criarBeanMapper(field.getType(), field.getName(), parent.concat(field.getName()));
-				impl.getMappers().addAll(getListaMapper(parent.concat(field.getName()).concat("."), field.getType()));
+				impl.getMappers().addAll(getMappersFilhos(parent.concat(field.getName()).concat("."), field.getType()));
 				mappers.add(impl);
 			}
 			else if(field.isAnnotationPresent(MapLista.class)) {
@@ -232,8 +232,10 @@ public class ContextoEntradaSaida {
 				}
 				else if(map.bean().tamanho() > 0) {
 					
+					//TODO: verificar mapper bean
 					BeanMapper impl = criarBeanMapper(getGenericClass(field), "[]", parent.concat(field.getName()).concat("[]"));
-					mappers.add(criarListaMapper(field.getType(), field.getName(), field.getName(), map.maxSize(), impl));
+					impl.getMappers().addAll(getMappersFilhos(parent.concat(field.getName()).concat("."), impl.getTipo()));
+					mappers.add(criarListaMapper(field.getType(), field.getName(), parent.concat(field.getName()), map.maxSize(), impl));
 				}
 				else {
 					
@@ -441,7 +443,7 @@ public class ContextoEntradaSaida {
 	 * @throws MapeamentoNaoEncontrado
 	 */
 	private static <T> List<BaseMapper> verificarMappers(Class<T> tipo) throws MapeamentoNaoEncontrado {
-		List<BaseMapper> mappers = getListaMapper(tipo);
+		List<BaseMapper> mappers = getMappersFilhos(tipo);
 		
 		if(mappers.isEmpty()) {
 			
@@ -489,13 +491,10 @@ public class ContextoEntradaSaida {
 				invokeSet(instance, attr.getNomeMetodoSet(), attr.getCampo(), lido.getObject());
 			}
 			catch (StringIndexOutOfBoundsException | NumberFormatException | InstantiationException | IllegalAccessException | SecurityException e) {
-					
-					//throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getType()) + ".", e);
-				//}
+				
 				throw new MapeamentoNaoEncontrado("Erro ao ler entrada " + atributoClasse(attr.getCampo().getName(), attr.getCampo().getDeclaringClass()) + ".", e);
 			}
 		}
-		
 		
 		return position;
 	}
@@ -505,7 +504,7 @@ public class ContextoEntradaSaida {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static <T> Lido lerLista(String entrada, int position, Class<T> clazz, ListaMapper<BaseMapper> attr) throws MapeamentoNaoEncontrado {
+	private static <T> Lido lerLista(String entrada, int position, Class<T> clazz, ListaMapper<BaseMapper> attr) throws MapeamentoNaoEncontrado, InstantiationException, IllegalAccessException {
 		
 		int tamanhoItem = getTamanho(attr.getMapper());
 		int tamanhoLista = attr.getMaxSize() * tamanhoItem;		
@@ -516,26 +515,31 @@ public class ContextoEntradaSaida {
 		
         	int inicioItem = position + (i * tamanhoItem);
         	int fimItem = inicioItem + tamanhoItem;
-        	if(SimpleMapper.class.isInstance(attr.getMapper())) {
-
-        		String item = entrada.substring(inicioItem, fimItem);
-        		if(item.trim().isEmpty()) {
-        			break;
-        		}
+        	String item = entrada.substring(inicioItem, fimItem);
+        	
+        	//essa verificação é necessária evitar criar item para dados em branco na entrada de mensagem
+        	if(item.trim().isEmpty()) {
+        		break;
+    		}
+        	
+        	Lido lido;
+        	if(BeanMapper.class.isInstance(attr.getMapper())) {
         		
-        		Lido lido = lerSimples(item, 0, clazz, (SimpleMapper) attr.getMapper());
-        		newInstance.add((T)lido.getObject());
+        		lido = lerBean(item, 0, clazz, (BeanMapper) attr.getMapper());
         	}
         	else {
-        		//TODO: Falta implementar a leitura para beans
-        	}        	
+        		
+        		lido = lerSimples(item, 0, clazz, (SimpleMapper) attr.getMapper());
+        	}
+        	
+        	newInstance.add((T)lido.getObject());
 		}		
 
 		return new Lido(position + tamanhoLista, newInstance);
 
 	}
 
-	private static Lido lerBean(String entrada, int position, Class<?> clazz, BeanMapper attr) throws MapeamentoNaoEncontrado, InstantiationException, IllegalAccessException {
+	private static Lido lerBean(String entrada, int position, Class<?> clazz, BeanMapper attr) throws InstantiationException, IllegalAccessException, MapeamentoNaoEncontrado {
 
 		int tamanhoBean = getTamanho(attr);
 		Object bean = clazz.newInstance();

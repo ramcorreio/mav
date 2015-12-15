@@ -223,9 +223,6 @@ public class ContextoEntradaSaidaTest {
 			assertThat(actualBean.getPath(), actualList, expectedList);
 		}
 		else {
-			System.out.println("------------------");
-			System.out.println(actual);
-			System.out.println(expected);
 			MatcherAssert.assertThat(actual.getPath(), actual, BeanMatchers.theSameAs(expected).compareProperty("tipo", Matchers.equalTo(expected.getTipo())));
 		}
 		
@@ -275,7 +272,7 @@ public class ContextoEntradaSaidaTest {
 	 * @throws MapeamentoNaoEncontrado
 	 */
 	private <T> void verificarMappers(Class<T> clazz) throws MapeamentoNaoEncontrado {
-		Map<String, BaseMapper> allMappers = mapMapper(ContextoEntradaSaida.getListaMapper(clazz));
+		Map<String, BaseMapper> allMappers = mapMapper(ContextoEntradaSaida.getMappersFilhos(clazz));
 		Map<String, Field> fields = ContextoEntradaSaida.getAllFields(clazz);
 		MatcherAssert.assertThat(allMappers.size(), Matchers.equalTo(fields.size()));
 		for (Entry<String, BaseMapper> mapper : allMappers.entrySet()) {
@@ -301,7 +298,7 @@ public class ContextoEntradaSaidaTest {
 		bean.getMappers().add(criarSimpleMapper(Date.class, "hoje", "bean.hoje", 8));
 		
 		//verificarMappers(MapSubBeanHerdado.class);
-		List<BaseMapper> mappers = ContextoEntradaSaida.getListaMapper(MapSubBeanHerdado.class);
+		List<BaseMapper> mappers = ContextoEntradaSaida.getMappersFilhos(MapSubBeanHerdado.class);
 		assertThat(mappers, expected);
 	}
 	
@@ -328,7 +325,7 @@ public class ContextoEntradaSaidaTest {
 		SimpleMapper arrayMap = criarSimpleMapper(String.class, "[]", "coisas[]", 15);
 		ListaMapper<SimpleMapper> coisas = criarListaMapper(List.class, "coisas", "coisas", 4, arrayMap);
 		expected.add(coisas);
-		List<BaseMapper> mappers = ContextoEntradaSaida.getListaMapper(MapBeanListaSimples.class);
+		List<BaseMapper> mappers = ContextoEntradaSaida.getMappersFilhos(MapBeanListaSimples.class);
 		verificarMappers(MapBeanListaSimples.class);
 		assertThat(mappers, expected);
 	}
@@ -351,7 +348,7 @@ public class ContextoEntradaSaidaTest {
 		
 		BeanMapper subSubBean = criarBeanMapper(MapSubSubBean.SubSubBean.class, "subSubBean", "subSubBean");
 		
-		List<BaseMapper> mappers = ContextoEntradaSaida.getListaMapper(MapSubSubBean.class);
+		List<BaseMapper> mappers = ContextoEntradaSaida.getMappersFilhos(MapSubSubBean.class);
 		BaseMapper paraContar = mappers.get(mappers.indexOf(subSubBean));
 		
 		MatcherAssert.assertThat(ContextoEntradaSaida.getTamanho(paraContar), Matchers.is(Matchers.equalTo(21)));
@@ -397,8 +394,40 @@ public class ContextoEntradaSaidaTest {
 		
 		MapBeanListaSimples b = ContextoEntradaSaida.ler(entrada, MapBeanListaSimples.class, false);
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
-		
 	}
 	
+	@Test
+	public void lerAtributoListaBean() throws MapeamentoNaoEncontrado, ParseException {
+		
+		String entrada = "rodrigo afonso macedo    037281119781000034523045Opa!!!    0412201501apartamento    02carro          03bicicleta                       ";
+		MapBeanListaBean expected = new MapBeanListaBean();
+		expected.setNome("rodrigo afonso macedo");
+		expected.setIdade(37);
+		expected.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
+		expected.setTemFilhos(true);
+		expected.setSalario(345.23);
+		expected.setSubSubBean(new MapBeanListaBean.SubSubBean());
+		expected.getSubSubBean().setSubBean(new MapBeanListaBean.SubBean());
+		expected.getSubSubBean().getSubBean().setConta(45);
+		expected.getSubSubBean().getSubBean().setTexto("Opa!!!");
+		expected.getSubSubBean().setHoje(UtilsDate.parse("04122015", UtilsDate.FormatadorData.DATA));
+		
+		expected.setCoisas(new LinkedList<SubBeanLista>());
+		
+		expected.getCoisas().add(new SubBeanLista());
+		expected.getCoisas().get(0).setId(1);
+		expected.getCoisas().get(0).setDescricao("apartamento");
+		
+		expected.getCoisas().add(new SubBeanLista());
+		expected.getCoisas().get(1).setId(2);
+		expected.getCoisas().get(1).setDescricao("carro");
+		
+		expected.getCoisas().add(new SubBeanLista());
+		expected.getCoisas().get(2).setId(3);
+		expected.getCoisas().get(2).setDescricao("bicicleta");
+		
+		MapBeanListaBean b = ContextoEntradaSaida.ler(entrada, MapBeanListaBean.class, false);
+		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
+	}
 
 }
