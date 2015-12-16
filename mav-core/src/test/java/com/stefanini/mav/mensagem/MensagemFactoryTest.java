@@ -1309,43 +1309,123 @@ public class MensagemFactoryTest {
 		
 		//REFERÊNCIAS COMERCIAIS
 		esperado.setReferenciasComerciais(new LinkedList<Referencia>());
-		esperado.getReferenciasComerciais().add(new Referencia());
-		esperado.getReferenciasComerciais().get(0).setTelefone(new TelefoneRamal());
+		//esperado.getReferenciasComerciais().add(new Referencia());
+		//esperado.getReferenciasComerciais().get(0).setTelefone(new TelefoneRamal());
 		//2379 a 2408	Nome 1	30	A	Nome da Pessoa de Referência  (PC)
-		esperado.getReferenciasComerciais().get(0).setNome("");
+		//esperado.getReferenciasComerciais().get(0).setNome("");
 		
 		//2409 a 2411	DDD 1	3	N	DDD da referencia comercial
-		esperado.getReferenciasComerciais().get(0).getTelefone().setDdd(0);
+		//esperado.getReferenciasComerciais().get(0).getTelefone().setDdd(0);
 		
 		//2412 a 2420	Telefone 1	9	N	Telefone da referencia Comercial
-		esperado.getReferenciasComerciais().get(0).getTelefone().setNumero(0);
+		//esperado.getReferenciasComerciais().get(0).getTelefone().setNumero(0);
 		
 		//2421 a 2424	Ramal 1	4	N	Ramal da referencia comercial	
-		esperado.getReferenciasComerciais().get(0).getTelefone().setRamal(0);
+		//esperado.getReferenciasComerciais().get(0).getTelefone().setRamal(0);
 		
-		esperado.getReferenciasComerciais().add(new Referencia());
-		esperado.getReferenciasComerciais().get(1).setTelefone(new TelefoneRamal());
+		//esperado.getReferenciasComerciais().add(new Referencia());
+		//esperado.getReferenciasComerciais().get(1).setTelefone(new TelefoneRamal());
 		//2425 a 2454	Nome 2	30	A	Nome da Pessoa de Referência  (PC)
-		esperado.getReferenciasComerciais().get(1).setNome("");
+		//esperado.getReferenciasComerciais().get(1).setNome("");
 		
 		//2455 a 2457	DDD 2	3	N	DDD da referencia comercial
-		esperado.getReferenciasComerciais().get(1).getTelefone().setDdd(0);
+		//esperado.getReferenciasComerciais().get(1).getTelefone().setDdd(0);
 		
 		//2458 a 2466	Telefone 2	9	N	Telefone da referencia Comercial
-		esperado.getReferenciasComerciais().get(1).getTelefone().setNumero(0);
+		//esperado.getReferenciasComerciais().get(1).getTelefone().setNumero(0);
 		
 		//2467 a 2470	Ramal 2	4	N	Ramal da referencia comercial	
-		esperado.getReferenciasComerciais().get(1).getTelefone().setRamal(0);
+		//esperado.getReferenciasComerciais().get(1).getTelefone().setRamal(0);
 		
 		
 		
 		//REFERÊNCIA BANCÁRIA
+		esperado.setReferenciaBancaria(new Banco());
+		esperado.getReferenciaBancaria().setInfo(new InfoBanco());
+		//2471 a 2474	Banco	4	N
+		esperado.getReferenciaBancaria().getInfo().setNumero(341);
+		
+		//2475 a 2478	Agência	4	N
+		esperado.getReferenciaBancaria().getInfo().setAgencia(1585);
+		
+		//2479 a 2479	DV Agência	1	A
+		esperado.getReferenciaBancaria().getInfo().setDvAgencia("0");
+		
+		//2480 a 2492	Conta Corrente	13	N
+		esperado.getReferenciaBancaria().getInfo().setContaCorrente(6446);
+		
+		//2493 a 2494	DV Conta Corrente	2	A
+		esperado.getReferenciaBancaria().getInfo().setDvContaCorrente("0");
+		
+		//2495 a 2496	Tipo da Conta	2	A
+		esperado.getReferenciaBancaria().setTipoConta("01");
+		
+		//2497 a 2504	Data Abertura	8	N	DDMMAAAA
+		esperado.getReferenciaBancaria().setDataAbertura(UtilsDate.parse("13082001", UtilsDate.FormatadorData.DATA));
 		
 		
 		//DADOS COMPLEMENTARES
+		esperado.setDadosComplementares(new RespostaPropostaFinanciamento.DadoComplementar());
+		//2505 a 2506	Escolaridade	2	A	Codigo da Escolaridade
+		esperado.getDadosComplementares().setEscolaridade("11");
 		
+		//2507 a 2526	Formação	20	A	Formação
+		esperado.getDadosComplementares().setFormacao("OK");
 		
-		//DADOS COMPLEMENTARES
+		//2527 a 2527	Indicador Possui cartão	1	A	Indicador se possui cartão	0 - Não 1 - Sim
+		esperado.getDadosComplementares().setPossuiCartao(false);
+		
+		//2528 a 2528	Indicador Possui veículo próprio	1	A	Indicador Possui veículo próprio	0 - Não 1 - Sim
+		esperado.getDadosComplementares().setPossuiVeiculoProprio(false);
+		
+		//2529 a 2538	Placa	10	A
+		esperado.getDadosComplementares().setPlaca("");
+		
+		//2539 a 2598	Renavam	60	A
+		esperado.getDadosComplementares().setRenavam("");
+		
+		//2599 a 2599	Indicador Possui veículo quitado	1	A	Indicador Possui veículo quitado	0 - Não 1 - Sim
+		esperado.getDadosComplementares().setPossuiVeiculoQuitado(false);
+		
+		//2600 a 2600	Possui experiencia de crédito	1	A	Indicador Possui experiência	0 - Não 1 - Sim
+		esperado.getDadosComplementares().setPossuiExperienciaCredito(false);
+		
+		//2601 a 2620	Local da Experiência	20	A
+		esperado.getDadosComplementares().setLocalExperiencia("");
+		
+		//2621 a 2622	Plano da Experiência	2	N
+		esperado.getDadosComplementares().setPlanoExperiencia(0);
+		
+		//2623 a 2637	Valor da Prestação da Experiência	15	N
+		esperado.getDadosComplementares().setValorPrestacaoExperiencia(0);
+		
+		//2638 a 2643	Inicio da Experiência de Crédito	6	N	Inicio da Experiência MMAAAA
+		esperado.getDadosComplementares().setDataInicioExperienciaCredito(null);
+		
+		//2644 a 2683	Classificação do Cliente no Lojista	40	A
+		esperado.getDadosComplementares().setClassificacaoClienteLojista("");
+		
+		//2684 a 2684	Indicador Possui Cartão Financeira	1	A	Indicador Possui Cartão Financeira	0 - Não 1 - Sim
+		esperado.getDadosComplementares().setPossuiCartaoFinanceira(false);
+		
+		//2685 a 2685	Indicador Possui Conta Corrente	1	A	Indicador Possui Conta Corrente	0 - Não 1 - Sim
+		esperado.getDadosComplementares().setPossuiContaCorrente(false);
+		
+		//2686 a 2686	Indicador Possui dependente	1	A		0 - Não 1 - Sim
+		esperado.getDadosComplementares().setPossuiDependente(false);
+		
+		//2687 a 2688	Quantidade de dependentes	2	N		
+		esperado.getDadosComplementares().setQuantidadeDependentes(0);
+		
+		//2689 a 2703	Nome do cartão	15	A		
+		esperado.getDadosComplementares().setNomeCartao("");
+		
+		//2704 a 2704	Indicador DDA	1	A	Indicador se o cliente é DDA	0 - Não 1 - Sim
+		esperado.getDadosComplementares().setDda(false);
+		
+		//2705 a 2754	Filler	50	A		
+		esperado.getDadosComplementares().setFiller(AdaptadorTipo.escreverString(50, " "));
+
 		
 		
 		//Dados do Perfil/Oferta

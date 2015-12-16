@@ -503,6 +503,12 @@ public class ContextoEntradaSaida {
 	    return new LinkedList<T>();
 	}
 	
+	private static boolean isEmpty(String entrada) {
+		
+		String val = entrada.replaceAll("0", "").trim();
+		return val.isEmpty();
+	}
+	
 	@SuppressWarnings("unchecked")
 	private static <T> Lido lerLista(String entrada, int position, Class<T> clazz, ListaMapper<BaseMapper> attr) throws MapeamentoNaoEncontrado, InstantiationException, IllegalAccessException {
 		
@@ -518,7 +524,7 @@ public class ContextoEntradaSaida {
         	String item = entrada.substring(inicioItem, fimItem);
         	
         	//essa verificação é necessária evitar criar item para dados em branco na entrada de mensagem
-        	if(item.trim().isEmpty()) {
+        	if(isEmpty(item)) {
         		break;
     		}
         	
@@ -602,5 +608,4 @@ public class ContextoEntradaSaida {
 		
 		return tamanhao;
 	}
-
 }

@@ -50,6 +50,12 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	@MapLista(maxSize = 2, bean = @MapBean)
 	private List<Referencia> referenciasComerciais;
 	
+	@MapBean
+	private Banco referenciaBancaria;
+	
+	@MapBean
+	private DadoComplementar dadosComplementares;
+	
 	public RespostaPropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
 	}
@@ -148,6 +154,22 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	
 	public void setReferenciasComerciais(List<Referencia> referenciasComerciais) {
 		this.referenciasComerciais = referenciasComerciais;
+	}
+	
+	public Banco getReferenciaBancaria() {
+		return referenciaBancaria;
+	}
+	
+	public void setReferenciaBancaria(Banco referenciaBancaria) {
+		this.referenciaBancaria = referenciaBancaria;
+	}
+	
+	public DadoComplementar getDadosComplementares() {
+		return dadosComplementares;
+	}
+	
+	public void setDadosComplementares(DadoComplementar dadosComplementares) {
+		this.dadosComplementares = dadosComplementares;
 	}
 	
 	//0422 a 0451	Nome_Cedente	30	A	Nome do Cedente 	
@@ -1312,7 +1334,248 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		public void setFiller(String filler) {
 			this.filler = filler;
 		}
+	}
+	
+	//2505 a 2506	Escolaridade	2	A	Codigo da Escolaridade	
+	//2507 a 2526	Formação	20	A	Formação	
+	//2527 a 2527	Indicador Possui cartão	1	A	Indicador se possui cartão	0 - Não 1 - Sim
+	//2528 a 2528	Indicador Possui veículo próprio	1	A	Indicador Possui veículo próprio	0 - Não 1 - Sim
+	//2529 a 2538	Placa	10	A		
+	//2539 a 2598	Renavam	60	A		
+	//2599 a 2599	Indicador Possui veículo quitado	1	A	Indicador Possui veículo quitado	0 - Não 1 - Sim
+	//2600 a 2600	Possui experiencia de crédito	1	A	Indicador Possui experiência	0 - Não 1 - Sim
+	//2601 a 2620	Local da Experiência	20	A		
+	//2621 a 2622	Plano da Experiência	2	N		
+	//2623 a 2637	Valor da Prestação da Experiência	15	N		
+	//2638 a 2643	Inicio da Experiência de Crédito	6	N	Inicio da Experiência MMAAAA	
+	//2644 a 2683	Classificação do Cliente no Lojista	40	A		
+	//2684 a 2684	Indicador Possui Cartão Financeira	1	A	Indicador Possui Cartão Financeira	0 - Não 1 - Sim
+	//2685 a 2685	Indicador Possui Conta Corrente	1	A	Indicador Possui Conta Corrente	0 - Não 1 - Sim
+	//2686 a 2686	Indicador Possui dependente	1	A		0 - Não 1 - Sim
+	//2687 a 2688	Quantidade de dependentes	2	N		
+	//2689 a 2703	Nome do cartão	15	A		
+	//2704 a 2704	Indicador DDA	1	A	Indicador se o cliente é DDA	0 - Não 1 - Sim
+	//2705 a 2754	Filler	50	A
+	public static class DadoComplementar {
 		
+		@MapAtributo(tamanho = 2)
+		private String escolaridade;
 		
+		@MapAtributo(tamanho = 20)
+		private String formacao;
+		
+		@MapAtributo
+		private Boolean possuiCartao;
+		
+		@MapAtributo
+		private Boolean possuiVeiculoProprio;
+		
+		@MapAtributo(tamanho = 10)
+		private String placa;
+		
+		@MapAtributo(tamanho = 60)
+		private String renavam;
+		
+		@MapAtributo
+		private Boolean possuiVeiculoQuitado;
+		
+		@MapAtributo
+		private Boolean possuiExperienciaCredito;
+		
+		@MapAtributo(tamanho = 20)
+		private String localExperiencia;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer planoExperiencia;
+
+		@MapAtributo(tamanho = 15)
+		private Integer valorPrestacaoExperiencia;
+		
+		@MapAtributo(tamanho = 6)
+		private Date dataInicioExperienciaCredito;
+		
+		@MapAtributo(tamanho = 40)
+		private String classificacaoClienteLojista;
+		
+		@MapAtributo
+		private Boolean possuiCartaoFinanceira;
+		
+		@MapAtributo
+		private Boolean possuiContaCorrente;
+		
+		@MapAtributo
+		private Boolean possuiDependente;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer quantidadeDependentes;
+		
+		@MapAtributo(tamanho = 15) 
+		private String nomeCartao;
+		
+		@MapAtributo
+		private Boolean dda;
+		
+		@MapAtributo(tamanho = 50, trim = false)
+		private String filler;
+
+		public String getEscolaridade() {
+			return escolaridade;
+		}
+
+		public void setEscolaridade(String escolaridade) {
+			this.escolaridade = escolaridade;
+		}
+
+		public String getFormacao() {
+			return formacao;
+		}
+
+		public void setFormacao(String formacao) {
+			this.formacao = formacao;
+		}
+
+		public Boolean getPossuiCartao() {
+			return possuiCartao;
+		}
+
+		public void setPossuiCartao(Boolean possuiCartao) {
+			this.possuiCartao = possuiCartao;
+		}
+
+		public Boolean getPossuiVeiculoProprio() {
+			return possuiVeiculoProprio;
+		}
+
+		public void setPossuiVeiculoProprio(Boolean possuiVeiculoProprio) {
+			this.possuiVeiculoProprio = possuiVeiculoProprio;
+		}
+
+		public String getPlaca() {
+			return placa;
+		}
+
+		public void setPlaca(String placa) {
+			this.placa = placa;
+		}
+
+		public String getRenavam() {
+			return renavam;
+		}
+
+		public void setRenavam(String renavam) {
+			this.renavam = renavam;
+		}
+
+		public Boolean getPossuiVeiculoQuitado() {
+			return possuiVeiculoQuitado;
+		}
+
+		public void setPossuiVeiculoQuitado(Boolean possuiVeiculoQuitado) {
+			this.possuiVeiculoQuitado = possuiVeiculoQuitado;
+		}
+
+		public Boolean getPossuiExperienciaCredito() {
+			return possuiExperienciaCredito;
+		}
+
+		public void setPossuiExperienciaCredito(Boolean possuiExperienciaCredito) {
+			this.possuiExperienciaCredito = possuiExperienciaCredito;
+		}
+
+		public String getLocalExperiencia() {
+			return localExperiencia;
+		}
+
+		public void setLocalExperiencia(String localExperiencia) {
+			this.localExperiencia = localExperiencia;
+		}
+
+		public Integer getPlanoExperiencia() {
+			return planoExperiencia;
+		}
+
+		public void setPlanoExperiencia(Integer planoExperiencia) {
+			this.planoExperiencia = planoExperiencia;
+		}
+
+		public Integer getValorPrestacaoExperiencia() {
+			return valorPrestacaoExperiencia;
+		}
+
+		public void setValorPrestacaoExperiencia(Integer valorPrestacaoExperiencia) {
+			this.valorPrestacaoExperiencia = valorPrestacaoExperiencia;
+		}
+
+		public Date getDataInicioExperienciaCredito() {
+			return dataInicioExperienciaCredito;
+		}
+
+		public void setDataInicioExperienciaCredito(Date dataInicioExperienciaCredito) {
+			this.dataInicioExperienciaCredito = dataInicioExperienciaCredito;
+		}
+
+		public String getClassificacaoClienteLojista() {
+			return classificacaoClienteLojista;
+		}
+
+		public void setClassificacaoClienteLojista(String classificacaoClienteLojista) {
+			this.classificacaoClienteLojista = classificacaoClienteLojista;
+		}
+
+		public Boolean getPossuiCartaoFinanceira() {
+			return possuiCartaoFinanceira;
+		}
+
+		public void setPossuiCartaoFinanceira(Boolean possuiCartaoFinanceira) {
+			this.possuiCartaoFinanceira = possuiCartaoFinanceira;
+		}
+
+		public Boolean getPossuiContaCorrente() {
+			return possuiContaCorrente;
+		}
+
+		public void setPossuiContaCorrente(Boolean possuiContaCorrente) {
+			this.possuiContaCorrente = possuiContaCorrente;
+		}
+
+		public Boolean getPossuiDependente() {
+			return possuiDependente;
+		}
+
+		public void setPossuiDependente(Boolean possuiDependente) {
+			this.possuiDependente = possuiDependente;
+		}
+
+		public Integer getQuantidadeDependentes() {
+			return quantidadeDependentes;
+		}
+
+		public void setQuantidadeDependentes(Integer quantidadeDependentes) {
+			this.quantidadeDependentes = quantidadeDependentes;
+		}
+
+		public String getNomeCartao() {
+			return nomeCartao;
+		}
+
+		public void setNomeCartao(String nomeCartao) {
+			this.nomeCartao = nomeCartao;
+		}
+
+		public Boolean getDda() {
+			return dda;
+		}
+
+		public void setDda(Boolean dda) {
+			this.dda = dda;
+		}
+
+		public String getFiller() {
+			return filler;
+		}
+
+		public void setFiller(String filler) {
+			this.filler = filler;
+		}
 	}
 }
