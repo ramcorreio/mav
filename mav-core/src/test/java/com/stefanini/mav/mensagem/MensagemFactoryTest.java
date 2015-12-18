@@ -1427,17 +1427,222 @@ public class MensagemFactoryTest {
 		esperado.getDadosComplementares().setFiller(AdaptadorTipo.escreverString(50, " "));
 
 		
+		//DADOS DA OPERAÇÃO
+		esperado.setDadosOperacao(new RespostaPropostaFinanciamento.DadoOperacao());
+		//2755 a 2755	Operação	1	A	Flag operação (1 -EP , 2- CDC)	“1”   “2”
+		esperado.getDadosOperacao().setOperacao(2);
+		
+		//2756 a 2756	Primeira Compra	1	A	"Flag de Primeira Compra
+		//0 - Não
+		//1 - Sim"	“0”   “1”
+		esperado.getDadosOperacao().setPrimeiraCompra(true);
+		
+		//2757 a 2771	Pedido	15	A	Campo do número de pedido, nota fiscal, etc. do lojista
+		esperado.getDadosOperacao().setPedido("");
+		
+		//2772 a 2801	Nome Lojista	30	A	Nome do Lojista
+		esperado.getDadosOperacao().setNomeLojista("MAGAZINE LUIZA");
+		
+		//2802 a 2805	Conveniada	4	N	Código da Empresa Conveniada
+		esperado.getDadosOperacao().setConveniada(0);
+		
+		//2806 a 2806	Forma Pgto	1	N	"Indicação da Forma de Cobrança
+		//0) Carnë
+		//1) averbação em folha
+		//2) Cheque Pré
+		//3) Extrato Rotativo
+		//4) Extrato Parcelado
+		//5) Debito em Conta"	"0"  “1”   “2”  “3”  “4”, "5"
+		esperado.getDadosOperacao().setFormaPagamento(0);
+		
+		//2807 a 2808	Carência	2	N	Quantidade de Dias Para Ajuste do Vencimento da Prestação
+		esperado.getDadosOperacao().setCarencia(0);
+		
+		//2809 a 2810	Top	2	N	Tipo de Operação
+		esperado.getDadosOperacao().setTop(1);
+		
+		//2811 a 2818	Tab Financiamento	8	N	Identificação da tabela de financiamento  (COP’s) referente ao crédito solicitado, específica para o lojista ou Crédito Pessoal
+		esperado.getDadosOperacao().setTabelaFinanciamento(288799);
+		
+		//2819 a 2819	Tipo de Pagamento	1	N	0-Pré 1-Pós (Flag que indica se a negociação será efetuada com Pré fixado ou Pos fixado)	“0”   “1”
+		esperado.getDadosOperacao().setTipoPagamento(0);
+		
+		//2820 a 2826	Taxa Anual	7	N	Taxa de Juros Aplicada Ao Ano
+		esperado.getDadosOperacao().setTaxaAnual(30000);
+		
+		//2827 a 2833	Taxa Mensal	7	N	Taxa de Juros Aplicada Ao Mês
+		esperado.getDadosOperacao().setTaxaMensal(649000);
+		
+		//2834 a 2841	Data da Operação	8	N	Data da Operação
+		esperado.getDadosOperacao().setDataOperacao(UtilsDate.parse("25082015", UtilsDate.FormatadorData.DATA));
+		
+		//2842 a 2856	Valor  da Operação/Solicitado	15	N	Valor solicitado pelo cliente (em R$)
+		esperado.getDadosOperacao().setValorOperacao(70000);
+		
+		//2857 a 2857	Pag_Tac	1	N	Flag que indica a forma de pagamento da TAC ( 0 -Financiada   1- A vista 2 - Descontada em (RO))	“0”   “1”    “2”
+		esperado.getDadosOperacao().setPagTac(0);
+		
+		//2858 a 2872	Valor Tac	15	N	Valor da TAC (em R$)
+		esperado.getDadosOperacao().setValorTac(0);
+		
+		//2873 a 2887	Valor da Entrada	15	N	Valor cobrado no ato da venda (em R$).
+		esperado.getDadosOperacao().setValorEntrada(0);
+		
+		//2888 a 2902	Valor Total do Financiamento	15	N	Valor Total do Financiamento (em R$).
+		esperado.getDadosOperacao().setValorTotalFinanciamento(70000);
+		
+		//2903 a 2907	Valor Tarifa Bancaria	5	N	Tarifa Bancária (2 casas decimais) (em R$)
+		esperado.getDadosOperacao().setValorTarifaBancaria(0.0);
+		
+		//2908 a 2909	Produto	2	N	Produto (Top + Forma Pgto)
+		esperado.getDadosOperacao().setProduto(1);
+		
+		//2910 a 2916	CET Mensal (%)	7	A	Taxa Mensal do Custo efetivo Total (2 decimais)
+		esperado.getDadosOperacao().setCetMensal(6.77);
+		
+		//2917 a 2923	CET Anual  (%)	7	A	Taxa Anual   do Custo efetivo Total (2 decimais)
+		esperado.getDadosOperacao().setCetAnual(121.89);
+		
+		//2924 a 2930	IOF	7	N	Valor do IOF (2 casas decimais)
+		esperado.getDadosOperacao().setIof(13.45);
+		
+		//2931 a 2931	Indicador se existe RPS	1	N	Mostra se os campos do RPS estão preenchidos	0 - Não, 1 - Sim, 2 - Erro
+		esperado.getDadosOperacao().setExisteRps(0);
+		
+		//2932 a 2949	Número do RPS	18	A	Campo de Instrução para o RPS
+		esperado.getDadosOperacao().setNumeroRps("");
+		
+		//2950 a 2954	Série do RPS	5	A	Campo de Instrução para o RPS
+		esperado.getDadosOperacao().setSerieRps("");
+		
+		//2955 a 2962	Data de Emissão do RPS	8	A	Campo de Instrução para o RPS
+		esperado.getDadosOperacao().setDataEmissaoRps(null);
+		
+		//2963 a 2967	VLR Alíquota	5	A	Campo de Instrução para o RPS
+		esperado.getDadosOperacao().setValorAliquota("0");
+		
+		//2968 a 2971	Filial Losango	4	A	Campo de Instrução para o RPS
+		esperado.getDadosOperacao().setFilialLosango("0094");
+		
+		//2972 a 3021	Nome da Filial Losango	0050	A	Usado no RPS
+		esperado.getDadosOperacao().setNomeFilialLosango("UBERLANDIA");                                        
+		
+		//3022 a 3035	CNPJ Filial Losango	0014	A	Usado no RPS
+		esperado.getDadosOperacao().setCnpjFilialLosango("33550104000129");
+		
+		//3036 a 3055	Inscrição da Filial Losango	0020	A	Usado no RPS
+		esperado.getDadosOperacao().setInscricaoFilialLosango("");
+		
+		esperado.getDadosOperacao().setEndereoFilialLosango(new EnderecoTp3());
+		//3056 a 3120	Logradouro da Filial Losango	0065	A	Usado no RPS
+		esperado.getDadosOperacao().getEndereoFilialLosango().setLogradouro("RUA OLEGARIO MACIEL 533");
+		
+		//3121 a 3125	Numero (Endereço) da Filial Losango	0005	A	Usado no RPS
+		esperado.getDadosOperacao().getEndereoFilialLosango().setNumero("");
+		
+		//3126 a 3140	Complemento da Filial Losango	0015	A	Usado no RPS
+		esperado.getDadosOperacao().getEndereoFilialLosango().setComplemento("");
+		
+		//3141 a 3175	Bairro da Filial Losango	0035	A	Usado no RPS
+		esperado.getDadosOperacao().getEndereoFilialLosango().setBairro("CENTRO");
+		
+		//3176 a 3210	Cidade da Filial Losango	0035	A	Usado no RPS
+		esperado.getDadosOperacao().getEndereoFilialLosango().setCidade("UBERLANDIA");
+		
+		//3211 a 3212	UF da Filial Losango	0002	A	Usado no RPS
+		esperado.getDadosOperacao().getEndereoFilialLosango().setUf("MG");
+		
+		//3213 a 3220	Cep da Filial Losango	0008	A	Usado no RPS
+		esperado.getDadosOperacao().getEndereoFilialLosango().setCep(38400000);
+		
+		//3221 a 3221	Pre-Pago	1	A	Indica a compra de telefone celular Pre-Pago: 0 -Default ; 1 - Pre	 '0' '1'
+		esperado.getDadosOperacao().setPrePago("0");
+		
+		//3222 a 3222	Leva na Hora	1	A	 Indica se o cliente levara a mercadoria na hora:   0 - Default ; 1 - leva	 '0' '1'
+		esperado.getDadosOperacao().setLevaNaHora(true);
+		
+		//3223 a 3223	Beta-Gama	1	A	"Indicadore de Fraude
+		//  0 - Default - Sem fraude
+		//  2 - Beta    - Susp fraude
+		//  1 - Gama    - Confirm fraude"	 '0' '1' '2'
+		esperado.getDadosOperacao().setBetaGama(0);
+		
+		//3224 a 3233	Promotor	10	N
+		esperado.getDadosOperacao().setPromotor(0);
+		
+		//3234 a 3234	Indicador aceita consulta ao sysbacen	1	A		 '0' '1'
+		esperado.getDadosOperacao().setAceitaConsultaSysBacen(false);
+		
+		//3235 a 3242	Data do evento (entrega do bem)	8	N	Data do Bem
+		esperado.getDadosOperacao().setDataEvento(null);
+		
+		//3243 a 3257	Valor da Entrada Lojista	15	N
+		esperado.getDadosOperacao().setValorEntradaLojista(0);
+		
+		//3258 a 3258	Quantidade máxima de reanálise	1	N
+		esperado.getDadosOperacao().setQuantidadeMaxReanalise(0);
+		
+		//3259 a 3259	Produto Cessão	1	N	0 - Não, 1 - Sim
+		esperado.getDadosOperacao().setProdutoCessao(false);
+		
+		//3260 a 3309	Filler	50	A		
+		esperado.getDadosOperacao().setFiller(AdaptadorTipo.escreverString(50, " "));
 		
 		//Dados do Perfil/Oferta
+		//3310 a 3389	Filler	80	A
+		esperado.setFillerPerfilOferta(AdaptadorTipo.escreverString(80, " "));
 		
 		
 		//Dados Captura Digital
+		//3390 a 3390	indicadorCapturarFoto	1	A	Indicador da captura da Foto do Cliente.	"1 - Problemas Técnicos
+		//2 - Cliente não autoriza
+		//3 - Outros"
+		esperado.setIndicadorCapturarFoto("");
+		
+		//3390 a 3391	indicadorCapturarDocumento	1	A	Indicador da captura do Documento.	"1 - Problemas Técnicos
+		//2 - Cliente não autoriza
+		//3 - Outros"
+		esperado.setIndicadorCapturarDocumento("");
+		
+		//3391 a 3392	indicadorCapturarBiometria	1	A	Indicador da captura da Biometria	"1 - Problemas Técnicos
+		//2 - Cliente não autoriza
+		//3 - Outros"
+		esperado.setIndicadorCapturarBiometria("");
+		
+		//3393 a 3409	Filler	17	A		
+		esperado.setFillerCapturaDigital(AdaptadorTipo.escreverString(17, " "));
 		
 		
 		//Dados de Seguro
+		//3410 a 3410	Adesao_Seguro	1	N	Flag que indica se o cliente optou por fazer seguro (0 - NÃO  ;  1 - SIM)	“0”   “1”
+		esperado.setAdesaoSeguro(false);
+		
+		//3411 a 3411	Forma pagamento acessório	1	A	Forma de pagamento do produto acessório (V – a vista ; F – Financiado)	“V”  “F”
+		esperado.setFormaPagamentoAcessorio("");
+		
+		//3412 a 3412	Quantidade_Seguro	1	N	Quantidade de Seguros na proposta	
+		esperado.setQuantidadeSeguro(0);
 		
 		
 		//Dados de Seguro Prestamista
+		esperado.setDadosSeguroPremista(new RespostaPropostaFinanciamento.DadoSeguroPremista());
+		//3413 a 3414	tipo do seguro	2	A	Tipo de produto acessório	
+		esperado.getDadosSeguroPremista().setTipoSeguro("");
+		
+		//3415 a 3418	código do seguro	4	A	Codigo do produto acessório
+		esperado.getDadosSeguroPremista().setCodigoSeguro("");
+		
+		//3419 a 3433	valor do seguro	15	N	Valor do produto acessório (em R$)
+		esperado.getDadosSeguroPremista().setValorSeguro(0);
+		
+		//3434 a 3441	Valor da Cobertura do seguro	8	N
+		esperado.getDadosSeguroPremista().setValorCoberturaSeguro(0);
+		
+		//3442 a 3443	Plano Maximo do Seguro	2	N
+		esperado.getDadosSeguroPremista().setPlanoMaximoSeguro(0);
+		
+		//3444 a 3451	Codigo do produto do Seguro	8	N		
+		esperado.getDadosSeguroPremista().setCodigoProdutoSeguro(0);
 		
 		
 		//Dados de Seguro da Sorte/Vida

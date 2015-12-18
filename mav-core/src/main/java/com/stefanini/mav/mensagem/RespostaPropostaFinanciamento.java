@@ -56,6 +56,36 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	@MapBean
 	private DadoComplementar dadosComplementares;
 	
+	@MapBean
+	private DadoOperacao dadosOperacao;
+	
+	@MapAtributo(tamanho = 80, trim = false)
+	private String fillerPerfilOferta;
+	
+	@MapAtributo
+	private String indicadorCapturarFoto;
+	
+	@MapAtributo
+	private String indicadorCapturarDocumento;
+	
+	@MapAtributo
+	private String indicadorCapturarBiometria; 
+	
+	@MapAtributo(tamanho = 17, trim = false)
+	private String fillerCapturaDigital;
+	
+	@MapAtributo
+	private Boolean adesaoSeguro;
+	
+	@MapAtributo
+	private String formaPagamentoAcessorio;
+	
+	@MapAtributo
+	private Integer quantidadeSeguro;
+	
+	@MapBean
+	private DadoSeguroPremista dadosSeguroPremista;
+	
 	public RespostaPropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
 	}
@@ -172,6 +202,92 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		this.dadosComplementares = dadosComplementares;
 	}
 	
+	public DadoOperacao getDadosOperacao() {
+		return dadosOperacao;
+	}
+	
+	public void setDadosOperacao(DadoOperacao dadosOperacao) {
+		this.dadosOperacao = dadosOperacao;
+	}
+	
+	public String getFillerPerfilOferta() {
+		return fillerPerfilOferta;
+	}
+
+	public void setFillerPerfilOferta(String fillerPerfilOferta) {
+		this.fillerPerfilOferta = fillerPerfilOferta;
+	}
+
+	public String getIndicadorCapturarFoto() {
+		return indicadorCapturarFoto;
+	}
+
+	public void setIndicadorCapturarFoto(String indicadorCapturarFoto) {
+		this.indicadorCapturarFoto = indicadorCapturarFoto;
+	}
+
+	public String getIndicadorCapturarDocumento() {
+		return indicadorCapturarDocumento;
+	}
+
+	public void setIndicadorCapturarDocumento(String indicadorCapturarDocumento) {
+		this.indicadorCapturarDocumento = indicadorCapturarDocumento;
+	}
+
+	public String getIndicadorCapturarBiometria() {
+		return indicadorCapturarBiometria;
+	}
+
+	public void setIndicadorCapturarBiometria(String indicadorCapturarBiometria) {
+		this.indicadorCapturarBiometria = indicadorCapturarBiometria;
+	}
+
+	public String getFillerCapturaDigital() {
+		return fillerCapturaDigital;
+	}
+
+	public void setFillerCapturaDigital(String fillerCapturaDigital) {
+		this.fillerCapturaDigital = fillerCapturaDigital;
+	}
+
+	public Boolean getAdesaoSeguro() {
+		return adesaoSeguro;
+	}
+
+	public void setAdesaoSeguro(Boolean adesaoSeguro) {
+		this.adesaoSeguro = adesaoSeguro;
+	}
+
+	public String getFormaPagamentoAcessorio() {
+		return formaPagamentoAcessorio;
+	}
+
+	public void setFormaPagamentoAcessorio(String formaPagamentoAcessorio) {
+		this.formaPagamentoAcessorio = formaPagamentoAcessorio;
+	}
+
+	public Integer getQuantidadeSeguro() {
+		return quantidadeSeguro;
+	}
+
+	public void setQuantidadeSeguro(Integer quantidadeSeguro) {
+		this.quantidadeSeguro = quantidadeSeguro;
+	}
+
+	public DadoSeguroPremista getDadosSeguroPremista() {
+		return dadosSeguroPremista;
+	}
+
+	public void setDadosSeguroPremista(DadoSeguroPremista dadosSeguroPremista) {
+		this.dadosSeguroPremista = dadosSeguroPremista;
+	}
+
+	public String getFillerRespostaProposta() {
+		return fillerRespostaProposta;
+	}
+
+
+
 	//0422 a 0451	Nome_Cedente	30	A	Nome do Cedente 	
 	//0452 a 0453	Especie_Doc	2	A	Especie do Documento	
 	//0454 a 0454	Aceite	1	A	Identificação do aceite Default=N	
@@ -1434,7 +1550,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.formacao = formacao;
 		}
 
-		public Boolean getPossuiCartao() {
+		public Boolean isPossuiCartao() {
 			return possuiCartao;
 		}
 
@@ -1442,7 +1558,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.possuiCartao = possuiCartao;
 		}
 
-		public Boolean getPossuiVeiculoProprio() {
+		public Boolean isPossuiVeiculoProprio() {
 			return possuiVeiculoProprio;
 		}
 
@@ -1466,7 +1582,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.renavam = renavam;
 		}
 
-		public Boolean getPossuiVeiculoQuitado() {
+		public Boolean isPossuiVeiculoQuitado() {
 			return possuiVeiculoQuitado;
 		}
 
@@ -1474,7 +1590,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.possuiVeiculoQuitado = possuiVeiculoQuitado;
 		}
 
-		public Boolean getPossuiExperienciaCredito() {
+		public Boolean isPossuiExperienciaCredito() {
 			return possuiExperienciaCredito;
 		}
 
@@ -1522,7 +1638,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.classificacaoClienteLojista = classificacaoClienteLojista;
 		}
 
-		public Boolean getPossuiCartaoFinanceira() {
+		public Boolean isPossuiCartaoFinanceira() {
 			return possuiCartaoFinanceira;
 		}
 
@@ -1530,7 +1646,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.possuiCartaoFinanceira = possuiCartaoFinanceira;
 		}
 
-		public Boolean getPossuiContaCorrente() {
+		public Boolean isPossuiContaCorrente() {
 			return possuiContaCorrente;
 		}
 
@@ -1538,7 +1654,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.possuiContaCorrente = possuiContaCorrente;
 		}
 
-		public Boolean getPossuiDependente() {
+		public Boolean isPossuiDependente() {
 			return possuiDependente;
 		}
 
@@ -1562,7 +1678,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.nomeCartao = nomeCartao;
 		}
 
-		public Boolean getDda() {
+		public Boolean isDda() {
 			return dda;
 		}
 
@@ -1577,5 +1693,617 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		public void setFiller(String filler) {
 			this.filler = filler;
 		}
+	}
+	
+	//2755 a 2755	Operação	1	A	Flag operação (1 -EP , 2- CDC)	“1”   “2”
+	//2756 a 2756	Primeira Compra	1	A	"Flag de Primeira Compra
+	//0 - Não
+	//1 - Sim"	“0”   “1”
+	//2757 a 2771	Pedido	15	A	Campo do número de pedido, nota fiscal, etc. do lojista	
+	//2772 a 2801	Nome Lojista	30	A	Nome do Lojista	
+	//2802 a 2805	Conveniada	4	N	Código da Empresa Conveniada	
+	//2806 a 2806	Forma Pgto	1	N	"Indicação da Forma de Cobrança
+	//0) Carnë
+	//1) averbação em folha
+	//2) Cheque Pré
+	//3) Extrato Rotativo
+	//4) Extrato Parcelado
+	//5) Debito em Conta"	"0"  “1”   “2”  “3”  “4”, "5"
+	//2807 a 2808	Carência	2	N	Quantidade de Dias Para Ajuste do Vencimento da Prestação	
+	//2809 a 2810	Top	2	N	Tipo de Operação	
+	//2811 a 2818	Tab Financiamento	8	N	Identificação da tabela de financiamento  (COP’s) referente ao crédito solicitado, específica para o lojista ou Crédito Pessoal 	
+	//2819 a 2819	Tipo de Pagamento	1	N	0-Pré 1-Pós (Flag que indica se a negociação será efetuada com Pré fixado ou Pos fixado)	“0”   “1”
+	//2820 a 2826	Taxa Anual	7	N	Taxa de Juros Aplicada Ao Ano	
+	//2827 a 2833	Taxa Mensal	7	N	Taxa de Juros Aplicada Ao Mês	
+	//2834 a 2841	Data da Operação	8	N	Data da Operação	
+	//2842 a 2856	Valor  da Operação/Solicitado	15	N	Valor solicitado pelo cliente (em R$)	
+	//2857 a 2857	Pag_Tac	1	N	Flag que indica a forma de pagamento da TAC ( 0 -Financiada   1- A vista 2 - Descontada em (RO))	“0”   “1”    “2”
+	//2858 a 2872	Valor Tac	15	N	Valor da TAC (em R$)	
+	//2873 a 2887	Valor da Entrada	15	N	Valor cobrado no ato da venda (em R$).	
+	//2888 a 2902	Valor Total do Financiamento	15	N	Valor Total do Financiamento (em R$).	
+	//2903 a 2907	Valor Tarifa Bancaria	5	N	Tarifa Bancária (2 casas decimais) (em R$)	
+	//2908 a 2909	Produto	2	N	Produto (Top + Forma Pgto)	
+	//2910 a 2916	CET Mensal (%)	7	A	Taxa Mensal do Custo efetivo Total (2 decimais)	
+	//2917 a 2923	CET Anual  (%)	7	A	Taxa Anual   do Custo efetivo Total (2 decimais)	
+	//2924 a 2930	IOF	7	N	Valor do IOF (2 casas decimais)	
+	//2931 a 2931	Indicador se existe RPS	1	N	Mostra se os campos do RPS estão preenchidos	0 - Não, 1 - Sim, 2 - Erro
+	//2932 a 2949	Número do RPS	18	A	Campo de Instrução para o RPS	
+	//2950 a 2954	Série do RPS	5	A	Campo de Instrução para o RPS	
+	//2955 a 2962	Data de Emissão do RPS	8	A	Campo de Instrução para o RPS	
+	//2963 a 2967	VLR Alíquota	5	A	Campo de Instrução para o RPS	
+	//2968 a 2971	Filial Losango	4	A	Campo de Instrução para o RPS	
+	//2972 a 3021	Nome da Filial Losango	0050	A	Usado no RPS	
+	//3022 a 3035	CNPJ Filial Losango	0014	A	Usado no RPS	
+	//3036 a 3055	Inscrição da Filial Losango	0020	A	Usado no RPS	
+	//3056 a 3120	Logradouro da Filial Losango	0065	A	Usado no RPS	
+	//3121 a 3125	Numero (Endereço) da Filial Losango	0005	A	Usado no RPS	
+	//3126 a 3140	Complemento da Filial Losango	0015	A	Usado no RPS	
+	//3141 a 3175	Bairro da Filial Losango	0035	A	Usado no RPS	
+	//3176 a 3210	Cidade da Filial Losango	0035	A	Usado no RPS	
+	//3211 a 3212	UF da Filial Losango	0002	A	Usado no RPS	
+	//3213 a 3220	Cep da Filial Losango	0008	A	Usado no RPS	
+	//3221 a 3221	Pre-Pago	1	A	Indica a compra de telefone celular Pre-Pago: 0 -Default ; 1 - Pre	 '0' '1'
+	//3222 a 3222	Leva na Hora	1	A	 Indica se o cliente levara a mercadoria na hora:   0 - Default ; 1 - leva	 '0' '1'
+	//3223 a 3223	Beta-Gama	1	A	"Indicadore de Fraude
+	//  0 - Default - Sem fraude
+	//  2 - Beta    - Susp fraude
+	//  1 - Gama    - Confirm fraude"	 '0' '1' '2'
+	//3224 a 3233	Promotor	10	N		
+	//3234 a 3234	Indicador aceita consulta ao sysbacen	1	A		 '0' '1'
+	//3235 a 3242	Data do evento (entrega do bem)	8	N	Data do Bem	
+	//3243 a 3257	Valor da Entrada Lojista	15	N		
+	//3258 a 3258	Quantidade máxima de reanálise	1	N		
+	//3259 a 3259	Produto Cessão	1	N	0 - Não, 1 - Sim	
+	//3260 a 3309	Filler	50	A
+	public static class DadoOperacao {
+		
+		@MapAtributo
+		private Integer operacao;
+		
+		@MapAtributo
+		private Boolean primeiraCompra;
+		
+		@MapAtributo(tamanho = 15)
+		private String pedido;
+		
+		@MapAtributo(tamanho = 30)
+		private String nomeLojista;
+		
+		@MapAtributo(tamanho = 4)
+		private Integer conveniada;
+		
+		@MapAtributo
+		private Integer formaPagamento;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer carencia;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer top;	
+		
+		@MapAtributo(tamanho = 8)
+		private Integer tabelaFinanciamento;
+		
+		@MapAtributo
+		private Integer tipoPagamento;
+		
+		@MapAtributo(tamanho = 7)
+		private Integer taxaAnual;
+		
+		@MapAtributo(tamanho = 7)
+		private Integer taxaMensal;
+		
+		@MapAtributo(tamanho = 8)
+		private Date dataOperacao;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorOperacao;
+		
+		@MapAtributo
+		private Integer pagTac;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorTac;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorEntrada;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorTotalFinanciamento;
+		
+		@MapAtributo(tamanho = 5, scale = 2)
+		private Double valorTarifaBancaria;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer produto;
+		
+		@MapAtributo(tamanho = 7, scale = 2)
+		private Double cetMensal;
+		
+		@MapAtributo(tamanho = 7, scale = 2)
+		private Double cetAnual;
+		
+		@MapAtributo(tamanho = 7, scale = 2)
+		private Double iof;
+
+		@MapAtributo
+		private Integer existeRps;
+		
+		@MapAtributo(tamanho = 18)
+		private String numeroRps;
+		
+		@MapAtributo(tamanho = 5)
+		private String serieRps;
+
+		@MapAtributo(tamanho = 8)
+		private Date dataEmissaoRps;
+		
+		@MapAtributo(tamanho = 5)
+		private String valorAliquota;
+		
+		@MapAtributo(tamanho = 4)
+		private String filialLosango;
+		
+		@MapAtributo(tamanho = 50)
+		private String nomeFilialLosango;
+		
+		@MapAtributo(tamanho = 14)
+		private String cnpjFilialLosango;
+		
+		@MapAtributo(tamanho = 20)
+		private String inscricaoFilialLosango;
+		
+		@MapBean
+		private EnderecoTp3 endereoFilialLosango;
+		
+		@MapAtributo
+		private String prePago;
+	
+		@MapAtributo
+		private Boolean levaNaHora;
+
+		@MapAtributo
+		private Integer betaGama;
+		
+		@MapAtributo(tamanho = 10)
+		private Integer promotor;
+		
+		@MapAtributo
+		private Boolean aceitaConsultaSysBacen;
+		
+		@MapAtributo(tamanho = 8)
+		private Date dataEvento;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorEntradaLojista;
+		
+		@MapAtributo
+		private Integer quantidadeMaxReanalise;
+
+		@MapAtributo
+		private Boolean produtoCessao;
+		
+		@MapAtributo(tamanho = 50, trim = false)
+		private String filler;
+
+		public Integer getOperacao() {
+			return operacao;
+		}
+
+		public void setOperacao(Integer operacao) {
+			this.operacao = operacao;
+		}
+
+		public Boolean isPrimeiraCompra() {
+			return primeiraCompra;
+		}
+
+		public void setPrimeiraCompra(Boolean primeiraCompra) {
+			this.primeiraCompra = primeiraCompra;
+		}
+
+		public String getPedido() {
+			return pedido;
+		}
+
+		public void setPedido(String pedido) {
+			this.pedido = pedido;
+		}
+
+		public String getNomeLojista() {
+			return nomeLojista;
+		}
+
+		public void setNomeLojista(String nomeLojista) {
+			this.nomeLojista = nomeLojista;
+		}
+
+		public Integer getConveniada() {
+			return conveniada;
+		}
+
+		public void setConveniada(Integer conveniada) {
+			this.conveniada = conveniada;
+		}
+
+		public Integer getFormaPagamento() {
+			return formaPagamento;
+		}
+
+		public void setFormaPagamento(Integer formaPagamento) {
+			this.formaPagamento = formaPagamento;
+		}
+
+		public Integer getCarencia() {
+			return carencia;
+		}
+
+		public void setCarencia(Integer carencia) {
+			this.carencia = carencia;
+		}
+
+		public Integer getTop() {
+			return top;
+		}
+
+		public void setTop(Integer top) {
+			this.top = top;
+		}
+
+		public Integer getTabelaFinanciamento() {
+			return tabelaFinanciamento;
+		}
+
+		public void setTabelaFinanciamento(Integer tabelaFinanciamento) {
+			this.tabelaFinanciamento = tabelaFinanciamento;
+		}
+
+		public Integer getTipoPagamento() {
+			return tipoPagamento;
+		}
+
+		public void setTipoPagamento(Integer tipoPagamento) {
+			this.tipoPagamento = tipoPagamento;
+		}
+
+		public Integer getTaxaAnual() {
+			return taxaAnual;
+		}
+
+		public void setTaxaAnual(Integer taxaAnual) {
+			this.taxaAnual = taxaAnual;
+		}
+
+		public Integer getTaxaMensal() {
+			return taxaMensal;
+		}
+
+		public void setTaxaMensal(Integer taxaMensal) {
+			this.taxaMensal = taxaMensal;
+		}
+
+		public Date getDataOperacao() {
+			return dataOperacao;
+		}
+
+		public void setDataOperacao(Date dataOperacao) {
+			this.dataOperacao = dataOperacao;
+		}
+
+		public Integer getValorOperacao() {
+			return valorOperacao;
+		}
+
+		public void setValorOperacao(Integer valorOperacao) {
+			this.valorOperacao = valorOperacao;
+		}
+
+		public Integer getPagTac() {
+			return pagTac;
+		}
+
+		public void setPagTac(Integer pagTac) {
+			this.pagTac = pagTac;
+		}
+
+		public Integer getValorTac() {
+			return valorTac;
+		}
+
+		public void setValorTac(Integer valorTac) {
+			this.valorTac = valorTac;
+		}
+
+		public Integer getValorEntrada() {
+			return valorEntrada;
+		}
+
+		public void setValorEntrada(Integer valorEntrada) {
+			this.valorEntrada = valorEntrada;
+		}
+
+		public Integer getValorTotalFinanciamento() {
+			return valorTotalFinanciamento;
+		}
+
+		public void setValorTotalFinanciamento(Integer valorTotalFinanciamento) {
+			this.valorTotalFinanciamento = valorTotalFinanciamento;
+		}
+
+		public Double getValorTarifaBancaria() {
+			return valorTarifaBancaria;
+		}
+
+		public void setValorTarifaBancaria(Double valorTarifaBancaria) {
+			this.valorTarifaBancaria = valorTarifaBancaria;
+		}
+
+		public Integer getProduto() {
+			return produto;
+		}
+
+		public void setProduto(Integer produto) {
+			this.produto = produto;
+		}
+
+		public Double getCetMensal() {
+			return cetMensal;
+		}
+
+		public void setCetMensal(Double cetMensal) {
+			this.cetMensal = cetMensal;
+		}
+
+		public Double getCetAnual() {
+			return cetAnual;
+		}
+
+		public void setCetAnual(Double cetAnual) {
+			this.cetAnual = cetAnual;
+		}
+
+		public Double getIof() {
+			return iof;
+		}
+
+		public void setIof(Double iof) {
+			this.iof = iof;
+		}
+
+		public Integer getExisteRps() {
+			return existeRps;
+		}
+
+		public void setExisteRps(Integer existeRps) {
+			this.existeRps = existeRps;
+		}
+
+		public String getNumeroRps() {
+			return numeroRps;
+		}
+
+		public void setNumeroRps(String numeroRps) {
+			this.numeroRps = numeroRps;
+		}
+
+		public String getSerieRps() {
+			return serieRps;
+		}
+
+		public void setSerieRps(String serieRps) {
+			this.serieRps = serieRps;
+		}
+
+		public Date getDataEmissaoRps() {
+			return dataEmissaoRps;
+		}
+
+		public void setDataEmissaoRps(Date dataEmissaoRps) {
+			this.dataEmissaoRps = dataEmissaoRps;
+		}
+
+		public String getValorAliquota() {
+			return valorAliquota;
+		}
+
+		public void setValorAliquota(String valorAliquota) {
+			this.valorAliquota = valorAliquota;
+		}
+
+		public String getFilialLosango() {
+			return filialLosango;
+		}
+
+		public void setFilialLosango(String filialLosango) {
+			this.filialLosango = filialLosango;
+		}
+
+		public String getNomeFilialLOsango() {
+			return nomeFilialLosango;
+		}
+
+		public void setNomeFilialLosango(String nomeFilialLosango) {
+			this.nomeFilialLosango = nomeFilialLosango;
+		}
+
+		public String getCnpjFilialLosango() {
+			return cnpjFilialLosango;
+		}
+
+		public void setCnpjFilialLosango(String cnpjFilialLosango) {
+			this.cnpjFilialLosango = cnpjFilialLosango;
+		}
+
+		public String getInscricaoFilialLosango() {
+			return inscricaoFilialLosango;
+		}
+
+		public void setInscricaoFilialLosango(String inscricaoFilialLosango) {
+			this.inscricaoFilialLosango = inscricaoFilialLosango;
+		}
+
+		public EnderecoTp3 getEndereoFilialLosango() {
+			return endereoFilialLosango;
+		}
+
+		public void setEndereoFilialLosango(EnderecoTp3 endereoFilialLosango) {
+			this.endereoFilialLosango = endereoFilialLosango;
+		}
+
+		public String getPrePago() {
+			return prePago;
+		}
+
+		public void setPrePago(String prePago) {
+			this.prePago = prePago;
+		}
+
+		public Boolean isLevaNaHora() {
+			return levaNaHora;
+		}
+
+		public void setLevaNaHora(Boolean levaNaHora) {
+			this.levaNaHora = levaNaHora;
+		}
+
+		public Integer getBetaGama() {
+			return betaGama;
+		}
+
+		public void setBetaGama(Integer betaGama) {
+			this.betaGama = betaGama;
+		}
+
+		public Integer getPromotor() {
+			return promotor;
+		}
+
+		public void setPromotor(Integer promotor) {
+			this.promotor = promotor;
+		}
+
+		public Boolean isAceitaConsultaSysBacen() {
+			return aceitaConsultaSysBacen;
+		}
+
+		public void setAceitaConsultaSysBacen(Boolean aceitaConsultaSysBacen) {
+			this.aceitaConsultaSysBacen = aceitaConsultaSysBacen;
+		}
+
+		public Date getDataEvento() {
+			return dataEvento;
+		}
+
+		public void setDataEvento(Date dataEvento) {
+			this.dataEvento = dataEvento;
+		}
+
+		public Integer getValorEntradaLojista() {
+			return valorEntradaLojista;
+		}
+
+		public void setValorEntradaLojista(Integer valorEntradaLojista) {
+			this.valorEntradaLojista = valorEntradaLojista;
+		}
+
+		public Integer getQuantidadeMaxReanalise() {
+			return quantidadeMaxReanalise;
+		}
+
+		public void setQuantidadeMaxReanalise(Integer quantidadeMaxReanalise) {
+			this.quantidadeMaxReanalise = quantidadeMaxReanalise;
+		}
+
+		public Boolean isProdutoCessao() {
+			return produtoCessao;
+		}
+
+		public void setProdutoCessao(Boolean produtoCessao) {
+			this.produtoCessao = produtoCessao;
+		}
+
+		public String getFiller() {
+			return filler;
+		}
+
+		public void setFiller(String filler) {
+			this.filler = filler;
+		}
+	}
+	
+	//3413 a 3414	tipo do seguro	2	A	Tipo de produto acessório	
+	//3415 a 3418	código do seguro	4	A	Codigo do produto acessório	
+	//3419 a 3433	valor do seguro	15	N	Valor do produto acessório (em R$)	
+	//3434 a 3441	Valor da Cobertura do seguro	8	N		
+	//3442 a 3443	Plano Maximo do Seguro	2	N		
+	//3444 a 3451	Codigo do produto do Seguro	8	N
+	public static class DadoSeguroPremista {
+		
+		@MapAtributo(tamanho = 2)
+		private String tipoSeguro;
+		
+		@MapAtributo(tamanho = 4)
+		private String codigoSeguro;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorSeguro;
+		
+		@MapAtributo(tamanho = 8)
+		private Integer valorCoberturaSeguro;	
+
+		@MapAtributo(tamanho = 2)
+		private Integer planoMaximoSeguro;
+		
+		@MapAtributo(tamanho = 8)
+		private Integer codigoProdutoSeguro;
+
+		public String getTipoSeguro() {
+			return tipoSeguro;
+		}
+
+		public void setTipoSeguro(String tipoSeguro) {
+			this.tipoSeguro = tipoSeguro;
+		}
+
+		public String getCodigoSeguro() {
+			return codigoSeguro;
+		}
+
+		public void setCodigoSeguro(String codigoSeguro) {
+			this.codigoSeguro = codigoSeguro;
+		}
+
+		public Integer getValorSeguro() {
+			return valorSeguro;
+		}
+
+		public void setValorSeguro(Integer valorSeguro) {
+			this.valorSeguro = valorSeguro;
+		}
+
+		public Integer getValorCoberturaSeguro() {
+			return valorCoberturaSeguro;
+		}
+
+		public void setValorCoberturaSeguro(Integer valorCoberturaSeguro) {
+			this.valorCoberturaSeguro = valorCoberturaSeguro;
+		}
+
+		public Integer getPlanoMaximoSeguro() {
+			return planoMaximoSeguro;
+		}
+
+		public void setPlanoMaximoSeguro(Integer planoMaximoSeguro) {
+			this.planoMaximoSeguro = planoMaximoSeguro;
+		}
+
+		public Integer getCodigoProdutoSeguro() {
+			return codigoProdutoSeguro;
+		}
+
+		public void setCodigoProdutoSeguro(Integer codigoProdutoSeguro) {
+			this.codigoProdutoSeguro = codigoProdutoSeguro;
+		}
+		
 	}
 }
