@@ -429,5 +429,31 @@ public class ContextoEntradaSaidaTest {
 		MapBeanListaBean b = ContextoEntradaSaida.ler(entrada, MapBeanListaBean.class, false);
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
 	}
+	
+	@Test
+	public void lerAtributoListaInt() throws MapeamentoNaoEncontrado, ParseException {
+		
+		String entrada = "rodrigo afonso macedo    037281119781000034523045Opa!!!    04122015000000000000000000000000000000000000000000000000000000000000          67";
+		MapBeanListaInt expected = new MapBeanListaInt();
+		expected.setNome("rodrigo afonso macedo");
+		expected.setIdade(37);
+		expected.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
+		expected.setTemFilhos(true);
+		expected.setSalario(345.23);
+		expected.setSubSubBean(new MapBeanListaInt.SubSubBean());
+		expected.getSubSubBean().setSubBean(new MapBeanListaInt.SubBean());
+		expected.getSubSubBean().getSubBean().setConta(45);
+		expected.getSubSubBean().getSubBean().setTexto("Opa!!!");
+		expected.getSubSubBean().setHoje(UtilsDate.parse("04122015", UtilsDate.FormatadorData.DATA));
+		expected.setCoisas(new LinkedList<Integer>());
+		/*expected.getCoisas().add(84);
+		expected.getCoisas().add(753);
+		expected.getCoisas().add(1);*/
+		expected.setFiller(AdaptadorTipo.escreverString(10, " "));
+		expected.setValor(67);
+		
+		MapBeanListaInt b = ContextoEntradaSaida.ler(entrada, MapBeanListaInt.class, false);
+		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
+	}
 
 }

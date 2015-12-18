@@ -86,6 +86,15 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	@MapBean
 	private DadoSeguroPremista dadosSeguroPremista;
 	
+	@MapBean
+	private DadoSeguroSorteVida dadoSeguroSorteVida;
+	
+	@MapBean
+	private SusepSeguroPremista susepSeguroPremista;
+	
+	@MapBean
+	private Banco debitoConta;
+	
 	public RespostaPropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
 	}
@@ -121,8 +130,8 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	public void setDataAutorizacao(Date dataAutorizacao) {
 		this.dataAutorizacao = dataAutorizacao;
 	}
-
-	public String getFiller() {
+	
+	public String getFillerRespostaProposta() {
 		return fillerRespostaProposta;
 	}
 
@@ -281,12 +290,30 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	public void setDadosSeguroPremista(DadoSeguroPremista dadosSeguroPremista) {
 		this.dadosSeguroPremista = dadosSeguroPremista;
 	}
-
-	public String getFillerRespostaProposta() {
-		return fillerRespostaProposta;
+	
+	public DadoSeguroSorteVida getDadoSeguroSorteVida() {
+		return dadoSeguroSorteVida;
 	}
-
-
+	
+	public void setDadoSeguroSorteVida(DadoSeguroSorteVida dadoSeguroSorteVida) {
+		this.dadoSeguroSorteVida = dadoSeguroSorteVida;
+	}
+	
+	public SusepSeguroPremista getSusepSeguroPremista() {
+		return susepSeguroPremista;
+	}
+	
+	public void setSusepSeguroPremista(SusepSeguroPremista susepSeguroPremista) {
+		this.susepSeguroPremista = susepSeguroPremista;
+	}
+	
+	public Banco getDebitoConta() {
+		return debitoConta;
+	}
+	
+	public void setDebitoConta(Banco debitoConta) {
+		this.debitoConta = debitoConta;
+	}
 
 	//0422 a 0451	Nome_Cedente	30	A	Nome do Cedente 	
 	//0452 a 0453	Especie_Doc	2	A	Especie do Documento	
@@ -2304,6 +2331,213 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		public void setCodigoProdutoSeguro(Integer codigoProdutoSeguro) {
 			this.codigoProdutoSeguro = codigoProdutoSeguro;
 		}
+	}
+	
+	
+	//3452 a 3453	tipo do seguro	2	A	Tipo de produto acessório	
+	//3454 a 3457	código do seguro	4	A	Codigo do produto acessório	
+	//3458 a 3472	valor do seguro	15	N	Valor do produto acessório (em R$)	
+	//3473 a 3480	Valor da Cobertura do seguro	8	N		
+	//3481 a 3482	Plano Maximo do Seguro	2	N		
+	//3483 a 3490	Codigo do produto do Seguro	8	A		
+	//3491 a 3498	Data do Sorteio	8	N	data do Sorteio do Numero da Sorte	
+	//3499 a 3500	Quantidade de Numero da Sorte	2	N	Valor do produto acessório (em R$)	
+	//3501 a 3505	Série do Número da Sorte 1	5	N		
+	//3506 a 3512	Número da Sorte 1	7	N		
+	//3513 a 3517	Série do Número da Sorte 2	5	N		
+	//3518 a 3524	Número da Sorte2	7	N		
+	//3525 a 3529	Série do Número da Sorte 3	5	N		
+	//3530 a 3536	Número da Sorte3	7	N		
+	//3537 a 3541	Série do Número da Sorte 4	5	N		
+	//3542 a 3548	Número da Sorte4	7	N		
+	//3549 a 3553	Série do Número da Sorte 5	5	N		
+	//3554 a 3560	Número da Sorte5	7	N		
+	//3561 a 3565	Série do Número da Sorte 6	5	N		
+	//3566 a 3572	Número da Sorte6	7	N		
+	//3573 a 3577	Série do Número da Sorte 7	5	N		
+	//3578 a 3584	Número da Sorte7	7	N		
+	//3585 a 3589	Série do Número da Sorte 8	5	N		
+	//3590 a 3596	Número da Sorte8	7	N
+	public static class DadoSeguroSorteVida {
 		
+		@MapAtributo(tamanho = 2)
+		private String tipoSeguro;
+		
+		@MapAtributo(tamanho = 4)
+		private String codigoSeguro;
+		
+		@MapAtributo(tamanho = 15)
+		private Integer valorSeguro;
+		
+		@MapAtributo(tamanho = 8)
+		private Integer valorCobertura;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer planoMaximo;
+		
+		@MapAtributo(tamanho = 8)
+		private String codigoProduto;
+		
+		@MapAtributo(tamanho = 8)
+		private Date dateSorteio;
+		
+		@MapAtributo(tamanho = 2)
+		private Integer quantidadeNumeroSorte;
+		
+		@MapLista(maxSize = 8, bean = @MapBean)
+		private List<NumeroSorte> numerosSorte;
+
+		public String getTipoSeguro() {
+			return tipoSeguro;
+		}
+
+		public void setTipoSeguro(String tipoSeguro) {
+			this.tipoSeguro = tipoSeguro;
+		}
+
+		public String getCodigoSeguro() {
+			return codigoSeguro;
+		}
+
+		public void setCodigoSeguro(String codigoSeguro) {
+			this.codigoSeguro = codigoSeguro;
+		}
+
+		public Integer getValorSeguro() {
+			return valorSeguro;
+		}
+
+		public void setValorSeguro(Integer valorSeguro) {
+			this.valorSeguro = valorSeguro;
+		}
+
+		public Integer getValorCobertura() {
+			return valorCobertura;
+		}
+
+		public void setValorCobertura(Integer valorCobertura) {
+			this.valorCobertura = valorCobertura;
+		}
+
+		public Integer getPlanoMaximo() {
+			return planoMaximo;
+		}
+
+		public void setPlanoMaximo(Integer planoMaximo) {
+			this.planoMaximo = planoMaximo;
+		}
+
+		public String getCodigoProduto() {
+			return codigoProduto;
+		}
+
+		public void setCodigoProduto(String codigoProduto) {
+			this.codigoProduto = codigoProduto;
+		}
+
+		public Date getDateSorteio() {
+			return dateSorteio;
+		}
+
+		public void setDateSorteio(Date dateSorteio) {
+			this.dateSorteio = dateSorteio;
+		}
+
+		public Integer getQuantidadeNumeroSorte() {
+			return quantidadeNumeroSorte;
+		}
+
+		public void setQuantidadeNumeroSorte(Integer quantidadeNumeroSorte) {
+			this.quantidadeNumeroSorte = quantidadeNumeroSorte;
+		}
+
+		public List<NumeroSorte> getNumerosSorte() {
+			return numerosSorte;
+		}
+
+		public void setNumerosSorte(List<NumeroSorte> numerosSorte) {
+			this.numerosSorte = numerosSorte;
+		}
+	}
+	
+	//3597 a 3604	Data do Sorteio	8	N	
+	//3605 a 3617	Bilhete Seguro Prestamista	13	N	
+	//3618 a 3622	Série do Número da Sorte 1	5	N	
+	//3623 a 3629	Número da Sorte 1	7	N	
+	//3630 a 3634	Percentual Garantia 1	5	N	
+	//3635 a 3639	Percentual Garantia 2	5	N	
+	//3640 a 3644	Percentual Garantia 3	5	N	
+	//3645 a 3649	Percentual Garantia 4	5	N	
+	//3650 a 3654	Percentual Garantia 5	5	N	
+	//3655 a 3659	Percentual Garantia 6	5	N	
+	//3660 a 3664	Percentual Garantia 7	5	N	
+	//3665 a 3670	Filler	6	A
+	public static class SusepSeguroPremista {
+		
+		@MapAtributo(tamanho = 8)
+		private Date dataSorteio;
+		
+		@MapAtributo(tamanho = 13)
+		private Integer bilhete;
+		
+		@MapAtributo(tamanho = 5)
+		private Integer serieNumeroSorte;
+		
+		@MapAtributo(tamanho = 7)
+		private Integer numeroDaSorte;
+		
+		@MapLista(maxSize = 7, attr = @MapAtributo(tamanho = 5))
+		private List<Integer> percentualGarantia;
+		
+		@MapAtributo(tamanho = 6, trim = false)
+		private String filler;
+
+		public Date getDataSorteio() {
+			return dataSorteio;
+		}
+
+		public void setDataSorteio(Date dataSorteio) {
+			this.dataSorteio = dataSorteio;
+		}
+
+		public Integer getBilhete() {
+			return bilhete;
+		}
+
+		public void setBilhete(Integer bilhete) {
+			this.bilhete = bilhete;
+		}
+
+		public Integer getSerieNumeroSorte() {
+			return serieNumeroSorte;
+		}
+
+		public void setSerieNumeroSorte(Integer serieNumeroSorte) {
+			this.serieNumeroSorte = serieNumeroSorte;
+		}
+
+		public Integer getNumeroDaSorte() {
+			return numeroDaSorte;
+		}
+
+		public void setNumeroDaSorte(Integer numeroDaSorte) {
+			this.numeroDaSorte = numeroDaSorte;
+		}
+
+		public List<Integer> getPercentualGarantia() {
+			return percentualGarantia;
+		}
+
+		public void setPercentualGarantia(List<Integer> percentualGarantia) {
+			this.percentualGarantia = percentualGarantia;
+		}
+
+		public String getFiller() {
+			return filler;
+		}
+
+		public void setFiller(String filler) {
+			this.filler = filler;
+		}		
 	}
 }

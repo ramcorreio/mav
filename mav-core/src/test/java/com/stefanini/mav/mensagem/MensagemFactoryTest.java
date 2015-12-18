@@ -1646,12 +1646,102 @@ public class MensagemFactoryTest {
 		
 		
 		//Dados de Seguro da Sorte/Vida
+		esperado.setDadoSeguroSorteVida(new RespostaPropostaFinanciamento.DadoSeguroSorteVida());
+		
+		//3452 a 3453	tipo do seguro	2	A	Tipo de produto acessório
+		esperado.getDadoSeguroSorteVida().setTipoSeguro("");
+		
+		//3454 a 3457	código do seguro	4	A	Codigo do produto acessório
+		esperado.getDadoSeguroSorteVida().setCodigoSeguro("");
+		
+		//3458 a 3472	valor do seguro	15	N	Valor do produto acessório (em R$)
+		esperado.getDadoSeguroSorteVida().setValorSeguro(0);
+		
+		//3473 a 3480	Valor da Cobertura do seguro	8	N
+		esperado.getDadoSeguroSorteVida().setValorCobertura(0);
+		
+		//3481 a 3482	Plano Maximo do Seguro	2	N
+		esperado.getDadoSeguroSorteVida().setPlanoMaximo(0);
+		
+		//3483 a 3490	Codigo do produto do Seguro	8	A
+		esperado.getDadoSeguroSorteVida().setCodigoProduto("0");
+		
+		//3491 a 3498	Data do Sorteio	8	N	data do Sorteio do Numero da Sorte
+		esperado.getDadoSeguroSorteVida().setDateSorteio(null);
+		
+		//3499 a 3500	Quantidade de Numero da Sorte	2	N	Valor do produto acessório (em R$)
+		esperado.getDadoSeguroSorteVida().setQuantidadeNumeroSorte(0);
+		esperado.getDadoSeguroSorteVida().setNumerosSorte(new LinkedList<NumeroSorte>());
+		
+		//3501 a 3505	Série do Número da Sorte 1	5	N		
+		//3506 a 3512	Número da Sorte 1	7	N		
+		//3513 a 3517	Série do Número da Sorte 2	5	N		
+		//3518 a 3524	Número da Sorte2	7	N		
+		//3525 a 3529	Série do Número da Sorte 3	5	N		
+		//3530 a 3536	Número da Sorte3	7	N		
+		//3537 a 3541	Série do Número da Sorte 4	5	N		
+		//3542 a 3548	Número da Sorte4	7	N		
+		//3549 a 3553	Série do Número da Sorte 5	5	N		
+		//3554 a 3560	Número da Sorte5	7	N		
+		//3561 a 3565	Série do Número da Sorte 6	5	N		
+		//3566 a 3572	Número da Sorte6	7	N		
+		//3573 a 3577	Série do Número da Sorte 7	5	N		
+		//3578 a 3584	Número da Sorte7	7	N		
+		//3585 a 3589	Série do Número da Sorte 8	5	N		
+		//3590 a 3596	Número da Sorte8	7	N
 		
 		
 		//Dados do SUSEP para Seguro Prestamista
+		esperado.setSusepSeguroPremista(new RespostaPropostaFinanciamento.SusepSeguroPremista());
+		//3597 a 3604	Data do Sorteio	8	N	
+		esperado.getSusepSeguroPremista().setDataSorteio(null);
+		
+		//3605 a 3617	Bilhete Seguro Prestamista	13	N
+		esperado.getSusepSeguroPremista().setBilhete(0);
+		
+		//3618 a 3622	Série do Número da Sorte 1	5	N
+		esperado.getSusepSeguroPremista().setSerieNumeroSorte(0);
+		
+		//3623 a 3629	Número da Sorte 1	7	N	
+		esperado.getSusepSeguroPremista().setNumeroDaSorte(0);
+		
+		esperado.getSusepSeguroPremista().setPercentualGarantia(new LinkedList<Integer>());
+		//3630 a 3634	Percentual Garantia 1	5	N	
+		//3635 a 3639	Percentual Garantia 2	5	N	
+		//3640 a 3644	Percentual Garantia 3	5	N	
+		//3645 a 3649	Percentual Garantia 4	5	N	
+		//3650 a 3654	Percentual Garantia 5	5	N	
+		//3655 a 3659	Percentual Garantia 6	5	N	
+		//3660 a 3664	Percentual Garantia 7	5	N	
+		
+		//3665 a 3670	Filler	6	A
+		esperado.getSusepSeguroPremista().setFiller(AdaptadorTipo.escreverString(6, " "));
 		
 		
 		//DÉBITO EM CONTA
+		esperado.setDebitoConta(new Banco());
+		esperado.getDebitoConta().setInfo(new InfoBanco());
+		//3671 a 3674	Banco	4	N
+		esperado.getDebitoConta().getInfo().setNumero(0);
+		
+		//3675 a 3678	Agencia	4	N
+		esperado.getDebitoConta().getInfo().setAgencia(0);
+		
+		//3679 a 3679	DV Agência	1	A	
+		esperado.getDebitoConta().getInfo().setDvAgencia("");
+		
+		//3680 a 3692	Conta Corrente	13	N	
+		esperado.getDebitoConta().getInfo().setContaCorrente(0);
+		
+		//3693 a 3694	DV Conta Corrente	2	A
+		esperado.getDebitoConta().getInfo().setDvContaCorrente("");
+		
+		//3695 a 3696	Tipo da Conta	2	A
+		esperado.getDebitoConta().setTipoConta("");
+		
+		//3697 a 3704	Data de Abertura	8	N	DDMMAAAA
+		esperado.getDebitoConta().setDataAbertura(null);
+
 		
 		
 		//Dados de Cheques
