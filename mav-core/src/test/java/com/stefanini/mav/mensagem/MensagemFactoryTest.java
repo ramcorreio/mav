@@ -987,7 +987,7 @@ public class MensagemFactoryTest {
 		
 		//DADOS DA OPERAÇÃO					
 		//0405 a 0406	Prestações	2	N	Indicar O Nº de Parcelas do contrato
-		esperado.setPrestacoes(10);
+		esperado.setNumeroPrestacoes(10);
 		
 		//0407 a 0421	Valor da Prestação 	15	N	Valor A Ser Pago Mensalmente Já Com Taxa de Juros (em R$)
 		esperado.setValorPrestacao(9920);
@@ -1742,30 +1742,148 @@ public class MensagemFactoryTest {
 		//3697 a 3704	Data de Abertura	8	N	DDMMAAAA
 		esperado.getDebitoConta().setDataAbertura(null);
 
-		
-		
 		//Dados de Cheques
+		esperado.setDadosCheque(new RespostaPropostaFinanciamento.DadoCheque());
+		//3705 a 3707	CÓDIGO DO BANCO dos cheques	3	N	Código do Banco da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"
+		esperado.getDadosCheque().setCodigoBanco(0);
 		
+		//3708 a 3711	AGÊNCIA  DE DESTINO dos cheques	4	N	Código da Agência Bancária da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"
+		esperado.getDadosCheque().setAgenciaDestino(0);
+		
+		//3712 a 3712	DV Agencia dos cheques	1	A	
+		esperado.getDadosCheque().setDvAgenciaDestino("");
+		
+		//3713 a 3725	Codigo da Conta	13	N		
+		esperado.getDadosCheque().setCodigoConta(0);
+		
+		//3726 a 3727	DV da Conta	2	A
+		esperado.getDadosCheque().setDvConta("");
+		
+		//3728 a 3733	NÚMERO DO CHEQUE do Primeiro Cheque da 1a. Faixa de Cheques	6	N	Número do primeiro cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"
+		esperado.getDadosCheque().setNumeroPrimeiroChequeFaixa1(0);
+		
+		//3734 a 3739	NÚMERO DO CHEQUE do Último Cheque da 1a. Faixa de Cheques	6	N	Número do último cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"
+		esperado.getDadosCheque().setNumeroUltimoChequeFaixa1(0);
+		
+		//3740 a 3745	NÚMERO DO CHEQUE do Primeiro Cheque da 2a. Faixa de Cheques	6	N	Número do primeiro cheque da segunda faixa de cheques para as operações de cheque-pré
+		esperado.getDadosCheque().setNumeroPrimeiroChequeFaixa2(0);
+		
+		//3746 a 3751	NÚMERO DO CHEQUE do Último Cheque da 2a. Faixa de Cheques	6	N	Número do último cheque da segunda faixa de cheques para as operações de cheque-pré
+		esperado.getDadosCheque().setNumeroUltimoChequeFaixa2(0);
+		
+		//3752 a 3759	Data da abertura da conta corrente	8	N	Data da abertura da conta corrente	Se produto igual a "2"
+		esperado.getDadosCheque().setDataAberturaConta(null);
+		
+		//3760 a 3809	Filler	50	A
+		esperado.getDadosCheque().setFiller(AdaptadorTipo.escreverString(50, " "));
+
 		
 		//Dados de operação para Emprestimo Pessoal (EP)
+		esperado.setBancoEp(new BancoEp());
+		esperado.getBancoEp().setInfo(new InfoBanco());
+		//3810 a 3810	Ind. Pagto DOC - Credito Pessoal	1	A	Indicador de pagamento em DOC
+		esperado.getBancoEp().setPagtoDoc(false);
+		
+		//3811 a 3812	Tipo de Conta (spb) - EP	2	A	ver tabela de dominio
+		esperado.getBancoEp().setTipoConta("");
+		
+		//3813 a 3816	Banco - Credito Pessoal	4	N	Número do Banco para Depósito do Credito pessoal
+		esperado.getBancoEp().getInfo().setNumero(0);
+		
+		//3817 a 3820	Agencia - Credito Pessoal	4	N	Número da Agencia para Depósito do Credito pessoal
+		esperado.getBancoEp().getInfo().setAgencia(0);
+		
+		//3821 a 3821	DV Agencia  - Credito Pessoal	1	A	DV da Agencia para Depósito do Emprestimo pessoal
+		esperado.getBancoEp().getInfo().setDvAgencia("");
+		
+		//3822 a 3834	Nº da conta - Credito Pessoal	13	N	Número da Agencia para Depósito do crédito pessoal
+		esperado.getBancoEp().getInfo().setContaCorrente(0);
+		
+		//3835 a 3836	Dv da conta  - Credito Pessoal	2	A	Número da Conta para débito referente ao pagamento das prestações
+		esperado.getBancoEp().getInfo().setDvContaCorrente("");
+		
+		//3837 a 3837	C2 - Credito Pessoal	1	N
+		esperado.getBancoEp().setC2(0);
+		
+		//3838 a 3838	C3 - Credito Pessoal	1	N
+		esperado.getBancoEp().setC3(0);
 		
 		
 		//Outros Indicadores
-		
+		//3839 a 3888	Filler	50	A
+		esperado.setFillerOutrosIndicadores(AdaptadorTipo.escreverString(50, " "));
 		
 		//Prestações
+		esperado.setPrestacoes(new LinkedList<Prestacao>());
+		//3889 a 3896	Data de Vencimento da 1ª prestação	8	N	Data do Vencimento de cada prestação
+		//3897 a 3908	NOSNUMERO da 1ª prestação	12	A	Nosso Numero (Losango)
+		//3909 a 3928	Prestação 2	20	A	Data do Vencimento + Nosso Numero (Losango)
+		//3929 a 3948	Prestação 3	20	A	Data do Vencimento + Nosso Numero (Losango)
+		//4769 a 4788	Prestação 45	20	A	Data do Vencimento + Nosso Numero (Losango)
+		esperado.getPrestacoes().add(addPrestacao("25092015861026964730"));
+		esperado.getPrestacoes().add(addPrestacao("25102015861026964749"));
+		esperado.getPrestacoes().add(addPrestacao("25112015861026964757"));
+		esperado.getPrestacoes().add(addPrestacao("25122015861026964765"));
+		esperado.getPrestacoes().add(addPrestacao("25012016861026964773"));
+		esperado.getPrestacoes().add(addPrestacao("25022016861026964781"));
+		esperado.getPrestacoes().add(addPrestacao("2503201686102696479P"));
+		esperado.getPrestacoes().add(addPrestacao("25042016861026964803"));
+		esperado.getPrestacoes().add(addPrestacao("25052016861026964811"));
+		esperado.getPrestacoes().add(addPrestacao("2506201686102696482P"));
+		
+		//4789 a 4842	Filler	54	A
+		esperado.setFillerPrestacoes(AdaptadorTipo.escreverString(54, " "));
 		
 		
-		//Dados CD
+		//Dados CD					
+		//4843 a 4877	Registro Oficio Contrato	35	A	Numero do Contrado Registrado em Cartório
+		esperado.setRegistroOficioContrato("4o Of. RTD-RJ, n. 951628/19-12-13");
+		
+		//4878 a 4927	Filler	50	A
+		esperado.setFillerDadosCd(AdaptadorTipo.escreverString(50, " "));
 		
 		
-		//Atendimento ao Cliente
+		//Atendimento ao Cliente					
+		//4928 a 4938	CPF do Vendedor	11	A
+		esperado.setCpfVendedor("01234567890");
 		
+		//4939 a 4973	Nome do Vendedor	35	A
+		esperado.setNomeVendedor("VENDEDOR TESTE");
+		
+		//4974 a 5008	Nome do Certificado	35	A
+		esperado.setNomeCertificador("JUCIELY FRANSIANE AMARIO");
+		
+		//5009 a 5019	CPF do Certificado	11	A
+		esperado.setCpfCertificador("01115303180");
+		
+		//5020 a 5088	Filler	69	A
+		esperado.setFillerAtendimentoCliente(AdaptadorTipo.escreverString(69, " "));		
 		
 		//Outros Indicadores
+		esperado.setIndicadores(new Indicador());
+		//5089 a 5089	Identificador do canal	1	A	Identifica que a proposta é de procedência do TRS
+		esperado.getIndicadores().setIdentificadorCanal("");
+		
+		//5090 a 5099	Versão do Canal	10	A	Uso exclusivo da Losango
+		esperado.getIndicadores().setVersaoCanal("7");
+		
+		//5100 a 5100	Política	1	A	Uso exclusivo da Losango
+		esperado.getIndicadores().setPolitica("2");
+		
+		//5101 a 5102	Ambiente	2	A	Uso exclusivo da Losango
+		esperado.getIndicadores().setAmbiente("HO");
+
 		
 		
 		assertThat(m, BeanMatchers.theSameAs(esperado));
 
+	}
+	
+	private Prestacao addPrestacao(String prestacao) throws ParseException {
+		
+		Prestacao p = new Prestacao();
+		p.setNossoNumero(prestacao.substring(8));
+		p.setVencimento(UtilsDate.parse(prestacao.substring(0,8), UtilsDate.FormatadorData.DATA));
+		return p;
 	}
 }

@@ -30,7 +30,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	private String fillerRespostaProposta;
 	
 	@MapAtributo(tamanho = 2)
-	private Integer prestacoes;
+	private Integer numeroPrestacoes;
 	
 	@MapAtributo(tamanho = 15)
 	private Integer valorPrestacao;
@@ -95,6 +95,46 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	@MapBean
 	private Banco debitoConta;
 	
+	@MapBean
+	private DadoCheque dadosCheque;
+	
+	@MapBean
+	private BancoEp bancoEp;
+	
+	@MapAtributo(tamanho = 50, trim = false)
+	private String fillerOutrosIndicadores;
+	
+	@MapLista(maxSize = 45, bean = @MapBean)
+	private List<Prestacao> prestacoes;
+	
+	@MapAtributo(tamanho = 54, trim = false)
+	private String fillerPrestacoes;
+	
+	@MapAtributo(tamanho = 35)
+	private String registroOficioContrato;
+	
+	@MapAtributo(tamanho = 50, trim = false)
+	private String fillerDadosCd;
+	
+	@MapAtributo(tamanho = 11)
+	private String cpfVendedor;
+	
+	@MapAtributo(tamanho = 35)
+	private String nomeVendedor;
+	
+	@MapAtributo(tamanho = 35)
+	private String nomeCertificador;
+	
+	@MapAtributo(tamanho = 11)
+	private String cpfCertificador;
+	
+	@MapAtributo(tamanho = 69, trim = false)
+	private String fillerAtendimentoCliente;		
+
+	@MapBean
+	private Indicador indicadores;
+	
+	
 	public RespostaPropostaFinanciamento(String id, Cabecalho cabecalho) {
 		super(id, cabecalho);
 	}
@@ -139,12 +179,12 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		this.fillerRespostaProposta = fillerRespostaProposta;
 	}
 	
-	public Integer getPrestacoes() {
-		return prestacoes;
+	public Integer getNumeroPrestacoes() {
+		return numeroPrestacoes;
 	}
 	
-	public void setPrestacoes(Integer prestacoes) {
-		this.prestacoes = prestacoes;
+	public void setNumeroPrestacoes(Integer prestacoes) {
+		this.numeroPrestacoes = prestacoes;
 	}
 	
 	public Integer getValorPrestacao() {
@@ -314,6 +354,112 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	public void setDebitoConta(Banco debitoConta) {
 		this.debitoConta = debitoConta;
 	}
+	
+	public DadoCheque getDadosCheque() {
+		return dadosCheque;
+	}
+	
+	public void setDadosCheque(DadoCheque dadosCheque) {
+		this.dadosCheque = dadosCheque;
+	}
+	
+	public BancoEp getBancoEp() {
+		return bancoEp;
+	}
+	
+	public void setBancoEp(BancoEp bancoEp) {
+		this.bancoEp = bancoEp;
+	}
+	
+	public String getFillerOutrosIndicadores() {
+		return fillerOutrosIndicadores;
+	}
+	
+	public void setFillerOutrosIndicadores(String fillerOutrosIndicadores) {
+		this.fillerOutrosIndicadores = fillerOutrosIndicadores;
+	}
+	
+	public List<Prestacao> getPrestacoes() {
+		return prestacoes;
+	}
+	
+	public void setPrestacoes(List<Prestacao> prestacoes) {
+		this.prestacoes = prestacoes;
+	}
+	
+	public String getFillerPrestacoes() {
+		return fillerPrestacoes;
+	}
+
+	public void setFillerPrestacoes(String fillerPrestacoes) {
+		this.fillerPrestacoes = fillerPrestacoes;
+	}
+
+	public String getRegistroOficioContrato() {
+		return registroOficioContrato;
+	}
+
+	public void setRegistroOficioContrato(String registroOficioContrato) {
+		this.registroOficioContrato = registroOficioContrato;
+	}
+
+	public String getFillerDadosCd() {
+		return fillerDadosCd;
+	}
+
+	public void setFillerDadosCd(String fillerDadosCd) {
+		this.fillerDadosCd = fillerDadosCd;
+	}
+
+	public String getCpfVendedor() {
+		return cpfVendedor;
+	}
+
+	public void setCpfVendedor(String cpfVendedor) {
+		this.cpfVendedor = cpfVendedor;
+	}
+
+	public String getNomeVendedor() {
+		return nomeVendedor;
+	}
+
+	public void setNomeVendedor(String nomeVendedor) {
+		this.nomeVendedor = nomeVendedor;
+	}
+
+	public String getNomeCertificador() {
+		return nomeCertificador;
+	}
+
+	public void setNomeCertificador(String nomeCertificador) {
+		this.nomeCertificador = nomeCertificador;
+	}
+
+	public String getCpfCertificador() {
+		return cpfCertificador;
+	}
+
+	public void setCpfCertificador(String cpfCertificador) {
+		this.cpfCertificador = cpfCertificador;
+	}
+
+	public String getFillerAtendimentoCliente() {
+		return fillerAtendimentoCliente;
+	}
+
+	public void setFillerAtendimentoCliente(String fillerAtendimentoCliente) {
+		this.fillerAtendimentoCliente = fillerAtendimentoCliente;
+	}
+
+	public Indicador getIndicadores() {
+		return indicadores;
+	}
+
+	public void setIndicadores(Indicador indicadores) {
+		this.indicadores = indicadores;
+	}
+
+
 
 	//0422 a 0451	Nome_Cedente	30	A	Nome do Cedente 	
 	//0452 a 0453	Especie_Doc	2	A	Especie do Documento	
@@ -2460,7 +2606,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		}
 	}
 	
-	//3597 a 3604	Data do Sorteio	8	N	
+	//3597 a 3604	Data do Sorteio	8	N
 	//3605 a 3617	Bilhete Seguro Prestamista	13	N	
 	//3618 a 3622	Série do Número da Sorte 1	5	N	
 	//3623 a 3629	Número da Sorte 1	7	N	
@@ -2539,5 +2685,140 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		public void setFiller(String filler) {
 			this.filler = filler;
 		}		
+	}
+	
+	//3705 a 3707	CÓDIGO DO BANCO dos cheques	3	N	Código do Banco da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"
+	//3708 a 3711	AGÊNCIA  DE DESTINO dos cheques	4	N	Código da Agência Bancária da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"
+	//3712 a 3712	DV Agencia dos cheques	1	A		
+	//3713 a 3725	Codigo da Conta	13	N		
+	//3726 a 3727	DV da Conta	2	A		
+	//3728 a 3733	NÚMERO DO CHEQUE do Primeiro Cheque da 1a. Faixa de Cheques	6	N	Número do primeiro cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"
+	//3734 a 3739	NÚMERO DO CHEQUE do Último Cheque da 1a. Faixa de Cheques	6	N	Número do último cheque da primeira faixa de cheques para as operações de cheque-pré	Se produto igual a "2"
+	//3740 a 3745	NÚMERO DO CHEQUE do Primeiro Cheque da 2a. Faixa de Cheques	6	N	Número do primeiro cheque da segunda faixa de cheques para as operações de cheque-pré	
+	//3746 a 3751	NÚMERO DO CHEQUE do Último Cheque da 2a. Faixa de Cheques	6	N	Número do último cheque da segunda faixa de cheques para as operações de cheque-pré	
+	//3752 a 3759	Data da abertura da conta corrente	8	N	Data da abertura da conta corrente	Se produto igual a "2"
+	//3760 a 3809	Filler	50	A
+	public static class DadoCheque {
+		
+		@MapAtributo(tamanho = 3)
+		private Integer codigoBanco;
+		
+		@MapAtributo(tamanho = 4)
+		private Integer agenciaDestino;
+		
+		@MapAtributo
+		private String dvAgenciaDestino;
+		
+		@MapAtributo(tamanho = 13)
+		private Integer codigoConta;
+		
+		@MapAtributo(tamanho = 2)
+		private String dvConta;
+		
+		@MapAtributo(tamanho = 6)
+		private Integer numeroPrimeiroChequeFaixa1;
+		
+		@MapAtributo(tamanho = 6)
+		private Integer numeroUltimoChequeFaixa1;
+		
+		@MapAtributo(tamanho = 6)
+		private Integer numeroPrimeiroChequeFaixa2;
+		
+		@MapAtributo(tamanho = 6)
+		private Integer numeroUltimoChequeFaixa2;
+		
+		@MapAtributo(tamanho = 8)
+		private Date dataAberturaConta;
+		
+		@MapAtributo(tamanho = 50, trim = false)
+		private String filler;
+
+		public Integer getCodigoBanco() {
+			return codigoBanco;
+		}
+
+		public void setCodigoBanco(Integer codigoBanco) {
+			this.codigoBanco = codigoBanco;
+		}
+
+		public Integer getAgenciaDestino() {
+			return agenciaDestino;
+		}
+
+		public void setAgenciaDestino(Integer agenciaDestino) {
+			this.agenciaDestino = agenciaDestino;
+		}
+
+		public String getDvAgenciaDestino() {
+			return dvAgenciaDestino;
+		}
+
+		public void setDvAgenciaDestino(String dvAgenciaDestino) {
+			this.dvAgenciaDestino = dvAgenciaDestino;
+		}
+
+		public Integer getCodigoConta() {
+			return codigoConta;
+		}
+
+		public void setCodigoConta(Integer codigoConta) {
+			this.codigoConta = codigoConta;
+		}
+
+		public String getDvConta() {
+			return dvConta;
+		}
+
+		public void setDvConta(String dvConta) {
+			this.dvConta = dvConta;
+		}
+
+		public Integer getNumeroPrimeiroChequeFaixa1() {
+			return numeroPrimeiroChequeFaixa1;
+		}
+
+		public void setNumeroPrimeiroChequeFaixa1(Integer numeroPrimeiroChequeFaixa1) {
+			this.numeroPrimeiroChequeFaixa1 = numeroPrimeiroChequeFaixa1;
+		}
+
+		public Integer getNumeroUltimoChequeFaixa1() {
+			return numeroUltimoChequeFaixa1;
+		}
+
+		public void setNumeroUltimoChequeFaixa1(Integer numeroUltimoChequeFaixa1) {
+			this.numeroUltimoChequeFaixa1 = numeroUltimoChequeFaixa1;
+		}
+
+		public Integer getNumeroPrimeiroChequeFaixa2() {
+			return numeroPrimeiroChequeFaixa2;
+		}
+
+		public void setNumeroPrimeiroChequeFaixa2(Integer numeroPrimeiroChequeFaixa2) {
+			this.numeroPrimeiroChequeFaixa2 = numeroPrimeiroChequeFaixa2;
+		}
+
+		public Integer getNumeroUltimoChequeFaixa2() {
+			return numeroUltimoChequeFaixa2;
+		}
+
+		public void setNumeroUltimoChequeFaixa2(Integer numeroUltimoChequeFaixa2) {
+			this.numeroUltimoChequeFaixa2 = numeroUltimoChequeFaixa2;
+		}
+
+		public Date getDataAberturaConta() {
+			return dataAberturaConta;
+		}
+
+		public void setDataAberturaConta(Date dataAberturaConta) {
+			this.dataAberturaConta = dataAberturaConta;
+		}
+
+		public String getFiller() {
+			return filler;
+		}
+
+		public void setFiller(String filler) {
+			this.filler = filler;
+		}
 	}
 }
