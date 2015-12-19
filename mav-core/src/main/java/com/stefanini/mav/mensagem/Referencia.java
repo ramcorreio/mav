@@ -8,7 +8,7 @@ public class Referencia {
 	@MapAtributo(tamanho = 30)
 	private String nome;
 
-	@MapBean
+	@MapBean(propagar = true)
 	private TelefoneRamal telefone;
 
 	public String getNome() {

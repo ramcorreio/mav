@@ -1,5 +1,7 @@
 package com.stefanini.mav.es;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Collections;
@@ -24,7 +26,25 @@ public abstract class AdaptadorTipo<T> {
 			@Override
 			public String escrever(Object in, SimpleMapper map) throws MapeamentoNaoEncontrado {
 				
-				return escreverInt(map.getTamanho(), Integer.class.cast(in));
+				if(in == null && !map.isObrigatorio()) {
+					
+					return escreverString(map.getTamanho(), " ");
+				}
+				else if(in == null && map.isObrigatorio()) {
+					
+					return escreverInt(map.getTamanho(), 0);
+				}
+				else {
+					
+					if(map.isZeroEsquerda()) {
+						
+						return escreverInt(map.getTamanho(), Integer.class.cast(in));	
+					}
+					else {
+						return escreverString(map.getTamanho(), in.toString(), "");
+					}
+				}
+				
 			}
 			
 			@Override
@@ -39,7 +59,7 @@ public abstract class AdaptadorTipo<T> {
 			@Override
 			public String escrever(Object in, SimpleMapper map) throws MapeamentoNaoEncontrado {
 
-				return String.format("%-" + map.getTamanho() + "s" , in.toString());
+				return AdaptadorTipo.escreverString(map.getTamanho(), (in == null ? " " : in.toString()));
 			}
 			
 			@Override
@@ -59,7 +79,18 @@ public abstract class AdaptadorTipo<T> {
 			@Override
 			public String escrever(Object in, SimpleMapper map) throws MapeamentoNaoEncontrado {
 
-				return UtilsDate.format(Date.class.cast(in), UtilsDate.FORMATADORES.get(map.getFormato()).getFormatador());
+				if(in == null && map.isObrigatorio()) {
+					
+					return escreverInt(map.getTamanho(), 0);
+				}
+				else if(in == null && !map.isObrigatorio()) {
+				
+					return escreverString(map.getTamanho(), " ");
+				}
+				else {
+					
+					return UtilsDate.format(Date.class.cast(in), UtilsDate.FORMATADORES.get(map.getFormato()).getFormatador());	
+				}
 			}
 			
 			@Override
@@ -88,17 +119,31 @@ public abstract class AdaptadorTipo<T> {
 			@Override
 			public String escrever(Object in, SimpleMapper map) throws MapeamentoNaoEncontrado {
 				
-				return escreverInt(map.getTamanho(), Boolean.class.cast(in) ? 1 : 0);
+				if(in == null) {
+					
+					return escreverString(map.getTamanho(), " ");
+				}
+				else {
+					
+					try {
+						Integer.parseInt(map.getComparadorPositivo());
+						return escreverInt(map.getTamanho(), Boolean.class.cast(in) ? 1 : 0);
+					}
+					catch(NumberFormatException e) {
+						return escreverString(map.getTamanho(), Boolean.class.cast(in) ? map.getComparadorPositivo() : map.getComparadorNegativo());
+					}	
+				}
+				
 			}
 			
 			@Override
 			public Boolean ler(String in, SimpleMapper m) {
 				
 				try {
-					return in.trim().isEmpty() ? false : (in.trim().equals(m.getComparador()) ? true : false);
+					return in.trim().isEmpty() ? null : (in.trim().equals(m.getComparadorPositivo()) ? true : false);
 				}
 				catch(NullPointerException e) {
-					return false;
+					return null;
 				}
 			}
 		});
@@ -108,10 +153,16 @@ public abstract class AdaptadorTipo<T> {
 			@Override
 			public String escrever(Object in, SimpleMapper map) throws MapeamentoNaoEncontrado {
 
-				Double valor = Double.class.cast(in);
-				for (int i = 0; i < map.getScale(); i++) {
-					valor*=10;
+				if(in == null) {
+					return escreverString(map.getTamanho(), " ");
 				}
+				
+				BigDecimal valor = new BigDecimal(in.toString());
+				valor.setScale(map.getScale(), RoundingMode.CEILING);
+				
+				BigDecimal fator = new BigDecimal(10);
+				fator = fator.pow(map.getScale());
+				valor = valor.multiply(fator);
 				
 				return escreverInt(map.getTamanho(), valor.intValue());
 			}
@@ -210,7 +261,14 @@ public abstract class AdaptadorTipo<T> {
 	 * método responsável por gerar uma string com valor informado e completar até o tamanho com espaços em branco.
 	 */
 	public static String escreverString(int tamanho, String input) {
-		return String.format("%-" + tamanho + "s" , input);
+		return escreverString(tamanho, input, "-");
+	}
+	
+	/**
+	 * método responsável por gerar uma string com valor informado e completar até o tamanho com espaços em branco.
+	 */
+	public static String escreverString(int tamanho, String input, String spaceChar) {
+		return String.format("%"+ spaceChar + tamanho + "s" , input);
 	}
 	
 	/**

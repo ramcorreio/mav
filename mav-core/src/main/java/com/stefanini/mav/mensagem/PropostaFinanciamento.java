@@ -1,9 +1,11 @@
 package com.stefanini.mav.mensagem;
 
 import java.util.Date;
+import java.util.List;
 
 import com.stefanini.mav.es.MapAtributo;
 import com.stefanini.mav.es.MapBean;
+import com.stefanini.mav.es.MapLista;
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 import com.stefanini.mav.es.ConfiguracaoMensagem;
 
@@ -24,11 +26,13 @@ public class PropostaFinanciamento extends MensagemBasica {
 	@MapBean
 	private DadoComplementar dadoComplementar;
 	
-	@MapAtributo(tamanho = 92)
-	private String referenciasPessoais;
+	@MapLista(maxSize = 2, bean = @MapBean)
+	//@MapAtributo(tamanho = 92)
+	private List<Referencia> referenciasPessoais;
 	
-	@MapAtributo(tamanho = 92)
-	private String referenciasComerciais;
+	@MapLista(maxSize = 2, bean = @MapBean(propagar = true))
+	//@MapAtributo(tamanho = 92)
+	private List<Referencia> referenciasComerciais;
 	
 	@MapBean
 	private Banco referenciaBancaria;
@@ -66,7 +70,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 	@MapAtributo
 	private String formaPagamentoAcessorio;
 	
-	@MapAtributo
+	@MapAtributo(obrigatorio = false)
 	private Integer quantidadeSeguro;
 	
 	@MapBean
@@ -129,19 +133,19 @@ public class PropostaFinanciamento extends MensagemBasica {
 		this.dadoComplementar = dadoComplementar;
 	}
 	
-	public String getReferenciasPessoais() {
+	public List<Referencia> getReferenciasPessoais() {
 		return referenciasPessoais;
 	}
 	
-	public void setReferenciasPessoais(String referenciasPessoais) {
+	public void setReferenciasPessoais(List<Referencia> referenciasPessoais) {
 		this.referenciasPessoais = referenciasPessoais;
 	}
 	
-	public String getReferenciasComerciais() {
+	public List<Referencia> getReferenciasComerciais() {
 		return referenciasComerciais;
 	}
 	
-	public void setReferenciasComerciais(String referenciasComerciais) {
+	public void setReferenciasComerciais(List<Referencia> referenciasComerciais) {
 		this.referenciasComerciais = referenciasComerciais;
 	}
 	
@@ -468,8 +472,8 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo
 		private Boolean possuiPatrimonio;
 		
-		@MapAtributo(tamanho = 68)
-		private String patrimonio;
+		@MapLista(maxSize = 4, bean = @MapBean)
+		private List<Patrimonio> patrimonio;
 		
 		@MapAtributo(tamanho = 1)
 		private String fillerPatrimonio;
@@ -480,14 +484,14 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 2)
 		private String codigoUfNaturalidade;
 		
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = false)
 		private Date dataVencimentoIdentificacao;
 		
-		@MapAtributo
+		@MapAtributo(obrigatorio = false)
 		private Boolean emancipado;
 						
-		@MapAtributo(tamanho = 4)
-		private String origemPatrimonio;
+		@MapLista(maxSize = 4, attr = @MapAtributo)
+		private List<String> origemPatrimonio;
 		
 		@MapAtributo(tamanho = 33, trim = false)
 		private String filler;
@@ -691,12 +695,12 @@ public class PropostaFinanciamento extends MensagemBasica {
 		public void setPossuiPatrimonio(Boolean possuiPatrimonio) {
 			this.possuiPatrimonio = possuiPatrimonio;
 		}
-
-		public String getPatrimonio() {
+		
+		public List<Patrimonio> getPatrimonio() {
 			return patrimonio;
 		}
-
-		public void setPatrimonio(String patrimonio) {
+		
+		public void setPatrimonio(List<Patrimonio> patrimonio) {
 			this.patrimonio = patrimonio;
 		}
 
@@ -740,11 +744,11 @@ public class PropostaFinanciamento extends MensagemBasica {
 			this.emancipado = emancipado;
 		}
 
-		public String getOrigemPatrimonio() {
+		public List<String> getOrigemPatrimonio() {
 			return origemPatrimonio;
 		}
-
-		public void setOrigemPatrimonio(String origemPatrimonio) {
+		
+		public void setOrigemPatrimonio(List<String> origemPatrimonio) {
 			this.origemPatrimonio = origemPatrimonio;
 		}
 
@@ -793,7 +797,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 	//0890 a 0915	Filler	26	A			
 	public static class DadoProfissional {
 
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = false)
 		private Date dataAdmissao;
 		
 		@MapAtributo(tamanho = 30)
@@ -814,10 +818,10 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 20)
 		private String profissao;
 
-		@MapAtributo
+		@MapAtributo(comparadorPositivo = "S", comparadorNegativo = "N")
 		private Boolean aposentado;
 
-		@MapAtributo
+		@MapAtributo(comparadorPositivo = "S", comparadorNegativo = "N")
 		private Boolean pensionista;
 
 		@MapAtributo
@@ -1035,7 +1039,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 40) 
 		private String localNascimento;
 		
-		@MapAtributo(tamanho = 8) 
+		@MapAtributo(tamanho = 8, obrigatorio = false) 
 		private Date dataNascimento;
 		
 		@MapAtributo(tamanho = 11) 
@@ -1047,13 +1051,13 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 25)
 		private String empresa;
 		
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = false)
 		private Date dataAdmissao;
 		
 		@MapBean
 		private EnderecoTp1 endereco;
 		
-		@MapBean
+		@MapBean(propagar = true)
 		private TelefoneRamal telefone;
 
 		@MapAtributo(tamanho = 20)
@@ -1078,7 +1082,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		//TODO: rever a carga desse item
 		private String patrimonio;
 		
-		@MapAtributo
+		@MapAtributo(obrigatorio = false)
 		private Integer nacionalidade;
 		
 		@MapAtributo(tamanho = 2)
@@ -1087,7 +1091,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 2)
 		private String codigoUfNaturalidade;
 		
-		@MapAtributo(tamanho = 6, formato = "MMyyyy")
+		@MapAtributo(tamanho = 6, formato = "MMyyyy", obrigatorio = false)
 		private Date dataComprovanteRenda;
 
 		@MapAtributo(tamanho = 2)
@@ -1366,13 +1370,13 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 20)
 		private String localExperiencia;
 		
-		@MapAtributo(tamanho = 2)
+		@MapAtributo(tamanho = 2, obrigatorio = false)
 		private Integer planoExperiencia;
 		
 		@MapAtributo(tamanho = 15, scale = 2)
 		private Integer valorPrestacaoExperiencia;
 		
-		@MapAtributo(tamanho = 6, formato = "MMyyyy")
+		@MapAtributo(tamanho = 6, formato = "MMyyyy", obrigatorio = false)
 		private Date inicioExperienciaCredito;
 		
 		@MapAtributo(tamanho = 40)
@@ -1394,13 +1398,13 @@ public class PropostaFinanciamento extends MensagemBasica {
 		private String nomeCartao;
 		
 		@MapAtributo
-		private Boolean capturarFoto;
+		private String capturarFoto;
 		
 		@MapAtributo
-		private Boolean capturarDocumento;
+		private String capturarDocumento;
 		
 		@MapAtributo
-		private Boolean capturarBiometria;
+		private String capturarBiometria;
 		
 		@MapAtributo(tamanho = 47, trim = false)
 		private String filler;
@@ -1655,47 +1659,47 @@ public class PropostaFinanciamento extends MensagemBasica {
 		 */
 		public void setNomeCartao(String nomeCartao) {
 			this.nomeCartao = nomeCartao;
-		}
+		}		
 
 		/**
 		 * @return the capturarFoto
 		 */
-		public Boolean isCapturarFoto() {
+		public String getCapturarFoto() {
 			return capturarFoto;
 		}
 
 		/**
 		 * @param capturarFoto the capturarFoto to set
 		 */
-		public void setCapturarFoto(Boolean capturarFoto) {
+		public void setCapturarFoto(String capturarFoto) {
 			this.capturarFoto = capturarFoto;
 		}
 
 		/**
 		 * @return the capturarDocumento
 		 */
-		public Boolean isCapturarDocumento() {
+		public String getCapturarDocumento() {
 			return capturarDocumento;
 		}
 
 		/**
 		 * @param capturarDocumento the capturarDocumento to set
 		 */
-		public void setCapturarDocumento(Boolean capturarDocumento) {
+		public void setCapturarDocumento(String capturarDocumento) {
 			this.capturarDocumento = capturarDocumento;
 		}
 
 		/**
 		 * @return the capturarBiometria
 		 */
-		public Boolean isCapturarBiometria() {
+		public String getCapturarBiometria() {
 			return capturarBiometria;
 		}
 
 		/**
 		 * @param capturarBiometria the capturarBiometria to set
 		 */
-		public void setCapturarBiometria(Boolean capturarBiometria) {
+		public void setCapturarBiometria(String capturarBiometria) {
 			this.capturarBiometria = capturarBiometria;
 		}
 
@@ -1863,7 +1867,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 7, scale = 2)
 		private Double valorIof;
  
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = true)
 		private Date dataEvento;
 		
 		@MapAtributo(tamanho = 15)
@@ -2193,7 +2197,7 @@ public class PropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 6)
 		private Integer numeroUltimoChequeFaixa2;
 		
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = true)
 		private Date dataAberturaConta;
 		
 		@MapAtributo(tamanho = 48, trim = false)

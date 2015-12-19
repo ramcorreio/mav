@@ -182,7 +182,7 @@ public class ContextoEntradaSaidaTest {
 	}
 	
 	private BeanMapper criarBeanMapper(Class<?> tipo, String nome, String path) {
-		return ContextoEntradaSaida.criarBeanMapper(tipo, nome, path);
+		return ContextoEntradaSaida.criarBeanMapper(tipo, nome, path, false, false);
 	}
 	
 	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path) {
@@ -190,16 +190,16 @@ public class ContextoEntradaSaidaTest {
 	}
 	
 	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho) {
-		return criarSimpleMapper(tipo, nome, path, tamanho, false, 2, true, "ddMMyyyy", "1");
+		return criarSimpleMapper(tipo, nome, path, tamanho, true, 2, true, "ddMMyyyy", "1", "0");
 	}
 	
 	protected <T extends BaseMapper> ListaMapper<T> criarListaMapper(Class<?> tipo, String nome, String path, int maxSize, T mapper) {
 		return ContextoEntradaSaida.criarListaMapper(tipo, nome, path, maxSize, mapper);
 	}
 	
-	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato, String comparador) {
+	protected SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato, String comparadorPositivo, String comparadorNegativo) {
 		
-		return ContextoEntradaSaida.criarSimpleMapper(tipo, nome, path, tamanho, obrigatorio, scale, trim, formato, comparador);
+		return ContextoEntradaSaida.criarSimpleMapper(tipo, nome, path, tamanho, obrigatorio, scale, trim, formato, comparadorPositivo, comparadorNegativo, true);
 	}
 	
 	private <T> void assertMapper(BaseMapper actual, BaseMapper expected) {
@@ -397,6 +397,31 @@ public class ContextoEntradaSaidaTest {
 	}
 	
 	@Test
+	public void escreverAtributoListaSimples() throws MapeamentoNaoEncontrado, ParseException {
+		
+		MapBeanListaSimples mensagem = new MapBeanListaSimples();
+		mensagem.setNome("rodrigo afonso macedo");
+		mensagem.setIdade(37);
+		mensagem.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
+		mensagem.setTemFilhos(true);
+		mensagem.setSalario(345.23);
+		mensagem.setSubSubBean(new MapBeanListaSimples.SubSubBean());
+		mensagem.getSubSubBean().setSubBean(new MapBeanListaSimples.SubBean());
+		mensagem.getSubSubBean().getSubBean().setConta(45);
+		mensagem.getSubSubBean().getSubBean().setTexto("Opa!!!");
+		mensagem.getSubSubBean().setHoje(UtilsDate.parse("04122015", UtilsDate.FormatadorData.DATA));
+		mensagem.setCoisas(new LinkedList<String>());
+		mensagem.getCoisas().add("apartamento");
+		mensagem.getCoisas().add("carro");
+		mensagem.getCoisas().add("bicicleta");
+		
+		String expected = "rodrigo afonso macedo    037281119781000034523045Opa!!!    04122015apartamento    carro          bicicleta                     ";
+		
+		String mensagemStr = ContextoEntradaSaida.escrever(mensagem);
+		MatcherAssert.assertThat(mensagemStr, BeanMatchers.theSameAs(expected));
+	}
+	
+	@Test
 	public void lerAtributoListaBean() throws MapeamentoNaoEncontrado, ParseException {
 		
 		String entrada = "rodrigo afonso macedo    037281119781000034523045Opa!!!    0412201501apartamento    02carro          03bicicleta                       ";
@@ -428,6 +453,41 @@ public class ContextoEntradaSaidaTest {
 		
 		MapBeanListaBean b = ContextoEntradaSaida.ler(entrada, MapBeanListaBean.class, false);
 		MatcherAssert.assertThat(b, BeanMatchers.theSameAs(expected));
+	}
+	
+	@Test
+	public void escreverAtributoListaBean() throws MapeamentoNaoEncontrado, ParseException {
+		
+		MapBeanListaBean mensagem = new MapBeanListaBean();
+		mensagem.setNome("rodrigo afonso macedo");
+		mensagem.setIdade(37);
+		mensagem.setData(UtilsDate.parse("28111978", UtilsDate.FormatadorData.DATA));
+		mensagem.setTemFilhos(true);
+		mensagem.setSalario(345.23);
+		mensagem.setSubSubBean(new MapBeanListaBean.SubSubBean());
+		mensagem.getSubSubBean().setSubBean(new MapBeanListaBean.SubBean());
+		mensagem.getSubSubBean().getSubBean().setConta(45);
+		mensagem.getSubSubBean().getSubBean().setTexto("Opa!!!");
+		mensagem.getSubSubBean().setHoje(UtilsDate.parse("04122015", UtilsDate.FormatadorData.DATA));
+		
+		mensagem.setCoisas(new LinkedList<SubBeanLista>());
+		
+		mensagem.getCoisas().add(new SubBeanLista());
+		mensagem.getCoisas().get(0).setId(1);
+		mensagem.getCoisas().get(0).setDescricao("apartamento");
+		
+		mensagem.getCoisas().add(new SubBeanLista());
+		mensagem.getCoisas().get(1).setId(2);
+		mensagem.getCoisas().get(1).setDescricao("carro");
+		
+		mensagem.getCoisas().add(new SubBeanLista());
+		mensagem.getCoisas().get(2).setId(3);
+		mensagem.getCoisas().get(2).setDescricao("bicicleta");
+		
+		String expected = "rodrigo afonso macedo    037281119781000034523045Opa!!!    0412201501apartamento    02carro          03bicicleta                       ";
+		
+		String mensagemStr = ContextoEntradaSaida.escrever(mensagem);
+		MatcherAssert.assertThat(mensagemStr, BeanMatchers.theSameAs(expected));
 	}
 	
 	@Test

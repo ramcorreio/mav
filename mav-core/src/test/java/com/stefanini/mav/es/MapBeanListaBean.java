@@ -23,7 +23,7 @@ public class MapBeanListaBean {
 	@MapBean
 	private SubSubBean subSubBean;
 	
-	@MapLista(maxSize = 4, bean = @MapBean)
+	@MapLista(maxSize = 4, bean = @MapBean(propagar = true))
 	private List<SubBeanLista> coisas;
 
 	public String getNome() {

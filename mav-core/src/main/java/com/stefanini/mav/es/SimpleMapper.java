@@ -1,10 +1,8 @@
 package com.stefanini.mav.es;
 
-public class SimpleMapper extends BaseMapper {
+public class SimpleMapper extends ObrigatorioMapper {
 
 	private int tamanho;
-
-	private boolean obrigatorio;
 
 	private int scale;
 
@@ -12,7 +10,11 @@ public class SimpleMapper extends BaseMapper {
 
 	private String formato;
 	
-	private String comparador;
+	private String comparadorPositivo;
+	
+	private String comparadorNegativo;
+	
+	private boolean zeroEsquerda;
 
 	public int getTamanho() {
 		return tamanho;
@@ -20,15 +22,7 @@ public class SimpleMapper extends BaseMapper {
 
 	public void setTamanho(int tamanho) {
 		this.tamanho = tamanho;
-	}
-
-	public boolean isObrigatorio() {
-		return obrigatorio;
-	}
-
-	public void setObrigatorio(boolean obrigatorio) {
-		this.obrigatorio = obrigatorio;
-	}
+	}	
 
 	public int getScale() {
 		return scale;
@@ -54,12 +48,28 @@ public class SimpleMapper extends BaseMapper {
 		this.formato = formato;
 	}
 	
-	public String getComparador() {
-		return comparador;
+	public String getComparadorPositivo() {
+		return comparadorPositivo;
 	}
 	
-	public void setComparador(String comparador) {
-		this.comparador = comparador;
+	public void setComparadorPositivo(String comparadorPositivo) {
+		this.comparadorPositivo = comparadorPositivo;
+	}
+	
+	public String getComparadorNegativo() {
+		return comparadorNegativo;
+	}
+	
+	public void setComparadorNegativo(String comparadorNegativo) {
+		this.comparadorNegativo = comparadorNegativo;
+	}
+	
+	public boolean isZeroEsquerda() {
+		return zeroEsquerda;
+	}
+	
+	public void setZeroEsquerda(boolean zeroEsquerda) {
+		this.zeroEsquerda = zeroEsquerda;
 	}
 	
 	@Override
@@ -71,15 +81,17 @@ public class SimpleMapper extends BaseMapper {
 		b.append(", ");
 		b.append("tamanho: " + tamanho);
 		b.append(", ");
-		b.append("obrigatorio: " + obrigatorio);
-		b.append(", ");
 		b.append("scale: " + scale);
 		b.append(", ");
 		b.append("trim: " + trim);
 		b.append(", ");
 		b.append("formato: " + formato);
 		b.append(", ");
-		b.append("comparador: " + comparador);
+		b.append("comparadorPositivo: " + comparadorPositivo);
+		b.append(", ");
+		b.append("comparadorNegativo: " + comparadorNegativo);
+		b.append(", ");
+		b.append("zeroEsquerda: " + zeroEsquerda);
 		b.append("}");
 		
 		return b.toString();

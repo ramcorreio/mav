@@ -12,4 +12,8 @@ public @interface MapBean {
 	
 	int tamanho() default 1;
 	
+	boolean obrigatorio() default false;
+	
+	boolean propagar() default false;
+	
 }

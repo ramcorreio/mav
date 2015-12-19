@@ -188,14 +188,8 @@ public class MensagemFactoryTest {
 		Assert.fail("Não implementado.");
 	}
 	
-	@Test
-	public void criarPropostaFinanciamento() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
+	public static PropostaFinanciamento criarPropostaFinanciamentoMensagem(String mensagem) throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
-		String mensagem = MensagemHelper.lerMensagem(2725, 100, "criarPropostaFinanciamento.1");
-		assertThat(mensagem, notNullValue());
-		
-		PropostaFinanciamento m = (PropostaFinanciamento) MensagemFactory.parse(mensagem);
-		assertThat(m, notNullValue());
 		
 		Cabecalho cabecalhoEsperado = new Cabecalho();
 		cabecalhoEsperado.setSentidoFluxo(Fluxo.ENTRADA);
@@ -262,25 +256,26 @@ public class MensagemFactoryTest {
 		
 		esperado.getDadosPessoais().setEmail("tpne@hotmail.com");
 		esperado.getDadosPessoais().setPossuiPatrimonio(false);
-		esperado.getDadosPessoais().setPatrimonio("");
-		//TODO: montar massa de testes
-		//esperado.getDadosPessoais().setOrigemPatrimonio(AdaptadorTipo.escreverString(4, " "));
-		/*if(esperado.getDadosPessoais().isPossuiPatrimonio()) {
-		 * /*esperado.getDadosPessoais().getPatrimonio().add(new Patrimonio());
-		esperado.getDadosPessoais().getPatrimonio().get(0).setNome("Meu");
-		esperado.getDadosPessoais().getPatrimonio().get(0).setTipo("Opa");
-		esperado.getDadosPessoais().getPatrimonio().get(0).setValor(100.00);
-		esperado.getDadosPessoais().getPatrimonio().get(0).setOrigem("1");
-		}*/
-		
+		esperado.getDadosPessoais().setPatrimonio(new LinkedList<Patrimonio>());
 		
 		esperado.getDadosPessoais().setFillerPatrimonio("");
 		esperado.getDadosPessoais().setCodigoPais("");
-		esperado.getDadosPessoais().setCodigoUfNaturalidade("MS");
-		esperado.getDadosPessoais().setDataVencimentoIdentificacao(null);
-		esperado.getDadosPessoais().setEmancipado(false);
 		
-		esperado.getDadosPessoais().setOrigemPatrimonio("");
+		//0578 a 0579	Código da UF da Naturalidade (informar se nacionalidade = brasileiro)	2	A	Tabela de UF	Ver tabela de dominio UF	X. Se Nacionalidade = Brasileiro
+		esperado.getDadosPessoais().setCodigoUfNaturalidade("MS");
+		
+		//0580 a 0587	Data de Vencimento do Documento de identificação	8	A			X, se o tipo do documento for: 02, 03 e 09
+		esperado.getDadosPessoais().setDataVencimentoIdentificacao(null);
+
+		//0588 a 0588	Flag Emancipado	1	A		0 - Nao 1 - Sim
+		//aceita null
+		//esperado.getDadosPessoais().setEmancipado(false);	
+		
+		//0589 a 0589	Origem do patrimonio 1	1	A		
+		//0590 a 0590	Origem do patrimonio 2	1	A		
+		//0591 a 0591	Origem do patrimonio 3	1	A		
+		//0592 a 0592	Origem do patrimonio 4	1	A
+		esperado.getDadosPessoais().setOrigemPatrimonio(new LinkedList<String>());
 		esperado.getDadosPessoais().setFiller(AdaptadorTipo.escreverString(33, " "));
 		
 		
@@ -434,11 +429,13 @@ public class MensagemFactoryTest {
 		
 		//1231 a 1231	Aposentado	1	A	"Aponta se o cliente é aposentado:
 		//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().setAposentado(false);
+		//aceita null
+		//esperado.getDadosConjuge().setAposentado(false);
 		
 		//1232 a 1232	Pensionista	1	A	"Aponta se o cliente é Pensionista:
 		//S - Sim; N - Não"	"S"  "N"	X. Se conjuge compoe renda = 1
-		esperado.getDadosConjuge().setPensionista(false);
+		//aceita null
+		//esperado.getDadosConjuge().setPensionista(false);
 		
 		//1233 a 1233	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango
 		esperado.getDadosConjuge().setUsoExclusivoLosango("");
@@ -538,26 +535,26 @@ public class MensagemFactoryTest {
 		//1 - Problemas Técnicos
 		//2 - Cliente não autoriza
 		//3 - Outros"	X
-		esperado.getDadoComplementar().setCapturarFoto(false);
+		esperado.getDadoComplementar().setCapturarFoto("");
 		
 		//1565 a 1565	indicadorCapturarDocumento	1	A	Indicador da captura do Documento.	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
 		//1 - Problemas Técnicos
 		//2 - Cliente não autoriza
 		//3 - Outros"	X
-		esperado.getDadoComplementar().setCapturarDocumento(false);
+		esperado.getDadoComplementar().setCapturarDocumento("");
 		
 		//1566 a 1566	indicadorCapturarBiometria	1	A	Indicador da captura da Biometria	""" "" Documentos capturados com sucesso ou Lojista sem captura digital com a Losango
 		//1 - Problemas Técnicos
 		//2 - Cliente não autoriza
 		//3 - Outros"	X
-		esperado.getDadoComplementar().setCapturarBiometria(false);
+		esperado.getDadoComplementar().setCapturarBiometria("");
 		
 		//1567 a 1613	Filler	47	A
 		esperado.getDadoComplementar().setFiller(AdaptadorTipo.escreverString(47, " "));
 		
-		esperado.setReferenciasPessoais("THIAGO IRMAO                  0067302227580000MARIA DO CARMO MAE            0067928185710000");
+		
 		//REFERÊNCIAS PESSOAIS
-		/*esperado.setReferenciasPessoais(new LinkedList<Referencia>());
+		esperado.setReferenciasPessoais(new LinkedList<Referencia>());
 		//1614 a 1643	Nome	30	A	Nome da Pessoa de Referência		X
 		//1644 a 1646	DDD	3	N	DDD da Pessoa de Referência		X
 		//1647 a 1655	Telefone	9	N	"Se o campo DDD estiver preenchido com 011 e o numero do telefone não iniciar 70, 75, 78 e 79 e for um numero de celular, o telefone deve ser iniciado com o numero ""9"", caso contrário deverá ser iniciado com o numero ""0"".
@@ -569,12 +566,11 @@ public class MensagemFactoryTest {
 		//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		X
 		//1656 a 1659	Ramal	4	N	Ramal da Pessoa de Referência
 		esperado.getReferenciasPessoais().add(new Referencia());
-		esperado.getReferenciasPessoais().get(0).setTelefone(new Telefone());
-		esperado.getReferenciasPessoais().get(0).setNome("");
-		//esperado.getReferenciasPessoais().get(0).getTelefone().setDdd();
-		//esperado.getReferenciasPessoais().get(0).getTelefone().setNumero(lerInt(input, 1646, 9));
-		//esperado.getReferenciasPessoais().get(0).getTelefone().setRamal(lerInt(input, 1655, 4));
-		
+		esperado.getReferenciasPessoais().get(0).setTelefone(new TelefoneRamal());
+		esperado.getReferenciasPessoais().get(0).setNome("THIAGO IRMAO");
+		esperado.getReferenciasPessoais().get(0).getTelefone().setDdd(6);
+		esperado.getReferenciasPessoais().get(0).getTelefone().setNumero(730222758);
+		esperado.getReferenciasPessoais().get(0).getTelefone().setRamal(0);
 				
 		//1660 a 1689	Nome	30	A	Nome da Pessoa de Referência		X
 		//1690 a 1692	DDD	3	N	DDD da Pessoa de Referência		X
@@ -588,15 +584,15 @@ public class MensagemFactoryTest {
 		//1702 a 1705	Ramal	4	N	Ramal da Pessoa de Referência		
 		//	As referencias tem que ter nome duplo, ou seja, nome e sobre nome. Porém para facilitar a analise da proposta aconcelhamos que seja colocado o primeiro nome e grau de parentesco. Por exemplo: Maria Amiga. Rafael Tio.
 		esperado.getReferenciasPessoais().add(new Referencia());
-		esperado.getReferenciasPessoais().get(1).setTelefone(new Telefone());
-		esperado.getReferenciasPessoais().get(1).setNome("");
-		//mensagem.getReferenciasPessoais().get(1).getTelefone().setDdd(lerInt(input, 1689, 3));
-		//mensagem.getReferenciasPessoais().get(1).getTelefone().setNumero(lerInt(input, 1692, 9));
-		//mensagem.getReferenciasPessoais().get(1).getTelefone().setRamal(lerInt(input, 1701, 4));*/
+		esperado.getReferenciasPessoais().get(1).setTelefone(new TelefoneRamal());
+		esperado.getReferenciasPessoais().get(1).setNome("MARIA DO CARMO MAE");
+		esperado.getReferenciasPessoais().get(1).getTelefone().setDdd(6);
+		esperado.getReferenciasPessoais().get(1).getTelefone().setNumero(792818571);
+		esperado.getReferenciasPessoais().get(1).getTelefone().setRamal(0);
 		
-		esperado.setReferenciasComerciais("");
+		
 		//REFERÊNCIAS COMERCIAIS
-		/*esperado.setReferenciasComerciais(new LinkedList<Referencia>());
+		esperado.setReferenciasComerciais(new LinkedList<Referencia>());
 		
 		//1706 a 1735	Nome 1	30	A	Nome da Pessoa de Referência  (PC)		
 		//1736 a 1738	DDD 1	3	N	DDD da referencia comercial		
@@ -608,11 +604,11 @@ public class MensagemFactoryTest {
 		//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
 		//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		
 		//1748 a 1751	Ramal 1	4	N	Ramal da referencia Comercial
-		/*esperado.getReferenciasPessoais().get(0).setTelefone(new Telefone());
-		esperado.getReferenciasPessoais().get(0).setNome("");
-		esperado.getReferenciasPessoais().get(0).getTelefone().setDdd(null);
-		esperado.getReferenciasPessoais().get(0).getTelefone().setNumero(null);
-		esperado.getReferenciasPessoais().get(0).getTelefone().setRamal(null);*/
+		//esperado.getReferenciasPessoais().get(0).setTelefone(new TelefoneRamal());
+		//esperado.getReferenciasPessoais().get(0).setNome("");
+		//esperado.getReferenciasPessoais().get(0).getTelefone().setDdd(null);
+		//esperado.getReferenciasPessoais().get(0).getTelefone().setNumero(null);
+		//esperado.getReferenciasPessoais().get(0).getTelefone().setRamal(null);
 		
 		//1752 a 1781	Nome 2	30	A	Nome da Pessoa de Referência  (PC)		
 		//1782 a 1784	DDD 2	3	N	DDD da referencia comercial		
@@ -624,11 +620,11 @@ public class MensagemFactoryTest {
 		//4º) DDD=021 e numero = 8243-5322 ==> 08243-5322
 		//5º) DDD=021 e numero = 3043-5322 ==> 03043-5322"		
 		//1794 a 1797	Ramal 2	4	N	Ramal da referencia Comercial
-		/*esperado.getReferenciasPessoais().get(1).setTelefone(new Telefone());
-		esperado.getReferenciasPessoais().get(1).setNome("");
-		esperado.getReferenciasPessoais().get(1).getTelefone().setDdd(null);
-		esperado.getReferenciasPessoais().get(1).getTelefone().setNumero(null);
-		esperado.getReferenciasPessoais().get(1).getTelefone().setRamal(null);*/
+		//esperado.getReferenciasPessoais().get(1).setTelefone(new Telefone());
+		//esperado.getReferenciasPessoais().get(1).setNome("");
+		//esperado.getReferenciasPessoais().get(1).getTelefone().setDdd(null);
+		//esperado.getReferenciasPessoais().get(1).getTelefone().setNumero(null);
+		//esperado.getReferenciasPessoais().get(1).getTelefone().setRamal(null);
 
 		
 		//REFERÊNCIAS BANCARIAS						
@@ -941,6 +937,20 @@ public class MensagemFactoryTest {
 		esperado.getIndicadores().setPolitica("");
 		esperado.getIndicadores().setAmbiente("");
 		
+		return esperado;
+	}
+	
+	@Test
+	public void criarPropostaFinanciamento() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
+		
+		String mensagem = MensagemHelper.lerMensagem(2725, 100, "criarPropostaFinanciamento.1");
+		assertThat(mensagem, notNullValue());
+		
+		
+		PropostaFinanciamento m = (PropostaFinanciamento) MensagemFactory.parse(mensagem);
+		assertThat(m, notNullValue());
+		
+		PropostaFinanciamento esperado = criarPropostaFinanciamentoMensagem(mensagem);
 		assertThat(m, BeanMatchers.theSameAs(esperado));
 	}
 	
@@ -952,6 +962,13 @@ public class MensagemFactoryTest {
 		
 		RespostaPropostaFinanciamento m = (RespostaPropostaFinanciamento) MensagemFactory.parse(mensagem);
 		assertThat(m, notNullValue());
+		
+		RespostaPropostaFinanciamento esperado = criarRespostaPropostaFinanciamentoMensagem(mensagem);
+		assertThat(m, BeanMatchers.theSameAs(esperado));
+
+	}
+
+	public static RespostaPropostaFinanciamento criarRespostaPropostaFinanciamentoMensagem(String mensagem) throws MensagemNaoEncontradaException, ParseException {
 		
 		Cabecalho cabecalhoEsperado = new Cabecalho();
 		cabecalhoEsperado.setSentidoFluxo(Fluxo.ENTRADA);
@@ -1149,7 +1166,7 @@ public class MensagemFactoryTest {
 		
 		esperado.getDadosCliente().setCnpj("00000000000000");
 		esperado.getDadosCliente().setEmancipado(false);
-		esperado.getDadosCliente().setOrigemPatrimonio("");
+		esperado.getDadosCliente().setOrigemPatrimonio(new LinkedList<String>());
 		esperado.getDadosCliente().setFiller(AdaptadorTipo.escreverString(9, " "));
 		
 		
@@ -1162,13 +1179,13 @@ public class MensagemFactoryTest {
 		esperado.getDadosConjuge().setLocalNascimento("");
 		
 		//1918 a 1925	Data de Nascimento	8	N	Data nascimento do cônjuge
-		esperado.getDadosConjuge().setDataAdmissao(null);
+		esperado.getDadosConjuge().setDataNascimento(null);
 		
 		//1926 a 1936	CPF	11	N	CPF do Cônjuge	
 		esperado.getDadosConjuge().setCpf("00000000000");
 		
-		esperado.getDadosConjuge().setIdentidade(new DocumentoTp2());;
-		esperado.getDadosConjuge().getIdentidade().setAttr(new DocumentoAttr());
+		esperado.getDadosConjuge().setIdentidade(new DocumentoTp3());;
+		esperado.getDadosConjuge().getIdentidade().setAttr(new DocumentoAttr2());
 		//1937 a 1946	Identidade	10	A	Número da Identidade do Cônjuge
 		esperado.getDadosConjuge().getIdentidade().setNumero("0000000000");
 		
@@ -1230,11 +1247,13 @@ public class MensagemFactoryTest {
 		
 		//2153 a 2153	Aposentado	1	A	"Aponta se o cliente é aposentado:
 		//S - Sim; N - Não"	"S"  "N"
-		esperado.getDadosConjuge().setAposentado(false);
+		//aceita null
+		//esperado.getDadosConjuge().setAposentado(false);
 		
 		//2154 a 2154	Pensionista	1	A	"Aponta se o cliente é Pensionista:
 		//S - Sim; N - Não"	"S"  "N"
-		esperado.getDadosConjuge().setPensionista(false);
+		//aceita null
+		//esperado.getDadosConjuge().setPensionista(false);
 		
 		//2155 a 2155	Uso exclusivo da Losango	1	A	Uso exclusivo da Losango
 		esperado.getDadosConjuge().setUsoExclusivoLosango("1");
@@ -1519,7 +1538,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosOperacao().setDataEmissaoRps(null);
 		
 		//2963 a 2967	VLR Alíquota	5	A	Campo de Instrução para o RPS
-		esperado.getDadosOperacao().setValorAliquota("0");
+		esperado.getDadosOperacao().setValorAliquota("    0");
 		
 		//2968 a 2971	Filial Losango	4	A	Campo de Instrução para o RPS
 		esperado.getDadosOperacao().setFilialLosango("0094");
@@ -1664,7 +1683,7 @@ public class MensagemFactoryTest {
 		esperado.getDadoSeguroSorteVida().setPlanoMaximo(0);
 		
 		//3483 a 3490	Codigo do produto do Seguro	8	A
-		esperado.getDadoSeguroSorteVida().setCodigoProduto("0");
+		esperado.getDadoSeguroSorteVida().setCodigoProduto(AdaptadorTipo.escreverString(8, "0", ""));
 		
 		//3491 a 3498	Data do Sorteio	8	N	data do Sorteio do Numero da Sorte
 		esperado.getDadoSeguroSorteVida().setDateSorteio(null);
@@ -1872,14 +1891,10 @@ public class MensagemFactoryTest {
 		
 		//5101 a 5102	Ambiente	2	A	Uso exclusivo da Losango
 		esperado.getIndicadores().setAmbiente("HO");
-
-		
-		
-		assertThat(m, BeanMatchers.theSameAs(esperado));
-
+		return esperado;
 	}
 	
-	private Prestacao addPrestacao(String prestacao) throws ParseException {
+	private static Prestacao addPrestacao(String prestacao) throws ParseException {
 		
 		Prestacao p = new Prestacao();
 		p.setNossoNumero(prestacao.substring(8));

@@ -22,7 +22,7 @@ public class EnderecoTp1 {
 	@MapAtributo(tamanho = 2)
 	private String uf;
 
-	@MapAtributo(tamanho = 8)
+	@MapAtributo(tamanho = 8, obrigatorio = false)
 	private Integer cep;
 	
 	public String getLogradouro() {

@@ -125,4 +125,47 @@ public class MensagemSerializeTest {
 		MatcherAssert.assertThat(mSerialized.substring(0, 5), Matchers.is(expected.substring(0, 5)));
 		MatcherAssert.assertThat(mSerialized, Matchers.is(Matchers.equalTo(expected)));
 	}
+	
+	@Test
+	public void serialize100() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException, MapeamentoNaoEncontrado {
+		
+		String expected = MensagemHelper.lerMensagem(2725, 100, "criarPropostaFinanciamento.1");
+		PropostaFinanciamento pf = MensagemFactoryTest.criarPropostaFinanciamentoMensagem(expected);
+		
+		ContextoMensagem<PropostaFinanciamento> cpf = MensagemFactory.loadContexto(CodigoMensagem.C0100);
+		String mSerialized = cpf.escrever(pf);
+		//MatcherAssert.assertThat(mSerialized.substring(0, 5), Matchers.is(expected.substring(0, 5)));
+		assertThat(mSerialized, expected);
+	}
+	
+	@Test
+	public void serialize110() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException, MapeamentoNaoEncontrado {
+		
+		String expected = MensagemHelper.lerMensagem(5102, 110, "criarRespostaPropostaFinanciamento.1");
+		RespostaPropostaFinanciamento rpf = MensagemFactoryTest.criarRespostaPropostaFinanciamentoMensagem(expected);
+		
+		ContextoMensagem<RespostaPropostaFinanciamento> crpf = MensagemFactory.loadContexto(CodigoMensagem.C0110);
+		String mSerialized = crpf.escrever(rpf);
+		assertThat(mSerialized, expected);
+	}
+	
+	private void assertThat(String actual, String expected) {
+		
+		try {
+			MatcherAssert.assertThat(actual.length(), Matchers.is(Matchers.equalTo(expected.length())));
+			MatcherAssert.assertThat(actual.substring(0, 5), Matchers.is(expected.substring(0, 5)));
+			MatcherAssert.assertThat(actual, Matchers.is(Matchers.equalTo(expected)));
+		}
+		catch(AssertionError e) {
+			
+			for (int i = 0; i < actual.length(); i++) {
+				if(actual.charAt(i) == expected.charAt(i)){
+					continue;
+				}
+				
+				throw new AssertionError("Posição " + i, e);
+			}
+		}
+		
+	}
 }

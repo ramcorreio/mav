@@ -5,7 +5,7 @@ import com.stefanini.mav.es.MapBean;
 
 public class BancoEp {
 
-	@MapAtributo(comparador = "S")
+	@MapAtributo(comparadorPositivo = "S", comparadorNegativo = "N")
 	private Boolean pagtoDoc;
 
 	@MapAtributo(tamanho = 2)
@@ -20,7 +20,7 @@ public class BancoEp {
 	@MapAtributo
 	private Integer c3;
 
-	public Boolean getPagtoDoc() {
+	public Boolean isPagtoDoc() {
 		return pagtoDoc;
 	}
 

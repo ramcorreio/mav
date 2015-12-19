@@ -47,7 +47,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 	@MapLista(maxSize = 2, bean = @MapBean)
 	private List<Referencia> referenciasPessoais;
 	
-	@MapLista(maxSize = 2, bean = @MapBean)
+	@MapLista(maxSize = 2, bean = @MapBean(obrigatorio = true, propagar = true))
 	private List<Referencia> referenciasComerciais;
 	
 	@MapBean
@@ -299,7 +299,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		this.fillerCapturaDigital = fillerCapturaDigital;
 	}
 
-	public Boolean getAdesaoSeguro() {
+	public Boolean isAdesaoSeguro() {
 		return adesaoSeguro;
 	}
 
@@ -490,7 +490,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 2)
 		private String especieDocumento;
 		
-		@MapAtributo(comparador = "S")
+		@MapAtributo(comparadorPositivo = "S", comparadorNegativo = "N")
 		private Boolean aceite;
 		
 		@MapAtributo(tamanho = 3)
@@ -824,7 +824,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo
 		private Integer tipoResidencia;
 		
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = true)
 		private Date dataAdmissao;
 		
 		@MapAtributo(tamanho = 30)
@@ -845,16 +845,16 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 20)
 		private String profissao;
 		
-		@MapAtributo(comparador = "S")
+		@MapAtributo(comparadorPositivo = "S", comparadorNegativo = "N")
 		private Boolean aposentado;
 		
-		@MapAtributo(comparador = "S")
+		@MapAtributo(comparadorPositivo = "S", comparadorNegativo = "N")
 		private Boolean pensionista;
 		
 		@MapAtributo
 		private String usoExclusivoLosango;
 		
-		@MapAtributo(tamanho = 6, formato = "MMyyyy")
+		@MapAtributo(tamanho = 6, formato = "MMyyyy", obrigatorio = true)
 		private Date resideDesde;
 		
 		@MapBean
@@ -893,7 +893,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 2)
 		private String ocupacaoNova;
 		
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = true)
 		private Date dataVencimentoDocumentoIdentificacao;
 		
 		@MapAtributo(tamanho = 14)
@@ -902,8 +902,8 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo
 		private Boolean emancipado;
 		
-		@MapAtributo(tamanho = 4)
-		private String origemPatrimonio;
+		@MapLista(maxSize = 4, attr = @MapAtributo)
+		private List<String> origemPatrimonio;
 		
 		@MapAtributo(tamanho = 9, trim = false)
 		private String filler;
@@ -1275,12 +1275,12 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		public void setEmancipado(Boolean emancipado) {
 			this.emancipado = emancipado;
 		}
-
-		public String getOrigemPatrimonio() {
+		
+		public List<String> getOrigemPatrimonio() {
 			return origemPatrimonio;
 		}
-
-		public void setOrigemPatrimonio(String origemPatrimonio) {
+		
+		public void setOrigemPatrimonio(List<String> origemPatrimonio) {
 			this.origemPatrimonio = origemPatrimonio;
 		}
 
@@ -1355,19 +1355,19 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 40)
 		private String localNascimento;
 		
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = true)
 		private Date dataNascimento;
 		
 		@MapAtributo(tamanho = 11)
 		private String cpf;
 		
 		@MapBean
-		private DocumentoTp2 identidade;
+		private DocumentoTp3 identidade;
 		
 		@MapAtributo(tamanho = 25)
 		private String empresa;
 		
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = true)
 		private Date dataAdmissao;
 		
 		@MapBean
@@ -1382,10 +1382,10 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 20)
 		private String profissao;
 		
-		@MapAtributo(comparador = "S")
+		@MapAtributo(comparadorPositivo = "S", comparadorNegativo = "N")
 		private Boolean aposentado;
 		
-		@MapAtributo(comparador = "S")
+		@MapAtributo(comparadorPositivo = "S", comparadorNegativo = "N")
 		private Boolean pensionista;
 		
 		@MapAtributo
@@ -1406,7 +1406,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 2)
 		private String codigoUfNaturalidade;
 		
-		@MapAtributo(tamanho = 6, formato = "MMyyyy")
+		@MapAtributo(tamanho = 6, formato = "MMyyyy", obrigatorio = false)
 		private Date dataComprovanteRenda;
 		
 		@MapAtributo(tamanho = 2)
@@ -1456,11 +1456,11 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.cpf = cpf;
 		}
 
-		public DocumentoTp2 getIdentidade() {
+		public DocumentoTp3 getIdentidade() {
 			return identidade;
 		}
 
-		public void setIdentidade(DocumentoTp2 identidade) {
+		public void setIdentidade(DocumentoTp3 identidade) {
 			this.identidade = identidade;
 		}
 
@@ -1680,7 +1680,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 15)
 		private Integer valorPrestacaoExperiencia;
 		
-		@MapAtributo(tamanho = 6)
+		@MapAtributo(tamanho = 6, obrigatorio = true)
 		private Date dataInicioExperienciaCredito;
 		
 		@MapAtributo(tamanho = 40)
@@ -2008,7 +2008,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 5)
 		private String serieRps;
 
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = false)
 		private Date dataEmissaoRps;
 		
 		@MapAtributo(tamanho = 5)
@@ -2291,7 +2291,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.filialLosango = filialLosango;
 		}
 
-		public String getNomeFilialLOsango() {
+		public String getNomeFilialLosango() {
 			return nomeFilialLosango;
 		}
 
@@ -2427,7 +2427,7 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 2)
 		private Integer planoMaximoSeguro;
 		
-		@MapAtributo(tamanho = 8)
+		@MapAtributo(tamanho = 8, obrigatorio = false, zeroEsquerda = false)
 		private Integer codigoProdutoSeguro;
 
 		public String getTipoSeguro() {

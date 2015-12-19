@@ -1,39 +1,23 @@
 package com.stefanini.mav.mensagem;
 
-import java.io.Serializable;
+import com.stefanini.mav.es.MapAtributo;
 
-public class Patrimonio implements Serializable {
+public class Patrimonio {
 
-	private static final long serialVersionUID = 6764766881318842021L;
-	
+	@MapAtributo
 	private String tipo;
 	
+	@MapAtributo(tamanho = 5)
 	private String nome;
 	
+	@MapAtributo(tamanho = 11, scale = 2)
 	private Double valor;
-	
-	private String origem;
-	
-	@Override
-	public boolean equals(Object obj) {
-		
-		if(!Patrimonio.class.isInstance(obj)) {
-			
-			return false;
-		}
-		
-		Patrimonio outro = Patrimonio.class.cast(obj);
-		return tipo.equals(outro.tipo)
-				&& nome.equals(outro.nome)
-				&& valor.equals(outro.nome)
-				&& origem.equals(outro.origem);
-	}
 
 	public String getTipo() {
 		return tipo;
 	}
 
-	protected void setTipo(String tipo) {
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 
@@ -41,7 +25,7 @@ public class Patrimonio implements Serializable {
 		return nome;
 	}
 
-	protected void setNome(String nome) {
+	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
@@ -49,18 +33,7 @@ public class Patrimonio implements Serializable {
 		return valor;
 	}
 
-	protected void setValor(Double valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
-	public String getOrigem() {
-		return origem;
-	}
-
-	protected void setOrigem(String origem) {
-		this.origem = origem;
-	}
-
-
-
 }

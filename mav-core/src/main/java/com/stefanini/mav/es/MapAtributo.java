@@ -14,7 +14,7 @@ public @interface MapAtributo {
 	
 	int tamanho() default 1;
 	
-	boolean obrigatorio() default false;
+	boolean obrigatorio() default true;
 	
 	int scale() default 2;
 	
@@ -22,5 +22,9 @@ public @interface MapAtributo {
 	
 	String formato() default "ddMMyyyy";
 	
-	String comparador() default "1";
+	String comparadorPositivo() default "1";
+	
+	String comparadorNegativo() default "0";
+	
+	boolean zeroEsquerda() default true;
 }

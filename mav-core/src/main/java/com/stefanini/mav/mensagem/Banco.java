@@ -13,7 +13,7 @@ public class Banco {
 	@MapAtributo(tamanho = 2)
 	private String tipoConta;
 
-	@MapAtributo(tamanho = 8)
+	@MapAtributo(tamanho = 8, obrigatorio = true)
 	private Date dataAbertura;
 	
 	public InfoBanco getInfo() {

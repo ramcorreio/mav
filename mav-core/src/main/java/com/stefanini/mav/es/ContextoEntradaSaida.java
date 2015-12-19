@@ -1,6 +1,5 @@
 package com.stefanini.mav.es;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -110,12 +109,14 @@ public class ContextoEntradaSaida {
 		}
 	}
 	
-	protected static BeanMapper criarBeanMapper(Class<?> tipo, String nome, String path) {
+	protected static BeanMapper criarBeanMapper(Class<?> tipo, String nome, String path, boolean obrigatorio, boolean propagar) {
 	
 		BeanMapper impl = new BeanMapper();
 		impl.setNome(nome);
 		impl.setPath(path);
 		impl.setTipo(tipo);
+		impl.setObrigatorio(obrigatorio);
+		impl.setPropagar(propagar);
 		return impl; 
 	}
 	
@@ -130,7 +131,7 @@ public class ContextoEntradaSaida {
 		return sm;
 	}
 	
-	protected static SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato, String comparador) {
+	protected static SimpleMapper criarSimpleMapper(Class<?> tipo, String nome, String path, int tamanho, boolean obrigatorio, int scale, boolean trim, String formato, String comparadorPositivo, String comparadorNegativo, boolean zeroEsquerda) {
 		
 		SimpleMapper sm = new SimpleMapper();
 		sm.setNome(nome);
@@ -141,12 +142,14 @@ public class ContextoEntradaSaida {
 		sm.setScale(scale);
 		sm.setTrim(trim);
 		sm.setFormato(formato);
-		sm.setComparador(comparador);
+		sm.setComparadorPositivo(comparadorPositivo);
+		sm.setComparadorNegativo(comparadorNegativo);
+		sm.setZeroEsquerda(zeroEsquerda);
 		
 		return sm;
 	}
 	
-	protected static MapAtributo criarMapper(final Class<? extends Annotation> annotationType, final String path, final int tamanho, final boolean obrigatorio, final int scale, final boolean trim, final String formato, final String comparador) {
+	/*protected static MapAtributo criarMapper(final Class<? extends Annotation> annotationType, final String path, final int tamanho, final boolean obrigatorio, final int scale, final boolean trim, final String formato, final String comparadorPositivo, final String comparadorNegativo, final boolean zeroEsquerda) {
 		
 		return new MapAtributo() {
 			
@@ -191,12 +194,24 @@ public class ContextoEntradaSaida {
 			}
 			
 			@Override
-			public String comparador() {
+			public String comparadorPositivo() {
 				
-				return comparador;
+				return comparadorPositivo;
+			}
+			
+			@Override
+			public String comparadorNegativo() {
+				
+				return comparadorNegativo;
+			}
+			
+			@Override
+			public boolean zeroEsquerda() {
+				
+				return zeroEsquerda;
 			}
 		};
-	}
+	}*/
 	
 	protected static <T> List<BaseMapper> getMappersFilhos(Class<T> clazz) throws MapeamentoNaoEncontrado {
 		
@@ -217,7 +232,8 @@ public class ContextoEntradaSaida {
 			}
 			else if(field.isAnnotationPresent(MapBean.class)) {
 				
-				BeanMapper impl = criarBeanMapper(field.getType(), field.getName(), parent.concat(field.getName()));
+				MapBean map = field.getAnnotation(MapBean.class);
+				BeanMapper impl = criarBeanMapper(field.getType(), field.getName(), parent.concat(field.getName()), map.obrigatorio(), map.propagar());
 				impl.getMappers().addAll(getMappersFilhos(parent.concat(field.getName()).concat("."), field.getType()));
 				mappers.add(impl);
 			}
@@ -232,8 +248,7 @@ public class ContextoEntradaSaida {
 				}
 				else if(map.bean().tamanho() > 0) {
 					
-					//TODO: verificar mapper bean
-					BeanMapper impl = criarBeanMapper(getGenericClass(field), "[]", parent.concat(field.getName()).concat("[]"));
+					BeanMapper impl = criarBeanMapper(getGenericClass(field), "[]", parent.concat(field.getName()).concat("[]"), map.bean().obrigatorio(), map.bean().propagar());
 					impl.getMappers().addAll(getMappersFilhos(parent.concat(field.getName()).concat("."), impl.getTipo()));
 					mappers.add(criarListaMapper(field.getType(), field.getName(), parent.concat(field.getName()), map.maxSize(), impl));
 				}
@@ -253,14 +268,19 @@ public class ContextoEntradaSaida {
 	 * @return
 	 * @throws MapeamentoNaoEncontrado 
 	 */
-	@SuppressWarnings("unchecked")
 	private static <T> Class<T> getGenericClass(Field field) throws MapeamentoNaoEncontrado {
 		
-		Type type = ParameterizedType.class.cast(field.getGenericType()).getActualTypeArguments()[0];
+		return getGenericClass(field.getGenericType());
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static <T> Class<T> getGenericClass(Type type) throws MapeamentoNaoEncontrado {
+		
+		Type pType = ParameterizedType.class.cast(type).getActualTypeArguments()[0];
 		try {
-			return (Class<T>) Class.forName(type.getTypeName());
+			return (Class<T>) Class.forName(pType.getTypeName());
 		} catch (ClassNotFoundException e) {
-			throw new MapeamentoNaoEncontrado(atributoClasse(field.getName(), field.getType()));
+			throw new MapeamentoNaoEncontrado(atributoClasse(type.getTypeName(), type.getClass()));
 		}
 	}
 
@@ -281,7 +301,9 @@ public class ContextoEntradaSaida {
 			map.scale(), 
 			map.trim(), 
 			map.formato(),
-			map.comparador());
+			map.comparadorPositivo(),
+			map.comparadorNegativo(),
+			map.zeroEsquerda());
 	}
 	
 	protected static <T> Map<String, Field> getAllFields(Class<T> clazz) {
@@ -350,45 +372,160 @@ public class ContextoEntradaSaida {
 		
 		List<BaseMapper> mappers = verificarMappers(mensagem.getClass());
 		Map<String, Field> fields = getAllFields(mensagem.getClass());
-		List<AttrImpl<BaseMapper>> attrs = montarAttrs(mappers, mensagem, fields);
+		List<AttrImpl<BaseMapper>> attrs = montarAttrs(mappers, mensagem.getClass(), fields);
 		
 		return escrever(attrs, mensagem);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static <T> String escrever(List<AttrImpl<BaseMapper>> attrs, T mensagem) throws MapeamentoNaoEncontrado {
 		
 		StringBuilder b = new StringBuilder();
 		
+		
 		for (AttrImpl<BaseMapper> attr : attrs) {
-			
-			if(AdaptadorTipo.adapters.get(attr.getCampo().getType()) == null) {
-			
-				b.append(escreverBean(attr, mensagem));
-			}
-			else {
+			try {
 				
-				b.append(escreverSimples(attr, mensagem));	
+				Object in = invokeGet(mensagem, attr.getNomeMetodoGet());
+				if(AdaptadorTipo.adapters.get(attr.getCampo().getType()) == null) {
+				
+					if(BeanMapper.class.isInstance(attr.getMapper())) {
+						
+						BeanMapper beanMapper = BeanMapper.class.cast(attr.getMapper());
+						b.append(escreverBean((BeanMapper) attr.getMapper(), in, beanMapper.isObrigatorio(), beanMapper.isPropagar()));	
+					}
+					else {
+						
+						b.append(escreverLista((ListaMapper<BaseMapper>) attr.getMapper(), in));
+					}
+					
+				}
+				else {
+					
+					b.append(escreverSimples((SimpleMapper) attr.getMapper(), in));	
+				}
+			} catch (InstantiationException | IllegalAccessException | NullPointerException e) {
+
+				throw new MapeamentoNaoEncontrado(atributoClasse(attr.getMapper().getPath(), attr.getMapper().getTipo()), e);
 			}
 		}
+		
 		
 		return b.toString();
 	}
 	
-	private static String escreverBean(final AttrImpl<BaseMapper> attr, final Object instance) throws MapeamentoNaoEncontrado {
-
-		Object bean = invokeGet(instance, attr.getNomeMetodoGet());
-		Map<String, Field> fieldsBean = getAllFields(bean.getClass());
+	private static <T> T iniciarAttr(Class<T> clazz) throws InstantiationException, IllegalAccessException, MapeamentoNaoEncontrado {
 		
-		BeanMapper mapper = BeanMapper.class.cast(attr.getMapper());
-		List<AttrImpl<BaseMapper>> attrs = montarAttrs(mapper.getMappers(), bean, fieldsBean);
-		return escrever(attrs, bean);
+		T obj = null;
+		if(!isBaseType(clazz)) {
+			
+			obj = clazz.newInstance();
+			Map<String, Field> fields = getAllFields(clazz, false);
+			List<BaseMapper> mappers = getMappersFilhos(clazz);
+			List<AttrImpl<BaseMapper>> attrs = montarAttrs(mappers, clazz, fields);
+			
+			for (AttrImpl<BaseMapper> attr : attrs) {
+				
+				Object valor = iniciarAttr(attr.getMapper().getTipo());
+				invokeSet(obj, attr.getNomeMetodoSet(), attr.getCampo(), valor);
+			}
+		}
+		
+		return obj;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static String escreverLista(final ListaMapper<BaseMapper> mapper, final Object instance) throws MapeamentoNaoEncontrado, InstantiationException, IllegalAccessException {
+		
+		//ListaMapper<BaseMapper> mapper = (ListaMapper<BaseMapper>) attr.getMapper();
+		//Class<?> genericClass = instance.getClass().getComponentType();
+		/*System.out.println(instance.getClass());
+		System.out.println(instance.getClass().getTypeName());
+		System.out.println(instance.getClass().getTypeParameters()[0].getGenericDeclaration());*/
+		StringBuilder b = new StringBuilder();
+		
+		//int tamanhoItem = getTamanho(mapper);
+		//int tamanhoLista = mapper.getMaxSize() * tamanhoItem;
+		
+		System.out.println(mapper);
+		
+		List<Object> beans = (List<Object>) instance;
+		
+		//preparar lista
+		if(beans.size() < mapper.getMaxSize()) {
+			
+			for (int i = beans.size(); i < mapper.getMaxSize(); i++) {
+				
+				beans.add(iniciarAttr(mapper.getMapper().getTipo()));
+			}
+		}
+		
+        
+        for (int i = 0; i < beans.size(); i++) {
+		
+        	//int inicioItem = (i * tamanhoItem);
+        	//int fimItem = inicioItem + tamanhoItem;
+        	//String item = entrada.substring(inicioItem, fimItem);
+        	
+        	//essa verificação é necessária evitar criar item para dados em branco na entrada de mensagem
+        	Object item = beans.get(i);
+        	if(BeanMapper.class.isInstance(mapper.getMapper())) {
+        		
+        		BeanMapper beanMapper  = (BeanMapper) mapper.getMapper();
+        		b.append(escreverBean(beanMapper, item, beanMapper.isObrigatorio(), beanMapper.isPropagar()));
+        	}
+        	else {
+        		b.append(escreverSimples((SimpleMapper) mapper.getMapper(), item));
+        	}
+        }
+        
+        //completando os restante dos dados em caso de lista menor que total
+        /*if(beans.size() < mapper.getMaxSize()) {
+        	
+        	//String slice =
+        	if(BeanMapper.class.isInstance(mapper.getMapper())) {
+        		
+        		b.append(escreverBean((BeanMapper) mapper.getMapper(), item));
+        	}
+        	else {
+        		b.append(escreverSimples((SimpleMapper) mapper.getMapper(), item));
+        	}
+        			
+        }*/
+
+		return b.toString();
+		
+		
+	}
+	
+	/*private static String escreverBean(BeanMapper mapper, final Object instance) throws MapeamentoNaoEncontrado {
+		return escreverBean(mapper, instance, false);
+	}*/
+	
+	private static String escreverBean(BeanMapper mapper, final Object instance, boolean obrigatorio, boolean propagar) throws MapeamentoNaoEncontrado {
+
+		//Object bean = invokeGet(instance, attr.getNomeMetodoGet());
+		Map<String, Field> fieldsBean = getAllFields(instance.getClass());
+		List<AttrImpl<BaseMapper>> attrs = montarAttrs(mapper.getMappers(), instance.getClass(), fieldsBean);
+		for (int i = 0; i < attrs.size(); i++) {
+			
+			AttrImpl<BaseMapper> m = attrs.get(i);
+			if(!ObrigatorioMapper.class.isInstance(m.getMapper())) {
+				continue;
+			}
+			
+			if(propagar) {
+				ObrigatorioMapper.class.cast(m.getMapper()).setObrigatorio(obrigatorio);
+			}
+		}
+		
+		return escrever(attrs, instance);
 	}
 
 
-	private static String escreverSimples(final AttrImpl<? extends BaseMapper> attr, final Object instance) throws MapeamentoNaoEncontrado {
+	private static String escreverSimples(SimpleMapper mapper, final Object instance) throws MapeamentoNaoEncontrado {
 		
-		Object in = invokeGet(instance, attr.getNomeMetodoGet());
-		return AdaptadorTipo.adapters.get(attr.getCampo().getType()).escrever(in, SimpleMapper.class.cast(attr.getMapper()));		
+		return AdaptadorTipo.adapters.get(mapper.getTipo()).escrever(instance, mapper);		
 	}
 	
 	public static <T> T ler(String entrada, Class<T> tipo, Boolean configCheck, Object... args) throws MapeamentoNaoEncontrado {
@@ -425,7 +562,7 @@ public class ContextoEntradaSaida {
 		
 		
 		Map<String, Field> fields = getAllFields(instance.getClass());
-		List<AttrImpl<BaseMapper>> attrs = montarAttrs(mappers, instance, fields);
+		List<AttrImpl<BaseMapper>> attrs = montarAttrs(mappers, instance.getClass(), fields);
 		ler(attrs, instance, posicao, entrada);
 		return instance;
 	}
@@ -452,14 +589,14 @@ public class ContextoEntradaSaida {
 		return mappers;
 	}
 
-	private static List<AttrImpl<BaseMapper>> montarAttrs(List<BaseMapper> mappers, Object instance, Map<String, Field> fields) throws MapeamentoNaoEncontrado {
+	private static List<AttrImpl<BaseMapper>> montarAttrs(List<BaseMapper> mappers, Class<?> clazz, Map<String, Field> fields) throws MapeamentoNaoEncontrado {
 		
 		List<AttrImpl<BaseMapper>> paraLer = new LinkedList<>();
 		for (BaseMapper mapper : mappers) {
 			
 			AttrImpl<BaseMapper> attr = new AttrImpl<BaseMapper>();
 			attr.setMapper(mapper);
-			attr.setCampo(findField(mapper.getNome(), instance.getClass(), fields));
+			attr.setCampo(findField(mapper.getNome(), clazz, fields));
 			paraLer.add(attr);
 		}
 		
@@ -542,7 +679,6 @@ public class ContextoEntradaSaida {
 		}		
 
 		return new Lido(position + tamanhoLista, newInstance);
-
 	}
 
 	private static Lido lerBean(String entrada, int position, Class<?> clazz, BeanMapper attr) throws InstantiationException, IllegalAccessException, MapeamentoNaoEncontrado {
@@ -551,7 +687,7 @@ public class ContextoEntradaSaida {
 		Object bean = clazz.newInstance();
 		Map<String, Field> fieldsBean = getAllFields(bean.getClass());
 		
-		List<AttrImpl<BaseMapper>> attrs = montarAttrs(attr.getMappers(), bean, fieldsBean);
+		List<AttrImpl<BaseMapper>> attrs = montarAttrs(attr.getMappers(), bean.getClass(), fieldsBean);
 		ler(attrs, bean, 0, entrada.substring(position, position + tamanhoBean));
 		return new Lido(position + tamanhoBean, bean);
 	}
@@ -583,7 +719,7 @@ public class ContextoEntradaSaida {
 		}
 		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
 		{
-			throw new MapeamentoNaoEncontrado("Metodo " + atributoClasse(field.getName(), target.getClass()) + " inválida");
+			throw new MapeamentoNaoEncontrado("Metodo " + atributoClasse(field.getName(), target.getClass()) + " inválida", e);
 		}
 	}
 

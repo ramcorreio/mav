@@ -3,12 +3,22 @@ package com.stefanini.mav.es;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BeanMapper extends BaseMapper {
+public class BeanMapper extends ObrigatorioMapper {
 	
 	private List<BaseMapper> mappers = new LinkedList<>();
 	
+	private Boolean propagar;
+	
 	public List<BaseMapper> getMappers() {
 		return mappers;
+	}
+	
+	public Boolean isPropagar() {
+		return propagar;
+	}
+	
+	public void setPropagar(Boolean propagar) {
+		this.propagar = propagar;
 	}
 	
 	@Override

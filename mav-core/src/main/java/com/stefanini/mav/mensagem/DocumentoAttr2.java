@@ -4,9 +4,9 @@ import java.util.Date;
 
 import com.stefanini.mav.es.MapAtributo;
 
-public class DocumentoAttr extends AttrComum {
+public class DocumentoAttr2 extends AttrComum {
 
-	@MapAtributo(tamanho = 8, obrigatorio = false)
+	@MapAtributo(tamanho = 8, obrigatorio = true)
 	private Date dataEmissao;
 
 	public Date getDataEmissao() {

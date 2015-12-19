@@ -53,7 +53,7 @@ public class AdaptadorTipoTest {
 	}
 	
 	@Test
-	public void lerInt() throws MapeamentoNaoEncontrado {
+	public void lerIntZeroEsquerda() throws MapeamentoNaoEncontrado {
 		
 		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
 		Integer saida = Integer.class.cast(getAdaptador(Integer.class).ler(ler(entrada, 5, 7), null));
@@ -61,10 +61,23 @@ public class AdaptadorTipoTest {
 	}
 	
 	@Test
+	public void escreverIntEspacoEsquerda() throws MapeamentoNaoEncontrado {
+		
+		SimpleMapper map = new SimpleMapper();
+		map.setTamanho(7);
+		map.setZeroEsquerda(false);
+		
+		String entrada = "00863  60980008P4201170358    UILSON  A00621708940029";
+		String saida = getAdaptador(Integer.class).escrever(60980, map);
+		MatcherAssert.assertThat(saida, Matchers.equalTo(ler(entrada, 5, 7)));
+	}
+	
+	@Test
 	public void lerBooleanTrue() throws MapeamentoNaoEncontrado {
 
 		SimpleMapper map = new SimpleMapper();
-		map.setComparador("1");
+		map.setComparadorPositivo("1");
+		map.setComparadorNegativo("0");
 		
 		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
 		Boolean saida = Boolean.class.cast(getAdaptador(Boolean.class).ler(ler(entrada, 19, 1), map));
@@ -74,9 +87,21 @@ public class AdaptadorTipoTest {
 	@Test
 	public void lerBooleanFalse() throws MapeamentoNaoEncontrado {
 		
+		SimpleMapper map = new SimpleMapper();
+		map.setComparadorPositivo("1");
+		map.setComparadorNegativo("0");
+		
+		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
+		Boolean saida = Boolean.class.cast(getAdaptador(Boolean.class).ler(ler(entrada, 1, 1), map));
+		MatcherAssert.assertThat(false, Matchers.equalTo(saida));
+	}
+	
+	@Test
+	public void lerBooleanNull() throws MapeamentoNaoEncontrado {
+		
 		String entrada = "008630460980008P4201170358    UILSON  A00621708940029";
 		Boolean saida = Boolean.class.cast(getAdaptador(Boolean.class).ler(ler(entrada, 1, 1), null));
-		MatcherAssert.assertThat(false, Matchers.equalTo(saida));
+		MatcherAssert.assertThat(saida, Matchers.nullValue());
 	}
 	
 	@Test
@@ -102,6 +127,20 @@ public class AdaptadorTipoTest {
 		String input = "0649000";
 		Double expected = 6.49;
 		Double saida = Double.class.cast(getAdaptador(Double.class).ler(ler(input, 0, 7), map));
+		MatcherAssert.assertThat(saida, Matchers.equalTo(expected));
+	}
+	
+	@Test
+	public void escreverDouble() throws ParseException, MapeamentoNaoEncontrado {
+		
+		SimpleMapper map = new SimpleMapper();
+		map.setTamanho(7);
+		map.setScale(2);
+		
+		Double valor = 6.77;
+		String expected = "0000677";
+		
+		String saida = getAdaptador(Double.class).escrever(valor, map);
 		MatcherAssert.assertThat(saida, Matchers.equalTo(expected));
 	}
 	
