@@ -1,42 +1,19 @@
 package com.stefanini.mav.mensagem;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import com.stefanini.mav.es.ContextoEntradaSaida;
 import com.stefanini.mav.es.MapeamentoNaoEncontrado;
+import com.stefanini.mav.util.Utils;
 
-public abstract class ContextoMensagem<M extends MensagemBasica> {
+public class ContextoMensagem<T extends MensagemBasica> {
 	
-	private Class<M> clazz;
+	private Class<T> clazz;
 	
 	protected final CodigoMensagem tipo;
 	
-	protected ContextoMensagem(CodigoMensagem tipo, Class<M> clazz) {
+	protected ContextoMensagem(CodigoMensagem tipo, Class<T> clazz) {
 		this.tipo = tipo;
 		this.clazz = clazz;
 	}
-	
-	/**
-	 * Função para criar hash da string informada  
-	 * @param senha
-	 * @return
-	 * @throws MensagemNaoEncontradaException 
-	 */
-    public static String md5(String input) throws MensagemNaoEncontradaException {
-    	
-    	String sen = "";  
-        MessageDigest md = null;  
-        try {  
-            md = MessageDigest.getInstance("MD5");  
-        } catch (NoSuchAlgorithmException e) {  
-            throw new MensagemNaoEncontradaException(e); 
-        }  
-        BigInteger hash = new BigInteger(1, md.digest(input.getBytes()));  
-        sen = hash.toString(16);              
-        return sen;  
-    }
     
     /**
      * Verificar se o fluxo foi definido corretamente
@@ -45,7 +22,7 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
      * 
      * @throws MensagemNaoEncontradaException 
      */
-    private void verificarFluxo(M mensagem) throws MensagemNaoEncontradaException {
+    private void verificarFluxo(T mensagem) throws MensagemNaoEncontradaException {
     	
     	if(mensagem.getCabecalho().getSentidoFluxo() == null) {
     		
@@ -54,9 +31,9 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
     	
     }
 	
-	public M ler(String input) throws MensagemNaoEncontradaException {
+	public T ler(String input) throws MensagemNaoEncontradaException {
 		
-		String hash = md5(input);
+		String hash = Utils.md5(input);
 		Cabecalho cabecalho;
 		try {
 			cabecalho = ContextoEntradaSaida.ler(input, Cabecalho.class, false, new Object[0]);
@@ -70,7 +47,7 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 			throw new MensagemNaoEncontradaException("Tipo " + tipo + " inválido");
 		}
 		
-		M instance;
+		T instance;
 		try {
 			instance = ContextoEntradaSaida.ler(input, clazz, new Object[]{hash, cabecalho});
 			
@@ -83,7 +60,7 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 		return instance;
 	}
 	
-	public String escrever(M mensagem) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
+	public String escrever(T mensagem) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
 		
 		StringBuilder b = new StringBuilder();
 		b.append(ContextoEntradaSaida.escrever(mensagem.getCabecalho()));

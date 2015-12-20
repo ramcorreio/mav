@@ -7,23 +7,23 @@ import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 
 public class MensagemFactory {
 	
-	private static final Map<CodigoMensagem, ContextoMensagem<? extends MensagemBasica>> leitores = new HashMap<>();
+	private static final Map<CodigoMensagem, ContextoMensagem<?>> leitores = new HashMap<>();
 	
 	static {
-		leitores.put(CodigoMensagem.C0100, new ContextoPropostaFinanciamento());
-		leitores.put(CodigoMensagem.C0110, new ContextoRespostaPropostaFinanciamento());
-		leitores.put(CodigoMensagem.C0200, new ContextoConsultaProposta());
-		leitores.put(CodigoMensagem.C0210, new ContextoRespostaConsultaProposta());
-		leitores.put(CodigoMensagem.C0450, new ContextoSolicitacaoCapturaSimplificada());
-		leitores.put(CodigoMensagem.C0460, new ContextoRespostaCapturaSimplificada());
-		leitores.put(CodigoMensagem.C0670, new ContextoGeracaoToken());
-		leitores.put(CodigoMensagem.C0680, new ContextoRespostaGeracaoToken());
-		leitores.put(CodigoMensagem.C9100, new ContextoRespostaErro(CodigoMensagem.C9100));
-		leitores.put(CodigoMensagem.C9200, new ContextoRespostaErro(CodigoMensagem.C9200));
-		leitores.put(CodigoMensagem.C9300, new ContextoRespostaErro(CodigoMensagem.C9300));
-		leitores.put(CodigoMensagem.C9400, new ContextoRespostaErro(CodigoMensagem.C9400));
-		leitores.put(CodigoMensagem.C9450, new ContextoRespostaErro(CodigoMensagem.C9450));
-		leitores.put(CodigoMensagem.C9670, new ContextoRespostaErro(CodigoMensagem.C9670));
+		leitores.put(CodigoMensagem.C0100, new ContextoMensagem<PropostaFinanciamento>(CodigoMensagem.C0100, PropostaFinanciamento.class));
+		leitores.put(CodigoMensagem.C0110, new ContextoMensagem<RespostaPropostaFinanciamento>(CodigoMensagem.C0110, RespostaPropostaFinanciamento.class));
+		leitores.put(CodigoMensagem.C0200, new ContextoMensagem<ConsultaProposta>(CodigoMensagem.C0200, ConsultaProposta.class));
+		leitores.put(CodigoMensagem.C0210, new ContextoMensagem<RespostaConsultaProposta>(CodigoMensagem.C0210, RespostaConsultaProposta.class));
+		leitores.put(CodigoMensagem.C0450, new ContextoMensagem<SolicitacaoCapturaSimplificada>(CodigoMensagem.C0450, SolicitacaoCapturaSimplificada.class));
+		leitores.put(CodigoMensagem.C0460, new ContextoMensagem<RespostaCapturaSimplificada>(CodigoMensagem.C0460, RespostaCapturaSimplificada.class));
+		leitores.put(CodigoMensagem.C0670, new ContextoMensagem<GeracaoToken>(CodigoMensagem.C0670, GeracaoToken.class));
+		leitores.put(CodigoMensagem.C0680, new ContextoMensagem<GeracaoTokenResposta>(CodigoMensagem.C0680, GeracaoTokenResposta.class));
+		leitores.put(CodigoMensagem.C9100, new ContextoMensagem<RespostaErro>(CodigoMensagem.C9100, RespostaErro.class));
+		leitores.put(CodigoMensagem.C9200, new ContextoMensagem<RespostaErro>(CodigoMensagem.C9200, RespostaErro.class));
+		leitores.put(CodigoMensagem.C9300, new ContextoMensagem<RespostaErro>(CodigoMensagem.C9300, RespostaErro.class));
+		leitores.put(CodigoMensagem.C9400, new ContextoMensagem<RespostaErro>(CodigoMensagem.C9400, RespostaErro.class));
+		leitores.put(CodigoMensagem.C9450, new ContextoMensagem<RespostaErro>(CodigoMensagem.C9450, RespostaErro.class));
+		leitores.put(CodigoMensagem.C9670, new ContextoMensagem<RespostaErro>(CodigoMensagem.C9670, RespostaErro.class));
 	}
 	
 	@SuppressWarnings("unchecked")

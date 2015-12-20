@@ -20,6 +20,7 @@ import com.stefanini.mav.es.AdaptadorTipo;
 import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 import com.stefanini.mav.util.MensagemHelper;
+import com.stefanini.mav.util.Utils;
 import com.stefanini.mav.util.UtilsDate;
 
 /**
@@ -57,7 +58,7 @@ public class MensagemFactoryTest {
 		expected.setVersao("9");
 		expected.setCampoLojista(AdaptadorTipo.escreverString(30, " "));
 		
-		SolicitacaoCapturaSimplificada esperado = new SolicitacaoCapturaSimplificada(ContextoMensagem.md5(mensagem), expected);
+		SolicitacaoCapturaSimplificada esperado = new SolicitacaoCapturaSimplificada(Utils.md5(mensagem), expected);
 
 		
 		//validação de dados pessoais
@@ -134,7 +135,7 @@ public class MensagemFactoryTest {
 		cabecalho.setVersao("9");
 		cabecalho.setCampoLojista(AdaptadorTipo.escreverString(30, " "));
 		
-		RespostaCapturaSimplificada esperado = new RespostaCapturaSimplificada(ContextoGeracaoToken.md5(mensagem), cabecalho);
+		RespostaCapturaSimplificada esperado = new RespostaCapturaSimplificada(Utils.md5(mensagem), cabecalho);
 		
 		//DADOS DA CONSULTA
 		esperado.setDadosConsulta(new RespostaCapturaSimplificada.DadoConsulta());
@@ -213,7 +214,7 @@ public class MensagemFactoryTest {
 		cabecalhoEsperado.setVersao("9");
 		cabecalhoEsperado.setCampoLojista(AdaptadorTipo.escreverString(30, "TOP"));
 		
-		GeracaoToken esperado = new GeracaoToken(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
+		GeracaoToken esperado = new GeracaoToken(Utils.md5(mensagem), cabecalhoEsperado);
 
 		//Tipos de Serviços
 		esperado.setTipoServico(new LinkedList<String>());
@@ -242,7 +243,7 @@ public class MensagemFactoryTest {
 		return esperado;
 	}
 	
-	public static RespostaGeracaoToken criarRespostaGeracaoTokenMensagem(String mensagem) throws MensagemNaoEncontradaException {
+	public static GeracaoTokenResposta criarRespostaGeracaoTokenMensagem(String mensagem) throws MensagemNaoEncontradaException {
 		
 		Cabecalho cabecalhoEsperado = new Cabecalho();
 		cabecalhoEsperado.setSentidoFluxo(Fluxo.ENTRADA);
@@ -256,7 +257,7 @@ public class MensagemFactoryTest {
 		cabecalhoEsperado.setVersao("9");
 		cabecalhoEsperado.setCampoLojista(AdaptadorTipo.escreverString(30, "TOP"));
 		
-		RespostaGeracaoToken esperado = new RespostaGeracaoToken(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
+		GeracaoTokenResposta esperado = new GeracaoTokenResposta(Utils.md5(mensagem), cabecalhoEsperado);
 		
 		//Dados do Token				
 		//0084 a 0595	token	512	A	Valor do token
@@ -296,8 +297,8 @@ public class MensagemFactoryTest {
 		
 		String mensagem = MensagemHelper.lerMensagem(669, CodigoMensagem.C0680.toInt(), "criarRespostaGeracaoToken.1");
 		
-		RespostaGeracaoToken m = (RespostaGeracaoToken) MensagemFactory.parse(mensagem);
-		RespostaGeracaoToken esperado = criarRespostaGeracaoTokenMensagem(mensagem);
+		GeracaoTokenResposta m = (GeracaoTokenResposta) MensagemFactory.parse(mensagem);
+		GeracaoTokenResposta esperado = criarRespostaGeracaoTokenMensagem(mensagem);
 
 		assertThat(m, BeanMatchers.theSameAs(esperado));
 	}
@@ -316,7 +317,7 @@ public class MensagemFactoryTest {
 		cabecalhoEsperado.setVersao("9");
 		cabecalhoEsperado.setCampoLojista("     TOP 01       6  06       ");
 		
-		PropostaFinanciamento esperado = new PropostaFinanciamento(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
+		PropostaFinanciamento esperado = new PropostaFinanciamento(Utils.md5(mensagem), cabecalhoEsperado);
 		
 		//validação de dados pessoais
 		esperado.setDadosPessoais(new PropostaFinanciamento.DadoPessoal());
@@ -1097,7 +1098,7 @@ public class MensagemFactoryTest {
 		cabecalhoEsperado.setCampoLojista("TOP 01       6  06            ");
 		
 		Constructor<T> constructor = clazz.getConstructor(String.class, Cabecalho.class);
-		T esperado = constructor.newInstance(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
+		T esperado = constructor.newInstance(Utils.md5(mensagem), cabecalhoEsperado);
 		
 		//DADOS RESPOSTA DA PROPOSTA					
 		//0084 a 0084	Indicador Liberação Cessão	1	A	Indica se a cessão foi realizada pelo Lojista	"""0"" - Não cedido
@@ -2031,7 +2032,7 @@ public class MensagemFactoryTest {
 		expected.setVersao("9");
 		expected.setCampoLojista(AdaptadorTipo.escreverString(30, " "));
 		
-		ConsultaProposta esperado = new ConsultaProposta(ContextoMensagem.md5(mensagem), expected);
+		ConsultaProposta esperado = new ConsultaProposta(Utils.md5(mensagem), expected);
 
 		//validação outros indicadores
 		esperado.setIndicadores(new Indicador());

@@ -207,25 +207,13 @@ public class ContextoEntradaSaida {
 	 */
 	private static <T> Class<T> getGenericClass(Field field) throws MapeamentoNaoEncontrado {
 		
-		
-		System.out.println(field.getGenericType());
 		return getGenericClass(field.getGenericType());
 	}
 	
 	@SuppressWarnings("unchecked")
 	private static <T> Class<T> getGenericClass(Type type) throws MapeamentoNaoEncontrado {
 		
-		//
-		//System.out.println("=>>>>" + type.getgetTypeName());
 		Type pType = ParameterizedType.class.cast(type).getActualTypeArguments()[0];
-		System.out.println("=>>>>" + pType.getClass());
-		System.out.println("=>>>>" + pType);
-		/*System.out.println("=>>>>" + pType.getClass().getTypeName());
-		System.out.println("=>>>>" + pType.getClass().getName());
-		System.out.println("=>>>>" + pType.getClass().toGenericString());
-		System.out.println("=>>>>" + pType.getClass().getComponentType());
-		System.out.println("=>>>>" + pType.toString());
-		System.out.println("=>>>>" + pType.getTypeName());*/
 		try {
 			return (Class<T>) Class.forName(pType.toString().replaceAll("class\\s*", ""));
 		} catch (ClassNotFoundException e) {

@@ -74,8 +74,8 @@ public class MensagemSerializeTest {
 		
 		String expected = MensagemHelper.lerMensagem(669, CodigoMensagem.C0680.toInt(), "criarRespostaGeracaoToken.1");
 		
-		RespostaGeracaoToken rgt = MensagemFactoryTest.criarRespostaGeracaoTokenMensagem(expected);
-		ContextoMensagem<RespostaGeracaoToken> crgt = MensagemFactory.loadContexto(CodigoMensagem.C0680);
+		GeracaoTokenResposta rgt = MensagemFactoryTest.criarRespostaGeracaoTokenMensagem(expected);
+		ContextoMensagem<GeracaoTokenResposta> crgt = MensagemFactory.loadContexto(CodigoMensagem.C0680);
 		String mSerialized = crgt.escrever(rgt);
 		assertThat(mSerialized, expected);
 	}
