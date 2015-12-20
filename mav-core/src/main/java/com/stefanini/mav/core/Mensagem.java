@@ -16,6 +16,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -24,7 +25,7 @@ import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 
 @Entity
-@Table(name = "mensagem")
+@Table(name = "mensagem", uniqueConstraints = @UniqueConstraint(columnNames = {"numeroTransacao", "codigo"}))
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQueries({ @NamedQuery(name = "Mensagem.all", query = "select m from Mensagem m") })
 public class Mensagem implements Serializable {
@@ -38,7 +39,7 @@ public class Mensagem implements Serializable {
 	@Column(nullable = false)
 	private Integer numeroTransacao;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String numeroProposta;
 	
 	@Enumerated(EnumType.STRING)

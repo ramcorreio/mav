@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.junit.Assert;
 
+import com.stefanini.mav.es.AdaptadorTipo;
 import com.stefanini.mav.mensagem.Cabecalho;
 import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.MensagemBasica;
@@ -19,6 +20,8 @@ import com.stefanini.mav.mensagem.MensagemBasica;
 public class MensagemHelper {
 	
 	public static final int BUFFER_SIZE = 1024;
+	
+	private static Integer proximaTransacao = 1;
 	
 	private MensagemHelper() {
 	}
@@ -39,6 +42,11 @@ public class MensagemHelper {
 	public static String lerMensagem(CodigoMensagem tipo, String nome) throws IOException, URISyntaxException {
 		
 		return lerMensagem(Integer.valueOf(tipo.name().replaceAll("C", "")), nome);
+	}
+	
+	public static String lerMensagemMudaTransacao(CodigoMensagem tipo, String nome) throws IOException, URISyntaxException {
+		
+		return mudarTransacao(lerMensagem(tipo, nome));
 	}
 	
 	public static String lerMensagem(int codigo, String nome) throws IOException, URISyntaxException {
@@ -68,5 +76,14 @@ public class MensagemHelper {
 		assertThat(cabecalho.getCodigoLojista(), equalTo(expected.getCodigoLojista()));
 		assertThat(cabecalho.getVersao(), equalTo(expected.getVersao()));
 		assertThat(cabecalho.getCampoLojista(), equalTo(expected.getCampoLojista()));
+	}
+	
+	public static String mudarTransacao(String mensagem) {
+		
+		String mensagem1 = mensagem.substring(0, 9);
+		//Integer t = Integer.parseInt(mensagem.substring(9, 15)) + 1;
+		String mensagem2 = mensagem.substring(15);
+		
+		return mensagem1.concat(AdaptadorTipo.escreverInt(6, proximaTransacao++)).concat(mensagem2); 
 	}
 }

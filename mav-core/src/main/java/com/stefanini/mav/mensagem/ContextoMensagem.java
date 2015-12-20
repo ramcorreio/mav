@@ -13,7 +13,7 @@ public abstract class ContextoMensagem<M extends MensagemBasica> {
 	
 	protected final CodigoMensagem tipo;
 	
-	public ContextoMensagem(CodigoMensagem tipo, Class<M> clazz) {
+	protected ContextoMensagem(CodigoMensagem tipo, Class<M> clazz) {
 		this.tipo = tipo;
 		this.clazz = clazz;
 	}

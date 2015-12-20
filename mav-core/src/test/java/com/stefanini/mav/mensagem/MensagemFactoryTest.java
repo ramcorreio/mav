@@ -2,11 +2,11 @@ package com.stefanini.mav.mensagem;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.LinkedList;
@@ -14,8 +14,6 @@ import java.util.LinkedList;
 import org.exparity.hamcrest.BeanMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.stefanini.mav.es.AdaptadorTipo;
@@ -45,14 +43,10 @@ public class MensagemFactoryTest {
 		MensagemFactory.parse(null);
 	}
 	
-	private SolicitacaoCapturaSimplificada montarSolicitacaoCapturaSimplificada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
-		
-		String mensagem = MensagemHelper.lerMensagem(199, 450, "criarCapturaSimplicada.1");
-		
-		SolicitacaoCapturaSimplificada m = (SolicitacaoCapturaSimplificada) MensagemFactory.parse(mensagem);
-		MensagemHelper.verificarTamanho(mensagem, m);
+	public static SolicitacaoCapturaSimplificada criarSolicitacaoCapturaSimplificadaMensagem(String mensagem) throws MensagemNaoEncontradaException, ParseException {
 		
 		Cabecalho expected = new Cabecalho();
+		expected.setSentidoFluxo(Fluxo.ENTRADA);
 		expected.setTamanho(116);
 		expected.setCodigo(CodigoMensagem.C0450);
 		expected.setNumeroTransacao(980008);
@@ -63,34 +57,47 @@ public class MensagemFactoryTest {
 		expected.setVersao("9");
 		expected.setCampoLojista(AdaptadorTipo.escreverString(30, " "));
 		
-		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
+		SolicitacaoCapturaSimplificada esperado = new SolicitacaoCapturaSimplificada(ContextoMensagem.md5(mensagem), expected);
+
 		
 		//validação de dados pessoais
-		assertThat(m.getDadosPessoais(), notNullValue());
-		//TODO: rever
-		//assertThat(m.getDadosPessoais().getCpf(), is(equalTo("00000000191")));
-		assertThat(m.getDadosPessoais().getDataNascimento(), is(equalTo(UtilsDate.parse("01011960", UtilsDate.FormatadorData.DATA))));
-		assertThat(m.getDadosPessoais().getFiller(), is(AdaptadorTipo.escreverString(40, " ")));
+		esperado.setDadosPessoais(new SolicitacaoCapturaSimplificada.DadoPessoal());
+		esperado.getDadosPessoais().setCpf("00000000191");
+		esperado.getDadosPessoais().setDataNascimento(UtilsDate.parse("01011960", UtilsDate.FormatadorData.DATA));
+		esperado.getDadosPessoais().setFiller(AdaptadorTipo.escreverString(40, " "));
 		
 		//validação de dados operação cartão
-		assertThat(m.getDadosOperacaoCartao(), notNullValue());
-		assertThat(m.getDadosOperacaoCartao().getCodigoOrg(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getCodigoLogo(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getCodigoCampanha(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getCodigoModalidade(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getFiller(), is(AdaptadorTipo.escreverString(28, " ")));
+		esperado.setDadosOperacaoCartao(new SolicitacaoCapturaSimplificada.DadoOperacaoCartao());
+		esperado.getDadosOperacaoCartao().setCodigoOrg("");
+		esperado.getDadosOperacaoCartao().setCodigoLogo("");
+		esperado.getDadosOperacaoCartao().setCodigoCampanha("");
+		esperado.getDadosOperacaoCartao().setCodigoModalidade("");
+		esperado.getDadosOperacaoCartao().setFiller(AdaptadorTipo.escreverString(28, " "));
 		
 		//validação de Dados Complementares
-		assertThat(m.getComplemento(), notNullValue());
-		assertThat(m.getComplemento().isEmancipado(), is(false));
-		assertThat(m.getComplemento().getCodigoProduto(), is("01"));
+		esperado.setComplemento(new SolicitacaoCapturaSimplificada.DadoComplementar());
+		esperado.getComplemento().setEmancipado(false);
+		esperado.getComplemento().setCodigoProduto("01");
 		
 		//validação outros indicadores
-		assertThat(m.getIndicadores(), notNullValue());
-		assertThat(m.getIndicadores().getIdentificadorCanal(), is(equalTo("T")));
-		assertThat(m.getIndicadores().getVersaoCanal(), is(""));
-		assertThat(m.getIndicadores().getPolitica(), is(""));
-		assertThat(m.getIndicadores().getAmbiente(), is(""));
+		esperado.setIndicadores(new Indicador());
+		esperado.getIndicadores().setIdentificadorCanal("T");
+		esperado.getIndicadores().setVersaoCanal("");
+		esperado.getIndicadores().setPolitica("");
+		esperado.getIndicadores().setAmbiente("");
+		
+		return esperado;
+	}
+	
+	public SolicitacaoCapturaSimplificada criarSolicitacaoCapturaSimplificada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
+		
+		String mensagem = MensagemHelper.lerMensagem(199, 450, "criarCapturaSimplicada.1");
+		
+		SolicitacaoCapturaSimplificada m = (SolicitacaoCapturaSimplificada) MensagemFactory.parse(mensagem);
+		SolicitacaoCapturaSimplificada esperado = criarSolicitacaoCapturaSimplificadaMensagem(mensagem);
+		
+		assertThat(m, BeanMatchers.theSameAs(esperado));
+		
 		return m;
 	}
 	
@@ -98,7 +105,7 @@ public class MensagemFactoryTest {
 	@Test
 	public void gerarErroCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException, MapeamentoNaoEncontrado{
 	
-		SolicitacaoCapturaSimplificada m = montarSolicitacaoCapturaSimplificada();
+		SolicitacaoCapturaSimplificada m = criarSolicitacaoCapturaSimplificada();
 		assertThat(m, notNullValue());
 		
 		String descricao = "Erro de solicitação";
@@ -110,86 +117,192 @@ public class MensagemFactoryTest {
 	@Test
 	public void criarCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException{
 		
-		montarSolicitacaoCapturaSimplificada();
+		criarSolicitacaoCapturaSimplificada();
+	}
+	
+	public static RespostaCapturaSimplificada criarRespostaCapturaSimplicadaMensagem(String mensagem) throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
+		
+		Cabecalho cabecalho = new Cabecalho();
+		cabecalho.setSentidoFluxo(Fluxo.SAIDA);
+		cabecalho.setTamanho(863);
+		cabecalho.setCodigo(CodigoMensagem.C0460);
+		cabecalho.setNumeroTransacao(980008);
+		cabecalho.setNumeroProposta("P4201170358");
+		cabecalho.setCodigoUsuario("UILSON");
+		cabecalho.setCodigoRetorno("A0062");
+		cabecalho.setCodigoLojista(170894002);
+		cabecalho.setVersao("9");
+		cabecalho.setCampoLojista(AdaptadorTipo.escreverString(30, " "));
+		
+		RespostaCapturaSimplificada esperado = new RespostaCapturaSimplificada(ContextoGeracaoToken.md5(mensagem), cabecalho);
+		
+		//DADOS DA CONSULTA
+		esperado.setDadosConsulta(new RespostaCapturaSimplificada.DadoConsulta());
+		esperado.getDadosConsulta().setFiller(AdaptadorTipo.escreverString(83, " "));
+		esperado.getDadosConsulta().setMensagemAutorizador("Xx");		  
+		esperado.getDadosConsulta().setData(UtilsDate.parse("25082015180815", UtilsDate.FormatadorData.DATA_TEMPO));
+		esperado.getDadosConsulta().setCodigoStatusProposta(StatusProposta.ELEGIVEL);
+		esperado.getDadosConsulta().setParecer("");
+		esperado.getDadosConsulta().setProduto("01");
+		
+		//validação de dados cliente
+		esperado.setDadosCliente(new RespostaCapturaSimplificada.DadoCliente());
+		esperado.getDadosCliente().setCpf("00000000191");
+		esperado.getDadosCliente().setDataNascimento(UtilsDate.parse("20101944", UtilsDate.FormatadorData.DATA));
+		esperado.getDadosCliente().setEmancipado(false);
+		esperado.getDadosCliente().setCodigoProduto("01");
+		esperado.getDadosCliente().setCobraTac(false);
+		esperado.getDadosCliente().setElegibilidadeSeguro(true);
+		esperado.getDadosCliente().setCodigoProdutoLosango("HSSOR002");
+		esperado.getDadosCliente().setQtdNumeroSorte(0);
+		esperado.getDadosCliente().setFiller(AdaptadorTipo.escreverString(47, " "));
+		
+		//validação de dados operação cartão
+		esperado.setDadosOperacaoCartao(new RespostaCapturaSimplificada.DadoOperacaoCartao());
+		esperado.getDadosOperacaoCartao().setCodigoOrg("");
+		esperado.getDadosOperacaoCartao().setCodigoLogo("");
+		esperado.getDadosOperacaoCartao().setCodigoCampanha("");
+		esperado.getDadosOperacaoCartao().setCodigoModalidade("");
+		
+		//validação do filler
+		esperado.setFiller("0000 0000 0000 0000           000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000   ");
+		
+		//validação outros indicadores
+		esperado.setIndicadores(new Indicador());
+		esperado.getIndicadores().setIdentificadorCanal("T");
+		esperado.getIndicadores().setVersaoCanal("1");
+		esperado.getIndicadores().setPolitica("2");
+		esperado.getIndicadores().setAmbiente("HO");
+		
+		return esperado;
 	}
 	
 	@Test
 	public void criarRespostaCapturaSimplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
 		String mensagem = MensagemHelper.lerMensagem(946, 460, "criarRespostaCapturaSimplicada.1");
-		assertThat(mensagem, notNullValue());
 		
 		RespostaCapturaSimplificada m = (RespostaCapturaSimplificada) MensagemFactory.parse(mensagem);
-		assertThat(m, notNullValue());
-		
-		MensagemHelper.verificarTamanho(mensagem, m);
-		Cabecalho expected = new Cabecalho();
-		expected.setTamanho(863);
-		expected.setCodigo(CodigoMensagem.C0460);
-		expected.setNumeroTransacao(980008);
-		expected.setNumeroProposta("P4201170358");
-		expected.setCodigoUsuario("UILSON");
-		expected.setCodigoRetorno("A0062");
-		expected.setCodigoLojista(170894002);
-		expected.setVersao("9");
-		expected.setCampoLojista(AdaptadorTipo.escreverString(30, " "));
-		
-		MensagemHelper.verificarCabecalho(expected, m.getCabecalho());
-		
-		//DADOS DA CONSULTA					
-		assertThat(m.getDadosConsulta().getFiller(), is(AdaptadorTipo.escreverString(83, " ")));
-		assertThat(m.getDadosConsulta().getMensagemAutorizador(), is("Xx"));		  
-		assertThat(m.getDadosConsulta().getData(), is(equalTo(UtilsDate.parse("25082015180815", UtilsDate.FormatadorData.DATA_TEMPO))));
-		assertThat(m.getDadosConsulta().getCodigoStatusProposta(), is(equalTo(StatusProposta.ELEGIVEL)));
-		assertThat(m.getDadosConsulta().getParecer(), is(""));
-		assertThat(m.getDadosConsulta().getProduto(), is("01"));
-		
-		//validação de dados cliente
-		assertThat(m.getDadosCliente(), notNullValue());
-		assertThat(m.getDadosCliente().getCpf(), is(equalTo("00000000191")));
-		assertThat(m.getDadosCliente().getDataNascimento(), is(equalTo(UtilsDate.parse("20101944", UtilsDate.FormatadorData.DATA))));
-		assertThat(m.getDadosCliente().isEmancipado(), is(false));
-		assertThat(m.getDadosCliente().getCodigoProduto(), is("01"));
-		assertThat(m.getDadosCliente().isCobraTac(), is(equalTo(false)));
-		assertThat(m.getDadosCliente().isElegibilidadeSeguro(), is(equalTo(true)));
-		assertThat(m.getDadosCliente().getCodigoProdutoLosango(), is(equalTo("HSSOR002")));
-		assertThat(m.getDadosCliente().getQtdNumeroSorte(), is(equalTo(0)));
-		assertThat(m.getDadosCliente().getFiller(), is(AdaptadorTipo.escreverString(47, " ")));
-		
-		//validação de dados operação cartão
-		assertThat(m.getDadosOperacaoCartao(), notNullValue());
-		assertThat(m.getDadosOperacaoCartao().getCodigoOrg(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getCodigoLogo(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getCodigoCampanha(), is(""));
-		assertThat(m.getDadosOperacaoCartao().getCodigoModalidade(), is(""));
-		
-		//validação do filler
-		assertThat(m.getFiller(), is(equalTo("0000 0000 0000 0000           000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000             000000000000000000000000000000000000000000   ")));
-		
-		//validação outros indicadores
-		assertThat(m.getIndicadores(), notNullValue());
-		assertThat(m.getIndicadores().getIdentificadorCanal(), is(equalTo("T")));
-		assertThat(m.getIndicadores().getVersaoCanal(), is("1"));
-		assertThat(m.getIndicadores().getPolitica(), is("2"));
-		assertThat(m.getIndicadores().getAmbiente(), is("HO"));
+		RespostaCapturaSimplificada esperado = criarRespostaCapturaSimplicadaMensagem(mensagem);		
+
+		assertThat(m, BeanMatchers.theSameAs(esperado));
 	}
 	
 	@Test
-	@Ignore
-	public void criarGeracaoToken() {
+	public void criarGeracaoToken() throws NumberFormatException, IOException, URISyntaxException, MensagemNaoEncontradaException {
+
+		String mensagem = MensagemHelper.lerMensagem(157, CodigoMensagem.C0670.toInt(), "criarGeracaoToken.1");
 		
-		Assert.fail("Não implementado.");
+		GeracaoToken m = (GeracaoToken) MensagemFactory.parse(mensagem);
+		GeracaoToken esperado = criarGeracaoTokenMensagem(mensagem);
+
+		assertThat(m, BeanMatchers.theSameAs(esperado));
+	}
+
+	public static GeracaoToken criarGeracaoTokenMensagem(String mensagem) throws MensagemNaoEncontradaException {
+		
+		Cabecalho cabecalhoEsperado = new Cabecalho();
+		cabecalhoEsperado.setSentidoFluxo(Fluxo.ENTRADA);
+		cabecalhoEsperado.setTamanho(74);
+		cabecalhoEsperado.setCodigo(CodigoMensagem.C0670);
+		cabecalhoEsperado.setNumeroTransacao(980010);
+		cabecalhoEsperado.setNumeroProposta("P4201170358");
+		cabecalhoEsperado.setCodigoUsuario("UILSON");
+		cabecalhoEsperado.setCodigoRetorno("");
+		cabecalhoEsperado.setCodigoLojista(170894002);
+		cabecalhoEsperado.setVersao("9");
+		cabecalhoEsperado.setCampoLojista(AdaptadorTipo.escreverString(30, "TOP"));
+		
+		GeracaoToken esperado = new GeracaoToken(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
+
+		//Tipos de Serviços
+		esperado.setTipoServico(new LinkedList<String>());
+		//0084 a 0089	Tipo de serviço 1	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	X
+		//0090 a 0095	Tipo de serviço 2	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	
+		//0096 a 0101	Tipo de serviço 3	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	
+		//0102 a 0107	Tipo de serviço 4	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	
+		//0108 a 0113	Tipo de serviço 5	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	
+		//0114 a 0119	Tipo de serviço 6	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	
+		//0120 a 0125	Tipo de serviço 7	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	
+		//0126 a 0131	Tipo de serviço 8	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	
+		//0132 a 0137	Tipo de serviço 9	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	
+		//0138 a 0143	Tipo de serviço 10	6	A	Indica o tipo de serviço	Ver tabela de dominio Tipo de Serviço	
+		esperado.getTipoServico().add("BOLETO");
+
+		//Outros Indicadores
+		esperado.setIndicadores(new Indicador());
+		//0144 a 0144	Identificador do canal	1	A	Identifica que a proposta é de procedência do TRS	
+		//0145 a 0154	Versão do Canal	10	A	Uso exclusivo da Losango	
+		//0155 a 0155	Política	1	A	Uso exclusivo da Losango	
+		//0156 a 0157	Ambiente	2	A	Uso exclusivo da Losango
+		esperado.getIndicadores().setIdentificadorCanal("T");
+		esperado.getIndicadores().setVersaoCanal("");
+		esperado.getIndicadores().setPolitica("");
+		esperado.getIndicadores().setAmbiente("");
+		return esperado;
+	}
+	
+	public static RespostaGeracaoToken criarRespostaGeracaoTokenMensagem(String mensagem) throws MensagemNaoEncontradaException {
+		
+		Cabecalho cabecalhoEsperado = new Cabecalho();
+		cabecalhoEsperado.setSentidoFluxo(Fluxo.ENTRADA);
+		cabecalhoEsperado.setTamanho(669);
+		cabecalhoEsperado.setCodigo(CodigoMensagem.C0680);
+		cabecalhoEsperado.setNumeroTransacao(980010);
+		cabecalhoEsperado.setNumeroProposta("P4201170358");
+		cabecalhoEsperado.setCodigoUsuario("UILSON");
+		cabecalhoEsperado.setCodigoRetorno("A0000");
+		cabecalhoEsperado.setCodigoLojista(170894002);
+		cabecalhoEsperado.setVersao("9");
+		cabecalhoEsperado.setCampoLojista(AdaptadorTipo.escreverString(30, "TOP"));
+		
+		RespostaGeracaoToken esperado = new RespostaGeracaoToken(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
+		
+		//Dados do Token				
+		//0084 a 0595	token	512	A	Valor do token
+		esperado.setToken("BA4CCCA99E8CDF8E4FC96C9DB538F8C8BB23AB7864B9EFB319AE8714A48C659D");
+
+		
+		//Tipos de Serviços
+		esperado.setTipoServico(new LinkedList<String>());
+		//0596 a 0601	Tipo de Impressão 1	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		//0602 a 0607	Tipo de Impressão 2	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		//0608 a 0613	Tipo de Impressão 3	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		//0614 a 0619	Tipo de Impressão 4	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		//0620 a 0625	Tipo de Impressão 5	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		//0626 a 0631	Tipo de Impressão 6	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		//0632 a 0637	Tipo de Impressão 7	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		//0638 a 0643	Tipo de Impressão 8	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		//0644 a 0649	Tipo de Impressão 9	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		//0650 a 0655	Tipo de Impressão 10	6	A	Indica o tipo de Impressão (ver tabela tipo Impressão)
+		esperado.getTipoServico().add("BOLETO");
+
+		//Outros Indicadores
+		esperado.setIndicadores(new Indicador());
+		//0656 a 0656	Identificador do canal	1	A	Identifica que a proposta é de procedência do TRS
+		//0657 a 0666	Versão do Canal	10	A	Uso exclusivo da Losango
+		//0667 a 0667	Política	1	A	Uso exclusivo da Losango
+		//0668 a 0669	Ambiente	2	A	Uso exclusivo da Losango
+		esperado.getIndicadores().setIdentificadorCanal("T");
+		esperado.getIndicadores().setVersaoCanal("9");
+		esperado.getIndicadores().setPolitica("4");
+		esperado.getIndicadores().setAmbiente("HO");
+		return esperado;
 	}
 	
 	@Test
-	@Ignore
-	public void criarRespostaGeracaoToken() {
+	public void criarRespostaGeracaoToken() throws NumberFormatException, IOException, URISyntaxException, MensagemNaoEncontradaException {
 		
-		Assert.fail("Não implementado.");
+		
+		String mensagem = MensagemHelper.lerMensagem(669, CodigoMensagem.C0680.toInt(), "criarRespostaGeracaoToken.1");
+		
+		RespostaGeracaoToken m = (RespostaGeracaoToken) MensagemFactory.parse(mensagem);
+		RespostaGeracaoToken esperado = criarRespostaGeracaoTokenMensagem(mensagem);
+
+		assertThat(m, BeanMatchers.theSameAs(esperado));
 	}
 	
 	public static PropostaFinanciamento criarPropostaFinanciamentoMensagem(String mensagem) throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
-		
 		
 		Cabecalho cabecalhoEsperado = new Cabecalho();
 		cabecalhoEsperado.setSentidoFluxo(Fluxo.ENTRADA);
@@ -944,36 +1057,37 @@ public class MensagemFactoryTest {
 	public void criarPropostaFinanciamento() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
 		
 		String mensagem = MensagemHelper.lerMensagem(2725, 100, "criarPropostaFinanciamento.1");
-		assertThat(mensagem, notNullValue());
-		
 		
 		PropostaFinanciamento m = (PropostaFinanciamento) MensagemFactory.parse(mensagem);
-		assertThat(m, notNullValue());
-		
 		PropostaFinanciamento esperado = criarPropostaFinanciamentoMensagem(mensagem);
+		
 		assertThat(m, BeanMatchers.theSameAs(esperado));
 	}
 	
 	@Test
-	public void criarRespostaPropostaFinanciamento() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException {
+	public void criarRespostaPropostaFinanciamento() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		
-		String mensagem = MensagemHelper.lerMensagem(5102, 110, "criarRespostaPropostaFinanciamento.1");
-		assertThat(mensagem, notNullValue());
+		String mensagem = MensagemHelper.lerMensagem(5102, CodigoMensagem.C0110.toInt(), "criarRespostaPropostaFinanciamento.1");
 		
 		RespostaPropostaFinanciamento m = (RespostaPropostaFinanciamento) MensagemFactory.parse(mensagem);
-		assertThat(m, notNullValue());
+		RespostaPropostaFinanciamento esperado = criarRespostaPropostaMensagem(mensagem, RespostaPropostaFinanciamento.class);
 		
-		RespostaPropostaFinanciamento esperado = criarRespostaPropostaFinanciamentoMensagem(mensagem);
 		assertThat(m, BeanMatchers.theSameAs(esperado));
 
 	}
+	
+	public static RespostaPropostaFinanciamento criarRespostaPropostaFinanciamentoMensagem(String mensagem) throws MensagemNaoEncontradaException, ParseException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		
+		return criarRespostaPropostaMensagem(mensagem, RespostaPropostaFinanciamento.class);
+	}
+	
 
-	public static RespostaPropostaFinanciamento criarRespostaPropostaFinanciamentoMensagem(String mensagem) throws MensagemNaoEncontradaException, ParseException {
+	private static <T extends RespostaPropostaPadrao> T criarRespostaPropostaMensagem(String mensagem, Class<T> clazz) throws MensagemNaoEncontradaException, ParseException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		
 		Cabecalho cabecalhoEsperado = new Cabecalho();
-		cabecalhoEsperado.setSentidoFluxo(Fluxo.ENTRADA);
+		cabecalhoEsperado.setSentidoFluxo(Fluxo.SAIDA);
 		cabecalhoEsperado.setTamanho(5019);
-		cabecalhoEsperado.setCodigo(CodigoMensagem.C0110);
+		cabecalhoEsperado.setCodigo(CodigoMensagem.parse(mensagem.substring(5, 9)));
 		cabecalhoEsperado.setNumeroTransacao(980009);
 		cabecalhoEsperado.setNumeroProposta("P4201170358");
 		cabecalhoEsperado.setCodigoUsuario("UILSON");
@@ -982,7 +1096,8 @@ public class MensagemFactoryTest {
 		cabecalhoEsperado.setVersao("9");
 		cabecalhoEsperado.setCampoLojista("TOP 01       6  06            ");
 		
-		RespostaPropostaFinanciamento esperado = new RespostaPropostaFinanciamento(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
+		Constructor<T> constructor = clazz.getConstructor(String.class, Cabecalho.class);
+		T esperado = constructor.newInstance(ContextoMensagem.md5(mensagem), cabecalhoEsperado);
 		
 		//DADOS RESPOSTA DA PROPOSTA					
 		//0084 a 0084	Indicador Liberação Cessão	1	A	Indica se a cessão foi realizada pelo Lojista	"""0"" - Não cedido
@@ -1900,5 +2015,62 @@ public class MensagemFactoryTest {
 		p.setNossoNumero(prestacao.substring(8));
 		p.setVencimento(UtilsDate.parse(prestacao.substring(0,8), UtilsDate.FormatadorData.DATA));
 		return p;
+	}
+	
+	public static ConsultaProposta criarConsultaProposta(String mensagem) throws MensagemNaoEncontradaException, ParseException {
+		
+		Cabecalho expected = new Cabecalho();
+		expected.setSentidoFluxo(Fluxo.ENTRADA);
+		expected.setTamanho(14);
+		expected.setCodigo(CodigoMensagem.C0200);
+		expected.setNumeroTransacao(999004);
+		expected.setNumeroProposta("P4201348790");
+		expected.setCodigoUsuario("UILSON");
+		expected.setCodigoRetorno("");
+		expected.setCodigoLojista(170894001);
+		expected.setVersao("9");
+		expected.setCampoLojista(AdaptadorTipo.escreverString(30, " "));
+		
+		ConsultaProposta esperado = new ConsultaProposta(ContextoMensagem.md5(mensagem), expected);
+
+		//validação outros indicadores
+		esperado.setIndicadores(new Indicador());
+		esperado.getIndicadores().setIdentificadorCanal("T");
+		esperado.getIndicadores().setVersaoCanal("");
+		esperado.getIndicadores().setPolitica("");
+		esperado.getIndicadores().setAmbiente("");
+		
+		return esperado;
+	}
+	
+	
+	
+	
+	@Test
+	public void criarConsultaProposta() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException, MapeamentoNaoEncontrado{
+	
+		String mensagem = MensagemHelper.lerMensagem(97, CodigoMensagem.C0200.toInt(), "criarConsultaProposta.1");
+		
+		ConsultaProposta m = (ConsultaProposta) MensagemFactory.parse(mensagem);
+		ConsultaProposta esperado = criarConsultaProposta(mensagem);
+		
+		assertThat(m, BeanMatchers.theSameAs(esperado));
+	}
+	
+	
+	public static RespostaConsultaProposta criarRespostaConsultaProposta(String mensagem) throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		
+		return criarRespostaPropostaMensagem(mensagem, RespostaConsultaProposta.class);
+	}
+	
+	@Test
+	public void criarRespostaConsultaProposta() throws IOException, URISyntaxException, MensagemNaoEncontradaException, ParseException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		
+		String mensagem = MensagemHelper.lerMensagem(5102, CodigoMensagem.C0210.toInt(), "criarRespostaConsultaProposta.1");
+		
+		RespostaConsultaProposta m = (RespostaConsultaProposta) MensagemFactory.parse(mensagem);
+		RespostaConsultaProposta esperado = criarRespostaConsultaProposta(mensagem);
+		
+		assertThat(m, BeanMatchers.theSameAs(esperado));
 	}
 }

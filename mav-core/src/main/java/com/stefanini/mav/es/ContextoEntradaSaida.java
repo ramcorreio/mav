@@ -149,76 +149,13 @@ public class ContextoEntradaSaida {
 		return sm;
 	}
 	
-	/*protected static MapAtributo criarMapper(final Class<? extends Annotation> annotationType, final String path, final int tamanho, final boolean obrigatorio, final int scale, final boolean trim, final String formato, final String comparadorPositivo, final String comparadorNegativo, final boolean zeroEsquerda) {
-		
-		return new MapAtributo() {
-			
-			@Override
-			public Class<? extends Annotation> annotationType() {
-				return annotationType;
-			}
-			
-			@Override
-			public boolean trim() {
-				return trim;
-			}
-			
-			@Override
-			public int tamanho() {
-
-				return tamanho;
-			}
-			
-			@Override
-			public int scale() {
-
-				return scale;
-			}
-			
-			@Override
-			public String path() {
-
-				return path;
-			}
-			
-			@Override
-			public boolean obrigatorio() {
-
-				return obrigatorio;
-			}
-			
-			@Override
-			public String formato() {
-
-				return formato;
-			}
-			
-			@Override
-			public String comparadorPositivo() {
-				
-				return comparadorPositivo;
-			}
-			
-			@Override
-			public String comparadorNegativo() {
-				
-				return comparadorNegativo;
-			}
-			
-			@Override
-			public boolean zeroEsquerda() {
-				
-				return zeroEsquerda;
-			}
-		};
-	}*/
-	
 	protected static <T> List<BaseMapper> getMappersFilhos(Class<T> clazz) throws MapeamentoNaoEncontrado {
 		
 		return getMappersFilhos("", clazz);
 	}
 	
 	protected static <T> List<BaseMapper> getMappersFilhos(String parent, Class<T> clazz) throws MapeamentoNaoEncontrado {
+		
 		
 		List<BaseMapper> mappers = new LinkedList<>();
 		Collection<Field> fields = getAllFields(clazz, false).values();
@@ -270,17 +207,29 @@ public class ContextoEntradaSaida {
 	 */
 	private static <T> Class<T> getGenericClass(Field field) throws MapeamentoNaoEncontrado {
 		
+		
+		System.out.println(field.getGenericType());
 		return getGenericClass(field.getGenericType());
 	}
 	
 	@SuppressWarnings("unchecked")
 	private static <T> Class<T> getGenericClass(Type type) throws MapeamentoNaoEncontrado {
 		
+		//
+		//System.out.println("=>>>>" + type.getgetTypeName());
 		Type pType = ParameterizedType.class.cast(type).getActualTypeArguments()[0];
+		System.out.println("=>>>>" + pType.getClass());
+		System.out.println("=>>>>" + pType);
+		/*System.out.println("=>>>>" + pType.getClass().getTypeName());
+		System.out.println("=>>>>" + pType.getClass().getName());
+		System.out.println("=>>>>" + pType.getClass().toGenericString());
+		System.out.println("=>>>>" + pType.getClass().getComponentType());
+		System.out.println("=>>>>" + pType.toString());
+		System.out.println("=>>>>" + pType.getTypeName());*/
 		try {
-			return (Class<T>) Class.forName(pType.getTypeName());
+			return (Class<T>) Class.forName(pType.toString().replaceAll("class\\s*", ""));
 		} catch (ClassNotFoundException e) {
-			throw new MapeamentoNaoEncontrado(atributoClasse(type.getTypeName(), type.getClass()));
+			throw new MapeamentoNaoEncontrado(atributoClasse(type.toString(), type.getClass()));
 		}
 	}
 

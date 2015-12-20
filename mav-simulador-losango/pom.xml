@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>mav-simulador-losango</artifactId>
-
+	<packaging>jar</packaging>
 	<name>mav-simulador-losango</name>
 
 	<properties>
@@ -21,7 +21,7 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>com.stefanini.mav</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>mav-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>

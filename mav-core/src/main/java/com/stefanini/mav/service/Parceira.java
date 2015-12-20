@@ -5,19 +5,26 @@ import com.stefanini.mav.tcp.ConexaoParceira;
 
 public class Parceira {
 	
+	private String id;
+	
 	private String nome;
 	
 	private ConexaoParceira conexao;
 	
-	public Parceira(String nome, ConexaoParceira conexao) {
+	public Parceira(String id, String nome, ConexaoParceira conexao) {
 		
+		this.id = id;
 		this.nome = nome;
 		this.conexao = conexao;	
 	}
 	
-	public Parceira(String nome, String servidor, int porta) {
+	public Parceira(String id, String nome, String servidor, int porta) {
 		
-		this(nome, new ConexaoParceira(servidor, porta));	
+		this(id, nome, new ConexaoParceira(servidor, porta));	
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	public String getNome() {
@@ -41,7 +48,7 @@ public class Parceira {
 		}
 		
 		Parceira outro = Parceira.class.cast(obj);
-		return conexao.getServidor().equals(outro.conexao.getServidor()) && conexao.getPorta() == outro.getPorta();
+		return id.equals(outro.id);
 	}
 	
 	public MensagemBasica processar(MensagemBasica entrada) {

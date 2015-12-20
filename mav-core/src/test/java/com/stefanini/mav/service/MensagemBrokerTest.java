@@ -5,9 +5,11 @@ import java.net.URISyntaxException;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.exparity.hamcrest.BeanMatchers;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -46,7 +48,7 @@ public class MensagemBrokerTest {
 	@After
 	public void tearDown() {
 		
-		MensagemBroker.getInstance().getParceiras().clear();
+		MensagemBroker.getInstance().clear();
 	}
 	
 	
@@ -54,27 +56,27 @@ public class MensagemBrokerTest {
 	public void erroAusenciaParceira() throws MensagemNaoEncontradaException, IOException, URISyntaxException, BrokerException, MapeamentoNaoEncontrado {
 		
 		ContextoMensagem<MensagemBasica> ctxEntrada = MensagemFactory.loadContexto(CodigoMensagem.C0450);
-		MensagemBasica entrada = ctxEntrada.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1"));
+		MensagemBasica entrada = ctxEntrada.ler(MensagemHelper.lerMensagemMudaTransacao(CodigoMensagem.C0450, "criarCapturaSimplicada.1"));
 		
 		MensagemBasica expected = MensagemErroBroker.MSG_ERRO_AUSENCIA_PARCEIRA.wrap(entrada);
 		
 		MensagemBasica retorno = MensagemBroker.getInstance().enviarParceira(entrada);
-		MatcherAssert.assertThat(expected, Matchers.equalTo(retorno));
+		MatcherAssert.assertThat(retorno, BeanMatchers.theSameAs(expected));
 	}
 	
 	@Test
 	public void erroConexaoParceira() throws MensagemNaoEncontradaException, IOException, URISyntaxException, BrokerException, MapeamentoNaoEncontrado {
 		
 		ContextoMensagem<MensagemBasica> ctxEntrada = MensagemFactory.loadContexto(CodigoMensagem.C0450);
-		MensagemBasica entrada = ctxEntrada.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1"));
+		MensagemBasica entrada = ctxEntrada.ler(MensagemHelper.lerMensagemMudaTransacao(CodigoMensagem.C0450, "criarCapturaSimplicada.1"));
 		
-		Parceira p = new Parceira("Teste Fake", "localhost", 9090);
-		MensagemBroker.getInstance().getParceiras().add(p);
+		Parceira p = new Parceira("parceira-fake", "Teste Fake", "localhost", 9090);
+		MensagemBroker.getInstance().setParceira(p);
 		
 		MensagemBasica expected = MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(entrada, null, p);
 		
 		MensagemBasica retorno = MensagemBroker.getInstance().enviarParceira(entrada);
-		MatcherAssert.assertThat(expected, Matchers.equalTo(retorno));
+		MatcherAssert.assertThat(retorno, BeanMatchers.theSameAs(expected));
 	}
 	
 	@Test
@@ -89,8 +91,34 @@ public class MensagemBrokerTest {
 		MensagemBasica expected = ctxExpected.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0460, "criarRespostaCapturaSimplicada.1"));
 		
 		ConexaoParceira c = new ConexaoParceira("localhost", 8891);
-		Parceira p = new Parceira("Teste Mocked", c);
-		MensagemBroker.getInstance().getParceiras().add(p);
+		Parceira p = new Parceira("parceira-fake", "Teste Mocked", c);
+		MensagemBroker.getInstance().setParceira(p);
+		
+		mocker.replay();
+		MensagemBasica retorno = MensagemBroker.getInstance().enviarParceira(entrada);
+		mocker.verify();
+		MatcherAssert.assertThat(expected, Matchers.equalTo(retorno));
+	}
+	
+	@Test
+	@Ignore
+	public void conexaoDuasParceiras() throws MensagemNaoEncontradaException, IOException, URISyntaxException, BrokerException, MapeamentoNaoEncontrado {
+		
+		IMocksControl mocker = EasyMock.createStrictControl();
+		
+		ContextoMensagem<MensagemBasica> ctxEntrada = MensagemFactory.loadContexto(CodigoMensagem.C0450);
+		MensagemBasica entrada = ctxEntrada.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1"));
+		
+		ContextoMensagem<MensagemBasica> ctxExpected = MensagemFactory.loadContexto(CodigoMensagem.C0460);
+		MensagemBasica expected = ctxExpected.ler(MensagemHelper.lerMensagem(CodigoMensagem.C0460, "criarRespostaCapturaSimplicada.1"));
+		
+		ConexaoParceira c1 = new ConexaoParceira("localhost", 8891);
+		Parceira p1 = new Parceira("parceira-fake1", "Teste Mocked", c1);
+		MensagemBroker.getInstance().getParceiras().add(p1);
+		
+		ConexaoParceira c2 = new ConexaoParceira("localhost", 8892);
+		Parceira p2 = new Parceira("parceira-fake2", "Teste Mocked", c2);
+		MensagemBroker.getInstance().getParceiras().add(p2);
 		
 		mocker.replay();
 		MensagemBasica retorno = MensagemBroker.getInstance().enviarParceira(entrada);

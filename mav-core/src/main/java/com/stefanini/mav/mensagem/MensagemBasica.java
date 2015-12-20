@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public abstract class MensagemBasica implements Serializable {
 	
-	private static final long serialVersionUID = 203738241751201880L;
-	
+	private static final long serialVersionUID = -6935899719032321473L;
+
 	private String id;
 	
 	private Cabecalho cabecalho;

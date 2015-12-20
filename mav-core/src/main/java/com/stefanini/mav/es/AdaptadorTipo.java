@@ -253,7 +253,7 @@ public abstract class AdaptadorTipo<T> {
 		this.tipoEnum = tipoEnum;
 	}
 	
-	protected static String escreverInt(int tamanho, Integer input) {
+	public static String escreverInt(int tamanho, Integer input) {
 		return String.format("%0" + tamanho + "d", input);
 	}
 	

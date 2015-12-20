@@ -1,15 +1,19 @@
 package com.stefanini.mav.service;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.stefanini.mav.core.Mensagem;
 import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
 import com.stefanini.mav.mensagem.RespostaErro;
+import com.stefanini.mav.mensagem.StatusProposta;
 import com.stefanini.mav.service.ServiceLocator.Service;
 
 public class MensagemBroker {
@@ -56,7 +60,7 @@ public class MensagemBroker {
 
 	private static final MensagemBroker broker = new MensagemBroker();
 	
-	private LinkedList<Parceira> parceiras = new LinkedList<>();
+	private LinkedHashSet<Parceira> parceiras = new LinkedHashSet<>();
 	
 	private MensagemBroker() {
 	}
@@ -65,12 +69,16 @@ public class MensagemBroker {
 		return broker;
 	}
 	
-	public LinkedList<Parceira> getParceiras() {
-		return parceiras;
+	public List<Parceira> getParceiras() {
+		return new LinkedList<>(parceiras);
 	}
 	
-	public void setParceiras(LinkedList<Parceira> parceiras) {
-		this.parceiras = parceiras;
+	public void setParceira(Parceira parceira) {
+		parceiras.add(parceira);
+	}
+	
+	public void clear() {
+		parceiras.clear();
 	}
 	
 	/*private void carregarParceiras() throws IOException {
@@ -91,31 +99,26 @@ public class MensagemBroker {
 		
 	}*/
 	
-	/*private void iniciarProcesso(MensagemBasica mensagemBasica) {
+	/*private void iniciarFluxo(MensagemBasica mensagemBasica) {
 		
-		for (Parceira parceira : parceiras) {
-			
-			try {
-				parceira.processar(mensagemBasica);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
+		
 		
 	}*/
+	
+	
 	
 	public MensagemBasica enviarParceira(MensagemBasica mensagemBasica) throws MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 
 		IGerenciaMensagem gerente = ServiceLocator.getInstance().getService(Service.GERENTE_MENSAGEM, IGerenciaMensagem.class);
-		gerente.salvar(mensagemBasica);
+		Mensagem mensagemDb = gerente.salvar(mensagemBasica);
 		
 		for (Parceira parceira : parceiras) {
+		
 			
 			MensagemBasica retorno = null;
 			try {
 				_LOGGER.info("Processando conexão com " + parceira.getNome());
+				gerente.gravarMensagemParceira(mensagemDb, parceira);
 				retorno = parceira.processar(mensagemBasica);
 				
 			} catch (Throwable t) {
@@ -124,7 +127,8 @@ public class MensagemBroker {
 			}
 			
 			try {
-				gerente.salvar(retorno);
+				Mensagem retornoMensagemDb = gerente.salvar(retorno);
+				gerente.gravarMensagemParceira(retornoMensagemDb, parceira);
 				
 				//verificar se mensagem de erro
 				if(!retorno.isOk()) {
@@ -132,12 +136,15 @@ public class MensagemBroker {
 					return retorno;
 				}
 				
-				//TODO: verificar regra de negócio
-				return retorno;
+				if(!retorno.getCabecalho().getCodigoRetorno().isEmpty() && StatusProposta.ELEGIVEL.getCodigo().equals(retorno.getCabecalho().getCodigoRetorno())){
+					
+					return retorno;	
+				}
 				
 			} catch (Throwable t) {
 				
-				RespostaErro erro =  (RespostaErro) MensagemErroBroker.MSG_ERRO_RETORNO.wrap(mensagemBasica, t, parceira);
+				RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_ERRO_RETORNO.wrap(mensagemBasica, t, parceira);
+				gerente.salvar(erro);
 				return erro;
 			}
 		}
