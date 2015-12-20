@@ -1538,7 +1538,7 @@ public class MensagemFactoryTest {
 		esperado.getDadosOperacao().setDataEmissaoRps(null);
 		
 		//2963 a 2967	VLR Alíquota	5	A	Campo de Instrução para o RPS
-		esperado.getDadosOperacao().setValorAliquota("    0");
+		esperado.getDadosOperacao().setValorAliquota(0);
 		
 		//2968 a 2971	Filial Losango	4	A	Campo de Instrução para o RPS
 		esperado.getDadosOperacao().setFilialLosango("0094");
@@ -1683,7 +1683,7 @@ public class MensagemFactoryTest {
 		esperado.getDadoSeguroSorteVida().setPlanoMaximo(0);
 		
 		//3483 a 3490	Codigo do produto do Seguro	8	A
-		esperado.getDadoSeguroSorteVida().setCodigoProduto(AdaptadorTipo.escreverString(8, "0", ""));
+		esperado.getDadoSeguroSorteVida().setCodigoProduto(0);
 		
 		//3491 a 3498	Data do Sorteio	8	N	data do Sorteio do Numero da Sorte
 		esperado.getDadoSeguroSorteVida().setDateSorteio(null);

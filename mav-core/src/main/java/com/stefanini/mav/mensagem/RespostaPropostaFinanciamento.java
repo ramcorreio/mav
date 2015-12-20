@@ -2011,8 +2011,8 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 8, obrigatorio = false)
 		private Date dataEmissaoRps;
 		
-		@MapAtributo(tamanho = 5)
-		private String valorAliquota;
+		@MapAtributo(tamanho = 5, obrigatorio = false, zeroEsquerda = false)
+		private Integer valorAliquota;
 		
 		@MapAtributo(tamanho = 4)
 		private String filialLosango;
@@ -2275,11 +2275,11 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.dataEmissaoRps = dataEmissaoRps;
 		}
 
-		public String getValorAliquota() {
+		public Integer getValorAliquota() {
 			return valorAliquota;
 		}
 
-		public void setValorAliquota(String valorAliquota) {
+		public void setValorAliquota(Integer valorAliquota) {
 			this.valorAliquota = valorAliquota;
 		}
 
@@ -2521,8 +2521,8 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 		@MapAtributo(tamanho = 2)
 		private Integer planoMaximo;
 		
-		@MapAtributo(tamanho = 8)
-		private String codigoProduto;
+		@MapAtributo(tamanho = 8, obrigatorio = false, zeroEsquerda = false)
+		private Integer codigoProduto;
 		
 		@MapAtributo(tamanho = 8)
 		private Date dateSorteio;
@@ -2573,11 +2573,11 @@ public class RespostaPropostaFinanciamento extends MensagemBasica {
 			this.planoMaximo = planoMaximo;
 		}
 
-		public String getCodigoProduto() {
+		public Integer getCodigoProduto() {
 			return codigoProduto;
 		}
 
-		public void setCodigoProduto(String codigoProduto) {
+		public void setCodigoProduto(Integer codigoProduto) {
 			this.codigoProduto = codigoProduto;
 		}
 
