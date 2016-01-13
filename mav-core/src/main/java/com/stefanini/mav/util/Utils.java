@@ -56,7 +56,7 @@ public class Utils {
 
 	public static CharBuffer carrgarArquivo(String caminho) throws IOException {
 
-		_LOGGER.debug("Lendo: " + caminho);
+		_LOGGER.info("Lendo: " + caminho);
 		FileReader fr;
 		try {
 			fr = new FileReader(caminho);

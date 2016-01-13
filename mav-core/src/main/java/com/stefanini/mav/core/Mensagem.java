@@ -25,9 +25,11 @@ import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
 
 @Entity
-@Table(name = "mensagem", uniqueConstraints = @UniqueConstraint(columnNames = {"numeroTransacao", "codigo"}))
+@Table(name = "mensagem", uniqueConstraints = @UniqueConstraint(columnNames = {"numeroTransacao", "codigo", "numeroProposta"}))
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@NamedQueries({ @NamedQuery(name = "Mensagem.all", query = "select m from Mensagem m") })
+@NamedQueries({ 
+	@NamedQuery(name = "Mensagem.all", query = "select m from Mensagem m") 
+})
 public class Mensagem implements Serializable {
 
 	private static final long serialVersionUID = -5241529310575479494L;
@@ -39,7 +41,7 @@ public class Mensagem implements Serializable {
 	@Column(nullable = false)
 	private Integer numeroTransacao;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String numeroProposta;
 	
 	@Enumerated(EnumType.STRING)

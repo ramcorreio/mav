@@ -28,6 +28,7 @@ public class Losango extends IoHandlerAdapter {
 	
 	protected CharBuffer carregarArquivoMensagens() throws IOException {
 		
+		_LOGGER.info("recebendo mensagem: " + mensagens);
 		return Utils.carrgarArquivo(mensagens.getName());
 	}
 	

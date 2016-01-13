@@ -24,7 +24,8 @@ public class MensagemBroker {
 		
 		MSG_ERRO_RETORNO("Erro ao processar retorno . servidor: %s, porta: %s"),
 		MSG_ERRO_CONEXAO("Erro de conexão com a parceira. servidor: %s, porta: %s"),
-		MSG_ERRO_AUSENCIA_PARCEIRA("Não há conexões disponíveis com as parceiras.");
+		MSG_ERRO_AUSENCIA_PARCEIRA("Não há conexões disponíveis com as parceiras."),
+		MSG_AUSENCIA_CODIGO_RETORNO("Não há código de retorno para essa mensagem.");
 		
 		private String texto;
 		
@@ -106,7 +107,6 @@ public class MensagemBroker {
 	}*/
 	
 	
-	
 	public MensagemBasica enviarParceira(MensagemBasica mensagemBasica) throws MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 
 		IGerenciaMensagem gerente = ServiceLocator.getInstance().getService(Service.GERENTE_MENSAGEM, IGerenciaMensagem.class);
@@ -123,7 +123,9 @@ public class MensagemBroker {
 				
 			} catch (Throwable t) {
 				
-				return MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(mensagemBasica, t, parceira);
+				RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(mensagemBasica, t, parceira);
+				gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
+				return erro;
 			}
 			
 			try {
@@ -136,7 +138,14 @@ public class MensagemBroker {
 					return retorno;
 				}
 				
-				if(!retorno.getCabecalho().getCodigoRetorno().isEmpty() && StatusProposta.ELEGIVEL.getCodigo().equals(retorno.getCabecalho().getCodigoRetorno())){
+				if(retorno.getCabecalho().getCodigoRetorno().isEmpty()) {
+					
+					RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_AUSENCIA_CODIGO_RETORNO.wrap(mensagemBasica, null, parceira);
+					gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
+					return erro;
+				}
+				
+				if(StatusProposta.ELEGIVEL.getCodigo().equals(retorno.getCabecalho().getCodigoRetorno())){
 					
 					return retorno;	
 				}
@@ -144,7 +153,7 @@ public class MensagemBroker {
 			} catch (Throwable t) {
 				
 				RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_ERRO_RETORNO.wrap(mensagemBasica, t, parceira);
-				gerente.salvar(erro);
+				gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
 				return erro;
 			}
 		}

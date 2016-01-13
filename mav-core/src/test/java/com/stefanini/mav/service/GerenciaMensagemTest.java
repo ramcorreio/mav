@@ -77,13 +77,8 @@ public class GerenciaMensagemTest {
 		m.getCabecalho().setNumeroProposta("TESTE");
 		Mensagem rm = manager.salvar(m);
 		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
+		MatcherAssert.assertThat(rm.getId(), Matchers.is(Matchers.greaterThan(0l)));
 		
-		input = MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1");
-		input = MensagemHelper.mudarTransacao(input);
-		ctx = MensagemFactory.loadContexto(CodigoMensagem.C0450);
-		m = ctx.ler(input);
-		
-		m.getCabecalho().setNumeroProposta("TESTE");
 		rm = manager.salvar(m);
 	}
 	
