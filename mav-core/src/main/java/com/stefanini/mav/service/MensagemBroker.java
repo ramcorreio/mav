@@ -82,83 +82,70 @@ public class MensagemBroker {
 		parceiras.clear();
 	}
 	
-	/*private void carregarParceiras() throws IOException {
-		
-		//cada parceira terá 3 pro
-		Properties props = Utils.carregarPropriedades("parceira.properties");
-		for (int i = 0; i < props.size(); i++) {
-			String nomeArquivo = props.getProperty("parceira." + (i + 1) + ".arquivo");
-			Properties parceiraProps = Utils.carregarPropriedades(nomeArquivo);
-			Parceira p = new Parceira(
-				parceiraProps.getProperty("nome"),
-				parceiraProps.getProperty("servidor"),
-				Integer.parseInt(parceiraProps.getProperty("servidor"))
-			);
-			
-			parceiras.add(p);
-		}
-		
-	}*/
-	
-	/*private void iniciarFluxo(MensagemBasica mensagemBasica) {
-		
-		
-		
-	}*/
-	
-	
 	public MensagemBasica enviarParceira(MensagemBasica mensagemBasica) throws MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 
-		IGerenciaMensagem gerente = ServiceLocator.getInstance().getService(Service.GERENTE_MENSAGEM, IGerenciaMensagem.class);
-		Mensagem mensagemDb = gerente.salvar(mensagemBasica);
-		
-		for (Parceira parceira : parceiras) {
-		
+		//Não há parceiras registradas
+		if(parceiras.isEmpty()) {
 			
-			MensagemBasica retorno = null;
-			try {
-				_LOGGER.info("Processando conexão com " + parceira.getNome());
-				gerente.gravarMensagemParceira(mensagemDb, parceira);
-				retorno = parceira.processar(mensagemBasica);
-				
-			} catch (Throwable t) {
-				
-				RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(mensagemBasica, t, parceira);
-				gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
-				return erro;
-			}
-			
-			try {
-				Mensagem retornoMensagemDb = gerente.salvar(retorno);
-				gerente.gravarMensagemParceira(retornoMensagemDb, parceira);
-				
-				//verificar se mensagem de erro
-				if(!retorno.isOk()) {
-					
-					return retorno;
-				}
-				
-				if(retorno.getCabecalho().getCodigoRetorno().isEmpty()) {
-					
-					RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_AUSENCIA_CODIGO_RETORNO.wrap(mensagemBasica, null, parceira);
-					gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
-					return erro;
-				}
-				
-				if(StatusProposta.ELEGIVEL.getCodigo().equals(retorno.getCabecalho().getCodigoRetorno())){
-					
-					return retorno;	
-				}
-				
-			} catch (Throwable t) {
-				
-				RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_ERRO_RETORNO.wrap(mensagemBasica, t, parceira);
-				gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
-				return erro;
-			}
+			return MensagemErroBroker.MSG_ERRO_AUSENCIA_PARCEIRA.wrap(mensagemBasica);
 		}
 		
-		return MensagemErroBroker.MSG_ERRO_AUSENCIA_PARCEIRA.wrap(mensagemBasica);
+		MensagemBasica rs = null;
+		for (Parceira parceira : parceiras) {
+		
+			rs = enviarMensagemParceira(mensagemBasica, parceira);
+			if(rs instanceof RespostaErro || StatusProposta.ELEGIVEL.getCodigo().equals(rs.getCabecalho().getCodigoRetorno())) {
+				
+				break;
+			}
+		}
+
+		return rs;
+	}
+
+	private MensagemBasica enviarMensagemParceira(MensagemBasica mensagemBasica, Parceira parceira) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado, BrokerException {
+		
+		IGerenciaMensagem gerente = ServiceLocator.getInstance().getService(Service.GERENTE_MENSAGEM, IGerenciaMensagem.class);
+		Mensagem mensagemDb = gerente.salvar(mensagemBasica);
+		MensagemBasica retorno = null;
+		
+		try {
+			_LOGGER.info("Processando conexão com " + parceira.getNome());
+			gerente.gravarMensagemParceira(mensagemDb, parceira);
+			retorno = parceira.processar(mensagemBasica);
+			
+		} catch (Throwable t) {
+			
+			RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(mensagemBasica, t, parceira);
+			gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
+			return erro;
+		}
+		
+		try {
+			Mensagem retornoMensagemDb = gerente.salvar(retorno);
+			gerente.gravarMensagemParceira(retornoMensagemDb, parceira);
+			
+			//verificar se mensagem de erro
+			if(!retorno.isOk()) {
+				
+				return retorno;
+			}
+			
+			if(retorno.getCabecalho().getCodigoRetorno().isEmpty()) {
+				
+				RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_AUSENCIA_CODIGO_RETORNO.wrap(mensagemBasica, null, parceira);
+				gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
+				return erro;
+			}
+			
+			return retorno;
+			
+		} catch (Throwable t) {
+			
+			RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_ERRO_RETORNO.wrap(mensagemBasica, t, parceira);
+			gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
+			return erro;
+		}
 	}
 
 }
