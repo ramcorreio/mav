@@ -5,7 +5,9 @@
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<bean id="trapHandler" class="com.stefanini.mav.simulador.Losango" />
-	<bean id="inputCodec" class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" />
+	<bean id="inputCodec" class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" >
+		<property name="decoderMaxLineLength" value="8192"></property>    
+	</bean>
 	<bean id="inputPort" class="java.lang.Integer">
 		<constructor-arg value="9089" />
 	</bean>

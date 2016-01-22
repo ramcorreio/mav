@@ -57,13 +57,14 @@ public class ConexaoParceira {
 	}
 
 	public void conectar() {
-
+		
 		connector.getFilterChain().addLast("logger", new LoggingFilter());
 		connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MensagemCodecFactory()));
 
 		controlador = new ControladorParceira();
 		connector.setHandler(controlador);
 		connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
+		connector.getSessionConfig().setReadBufferSize(8192);
 
 		logger.info("conexão configurada");
 		connector.setConnectTimeoutMillis(TIMEOUT);
@@ -71,10 +72,12 @@ public class ConexaoParceira {
 	}
 
 	public void fechar() {
-
+		
 		future.getSession().close(true);
 		future.cancel();
+		connector.getFilterChain().clear();
 		connector.dispose();
+		connector = new NioSocketConnector();
 		logger.info("conexão encerrada");
 	}
 

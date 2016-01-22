@@ -90,6 +90,7 @@ public class MensagemBroker {
 			return MensagemErroBroker.MSG_ERRO_AUSENCIA_PARCEIRA.wrap(mensagemBasica);
 		}
 		
+		//	TODO VERIFICAR SE A MSG É DIFERENTE DE 450, SE NÃO É NECESSÁRIO VERIFICAR QUAL FOI A PARCEIRA QUE APROVOU A 450 
 		MensagemBasica rs = null;
 		for (Parceira parceira : parceiras) {
 		

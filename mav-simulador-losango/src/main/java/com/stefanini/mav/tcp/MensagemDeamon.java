@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class MensagemDeamon {
 
-	private static int DEFAULT_PORT = 8889;
+	private static int DEFAULT_PORT = 9089;
 	
 	private static Logger logger = LoggerFactory.getLogger(MensagemDeamon.class);
 
