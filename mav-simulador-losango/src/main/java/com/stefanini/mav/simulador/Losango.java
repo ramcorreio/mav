@@ -37,6 +37,12 @@ public class Losango extends IoHandlerAdapter {
 		return Utils.carregarPropriedades(carregarArquivoMensagens());
 	}
 	
+	public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
+		
+		_LOGGER.error("Erro inesperado...", cause);
+		inputClosed(session);
+    }
+	
 	@Override
 	public void messageReceived(IoSession session, Object mensagem) throws MensagemNaoEncontradaException, IOException, URISyntaxException {
 		

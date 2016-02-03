@@ -99,4 +99,22 @@ public class GerenciaMensagemTest {
 		MatcherAssert.assertThat(mp.getChaveParceira(), Matchers.equalTo("testeid"));
 		MatcherAssert.assertThat(mp.getMensagens().size(), Matchers.greaterThan(0));
 	}
+	
+	@Test
+	public void gravarMensagem100() throws IOException, URISyntaxException, MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
+		
+		String input = MensagemHelper.lerMensagem(CodigoMensagem.C0100, "criarPropostaFinanciamento.2");
+		input = MensagemHelper.mudarTransacao(input);
+		ContextoMensagem<MensagemBasica> ctx = MensagemFactory.loadContexto(CodigoMensagem.C0100);
+		MensagemBasica m = ctx.ler(input);
+		
+		Parceira parceira = new Parceira("testeid", "teste", new ConexaoParceira("local", 10000)) ;
+		Mensagem rm = manager.salvar(m);
+		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
+		
+		MensagemParceira mp = manager.gravarMensagemParceira(rm, parceira);
+		MatcherAssert.assertThat(mp.getId(), Matchers.notNullValue());
+		MatcherAssert.assertThat(mp.getChaveParceira(), Matchers.equalTo("testeid"));
+		MatcherAssert.assertThat(mp.getMensagens().size(), Matchers.greaterThan(0));
+	}
 }
