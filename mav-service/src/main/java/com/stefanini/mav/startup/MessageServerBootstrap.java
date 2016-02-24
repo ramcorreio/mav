@@ -4,7 +4,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class MessageServerBootstrap {
 	
-	private static final ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("mav-init-context.xml");
+	private static final ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("mav-init-service.xml");
 
 	public static void main(String[] args) {
 

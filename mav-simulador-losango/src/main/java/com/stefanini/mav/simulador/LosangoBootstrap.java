@@ -12,7 +12,7 @@ public class LosangoBootstrap {
 
 	private static Logger _LOGGER = LoggerFactory.getLogger(LosangoBootstrap.class);
 	
-	private static final ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("mav-init-context.xml");
+	private static final ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("mav-init-simulador.xml");
 
 	public static void main(String[] args) {
 
