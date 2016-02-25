@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import com.stefanini.mav.mensagem.MensagemBasica;
 
-public class EchoMensagemDeamonHandler extends IoHandlerAdapter {
+public class EchoMensagemDaemonHandler extends IoHandlerAdapter {
 
-	private static Logger logger = LoggerFactory.getLogger(EchoMensagemDeamonHandler.class);
+	private static Logger logger = LoggerFactory.getLogger(EchoMensagemDaemonHandler.class);
 	
 	/**
      * {@inheritDoc}

@@ -34,7 +34,7 @@ import com.stefanini.mav.util.MensagemHelper;
  * @author Rodrigo
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:mav-test-context.xml", "classpath:mav-deamon-fake-broker.xml"})
+@ContextConfiguration(locations={"classpath:mav-test-context.xml", "classpath:mav-daemon-fake-broker.xml"})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public class MensagemBrokerTest {
 	

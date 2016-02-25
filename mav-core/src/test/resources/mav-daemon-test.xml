@@ -3,14 +3,20 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		
+	<import resource="classpath:mav-daemon-template.xml" />
 	
-	<import resource="classpath:mav-deamon-fake.xml" />
-	
-	<bean parent="demoFake">
+	<bean parent="ioAcceptor">
 		<property name="port">
 			<bean class="java.lang.Integer">
-				<constructor-arg value="8891" />
+				<constructor-arg value="8889" />
 			</bean>
+		</property>
+		<property name="handler">
+			<bean class="com.stefanini.mav.util.EchoMensagemDaemonHandler"/>
+		</property>
+		<property name="inputCodec">
+			<bean class="com.stefanini.mav.tcp.MensagemCodecFactory" />
 		</property>
 	</bean>
 

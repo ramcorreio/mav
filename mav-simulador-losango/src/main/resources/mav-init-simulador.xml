@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<import resource="classpath:mav-deamon-template.xml" />
+	<import resource="classpath:mav-daemon-template.xml" />
 	
 	<bean parent="ioAcceptor">
 		<property name="port" value="9089"/>

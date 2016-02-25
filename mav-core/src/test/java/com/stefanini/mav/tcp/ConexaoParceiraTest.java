@@ -21,7 +21,7 @@ import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
 import com.stefanini.mav.util.MensagemHelper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:mav-test-context.xml", "classpath:mav-deamon-fake-parceira.xml"})
+@ContextConfiguration(locations={"classpath:mav-test-context.xml", "classpath:mav-daemon-fake-parceira.xml"})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public class ConexaoParceiraTest {
 	
