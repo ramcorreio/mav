@@ -16,17 +16,17 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MensagemDeamon {
+public class MensagemDaemon {
 
 	private static int DEFAULT_PORT = -1;
 	
-	private static Logger logger = LoggerFactory.getLogger(MensagemDeamon.class);
+	private static Logger logger = LoggerFactory.getLogger(MensagemDaemon.class);
 
 	private NioSocketAcceptor acceptor;
 	
 	private int port = DEFAULT_PORT; 
 	
-	public MensagemDeamon() {
+	public MensagemDaemon() {
 		
 		acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors());
 		//acceptor.getSessionConfig().setReadBufferSize(8192);
