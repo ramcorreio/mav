@@ -4,12 +4,20 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 		
-	<!-- The IoHandler implementation -->
-	<bean id="trapHandler" class="com.stefanini.mav.util.EchoMensagemDeamonHandler" />
-	<bean id="inputCodec" class="com.stefanini.mav.tcp.MensagemCodecFactory" />
-	<bean id="inputPort" class="java.lang.Integer">
-		<constructor-arg value="8889" />
+	<import resource="classpath:mav-deamon-template.xml" />
+	
+	<bean parent="ioAcceptor">
+		<property name="port">
+			<bean class="java.lang.Integer">
+				<constructor-arg value="8889" />
+			</bean>
+		</property>
+		<property name="handler">
+			<bean class="com.stefanini.mav.util.EchoMensagemDeamonHandler"/>
+		</property>
+		<property name="inputCodec">
+			<bean class="com.stefanini.mav.tcp.MensagemCodecFactory" />
+		</property>
 	</bean>
-	<import resource="classpath:mav-deamon-template.xml" />	
 
 </beans>

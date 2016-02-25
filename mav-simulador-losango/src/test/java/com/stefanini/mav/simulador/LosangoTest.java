@@ -33,7 +33,7 @@ import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
  * Teste unitário para a classe Losango .
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:mav-init-context.xml"})
+@ContextConfiguration(locations={"classpath:mav-init-simulador.xml"})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public class LosangoTest
 {

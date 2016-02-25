@@ -4,9 +4,14 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
-	<bean id="inputPort" class="java.lang.Integer">
-		<constructor-arg value="8890" />
-	</bean>
 	<import resource="classpath:mav-deamon-fake.xml" />
+	
+	<bean parent="demoFake">
+		<property name="port">
+			<bean class="java.lang.Integer">
+				<constructor-arg value="8890" />
+			</bean>
+		</property>
+	</bean>
 
 </beans>

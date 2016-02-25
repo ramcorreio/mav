@@ -110,7 +110,6 @@ public class MensagemDeamonTest {
 				    recebida = (String) toRead.getMessage();
 				    future.getSession().resumeRead();
 				    future.getSession().close(true);
-				    future.cancel();
 				    connector.dispose(true);
 			    
 				    //MatcherAssert.assertThat(message, Matchers.is(Matchers.equalTo(recebida)));

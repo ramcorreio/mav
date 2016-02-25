@@ -7,5 +7,4 @@
 	<import resource="classpath:mav-init-service.xml"/>
 	<import resource="classpath:mav-init-simulador.xml"/>
 	
-	
 </beans>
