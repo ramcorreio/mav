@@ -9,7 +9,16 @@
     xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     
     <ui:define name="bodyContent">
-    	<p:outputLabel>Entrada</p:outputLabel>
+    	<p:panelGrid columns="2">
+    <f:facet name="header">
+        <p:graphicImage name="demo/images/misc/kobe.png" />
+    </f:facet>
+ 
+    <h:outputText value="Name:" />
+    <h:outputText value="Kobe Bryant" />
+ 
+    		
+    	<p:outputLabel>Entrada: </p:outputLabel>
     	<p:inputText value="#{mensagemView.string}"/>
 	</ui:define>
 	    
