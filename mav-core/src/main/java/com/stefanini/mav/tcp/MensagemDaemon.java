@@ -77,6 +77,7 @@ public class MensagemDaemon {
 		if(acceptor.isActive()) {
 			for(IoSession session : this.acceptor.getManagedSessions().values()) {
 				session.close(true);
+				acceptor.getListeners().fireSessionDestroyed(session);
 			}
 		}
 		acceptor.unbind();
