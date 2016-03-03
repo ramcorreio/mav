@@ -1,3 +1,7 @@
+
+package com.stefanini.mav.view;
+
+
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
