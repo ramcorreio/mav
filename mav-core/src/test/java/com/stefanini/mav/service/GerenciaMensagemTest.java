@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,23 @@ public class GerenciaMensagemTest {
 		Mensagem rm = manager.salvar(m);
 		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
 		MatcherAssert.assertThat(rm.getNumeroProposta(), Matchers.equalTo("G" + input.substring(9, 15)));
+	}
+	
+	@Test
+	public void existeMensagem() throws IOException, URISyntaxException, MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
+		
+		String input = MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1");
+		input = MensagemHelper.mudarTransacao(input);
+		ContextoMensagem<MensagemBasica> ctx = MensagemFactory.loadContexto(CodigoMensagem.C0450);
+		MensagemBasica m = ctx.ler(input);
+		
+		Mensagem rm = manager.salvar(m);
+		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
+		MatcherAssert.assertThat(rm.getNumeroProposta(), Matchers.equalTo("G" + input.substring(9, 15)));
+		
+		if(!manager.existe(m)) {
+			Assert.fail("Mensagem não existe");
+		}
 	}
 	
 	@Test(expected = TransactionSystemException.class)
@@ -98,6 +116,38 @@ public class GerenciaMensagemTest {
 		MatcherAssert.assertThat(mp.getId(), Matchers.notNullValue());
 		MatcherAssert.assertThat(mp.getChaveParceira(), Matchers.equalTo("testeid"));
 		MatcherAssert.assertThat(mp.getMensagens().size(), Matchers.greaterThan(0));
+	}
+	
+	@Test
+	public void gravarMensagemDuasParceira() throws IOException, URISyntaxException, MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
+		
+		String input = MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1");
+		input = MensagemHelper.mudarTransacao(input);
+		ContextoMensagem<MensagemBasica> ctx = MensagemFactory.loadContexto(CodigoMensagem.C0450);
+		MensagemBasica m = ctx.ler(input);
+		
+		Mensagem rm = manager.salvar(m);
+		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
+		
+		Parceira parceira1 = new Parceira("testeid1", "teste 2", new ConexaoParceira("local", 10000)) ;
+		MensagemParceira mp1 = manager.gravarMensagemParceira(rm, parceira1);
+		MatcherAssert.assertThat(mp1.getId(), Matchers.notNullValue());
+		MatcherAssert.assertThat(mp1.getChaveParceira(), Matchers.equalTo("testeid1"));
+		MatcherAssert.assertThat(mp1.getMensagens().size(), Matchers.greaterThan(0));
+		MatcherAssert.assertThat(mp1.getMensagens().size(), Matchers.equalTo(1));
+		rm = manager.recuperarMensagem(m);
+		MatcherAssert.assertThat(rm.getParceiras().size(), Matchers.greaterThan(0));
+		MatcherAssert.assertThat(rm.getParceiras().size(), Matchers.equalTo(1));
+		
+		Parceira parceira2 = new Parceira("testeid2", "teste 2", new ConexaoParceira("local", 10001)) ;
+		MensagemParceira mp2 = manager.gravarMensagemParceira(rm, parceira2);
+		MatcherAssert.assertThat(mp2.getId(), Matchers.notNullValue());
+		MatcherAssert.assertThat(mp2.getChaveParceira(), Matchers.equalTo("testeid2"));
+		MatcherAssert.assertThat(mp2.getMensagens().size(), Matchers.greaterThan(0));
+		MatcherAssert.assertThat(mp2.getMensagens().size(), Matchers.equalTo(1));
+		rm = manager.recuperarMensagem(m);
+		MatcherAssert.assertThat(rm.getParceiras().size(), Matchers.greaterThan(0));
+		MatcherAssert.assertThat(rm.getParceiras().size(), Matchers.equalTo(2));
 	}
 	
 	@Test

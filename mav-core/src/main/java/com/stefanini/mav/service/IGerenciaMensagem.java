@@ -13,5 +13,9 @@ public interface IGerenciaMensagem extends Serializable {
 	public Mensagem salvar(MensagemBasica m) throws MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado;
 
 	MensagemParceira gravarMensagemParceira(Mensagem m, Parceira parceira) throws MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado;
+	
+	public boolean existe(MensagemBasica m);
+	
+	public Mensagem recuperarMensagem(MensagemBasica m);
 
 }

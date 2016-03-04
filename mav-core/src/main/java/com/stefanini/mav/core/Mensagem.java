@@ -2,15 +2,18 @@ package com.stefanini.mav.core;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,14 +24,21 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.Cabecalho.Fluxo;
+import com.stefanini.mav.mensagem.CodigoMensagem;
 
 @Entity
-@Table(name = "mensagem", uniqueConstraints = @UniqueConstraint(columnNames = {"numeroTransacao", "codigo", "numeroProposta"}))
+@Table(
+		name = "mensagem", 
+		uniqueConstraints = {
+				@UniqueConstraint(columnNames = {"numeroTransacao", "codigo", "numeroProposta"}),
+				@UniqueConstraint(columnNames = {"numeroTransacao", "codigo", "data"}),
+		}
+)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQueries({ 
-	@NamedQuery(name = "Mensagem.all", query = "select m from Mensagem m") 
+	@NamedQuery(name = "Mensagem.all", query = "select m from Mensagem m"),
+	@NamedQuery(name = "Mensagem.recuperar", query = "select m from Mensagem m where m.numeroTransacao = :nt and m.codigo = :cd and m.numeroProposta = :np")
 })
 public class Mensagem implements Serializable {
 
@@ -59,6 +69,9 @@ public class Mensagem implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(updatable = false)
 	private Date data;
+	
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "mensagens")
+	private List<MensagemParceira> parceiras;
 
 	public Long getId() {
 		return id;
@@ -115,5 +128,12 @@ public class Mensagem implements Serializable {
 	public void setData(Date data) {
 		this.data = data;
 	}
-
+	
+	public List<MensagemParceira> getParceiras() {
+		return parceiras;
+	}
+	
+	public void setParceiras(List<MensagemParceira> parceiras) {
+		this.parceiras = parceiras;
+	}
 }

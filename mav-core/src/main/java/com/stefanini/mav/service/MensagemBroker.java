@@ -48,7 +48,7 @@ public class MensagemBroker {
 			return wrap(m, t, p.getServidor(), p.getPorta());
 		}
 		
-		private MensagemBasica wrap(MensagemBasica m, Throwable t, Object... args) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
+		protected MensagemBasica wrap(MensagemBasica m, Throwable t, Object... args) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado {
 			
 			String mensagemErro = String.format(texto, args);
 			if(t != null) {
@@ -95,7 +95,7 @@ public class MensagemBroker {
 		for (Parceira parceira : parceiras) {
 		
 			rs = enviarMensagemParceira(mensagemBasica, parceira);
-			if(rs instanceof RespostaErro || StatusProposta.ELEGIVEL.getCodigo().equals(rs.getCabecalho().getCodigoRetorno())) {
+			if(StatusProposta.ELEGIVEL.getCodigo().equals(rs.getCabecalho().getCodigoRetorno())) {
 				
 				break;
 			}
@@ -107,7 +107,17 @@ public class MensagemBroker {
 	private MensagemBasica enviarMensagemParceira(MensagemBasica mensagemBasica, Parceira parceira) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado, BrokerException {
 		
 		IGerenciaMensagem gerente = ServiceLocator.getInstance().getService(Service.GERENTE_MENSAGEM, IGerenciaMensagem.class);
-		Mensagem mensagemDb = gerente.salvar(mensagemBasica);
+		Mensagem mensagemDb = null;
+		if(!gerente.existe(mensagemBasica)) {
+			
+			mensagemDb = gerente.salvar(mensagemBasica);
+		}
+		else {
+			
+			mensagemDb = gerente.recuperarMensagem(mensagemBasica);
+		}
+		
+		
 		MensagemBasica retorno = null;
 		
 		try {
@@ -115,7 +125,7 @@ public class MensagemBroker {
 			gerente.gravarMensagemParceira(mensagemDb, parceira);
 			retorno = parceira.processar(mensagemBasica);
 			
-		} catch (Throwable t) {
+		} catch (RuntimeException t) {
 			
 			RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(mensagemBasica, t, parceira);
 			gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
@@ -141,12 +151,11 @@ public class MensagemBroker {
 			
 			return retorno;
 			
-		} catch (Throwable t) {
+		} catch (RuntimeException t) {
 			
 			RespostaErro erro = (RespostaErro) MensagemErroBroker.MSG_ERRO_RETORNO.wrap(mensagemBasica, t, parceira);
 			gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
 			return erro;
 		}
 	}
-
 }
