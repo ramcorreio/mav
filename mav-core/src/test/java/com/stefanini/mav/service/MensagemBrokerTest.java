@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.stefanini.mav.core.Mensagem;
-import com.stefanini.mav.core.MensagemParceira;
 import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.ContextoMensagem;
@@ -79,6 +78,8 @@ public class MensagemBrokerTest {
 		MensagemBasica expected = MensagemErroBroker.MSG_ERRO_CONEXAO.wrap(entrada, null, p);
 		
 		MensagemBasica retorno = MensagemBroker.getInstance().enviarParceira(entrada);
+		expected.getCabecalho().setNumeroProposta(retorno.getCabecalho().getNumeroProposta());
+		
 		MatcherAssert.assertThat(retorno, BeanMatchers.theSameAs(expected));
 	}
 	

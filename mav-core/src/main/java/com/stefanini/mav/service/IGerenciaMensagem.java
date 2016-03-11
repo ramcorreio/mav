@@ -1,6 +1,7 @@
 package com.stefanini.mav.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.stefanini.mav.core.Mensagem;
 import com.stefanini.mav.core.MensagemParceira;
@@ -17,5 +18,11 @@ public interface IGerenciaMensagem extends Serializable {
 	public boolean existe(MensagemBasica m);
 	
 	public Mensagem recuperarMensagem(MensagemBasica m);
+	
+	public List<Mensagem> listarTodas();
+	
+	public int contarProcessadas();
+	
+	public int contarMensagens();
 
 }

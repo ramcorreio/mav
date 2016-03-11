@@ -3,8 +3,11 @@ package com.stefanini.mav.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
@@ -15,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import com.stefanini.mav.core.Mensagem;
 import com.stefanini.mav.core.MensagemParceira;
-import com.stefanini.mav.es.AdaptadorTipo;
 import com.stefanini.mav.es.MapeamentoNaoEncontrado;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
@@ -32,18 +34,17 @@ public class GerenciaMensagem extends BaseManager implements IGerenciaMensagem {
 	@Override
 	public Mensagem salvar(MensagemBasica m) throws MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 	
+		if(existe(m)) {
+			
+			return recuperarMensagem(m);
+		}
+		
 		Mensagem dump = new Mensagem();
 		dump.setCodigo(m.getCabecalho().getCodigo());
 		dump.setData(Calendar.getInstance().getTime());
 		dump.setNumeroTransacao(m.getCabecalho().getNumeroTransacao());
+		dump.setNumeroProposta(m.getCabecalho().getNumeroProposta());
 		
-		String numeroProposta = m.getCabecalho().getNumeroProposta();
-		if(numeroProposta.isEmpty()) {
-			numeroProposta = "G" + AdaptadorTipo.escreverInt(6, m.getCabecalho().getNumeroTransacao());
-		}
-		
-		m.getCabecalho().setNumeroProposta(numeroProposta);
-		dump.setNumeroProposta(numeroProposta);
 		dump.setFluxo(m.getCabecalho().getSentidoFluxo());
 		dump.setDump(MensagemFactory.loadContexto(m.getCabecalho().getCodigo()).escrever(m));
 		
@@ -114,4 +115,44 @@ public class GerenciaMensagem extends BaseManager implements IGerenciaMensagem {
 			return null;
 		}
 	}
+	
+	@Override
+	public List<Mensagem> listarTodas() {
+		
+		TypedQuery<Mensagem> q = createNamedQuery("Mensagem.processadas", Mensagem.class);
+		try {
+			return q.getResultList();
+		}
+		catch(NoResultException e) {
+			
+			return Collections.emptyList();
+		}
+	}
+	
+	@Override
+	public int contarMensagens() {
+		
+		Query q = createNamedQuery("Mensagem.contar");
+		try {
+			return Number.class.cast(q.getSingleResult()).intValue();
+		}
+		catch(NoResultException e) {
+			
+			return 0;
+		}
+	}
+	
+	@Override
+	public int contarProcessadas() {
+		
+		Query q = createNamedQuery("Mensagem.processadas");
+		try {
+			return Number.class.cast(q.getSingleResult()).intValue();
+		}
+		catch(NoResultException e) {
+			
+			return 0;
+		}
+	}
+	
 }

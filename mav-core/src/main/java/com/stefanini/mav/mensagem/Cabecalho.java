@@ -40,7 +40,7 @@ public class Cabecalho implements Serializable {
 	private Integer numeroTransacao;
 	
 	@MapAtributo(tamanho = 15)
-	private String numeroProposta;
+	private String numeroProposta = "";
 	
 	@MapAtributo(tamanho = 8)
 	private String codigoUsuario;

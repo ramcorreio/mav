@@ -75,6 +75,7 @@ public class ConexaoParceira {
 		
 		future.getSession().close(true);
 		future.cancel();
+		
 		connector.getFilterChain().clear();
 		connector.dispose();
 		connector = new NioSocketConnector();

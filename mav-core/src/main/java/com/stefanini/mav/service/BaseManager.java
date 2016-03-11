@@ -3,6 +3,7 @@ package com.stefanini.mav.service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -74,6 +75,10 @@ public class BaseManager {
 
 	protected <T> TypedQuery<T> createNamedQuery(String q, Class<T> clazz) {
 		return entityManager.createNamedQuery(q, clazz);
+	}
+	
+	protected Query createNamedQuery(String q) {
+		return entityManager.createNamedQuery(q);
 	}
 
 	protected <T> T update(T entity) throws BrokerException {

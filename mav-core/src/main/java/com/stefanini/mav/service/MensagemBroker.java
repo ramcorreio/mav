@@ -107,17 +107,7 @@ public class MensagemBroker {
 	private MensagemBasica enviarMensagemParceira(MensagemBasica mensagemBasica, Parceira parceira) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado, BrokerException {
 		
 		IGerenciaMensagem gerente = ServiceLocator.getInstance().getService(Service.GERENTE_MENSAGEM, IGerenciaMensagem.class);
-		Mensagem mensagemDb = null;
-		if(!gerente.existe(mensagemBasica)) {
-			
-			mensagemDb = gerente.salvar(mensagemBasica);
-		}
-		else {
-			
-			mensagemDb = gerente.recuperarMensagem(mensagemBasica);
-		}
-		
-		
+		Mensagem mensagemDb = gerente.salvar(mensagemBasica);
 		MensagemBasica retorno = null;
 		
 		try {
@@ -157,5 +147,5 @@ public class MensagemBroker {
 			gerente.gravarMensagemParceira(gerente.salvar(erro), parceira);
 			return erro;
 		}
-	}
+	}	
 }

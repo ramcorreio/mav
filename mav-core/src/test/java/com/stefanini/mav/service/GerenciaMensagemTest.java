@@ -50,7 +50,7 @@ public class GerenciaMensagemTest {
 		
 		Mensagem rm = manager.salvar(m);
 		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
-		MatcherAssert.assertThat(rm.getNumeroProposta(), Matchers.equalTo("G" + input.substring(9, 15)));
+		MatcherAssert.assertThat(rm.getNumeroProposta(), Matchers.is(Matchers.isEmptyString()));
 	}
 	
 	@Test
@@ -63,14 +63,14 @@ public class GerenciaMensagemTest {
 		
 		Mensagem rm = manager.salvar(m);
 		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
-		MatcherAssert.assertThat(rm.getNumeroProposta(), Matchers.equalTo("G" + input.substring(9, 15)));
+		MatcherAssert.assertThat(rm.getNumeroProposta(), Matchers.is(Matchers.isEmptyString()));
 		
 		if(!manager.existe(m)) {
 			Assert.fail("Mensagem não existe");
 		}
 	}
 	
-	@Test(expected = TransactionSystemException.class)
+	@Test
 	public void salvarMensagemDuplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 		
 		String input = MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1");
@@ -78,13 +78,19 @@ public class GerenciaMensagemTest {
 		ContextoMensagem<MensagemBasica> ctx = MensagemFactory.loadContexto(CodigoMensagem.C0450);
 		MensagemBasica m = ctx.ler(input);
 		
+		int qtd = manager.contarMensagens();
+		
 		Mensagem rm = manager.salvar(m);
 		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
+		MatcherAssert.assertThat(qtd + 1, Matchers.equalTo(manager.contarMensagens()));
 		
+		qtd = manager.contarMensagens();
 		rm = manager.salvar(m);
+		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
+		MatcherAssert.assertThat(qtd, Matchers.equalTo(manager.contarMensagens()));
 	}
 	
-	@Test(expected = TransactionSystemException.class)
+	@Test
 	public void salvarPropostaDuplicada() throws IOException, URISyntaxException, MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 		
 		String input = MensagemHelper.lerMensagem(CodigoMensagem.C0450, "criarCapturaSimplicada.1");
@@ -92,12 +98,18 @@ public class GerenciaMensagemTest {
 		ContextoMensagem<MensagemBasica> ctx = MensagemFactory.loadContexto(CodigoMensagem.C0450);
 		MensagemBasica m = ctx.ler(input);
 		
+		int qtd = manager.contarMensagens();
 		m.getCabecalho().setNumeroProposta("TESTE");
 		Mensagem rm = manager.salvar(m);
 		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
 		MatcherAssert.assertThat(rm.getId(), Matchers.is(Matchers.greaterThan(0l)));
+		MatcherAssert.assertThat(qtd + 1, Matchers.is(Matchers.equalTo(manager.contarMensagens())));
 		
+		qtd = manager.contarMensagens();
 		rm = manager.salvar(m);
+		MatcherAssert.assertThat(rm.getId(), Matchers.notNullValue());
+		MatcherAssert.assertThat(rm.getId(), Matchers.is(Matchers.greaterThan(0l)));
+		MatcherAssert.assertThat(qtd, Matchers.is(Matchers.equalTo(manager.contarMensagens())));
 	}
 	
 	@Test
