@@ -40,7 +40,8 @@ import com.stefanini.mav.mensagem.CodigoMensagem;
 	@NamedQuery(name = "Mensagem.todas", query = "select m from Mensagem m"),
 	@NamedQuery(name = "Mensagem.processadas", query = "select count(m) from Mensagem m inner join m.parceiras"),
 	@NamedQuery(name = "Mensagem.contar", query = "select count(m) from Mensagem m"),
-	@NamedQuery(name = "Mensagem.recuperar", query = "select m from Mensagem m where m.numeroTransacao = :nt and m.codigo = :cd and m.numeroProposta = :np")
+	@NamedQuery(name = "Mensagem.recuperar", query = "select m from Mensagem m where m.numeroTransacao = :nt and m.codigo = :cd and m.numeroProposta = :np"),
+	@NamedQuery(name = "Mensagem.ultima.proposta", query = "select m from Mensagem m where m.numeroProposta = :np")
 })
 public class Mensagem implements Serializable {
 

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.stefanini.mav.core.Mensagem;
 import com.stefanini.mav.es.MapeamentoNaoEncontrado;
+import com.stefanini.mav.mensagem.CodigoMensagem;
 import com.stefanini.mav.mensagem.MensagemBasica;
 import com.stefanini.mav.mensagem.MensagemFactory;
 import com.stefanini.mav.mensagem.MensagemNaoEncontradaException;
@@ -22,7 +23,7 @@ public class MensagemBroker {
 	
 	public enum MensagemErroBroker {
 		
-		MSG_ERRO_RETORNO("Erro ao processar retorno . servidor: %s, porta: %s"),
+		MSG_ERRO_RETORNO("Erro ao processar retorno. servidor: %s, porta: %s"),
 		MSG_ERRO_CONEXAO("Erro de conexão com a parceira. servidor: %s, porta: %s"),
 		MSG_ERRO_AUSENCIA_PARCEIRA("Não há conexões disponíveis com as parceiras."),
 		MSG_AUSENCIA_CODIGO_RETORNO("Não há código de retorno para essa mensagem.");
@@ -63,6 +64,8 @@ public class MensagemBroker {
 	
 	private LinkedHashSet<Parceira> parceiras = new LinkedHashSet<>();
 	
+	private IGerenciaMensagem gerente = ServiceLocator.getInstance().getService(Service.GERENTE_MENSAGEM, IGerenciaMensagem.class);
+	
 	private MensagemBroker() {
 	}
 	
@@ -82,6 +85,16 @@ public class MensagemBroker {
 		parceiras.clear();
 	}
 	
+	public static Parceira localizarParceira(String id, List<Parceira> parceiras) {
+		
+		if(parceiras.indexOf(new Parceira(id, "", null)) == -1) {
+			return null;
+		}
+		
+		return parceiras.get(parceiras.indexOf(new Parceira(id, "", null)));
+	}
+	
+	
 	public MensagemBasica enviarParceira(MensagemBasica mensagemBasica) throws MensagemNaoEncontradaException, BrokerException, MapeamentoNaoEncontrado {
 
 		//Não há parceiras registradas
@@ -90,23 +103,32 @@ public class MensagemBroker {
 			return MensagemErroBroker.MSG_ERRO_AUSENCIA_PARCEIRA.wrap(mensagemBasica);
 		}
 		
-		//	TODO VERIFICAR SE A MSG É DIFERENTE DE 450, SE NÃO É NECESSÁRIO VERIFICAR QUAL FOI A PARCEIRA QUE APROVOU A 450 
-		MensagemBasica rs = null;
-		for (Parceira parceira : parceiras) {
-		
-			rs = enviarMensagemParceira(mensagemBasica, parceira);
-			if(StatusProposta.ELEGIVEL.getCodigo().equals(rs.getCabecalho().getCodigoRetorno())) {
-				
-				break;
+		//verificar se a mensagem não é 450 e assim localizar o fluxo anterior da proposta
+		if(CodigoMensagem.C0450.equals(mensagemBasica.getCabecalho().getCodigo())) {
+			MensagemBasica rs = null;
+			
+			for (Parceira parceira : parceiras) {
+			
+				rs = enviarMensagemParceira(mensagemBasica, parceira);
+				if(StatusProposta.ELEGIVEL.getCodigo().equals(rs.getCabecalho().getCodigoRetorno())) {
+					
+					break;
+				}
 			}
+			
+			return rs;
 		}
-
-		return rs;
+		else {
+			String parceiraId = gerente.recuperarParceira(mensagemBasica);
+			Parceira p = localizarParceira(parceiraId, new LinkedList<>(parceiras));
+			return enviarMensagemParceira(mensagemBasica, p);
+		}
+		
 	}
 
 	private MensagemBasica enviarMensagemParceira(MensagemBasica mensagemBasica, Parceira parceira) throws MensagemNaoEncontradaException, MapeamentoNaoEncontrado, BrokerException {
 		
-		IGerenciaMensagem gerente = ServiceLocator.getInstance().getService(Service.GERENTE_MENSAGEM, IGerenciaMensagem.class);
+		
 		Mensagem mensagemDb = gerente.salvar(mensagemBasica);
 		MensagemBasica retorno = null;
 		

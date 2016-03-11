@@ -78,12 +78,17 @@ public class MensagemHelper {
 		assertThat(cabecalho.getCampoLojista(), equalTo(expected.getCampoLojista()));
 	}
 	
-	public static String mudarTransacao(String mensagem) {
+	public static String mudarTransacao(String mensagem, int numeroTransacao) {
 		
 		String mensagem1 = mensagem.substring(0, 9);
 		//Integer t = Integer.parseInt(mensagem.substring(9, 15)) + 1;
 		String mensagem2 = mensagem.substring(15);
 		
-		return mensagem1.concat(AdaptadorTipo.escreverInt(6, proximaTransacao++)).concat(mensagem2); 
+		return mensagem1.concat(AdaptadorTipo.escreverInt(6, numeroTransacao)).concat(mensagem2); 
+	}
+	
+	public static String mudarTransacao(String mensagem) {
+		
+		return mudarTransacao(mensagem, proximaTransacao++); 
 	}
 }

@@ -4,6 +4,7 @@ package com.stefanini.mav.service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -152,6 +153,27 @@ public class GerenciaMensagem extends BaseManager implements IGerenciaMensagem {
 		catch(NoResultException e) {
 			
 			return 0;
+		}
+	}
+	
+	@Override
+	public String recuperarParceira(MensagemBasica m) {
+
+		_LOGGER.info("recuperando mensagem...");
+		_LOGGER.info(m.getCabecalho().getNumeroTransacao().toString());
+		_LOGGER.info(m.getCabecalho().getCodigo().toString());
+		_LOGGER.info(m.getCabecalho().getNumeroProposta());
+		
+		TypedQuery<Mensagem> q = createNamedQuery("Mensagem.ultima.proposta", Mensagem.class);
+		q.setParameter("np", m.getCabecalho().getNumeroProposta());
+		try {
+			LinkedList<Mensagem> mensagens = new LinkedList<Mensagem>(q.getResultList());
+			LinkedList<MensagemParceira> parceiras = new LinkedList<MensagemParceira>(mensagens.getLast().getParceiras());
+			return parceiras.getLast().getChaveParceira();
+		}
+		catch(NoResultException e) {
+			
+			return null;
 		}
 	}
 	

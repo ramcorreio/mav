@@ -24,5 +24,7 @@ public interface IGerenciaMensagem extends Serializable {
 	public int contarProcessadas();
 	
 	public int contarMensagens();
+	
+	public String recuperarParceira(MensagemBasica m);
 
 }
