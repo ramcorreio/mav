@@ -50,7 +50,7 @@ public class LosangoTest
 	public void lerArquivo() throws IOException {
 		
 		CharBuffer b = losango.carregarArquivoMensagens();
-		MatcherAssert.assertThat(1187, Matchers.equalTo(b.remaining()));
+		MatcherAssert.assertThat(b.remaining(), Matchers.equalTo(1188));
 	}
 	
 	@Test
